@@ -1,0 +1,63 @@
+.customDropdown {
+  padding: 12px;
+  max-width: 320px;
+  position: relative;
+
+  & {
+    padding: 1rem 0;
+  }
+
+  label {
+    margin-bottom: 0.75rem;
+  }
+
+
+  .customDropdownSelection {
+    display: flex;
+    align-items: center;
+    width: 73rem;
+    height: 3.5rem;
+    background-color: var(--white);
+    border-radius: 8px;
+    padding: 0 12px;
+    cursor: pointer;
+    position: relative;
+
+    &::after {
+      display: block;
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-right: 2px solid #0003;
+      border-bottom: 2px solid #0003;
+      transform: rotate(45deg);
+      position: absolute;
+      right: 15px;
+      top: 12px;
+    }
+
+    &.visible::after {
+      top: 18px;
+      transform: rotate(-135deg);
+    }
+  }
+
+  .itemsHolder {
+
+    border-radius: 6px;
+    background-color: var(--white);
+    position: absolute;
+    top: 50%;
+    width: 320px;
+
+
+    .dropdownItem {
+      padding: 10px 16px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #0001;
+      }
+    }
+  }
+}

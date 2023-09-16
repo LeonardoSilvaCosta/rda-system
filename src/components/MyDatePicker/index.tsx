@@ -14,13 +14,17 @@ import { AiOutlineCalendar } from "react-icons/ai";
 
 import styles from './styles.module.scss';
 
+interface MyDatePickerProps {
+  title: string;
+}
 
-export function MyDatePicker() {
+
+export function MyDatePicker({ title }: MyDatePickerProps) {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   return (
     <div className={styles.inputContainer}>
-      <label>Data</label>
+      <label>{title}</label>
       <DatePicker
         className={styles.input}
         selected={selectedDate}
