@@ -3,7 +3,7 @@ import { Input } from "@/components/Input";
 
 import styles from './styles.module.scss';
 import { Button } from "@/components/Button";
-import { MyDatePicker } from "@/components/DatePicker";
+import { MyDatePicker } from "@/components/MyDatePicker";
 
 export default function Home() {
   return (
