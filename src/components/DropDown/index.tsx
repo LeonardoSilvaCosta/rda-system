@@ -5,7 +5,8 @@ import { useState } from "react";
 import styles from './styles.module.scss';
 
 interface DropdownProps {
-  title: string;
+  id: string,
+  title: string,
 }
 
 type Option = {
@@ -13,7 +14,7 @@ type Option = {
   value: string;
 }
 
-export function DropDown({ title }: DropdownProps) {
+export function DropDown({ id, title }: DropdownProps) {
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
 
   const [itemsList, setItemsList] = useState<Option[]>([{ name: "Charles", value: "VC Charles" }, { name: "Landerson", value: "Vc Landerson" }])
@@ -21,11 +22,13 @@ export function DropDown({ title }: DropdownProps) {
   const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(null);
 
   return (
-    <div className={styles.customDropdown}>
-      <label>{title}</label>
-      <div className={`${styles.customDropdownSelection} ${isDropDownVisible ? styles.visible : ''}`} onClick={e => {
-        setIsDropDownVisible(!isDropDownVisible);
-      }}>
+    <div className={styles.dropdownContainer}>
+      <label htmlFor={id}>{title}</label>
+      <div
+        className={`${styles.dropdownSelect} ${isDropDownVisible ? styles.visible : ''}`}
+        onClick={() => {
+          setIsDropDownVisible(!isDropDownVisible);
+        }}>
         {selectedItemIndex !== null ? itemsList[selectedItemIndex].name : "Selecione uma opção"}
       </div>
       {
@@ -36,7 +39,7 @@ export function DropDown({ title }: DropdownProps) {
                 <div
                   key={item.name}
                   className={styles.dropdownItem}
-                  onClick={e => {
+                  onClick={() => {
                     setSelectedItemIndex(index);
                     setIsDropDownVisible(false);
                   }}
