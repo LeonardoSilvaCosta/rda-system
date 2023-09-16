@@ -21,7 +21,7 @@
   --gray-50: #F2F2F2;
   --gray-100: #D9D9D9;
   --gray-200: #BFBFBF;
-  --gray-300: #A6A6A6;
+  --gray-300: #a6a6a6;
   --gray-400: #8C8C8C;
   --gray-500: #737373;
   --gray-600: #595959;
@@ -48,7 +48,7 @@
 
 body {
   background: var(--blue-50);
-  color: var(--blue-500);
+  color: var(--gray-500);
 }
 
 body,
@@ -57,6 +57,14 @@ textarea,
 select,
 button {
   font: 400 1rem "Roboto", sans-serif;
+}
+
+input {
+  color: var(--gray-500);
+
+  &::placeholder {
+    color: rgba(166, 166, 166, 0.65);
+  }
 }
 
 button {

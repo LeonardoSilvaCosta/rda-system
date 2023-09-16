@@ -16,10 +16,13 @@
     "eslint-config-next": "13.4.19",
     "next": "13.4.19",
     "react": "18.2.0",
+    "react-datepicker": "^4.18.0",
     "react-dom": "18.2.0",
+    "react-icons": "^4.11.0",
     "typescript": "5.2.2"
   },
   "devDependencies": {
+    "@types/react-datepicker": "^4.15.0",
     "@typescript-eslint/eslint-plugin": "^6.7.0",
     "@typescript-eslint/parser": "^6.7.0",
     "eslint-config-prettier": "^9.0.0",

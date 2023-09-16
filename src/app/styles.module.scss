@@ -1,0 +1,20 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 1653px;
+
+  h2 {
+    padding: 3.32rem 0;
+    display: flex;
+    justify-content: center;
+    color: var(--blue-500);
+  }
+
+  .buttonsBox {
+    max-width: 996px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    
+  }
+}
