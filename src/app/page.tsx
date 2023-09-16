@@ -23,9 +23,11 @@ export default function Home() {
           <DropDown id="acesso" title="Acesso ao atendimento" />
           <DropDown id="local" title="Local do atendimento" />
           <RadioGroup title="Modalidade de atendimento" name="modalidade" label1="Sim" label2="Não" />
+          <RadioGroup title="Tem protocolo/PAE?" name="temProtocolo" label1="Sim" label2="Não" />
+          <Input title="Protocolo" name="protocolo" type="text" hint="123/2023" />
           <div className={styles.buttonsBox}>
-            <Button name="Próxima" />
-            <Button name="Cancelar" />
+              <Button type="button" name="Próxima" />
+              <Button type="button" name="Cancelar" />
           </div>
         </form>
       </div>

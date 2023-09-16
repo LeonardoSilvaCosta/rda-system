@@ -1,20 +1,40 @@
 .container {
   max-width: 1168px;
   margin: 0 auto;
-  height: 1200px;
+  height: 1500px;
+
+  @media(min-width: 390px) {
+    justify-content: center;
+    height: 1350px;
+  }
 
   h2 {
+    font-size: 1.8rem;
     padding: 3.32rem 0;
     display: flex;
     justify-content: center;
-    color: var(--blue-500);
+    color: var(--blue-400);
   }
 
-  .buttonsBox {
-    max-width: 996px;
-    margin: 0 auto;
+  .form {
     display: flex;
-    justify-content: space-between;
-    
+    flex-direction: column;
+    gap: 1.85rem;
+
+    .buttonsBox {
+      max-width: 996px;
+      width: 100%;
+      margin: 2rem auto 0 auto;
+
+      display: flex;
+      justify-content: space-between;
+
+      @media(min-width: 390px) {
+        justify-content: center;
+        button+button {
+          display: none;
+        }
+      }
+    }
   }
 }

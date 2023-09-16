@@ -26,6 +26,7 @@ export function MyDatePicker({ title }: MyDatePickerProps) {
     <div className={styles.inputContainer}>
       <label>{title}</label>
       <DatePicker
+        className={styles.input}
         selected={selectedDate}
         dateFormat="dd/MM/yyyy"
         placeholderText="15/09/2023"

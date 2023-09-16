@@ -14,11 +14,12 @@
   z-index: 10;
 
   .leftItem {
+    width: 12%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    margin-left: 2rem;
+    margin-left: 1rem;
     color: var(--blue-50);
     font-size: 1.25rem;
 

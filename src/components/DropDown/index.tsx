@@ -17,7 +17,11 @@ type Option = {
 export function DropDown({ id, title }: DropdownProps) {
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
 
-  const [itemsList, setItemsList] = useState<Option[]>([{ name: "Charles", value: "VC Charles" }, { name: "Landerson", value: "Vc Landerson" }])
+  const [itemsList, setItemsList] = useState<Option[]>([
+    { name: "Charles", value: "VC Charles" }, 
+    { name: "Landerson", value: "Vc Landerson" },
+    { name: "Mário", value: "VC Mário"}
+  ])
 
   const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(null);
 

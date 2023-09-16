@@ -1,12 +1,12 @@
 import styles from './styles.module.scss';
 
-interface ButtonProps {
+interface ButtonProps extends HTMLButtonElement {
   name: string;
   icon?: string;
 }
 
-export function Button({ name }: ButtonProps) {
+export function Button({ name, type }: ButtonProps) {
   return (
-    <button className={styles.button}>{name}</button>
+    <button type={type} className={styles.button}>{name}</button>
   )
 }
