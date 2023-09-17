@@ -6,11 +6,11 @@ import styles from './styles.module.scss';
 import { Button } from "@/components/Button";
 
 import { MyDatePicker } from "@/components/MyDatePicker";
-import { DropDown } from "@/components/DropDown";
 import { RadioGroup } from "@/components/RadioGroup";
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { FormValues } from "@/types/types";
+import { MyCustomDropdown } from "@/components/MyCustomDropdown";
 
 export default function Home() {
   const {
@@ -41,21 +41,21 @@ export default function Home() {
             required={true}
             register={register}
           />
-          <DropDown
-            id="recepcionista"
+          <MyCustomDropdown
             title="Recepcionista"
+            text="Recepcionista"
           />
-          <DropDown
-            id="oficial"
-            title="Oficial"
+          <MyCustomDropdown
+            title="oficial"
+            text="Oficial"
           />
-          <DropDown
-            id="acesso"
-            title="Acesso ao atendimento"
+          <MyCustomDropdown
+            title="acesso"
+            text="Acesso ao atendimento"
           />
-          <DropDown
-            id="local"
-            title="Local do atendimento"
+          <MyCustomDropdown
+            title="local"
+            text="Local do atendimento"
           />
           <RadioGroup
             title="Modalidade de atendimento"
@@ -64,7 +64,6 @@ export default function Home() {
             label2="Remota"
             required={true}
             register={register}
-            control={control}
           />
           <RadioGroup
             title="Tem protocolo/PAE?"
@@ -73,7 +72,6 @@ export default function Home() {
             label2="Não"
             required={true}
             register={register}
-            control={control}
           />
           <Input
             title="Protocolo"
