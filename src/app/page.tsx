@@ -12,13 +12,17 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { FormValues } from "@/types/types";
 import { MyCustomDropdown } from "@/components/MyCustomDropdown";
 import { list1, list2, list3, list4 } from "@/data";
+import { useState } from "react";
 
 export default function Home() {
   const {
     register,
     handleSubmit,
+    watch,
     control
   } = useForm<FormValues>()
+
+  const watchTemProtocolo = watch("temProtocolo");
 
   const onSubmit: SubmitHandler<FormValues> = (data: any) => console.log(data)
 
@@ -74,14 +78,19 @@ export default function Home() {
             required={true}
             register={register}
           />
-          <Input
-            title="Protocolo"
-            name="protocolo"
-            type="text"
-            hint="123/2023"
-            required={false}
-            register={register}
-          />
+          {
+            String(watchTemProtocolo) === "Sim" ? (
+              <Input
+                title="Protocolo"
+                name="protocolo"
+                type="text"
+                hint="123/2023"
+                required={false}
+                register={register}
+              />
+            ) : <></>
+          }
+
           <div className={styles.buttonsBox}>
             <Button type="submit" name="Próxima" />
             <Button type="button" name="Cancelar" />
