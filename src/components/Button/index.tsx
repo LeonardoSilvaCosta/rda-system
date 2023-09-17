@@ -1,6 +1,6 @@
 import styles from './styles.module.scss';
 
-interface ButtonProps extends HTMLButtonElement {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   name: string;
   icon?: string;
 }

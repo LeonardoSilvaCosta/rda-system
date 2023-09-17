@@ -1,22 +1,29 @@
 "use client"
-import { useState } from "react";
 import styles from "./styles.module.scss";
+import { FormValues } from "@/types/types";
+import { Path, UseFormRegister } from "react-hook-form";
 
 interface RadioButtonProps {
-  id?: string;
-  label: string;
-  name: string;
+  id: string,
+  label: string,
+  name: Path<FormValues>,
+  required: boolean,
+  register: UseFormRegister<FormValues>
 }
 
-export function RadioButton({ id, label, name }: RadioButtonProps) {
-  const [isChecked, setIsChecked] = useState<boolean | undefined>();
-
+export function RadioButton({ id, label, name, required, register }: RadioButtonProps) {
   return (
     <div className={styles.radioButtonContainer}>
-      <input checked={isChecked} id={id} className={`${styles.input}`} type="radio" name={name} />
-      <label onClick={e => {
-        setIsChecked(e);
-      }} htmlFor={id} className={styles.label}>{label}</label>
+      <input
+        id={id}
+        value={label}
+        className={`${styles.input}`}
+        type="radio"
+        required={required}
+        {...register(name)}
+      />
+      <label
+        htmlFor={id} className={styles.label}>{label}</label>
     </div>
   )
 }

@@ -1,9 +1,10 @@
 .container {
   max-width: 1168px;
+  width: 100%;
   margin: 0 auto;
   height: 1500px;
 
-  @media(min-width: 390px) {
+  @media(max-width: 762px) {
     justify-content: center;
     height: 1350px;
   }
@@ -29,7 +30,11 @@
       display: flex;
       justify-content: space-between;
 
-      @media(min-width: 390px) {
+      @media(max-width: 1192px) {
+        width: calc(100% - 80px);
+      }
+
+      @media(max-width: 762px) {
         justify-content: center;
         button+button {
           display: none;

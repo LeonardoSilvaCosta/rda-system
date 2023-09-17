@@ -13,27 +13,39 @@ import { useState } from 'react';
 import { AiOutlineCalendar } from "react-icons/ai";
 
 import styles from './styles.module.scss';
+import { Controller, Control, Path } from "react-hook-form";
+import { FormValues } from "@/types/types";
 
 interface MyDatePickerProps {
-  title: string;
+  title: string,
+  name: Path<FormValues>,
+  hint?: string,
+  icon?: string,
+  required: boolean,
+  control: Control<FormValues>,
 }
 
-
-export function MyDatePicker({ title }: MyDatePickerProps) {
+export function MyDatePicker({ title, name, hint, icon, control, required }: MyDatePickerProps) {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   return (
-    <div className={styles.inputContainer}>
-      <label>{title}</label>
-      <DatePicker
-        className={styles.input}
-        selected={selectedDate}
-        dateFormat="dd/MM/yyyy"
-        placeholderText="15/09/2023"
-        locale="br"
-        onChange={date => setSelectedDate(date)}
-      />
-      <AiOutlineCalendar className={styles.icon} />
-    </div>
+    <Controller
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <div className={styles.inputContainer}>
+          <label>{title}</label>
+          <DatePicker
+            className={styles.input}
+            selected={field.value as Date}
+            dateFormat="dd/MM/yyyy"
+            placeholderText="15/09/2023"
+            locale="br"
+            onChange={(date) => field.onChange(date)}
+          />
+          <AiOutlineCalendar className={styles.icon} />
+        </div>
+      )}
+    />
   )
 }

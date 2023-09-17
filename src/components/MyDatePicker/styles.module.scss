@@ -1,4 +1,5 @@
 .inputContainer {
+  width: 100%;
   display: flex;
   flex-direction: column;
   margin-bottom: -1.75rem;
@@ -6,7 +7,7 @@
 
   margin: 0 auto;
 
-  @media(min-width: 390px) {
+  @media(max-width: 1192px) {
     width: calc(100% - 40px);
   }
 
@@ -18,6 +19,8 @@
     width: 100%;
     height: 3.5rem;
 
+    position: relative;
+
     border: none;
     border-radius: 8px;
 
@@ -28,12 +31,6 @@
   .icon {
     position: relative;
     top: -3rem;
-    left: 71rem;
-
-    @media(min-width: 390px) {
-      position: relative;
-      top: -3rem;
-      left: 30.5rem;
-    }
+    left: calc(100% - 32px);
   }
 }
