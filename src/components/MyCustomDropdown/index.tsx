@@ -6,7 +6,7 @@ import { BsChevronDown } from "react-icons/bs";
 
 interface MyCustomDropdonwProps {
   title: string,
-  text: string,
+  options: Option[];
 }
 
 type Option = {
@@ -14,14 +14,8 @@ type Option = {
   value: string;
 }
 
-export function MyCustomDropdown({ title, text }: MyCustomDropdonwProps) {
+export function MyCustomDropdown({ title, options }: MyCustomDropdonwProps) {
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
-
-  const [itemsList, setItemsList] = useState<Option[]>([
-    { name: "Charles", value: "VC Charles" },
-    { name: "Landerson", value: "VC Landerson" },
-    { name: "Mário", value: "VC Mário" }
-  ])
 
   const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(null);
 
@@ -33,14 +27,14 @@ export function MyCustomDropdown({ title, text }: MyCustomDropdonwProps) {
         onClick={() => { setIsDropDownVisible(!isDropDownVisible); }}
       >
         <div className={styles.selectButton}>
-          {selectedItemIndex !== null ? itemsList[selectedItemIndex].name : <span>Selecione uma opção</span>}
+          {selectedItemIndex !== null ? options[selectedItemIndex].name : <span>Selecione uma opção</span>}
           <BsChevronDown className={`${styles.chevronDown} ${isDropDownVisible ? styles.visible : '' }`} />
         </div>
         {
           isDropDownVisible ? (
             <ul className={styles.options}>
               {
-                itemsList.map((item, index) => (
+                options.map((item, index) => (
                   <>
                     <li
                       key={item.name}

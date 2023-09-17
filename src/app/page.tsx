@@ -11,6 +11,7 @@ import { RadioGroup } from "@/components/RadioGroup";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { FormValues } from "@/types/types";
 import { MyCustomDropdown } from "@/components/MyCustomDropdown";
+import { list1, list2, list3, list4 } from "@/data";
 
 export default function Home() {
   const {
@@ -43,19 +44,19 @@ export default function Home() {
           />
           <MyCustomDropdown
             title="Recepcionista"
-            text="Recepcionista"
+            options={list1}
           />
           <MyCustomDropdown
-            title="oficial"
-            text="Oficial"
+            title="Oficial"
+            options={list2}
           />
           <MyCustomDropdown
-            title="acesso"
-            text="Acesso ao atendimento"
+            title="Acesso"
+            options={list3}
           />
           <MyCustomDropdown
             title="local"
-            text="Local do atendimento"
+            options={list4}
           />
           <RadioGroup
             title="Modalidade de atendimento"
