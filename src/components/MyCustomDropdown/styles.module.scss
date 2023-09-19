@@ -34,6 +34,10 @@
       .chevronDown.visible {
         transform: rotate(180deg);
       }
+
+      &.visible {
+        outline: 0.5px solid var(--blue-500);
+      }
     }
 
     .options {
@@ -43,6 +47,8 @@
       border-radius: 8px;
       background-color: var(--white);
       box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+      border: 0.5px solid var(--blue-500);
+
 
       &.visible .options {
         display: none;

@@ -26,6 +26,10 @@
 
     padding: 0 12px;
     background: var(--white);
+
+    &:focus {
+      outline: 0.5px solid var(--blue-500);
+    }
   }
 
   .icon {
