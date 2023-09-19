@@ -47,23 +47,27 @@ export default function Home() {
           />
           <MyCustomDropdown
             title="Recepcionista"
+            fieldName="recepcionista"
             options={list1}
-            register={register}
+            control={control}
           />
           <MyCustomDropdown
             title="Oficial"
+            fieldName="oficial"
             options={list2}
-            register={register}
+            control={control}
           />
           <MyCustomDropdown
             title="Acesso"
+            fieldName="acesso"
             options={list3}
-            register={register}
+            control={control}
           />
           <MyCustomDropdown
-            title="local"
+            title="Local"
+            fieldName="local"
             options={list4}
-            register={register}
+            control={control}
           />
           <RadioGroup
             title="Modalidade de atendimento"
