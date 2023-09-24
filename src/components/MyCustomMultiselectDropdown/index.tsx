@@ -4,6 +4,8 @@ import styles from './styles.module.scss';
 import { BsChevronDown, BsCheckLg } from "react-icons/bs";
 import { Control, Controller, FieldPath } from 'react-hook-form';
 import { FormValues } from '@/types/types';
+import { SearchBar } from '../SearchBar';
+import { list2 } from '@/data';
 
 
 interface MyCustomMultiselectDropdownProps {
@@ -21,6 +23,14 @@ export function MyCustomMultiSelectDropdown({ title, fieldName, options, control
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [search, setSearch] = useState("");
+
+  const lowerSearch = search.toLocaleLowerCase();
+
+  const filteredList = list2.filter((item) =>
+    item.value
+      .toLocaleLowerCase()
+      .includes(lowerSearch));
 
   const closeDropdown = () => {
     setIsDropDownVisible(false);
@@ -33,6 +43,16 @@ export function MyCustomMultiSelectDropdown({ title, fieldName, options, control
       setSelectedOptions([...selectedOptions, value]);
     }
   };
+
+  const selectButtonLabel = () => {
+    if (selectedOptions.length == 1) {
+      return <span>{`${selectedOptions.length} item selecionado`}</span>
+    } else if (selectedOptions.length > 1) {
+      return <span>{`${selectedOptions.length} itens selecionados`}</span>
+    } else {
+      return <span>Selecione uma opção</span>
+    }
+  }
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -59,12 +79,11 @@ export function MyCustomMultiSelectDropdown({ title, fieldName, options, control
         ref={dropdownRef}
         className={classnames(styles.selectMenu, { [styles.visible]: isDropDownVisible })}
       >
-        <div onClick={() => setIsDropDownVisible(!isDropDownVisible)} className={classnames(styles.selectButton, { [styles.visible]: isDropDownVisible })}>
-          {selectedOptions.length > 0 ? (
-            <span>{`${selectedOptions.length} itens selecionados`}</span>
-          ) : (
-            <span>Selecione uma opção</span>
-          )}
+        <div
+          className={classnames(styles.selectButton, { [styles.visible]: isDropDownVisible })}
+          onClick={() => setIsDropDownVisible(!isDropDownVisible)}
+        >
+          {selectButtonLabel()}
           <i
             className={classnames(styles.chevronDown, { [styles.visible]: isDropDownVisible })}
           >
@@ -90,7 +109,8 @@ export function MyCustomMultiSelectDropdown({ title, fieldName, options, control
               </ul>
             )}
             <ul className={styles.options}>
-              {options.map((item) => (
+              <SearchBar list={list2} search={search} setSearch={setSearch} />
+              {filteredList.map((item) => (
                 <Controller
                   key={item.value}
                   control={control}
@@ -102,7 +122,6 @@ export function MyCustomMultiSelectDropdown({ title, fieldName, options, control
                           checked: selectedOptions.includes(item.value),
                         })}
                         onClick={() => {
-                          // setIsDropDownVisible(false);
                           toggleOption(item.value)
                           field.onChange(item.value);
                         }}

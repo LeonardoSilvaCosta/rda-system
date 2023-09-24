@@ -13,6 +13,7 @@ import { list1, list2 } from "@/data";
 import { BsChevronDown } from "react-icons/bs";
 import MultiselectDropdown from "@/components/MultiselectDropdown";
 import { useState } from "react";
+import { SearchBar } from "@/components/SearchBar";
 
 export default function Home() {
   const {
@@ -34,13 +35,12 @@ export default function Home() {
           {/* <RDAFirstForm register={register} control={control} watch={watch} />
           <RDASecondForm register={register} control={control} watch={watch}/>
           <RDAThirdForm register={register} control={control} watch={watch}/> */}
-            <h2>Novo multiselect dropdown</h2>
+          <h2>Novo multiselect dropdown</h2>
           <MyCustomMultiSelectDropdown
             title="Oficial"
             fieldName="oficial"
             options={list2}
             control={control} />
-            {/* <MultiselectDropdown /> */}
         </form>
       </div>
     </>
