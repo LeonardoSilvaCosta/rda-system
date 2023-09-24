@@ -18,7 +18,7 @@
     height: 100%;
     width: 100%;
 
-    display: flex;
+    display: flex; 
     align-items: center;
 
     position: relative;
@@ -42,8 +42,8 @@
     display: none;
 
     &:checked + label:before {
-      height: 1rem;
-      width: 1rem;
+      height: 0.8rem;
+      width: 0.8rem;
 
       border: 0.5rem solid var(--blue-50);
       margin-right: 12px;

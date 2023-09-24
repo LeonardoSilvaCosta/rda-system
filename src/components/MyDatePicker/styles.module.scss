@@ -36,5 +36,9 @@
     position: relative;
     top: -3rem;
     left: calc(100% - 32px);
+
+    &.hide {
+      top: -3.75rem;
+    }
   }
 }

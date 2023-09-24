@@ -17,7 +17,7 @@ type Option = {
 }
 
 export function MyCustomDropdown({ title, fieldName, options, control }: MyCustomDropdownProps) {
-  const [isDropDownVisible, setIsDropDownVisible] = useState(false);
+  const [isDropDownVisible, setIsDropDownVisible] = useState(true);
   const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 

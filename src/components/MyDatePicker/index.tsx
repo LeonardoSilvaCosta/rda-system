@@ -1,6 +1,7 @@
 "use client"
 import DatePicker from "react-datepicker";
 import { registerLocale } from "react-datepicker";
+import classnames from 'classnames';
 
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -26,7 +27,7 @@ interface MyDatePickerProps {
 }
 
 export function MyDatePicker({ title, name, hint, icon, control, required }: MyDatePickerProps) {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [isDatapickerVisible, setIsDatapickerVisible] = useState(false);
 
   return (
     <Controller
@@ -41,9 +42,11 @@ export function MyDatePicker({ title, name, hint, icon, control, required }: MyD
             dateFormat="dd/MM/yyyy"
             placeholderText="15/09/2023"
             locale="br"
+            onBlur={() => setIsDatapickerVisible(false)}
+            onFocus={() => setIsDatapickerVisible(true)}
             onChange={(date) => field.onChange(date)}
           />
-          <AiOutlineCalendar className={styles.icon} />
+          <AiOutlineCalendar className={classnames(styles.icon, { [styles.hide]: isDatapickerVisible })} />
         </div>
       )}
     />

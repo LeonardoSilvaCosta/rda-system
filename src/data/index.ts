@@ -20,3 +20,15 @@ export const list4 = [
   { value: "CPC I" },
   { value: "CPRM" }
 ]
+
+export const list5 = [
+  { value: "Belém" },
+  { value: "Ananindeua" },
+  { value: "Abaetetuba" }
+]
+
+export const list6 = [
+  { value: "Solteiro(a)" },
+  { value: "Casado(a)" },
+  { value: "Viúvo(a)" }
+]
