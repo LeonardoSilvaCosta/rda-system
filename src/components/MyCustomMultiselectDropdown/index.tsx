@@ -5,7 +5,7 @@ import { BsChevronDown, BsCheckLg } from "react-icons/bs";
 import { Control, Controller, FieldPath } from 'react-hook-form';
 import { FormValues } from '@/types/types';
 import { SearchBar } from '../SearchBar';
-import { list2 } from '@/data';
+import { listOficiais } from '@/data';
 
 
 interface MyCustomMultiselectDropdownProps {
@@ -27,7 +27,7 @@ export function MyCustomMultiSelectDropdown({ title, fieldName, options, control
 
   const lowerSearch = search.toLocaleLowerCase();
 
-  const filteredList = list2.filter((item) =>
+  const filteredList = options.filter((item) =>
     item.value
       .toLocaleLowerCase()
       .includes(lowerSearch));
@@ -109,7 +109,7 @@ export function MyCustomMultiSelectDropdown({ title, fieldName, options, control
               </ul>
             )}
             <ul className={styles.options}>
-              <SearchBar list={list2} search={search} setSearch={setSearch} />
+              <SearchBar list={options} search={search} setSearch={setSearch} />
               {filteredList.map((item) => (
                 <Controller
                   key={item.value}

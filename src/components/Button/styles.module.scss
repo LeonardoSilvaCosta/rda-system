@@ -7,4 +7,8 @@
   
   background: var(--blue-400);
   color: var(--blue-50);
+
+  &:disabled {
+    background-color: rgba(166, 166, 166, 0.7);
+  }
 }

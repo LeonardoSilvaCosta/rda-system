@@ -1,13 +1,13 @@
-import { Control, UseFormRegister, UseFormWatch } from "react-hook-form";
 import { Button } from "../Button";
 import { Input } from "../Input";
 import { MyCustomDropdown } from "../MyCustomDropdown";
 import { MyDatePicker } from "../MyDatePicker";
 import { RadioGroup } from "../RadioGroup";
 import { FormValues } from "@/types/types";
-import { list1, list2, list3, list4 } from "@/data";
+import { listAcessos, listLocais, listOficiais, listRecepcionistas } from "@/data";
 
 import styles from './styles.module.scss';
+import { Control, UseFormRegister, UseFormWatch, useForm } from "react-hook-form";
 
 interface FirstFormProps {
   watch: UseFormWatch<FormValues>,
@@ -15,7 +15,7 @@ interface FirstFormProps {
   control: Control<FormValues>,
 }
 
-export function RDAFirstForm({ register, control, watch }: FirstFormProps) {
+export function RDAFirstForm({ watch, register, control }: FirstFormProps) {
   const watchTemProtocolo = watch("temProtocolo");
 
   return (
@@ -38,25 +38,25 @@ export function RDAFirstForm({ register, control, watch }: FirstFormProps) {
       <MyCustomDropdown
         title="Recepcionista"
         fieldName="recepcionista"
-        options={list1}
+        options={listRecepcionistas}
         control={control}
       />
       <MyCustomDropdown
         title="Oficial"
         fieldName="oficial"
-        options={list2}
+        options={listOficiais}
         control={control}
       />
       <MyCustomDropdown
         title="Acesso"
         fieldName="acesso"
-        options={list3}
+        options={listAcessos}
         control={control}
       />
       <MyCustomDropdown
         title="Local"
         fieldName="local"
-        options={list4}
+        options={listLocais}
         control={control}
       />
       <RadioGroup
@@ -88,8 +88,12 @@ export function RDAFirstForm({ register, control, watch }: FirstFormProps) {
         ) : <></>
       }
       <div className={styles.buttonsBox}>
-        <Button type="submit" name="Próxima" />
-        <Button type="button" name="Cancelar" />
+        <Button
+          type="submit"
+        />
+        <Button
+          type="button"
+        />
       </div>
     </>)
 }

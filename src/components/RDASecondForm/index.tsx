@@ -1,27 +1,28 @@
-import { Control, UseFormRegister, UseFormWatch } from "react-hook-form";
 import { Button } from "../Button";
 import { Input } from "../Input";
 import { MyCustomDropdown } from "../MyCustomDropdown";
 import { MyDatePicker } from "../MyDatePicker";
 import { RadioGroup } from "../RadioGroup";
 import { FormValues } from "@/types/types";
-import { list5, list6 } from "@/data";
+import { listEstadosCivis, listMunicipios } from "@/data";
 
 import styles from './styles.module.scss';
+import { Control, UseFormRegister, useForm } from "react-hook-form";
 
 interface SecondFormProps {
-  watch: UseFormWatch<FormValues>,
   register: UseFormRegister<FormValues>,
   control: Control<FormValues>,
 }
 
-export function RDASecondForm({ register, control, watch }: SecondFormProps) {
+export function RDASecondForm({ register, control }: SecondFormProps) {
+  // const { register, control } = useForm<FormValues>()
+
   return (
     <>
       <h2><span>Dados do militar</span></h2>
       <Input
         title="Identificação"
-        name="identificacao"
+        name="identificacaoPM"
         type="text"
         hint="1º TEN QCOPM RG 40897 LEONARDO DA SILVA COSTA"
         required={true}
@@ -52,13 +53,13 @@ export function RDASecondForm({ register, control, watch }: SecondFormProps) {
       <MyCustomDropdown
         title="Cidade em que reside"
         fieldName="cidadeEmQueResidePM"
-        options={list5}
+        options={listMunicipios}
         control={control}
       />
       <MyCustomDropdown
         title="Estado civil"
         fieldName="estadoCivilPM"
-        options={list6}
+        options={listEstadosCivis}
         control={control}
       />
       <RadioGroup
@@ -70,8 +71,12 @@ export function RDASecondForm({ register, control, watch }: SecondFormProps) {
         register={register}
       />
       <div className={styles.buttonsBox}>
-        <Button type="submit" name="Próxima" />
-        <Button type="button" name="Cancelar" />
+        <Button
+          type="submit"
+        />
+        <Button
+          type="button"
+        />
       </div>
     </>)
 }

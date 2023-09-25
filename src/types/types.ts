@@ -20,4 +20,16 @@ export type FormValues = {
   dataDeNascimentoDependente: string;
   cidadeEmQueResideDependente: string;
   estadoCivilDependente: string;
+  tipoDeServico: string;
+  tipoDeAvaliacaoPsicologica: string;
+  tipoDeAvaliacaoSocial: string;
+  demandaGeral: string;
+  tiposDeDemandaEspecifica: string[];
+  procedimento: string;
+  documentosProduzidos: string[];
+  deslocamentos: string[];
+  houveAfastamento: boolean;
+
+
+
 }

@@ -14,15 +14,15 @@ interface InputProps {
   required: boolean,
 }
 
-export function Input({ title, type, hint, name, register }: InputProps) {
+export function Input({ title, type, hint, name, register, required }: InputProps) {
   return (
     <div className={styles.inputContainer}>
       <label htmlFor={name}>{title}</label>
-      <input 
-        type={type} 
+      <input
+        type={type}
         placeholder={hint}
-        {...register(name)}
-        />
+        {...register(name, { required })}
+      />
     </div>
   )
 }
