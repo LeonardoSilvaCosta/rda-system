@@ -5,19 +5,14 @@ import { listAvaliacoeSociais, listAvaliacoesPsi, listDemandasEspecificas, listD
 import { MyCustomMultiSelectDropdown } from "../MyCustomMultiselectDropdown";
 import { RadioGroup } from "../RadioGroup";
 import { FormValues } from "@/types/types";
-import { Control, UseFormRegister, useForm } from 'react-hook-form';
+import { Control, UseFormRegister } from 'react-hook-form';
 
 interface FourthFormProps {
-  //   watch: UseFormWatch<FormValues>,
   register: UseFormRegister<FormValues>,
   control: Control<FormValues>,
-  //   currentStep: number,
-  //   changeStep: (index: number, event?: any) => void
 }
 
 export function RDAFourthForm({ register, control }: FourthFormProps) {
-  // const { register, watch, control } = useForm<FormValues>()
-
   return (
     <>
       <h2><span>Dados do atendimento</span></h2>

@@ -10,3 +10,5 @@
 ## libs
 - [x] react-icons
 - [x] react-datepicker - https://www.npmjs.com/package//react-datepicker - melhor tutorial https://www.youtube.com/watch?v=iYZryimRK9w&t=33s
+- [x] react-hook-form
+- [x] yup

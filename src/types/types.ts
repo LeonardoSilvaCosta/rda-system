@@ -11,13 +11,13 @@ export type FormValues = {
   identificacaoPM: string;
   opm: string;
   sexoPM: string;
-  dataDeNascimentoPM: string;
+  dataDeNascimentoPM: Date;
   cidadeEmQueResidePM: string;
   estadoCivilPM: string;
-  eDependente: string;
+  eDependente: boolean;
   identificacaoDependente: string;
   sexoDependente: string;
-  dataDeNascimentoDependente: string;
+  dataDeNascimentoDependente: Date;
   cidadeEmQueResideDependente: string;
   estadoCivilDependente: string;
   tipoDeServico: string;
@@ -29,7 +29,4 @@ export type FormValues = {
   documentosProduzidos: string[];
   deslocamentos: string[];
   houveAfastamento: boolean;
-
-
-
 }

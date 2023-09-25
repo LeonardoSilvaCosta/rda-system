@@ -7,7 +7,7 @@ import { FormValues } from "@/types/types";
 import { listAcessos, listLocais, listOficiais, listRecepcionistas } from "@/data";
 
 import styles from './styles.module.scss';
-import { Control, UseFormRegister, UseFormWatch, useForm } from "react-hook-form";
+import { Control, FieldErrors, UseFormRegister, UseFormWatch } from "react-hook-form";
 
 interface FirstFormProps {
   watch: UseFormWatch<FormValues>,

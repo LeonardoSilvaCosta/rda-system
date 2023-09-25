@@ -7,7 +7,7 @@ import { FormValues } from "@/types/types";
 import { listEstadosCivis, listMunicipios } from "@/data";
 
 import styles from './styles.module.scss';
-import { Control, UseFormRegister, useForm } from "react-hook-form";
+import { Control, UseFormRegister } from "react-hook-form";
 
 interface ThirdFormProps {
   register: UseFormRegister<FormValues>,

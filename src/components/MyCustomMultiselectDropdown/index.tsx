@@ -5,8 +5,6 @@ import { BsChevronDown, BsCheckLg } from "react-icons/bs";
 import { Control, Controller, FieldPath } from 'react-hook-form';
 import { FormValues } from '@/types/types';
 import { SearchBar } from '../SearchBar';
-import { listOficiais } from '@/data';
-
 
 interface MyCustomMultiselectDropdownProps {
   title: string;
@@ -54,6 +52,19 @@ export function MyCustomMultiSelectDropdown({ title, fieldName, options, control
     }
   }
 
+  const insertItens = (value: string) => {
+    const updatedSelectedOptions = selectedOptions.includes(value)
+      ? selectedOptions.filter((option) => option !== value)
+      : [...selectedOptions, value];
+
+    return updatedSelectedOptions;
+  }
+
+  const deleteItens = (value: string) => {
+    const updatedSelectedOptions = selectedOptions.filter((item) => item !== value);
+    return updatedSelectedOptions;
+  }
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -95,16 +106,26 @@ export function MyCustomMultiSelectDropdown({ title, fieldName, options, control
             {selectedOptions.length > 0 && (
               <ul className={styles.selectedItensBox}>
                 {selectedOptions.map((item) => (
-                  <li
+                  <Controller
                     key={item}
-                    className={styles.selectedItem}
-                  >
-                    {item}
-                    <span
-                      className={styles.removeItemButton}
-                      onClick={() => toggleOption(item)}
-                    >x</span>
-                  </li>
+                    control={control}
+                    name={fieldName}
+                    render={({ field }) => (
+                      <li
+                        key={item}
+                        className={styles.selectedItem}
+                        onClick={() => {
+                          field.onChange(deleteItens(item))
+                        }}
+                      >
+                        {item}
+                        <span
+                          className={styles.removeItemButton}
+                          onClick={() => toggleOption(item)}
+                        >x</span>
+                      </li>
+                    )}
+                  />
                 ))}
               </ul>
             )}
@@ -122,8 +143,8 @@ export function MyCustomMultiSelectDropdown({ title, fieldName, options, control
                           checked: selectedOptions.includes(item.value),
                         })}
                         onClick={() => {
-                          toggleOption(item.value)
-                          field.onChange(item.value);
+                          toggleOption(item.value);
+                          field.onChange(insertItens(item.value)); // Atualize o campo no estado
                         }}
                       >
                         <span className={styles.checkbox}>
