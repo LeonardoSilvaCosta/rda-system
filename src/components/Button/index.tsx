@@ -7,11 +7,11 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 
 export function Button({ type }: ButtonProps) {
-  const { changeStep, currentStep, isFirstStep, isLastStep } = useGlobalContext();
+  const { goToPreviousStep, isFirstStep, isLastStep, currentStep } = useGlobalContext();
 
   const handleClick = () => {
     if (type === "button") {
-      changeStep(currentStep - 1)
+      goToPreviousStep(currentStep);
     }
   }
 

@@ -13,11 +13,11 @@ import { FieldErrors, SubmitHandler, UseFormGetValues, UseFormHandleSubmit, useF
 import * as yup from "yup"
 
 interface GlobalContextProps {
-  changeStep: (index: number) => void,
   currentComponent: JSX.Element,
   currentStep: number,
   errors: FieldErrors<FormValues>,
   getValues: UseFormGetValues<any>,
+  goToPreviousStep: (index: number) => void,
   handleSubmit: UseFormHandleSubmit<any, undefined>,
   isFirstStep: boolean,
   isLastStep: boolean,
@@ -47,13 +47,11 @@ export const GlobalContextProvider = ({
   })
   const [currentStep, setCurrentStep] = useState(0);
 
-  const scrollingTop = (currentStep: number, index: number) => {
-    if(currentStep < index) {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
-    }
+  const scrollingTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   }
 
   const formComponents = [
@@ -63,12 +61,33 @@ export const GlobalContextProvider = ({
     <RDAFourthForm register={register} control={control} />
   ]
 
-  const changeStep = (index: number) => {
-    if (index < 0 || index >= formComponents.length) return;
+  const goToNextStep = () => {
+    if (currentStep >= formComponents.length) return;
+    if (currentStep === 1 && getValues("eDependente") === "Não") {
+      setCurrentStep(currentStep + 2);
+      selectStepValidation(currentStep + 2);
+    } else {
+      setCurrentStep(currentStep + 1);
+      selectStepValidation(currentStep + 1);
+    }
 
-    scrollingTop(currentStep, index)
-    setCurrentStep(index);
+    scrollingTop();
+  }
 
+  const goToPreviousStep = () => {
+    if (currentStep < 0) return;
+    if (currentStep === 3 && getValues("eDependente") === "Não") {
+      setCurrentStep(currentStep - 2);
+      selectStepValidation(currentStep - 2);
+    } else {
+      setCurrentStep(currentStep - 1);
+      selectStepValidation(currentStep - 1);
+    }
+  }
+
+  console.log(errors)
+
+  const selectStepValidation = (index: number) => {
     switch (index) {
       case 0:
         setValidationSchema(stepOneValidation);
@@ -88,17 +107,19 @@ export const GlobalContextProvider = ({
   }
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    changeStep(currentStep + 1)
+    console.log(currentStep)
+    goToNextStep()
+    console.log(data)
   }
 
   return (
     <GlobalContext.Provider
       value={{
-        changeStep,
         currentComponent: formComponents[currentStep],
         currentStep,
         errors,
         getValues,
+        goToPreviousStep,
         handleSubmit,
         isFirstStep: currentStep === 0 ? true : false,
         isLastStep: currentStep + 1 === formComponents.length ? true : false,
