@@ -2,7 +2,7 @@ import { UseFormRegister, Path } from "react-hook-form";
 import { RadioButton } from '../RadioButton';
 import styles from './styles.module.scss';
 import { FormValues } from '@/types/types';
-import { useGlobalContext } from "@/context/store";
+import { useGlobalContext } from "@/context/form";
 
 interface RadioGroupProps {
   title: string;

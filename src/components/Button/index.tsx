@@ -1,5 +1,5 @@
 import styles from './styles.module.scss';
-import { useGlobalContext } from '@/context/store';
+import { useGlobalContext } from '@/context/form';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: string;

@@ -10,13 +10,11 @@ import styles from './styles.module.scss';
 import { Control, UseFormRegister } from "react-hook-form";
 
 interface SecondFormProps {
-  register: UseFormRegister<FormValues>,
   control: Control<FormValues>,
+  register: UseFormRegister<FormValues>,
 }
 
-export function RDASecondForm({ register, control }: SecondFormProps) {
-  // const { register, control } = useForm<FormValues>()
-
+export function RDASecondForm({ control, register,  }: SecondFormProps) {
   return (
     <>
       <h2><span>Dados do militar</span></h2>

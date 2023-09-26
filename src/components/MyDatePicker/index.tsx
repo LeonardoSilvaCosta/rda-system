@@ -16,7 +16,7 @@ import { AiOutlineCalendar } from "react-icons/ai";
 import styles from './styles.module.scss';
 import { Controller, Control, Path } from "react-hook-form";
 import { FormValues } from "@/types/types";
-import { useGlobalContext } from "@/context/store";
+import { useGlobalContext } from "@/context/form";
 
 interface MyDatePickerProps {
   title: string,

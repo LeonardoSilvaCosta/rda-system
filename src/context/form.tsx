@@ -7,8 +7,8 @@ import { RDAThirdForm } from '@/components/RDAThirdForm';
 import { FormValues } from '@/types/types';
 import { stepFourValidation, stepOneValidation, stepThreeValidation, stepTwoValidation } from '@/validation';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { createContext, useContext, useState } from 'react';
-import { FieldErrors, UseFormHandleSubmit, useForm } from 'react-hook-form';
+import { createContext, useContext, useRef, useState } from 'react';
+import { FieldErrors, SubmitHandler, UseFormGetValues, UseFormHandleSubmit, useForm } from 'react-hook-form';
 
 import * as yup from "yup"
 
@@ -17,9 +17,11 @@ interface GlobalContextProps {
   currentComponent: JSX.Element,
   currentStep: number,
   errors: FieldErrors<FormValues>,
-  handleSubmit: UseFormHandleSubmit<FormValues, undefined>
+  getValues: UseFormGetValues<any>,
+  handleSubmit: UseFormHandleSubmit<any, undefined>,
   isFirstStep: boolean,
   isLastStep: boolean,
+  onSubmit: SubmitHandler<FormValues>,
   steps: JSX.Element[],
 }
 
@@ -31,7 +33,6 @@ export const GlobalContextProvider = ({
   children: React.ReactNode;
 }) => {
 
-
   const [validationSchema, setValidationSchema] = useState<yup.ObjectSchema<{}>>(stepOneValidation);
 
   const {
@@ -39,11 +40,21 @@ export const GlobalContextProvider = ({
     register,
     watch,
     control,
+    getValues,
     formState: { errors }
   } = useForm<FormValues | any>({
     resolver: yupResolver(validationSchema)
   })
   const [currentStep, setCurrentStep] = useState(0);
+
+  const scrollingTop = (currentStep: number, index: number) => {
+    if(currentStep < index) {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }
+  }
 
   const formComponents = [
     <RDAFirstForm register={register} control={control} watch={watch} />,
@@ -55,6 +66,7 @@ export const GlobalContextProvider = ({
   const changeStep = (index: number) => {
     if (index < 0 || index >= formComponents.length) return;
 
+    scrollingTop(currentStep, index)
     setCurrentStep(index);
 
     switch (index) {
@@ -75,6 +87,10 @@ export const GlobalContextProvider = ({
     }
   }
 
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
+    changeStep(currentStep + 1)
+  }
+
   return (
     <GlobalContext.Provider
       value={{
@@ -82,9 +98,11 @@ export const GlobalContextProvider = ({
         currentComponent: formComponents[currentStep],
         currentStep,
         errors,
+        getValues,
         handleSubmit,
         isFirstStep: currentStep === 0 ? true : false,
         isLastStep: currentStep + 1 === formComponents.length ? true : false,
+        onSubmit,
         steps: formComponents
       }}>
       {children}

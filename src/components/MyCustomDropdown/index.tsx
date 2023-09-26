@@ -4,7 +4,7 @@ import styles from './styles.module.scss';
 import { BsChevronDown } from "react-icons/bs";
 import { Control, Controller, FieldPath } from 'react-hook-form';
 import { FormValues } from '@/types/types';
-import { useGlobalContext } from '@/context/store';
+import { useGlobalContext } from '@/context/form';
 
 interface MyCustomDropdownProps {
   title: string;
@@ -22,7 +22,7 @@ export function MyCustomDropdown({ title, fieldName, options, control }: MyCusto
   const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const { errors } = useGlobalContext();
+  const { errors, getValues } = useGlobalContext();
   const errorKey = fieldName as keyof FormValues;
 
   const closeDropdown = () => {
@@ -47,6 +47,16 @@ export function MyCustomDropdown({ title, fieldName, options, control }: MyCusto
     };
   }, [isDropDownVisible]);
 
+  const buttonDefaultValue = () => {
+    if (selectedItemIndex !== null && !getValues(fieldName)) {
+      return options[selectedItemIndex].value
+    } else if (getValues(fieldName)) {
+      return getValues(fieldName)
+    } else {
+      return <span>Selecione uma opção</span>
+    }
+  }
+
   return (
     <div className={styles.dropdownContainer}>
       <label htmlFor={title}>{title}</label>
@@ -56,7 +66,7 @@ export function MyCustomDropdown({ title, fieldName, options, control }: MyCusto
         onClick={() => setIsDropDownVisible(!isDropDownVisible)}
       >
         <div className={classnames(styles.selectButton, { [styles.visible]: isDropDownVisible })}>
-          {selectedItemIndex !== null ? options[selectedItemIndex].value : <span>Selecione uma opção</span>}
+          {buttonDefaultValue()}
           <BsChevronDown className={classnames(styles.chevronDown, { [styles.visible]: isDropDownVisible })} />
         </div>
         {errors[errorKey] && (

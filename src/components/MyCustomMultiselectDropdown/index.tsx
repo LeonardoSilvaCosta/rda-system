@@ -5,7 +5,7 @@ import { BsChevronDown, BsCheckLg } from "react-icons/bs";
 import { Control, Controller, FieldPath } from 'react-hook-form';
 import { FormValues } from '@/types/types';
 import { SearchBar } from '../SearchBar';
-import { useGlobalContext } from '@/context/store';
+import { useGlobalContext } from '@/context/form';
 
 interface MyCustomMultiselectDropdownProps {
   title: string;
@@ -24,7 +24,7 @@ export function MyCustomMultiSelectDropdown({ title, fieldName, options, control
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [search, setSearch] = useState("");
 
-  const { errors } = useGlobalContext();
+  const { errors, getValues } = useGlobalContext();
   const errorKey = fieldName as keyof FormValues;
 
   const lowerSearch = search.toLocaleLowerCase();
@@ -68,6 +68,12 @@ export function MyCustomMultiSelectDropdown({ title, fieldName, options, control
     const updatedSelectedOptions = selectedOptions.filter((item) => item !== value);
     return updatedSelectedOptions;
   }
+
+  useEffect(() => {
+    if(getValues(fieldName)) {
+      setSelectedOptions(getValues(fieldName))
+    }
+  }, [])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -151,7 +157,7 @@ export function MyCustomMultiSelectDropdown({ title, fieldName, options, control
                         })}
                         onClick={() => {
                           toggleOption(item.value);
-                          field.onChange(insertItens(item.value)); // Atualize o campo no estado
+                          field.onChange(insertItens(item.value));
                         }}
                       >
                         <span className={styles.checkbox}>

@@ -10,12 +10,12 @@ import styles from './styles.module.scss';
 import { Control, UseFormRegister, UseFormWatch } from "react-hook-form";
 
 interface FirstFormProps {
-  watch: UseFormWatch<FormValues>,
-  register: UseFormRegister<FormValues>,
   control: Control<FormValues>,
+  register: UseFormRegister<FormValues>,
+  watch: UseFormWatch<FormValues>,
 }
 
-export function RDAFirstForm({ watch, register, control }: FirstFormProps) {
+export function RDAFirstForm({ control, register, watch }: FirstFormProps) {
   const watchTemProtocolo = watch("temProtocolo");
 
   return (

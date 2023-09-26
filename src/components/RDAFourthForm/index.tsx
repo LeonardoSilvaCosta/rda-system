@@ -8,11 +8,11 @@ import { FormValues } from "@/types/types";
 import { Control, UseFormRegister } from 'react-hook-form';
 
 interface FourthFormProps {
-  register: UseFormRegister<FormValues>,
   control: Control<FormValues>,
+  register: UseFormRegister<FormValues>,
 }
 
-export function RDAFourthForm({ register, control }: FourthFormProps) {
+export function RDAFourthForm({ control, register }: FourthFormProps) {
   return (
     <>
       <h2><span>Dados do atendimento</span></h2>

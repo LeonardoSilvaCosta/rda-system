@@ -10,11 +10,11 @@ import styles from './styles.module.scss';
 import { Control, UseFormRegister } from "react-hook-form";
 
 interface ThirdFormProps {
-  register: UseFormRegister<FormValues>,
   control: Control<FormValues>,
+  register: UseFormRegister<FormValues>,
 }
 
-export function RDAThirdForm({ register, control }: ThirdFormProps) {
+export function RDAThirdForm({ control, register }: ThirdFormProps) {
 
   return (
     <>
