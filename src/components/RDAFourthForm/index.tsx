@@ -5,14 +5,16 @@ import { listAvaliacoeSociais, listAvaliacoesPsi, listDemandasEspecificas, listD
 import { MyCustomMultiSelectDropdown } from "../MyCustomMultiselectDropdown";
 import { RadioGroup } from "../RadioGroup";
 import { FormValues } from "@/types/types";
-import { Control, UseFormRegister } from 'react-hook-form';
+import { Control, UseFormRegister, UseFormWatch } from 'react-hook-form';
 
 interface FourthFormProps {
   control: Control<FormValues>,
   register: UseFormRegister<FormValues>,
+  watch: UseFormWatch<FormValues>,
 }
 
-export function RDAFourthForm({ control, register }: FourthFormProps) {
+export function RDAFourthForm({ control, register, watch }: FourthFormProps) {
+  const watchTipoDeServico = watch("tipoDeServico");
   return (
     <>
       <h2><span>Dados do atendimento</span></h2>
@@ -22,18 +24,26 @@ export function RDAFourthForm({ control, register }: FourthFormProps) {
         options={listServicos}
         control={control}
       />
-      <MyCustomDropdown
-        title="Tipo de avaliação psicológica"
-        fieldName="tipoDeAvaliacaoPsicologica"
-        options={listAvaliacoesPsi}
-        control={control}
-      />
-      <MyCustomDropdown
-        title="Tipo de avaliação social"
-        fieldName="tipoDeAvaliacaoSocial"
-        options={listAvaliacoeSociais}
-        control={control}
-      />
+      {
+        String(watchTipoDeServico) === "Avaliação psicológica" ? (
+          <MyCustomDropdown
+            title="Tipo de avaliação psicológica"
+            fieldName="tipoDeAvaliacaoPsicologica"
+            options={listAvaliacoesPsi}
+            control={control}
+          />
+        ) : <></>
+      }
+      {
+        String(watchTipoDeServico) === "Avaliação social" ? (
+          <MyCustomDropdown
+            title="Tipo de avaliação social"
+            fieldName="tipoDeAvaliacaoSocial"
+            options={listAvaliacoeSociais}
+            control={control}
+          />
+        ) : <></>
+      }
       <MyCustomDropdown
         title="Demanda geral"
         fieldName="demandaGeral"

@@ -43,7 +43,7 @@ export const GlobalContextProvider = ({
     getValues,
     formState: { errors }
   } = useForm<FormValues | any>({
-    resolver: yupResolver(validationSchema)
+    // resolver: yupResolver(validationSchema)
   })
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -58,7 +58,7 @@ export const GlobalContextProvider = ({
     <RDAFirstForm register={register} control={control} watch={watch} />,
     <RDASecondForm register={register} control={control} />,
     <RDAThirdForm register={register} control={control} />,
-    <RDAFourthForm register={register} control={control} />
+    <RDAFourthForm register={register} control={control} watch={watch} />
   ]
 
   const goToNextStep = () => {
