@@ -29,4 +29,10 @@
       outline: 0.5px solid var(--blue-500);
     }
   }
+  
+  .icon {
+    position: relative;
+    top: -2.875rem;
+    left: calc(100% - 40px);
+  }
 }

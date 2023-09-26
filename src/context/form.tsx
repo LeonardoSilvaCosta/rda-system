@@ -7,8 +7,9 @@ import { RDAThirdForm } from '@/components/RDAThirdForm';
 import { FormValues } from '@/types/types';
 import { stepFourValidation, stepOneValidation, stepThreeValidation, stepTwoValidation } from '@/validation';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { createContext, useContext, useRef, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { FieldErrors, SubmitHandler, UseFormGetValues, UseFormHandleSubmit, useForm } from 'react-hook-form';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 import * as yup from "yup"
 
@@ -33,6 +34,7 @@ export const GlobalContextProvider = ({
   children: React.ReactNode;
 }) => {
 
+  const supabase = createClientComponentClient();
   const [validationSchema, setValidationSchema] = useState<yup.ObjectSchema<{}>>(stepOneValidation);
 
   const {
@@ -41,9 +43,10 @@ export const GlobalContextProvider = ({
     watch,
     control,
     getValues,
+    reset,
     formState: { errors }
   } = useForm<FormValues | any>({
-    // resolver: yupResolver(validationSchema)
+    resolver: yupResolver(validationSchema)
   })
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -61,8 +64,11 @@ export const GlobalContextProvider = ({
     <RDAFourthForm register={register} control={control} watch={watch} />
   ]
 
+  const isFirstStep = currentStep === 0 ? true : false;
+  const isLastStep = currentStep + 1 === formComponents.length ? true : false;
+
   const goToNextStep = () => {
-    if (currentStep >= formComponents.length) return;
+    if (currentStep + 1 >= formComponents.length) return;
     if (currentStep === 1 && getValues("eDependente") === "Não") {
       setCurrentStep(currentStep + 2);
       selectStepValidation(currentStep + 2);
@@ -75,7 +81,7 @@ export const GlobalContextProvider = ({
   }
 
   const goToPreviousStep = () => {
-    if (currentStep < 0) return;
+    if (currentStep - 1 < 0) return;
     if (currentStep === 3 && getValues("eDependente") === "Não") {
       setCurrentStep(currentStep - 2);
       selectStepValidation(currentStep - 2);
@@ -84,8 +90,6 @@ export const GlobalContextProvider = ({
       selectStepValidation(currentStep - 1);
     }
   }
-
-  console.log(errors)
 
   const selectStepValidation = (index: number) => {
     switch (index) {
@@ -106,10 +110,21 @@ export const GlobalContextProvider = ({
     }
   }
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log(currentStep)
-    goToNextStep()
-    console.log(data)
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    goToNextStep();
+
+    if (isLastStep) {
+      try {
+        await supabase.from("rda").insert({ acesso: data.acesso });
+        alert("O CIAP agradece o seu RDA :)")
+
+        reset();
+        setCurrentStep(0);
+        scrollingTop();
+      } catch (error) {
+        alert("Houve algum problema no cadastro de seu formulário. Tente novamente.")
+      }
+    }
   }
 
   return (
@@ -121,8 +136,8 @@ export const GlobalContextProvider = ({
         getValues,
         goToPreviousStep,
         handleSubmit,
-        isFirstStep: currentStep === 0 ? true : false,
-        isLastStep: currentStep + 1 === formComponents.length ? true : false,
+        isFirstStep,
+        isLastStep,
         onSubmit,
         steps: formComponents
       }}>
