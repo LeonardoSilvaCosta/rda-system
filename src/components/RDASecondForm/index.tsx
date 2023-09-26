@@ -25,7 +25,6 @@ export function RDASecondForm({ register, control }: SecondFormProps) {
         name="identificacaoPM"
         type="text"
         hint="1º TEN QCOPM RG 40897 LEONARDO DA SILVA COSTA"
-        required={true}
         register={register}
       />
       <Input
@@ -33,7 +32,6 @@ export function RDASecondForm({ register, control }: SecondFormProps) {
         name="opm"
         type="text"
         hint="CIAP"
-        required={true}
         register={register}
       />
       <RadioGroup
@@ -41,13 +39,11 @@ export function RDASecondForm({ register, control }: SecondFormProps) {
         name="sexoPM"
         label1="Masculino"
         label2="Feminino"
-        required={true}
         register={register}
       />
       <MyDatePicker
         title="Data de nascimento"
         name="dataDeNascimentoPM"
-        required={true}
         control={control}
       />
       <MyCustomDropdown
@@ -67,7 +63,6 @@ export function RDASecondForm({ register, control }: SecondFormProps) {
         name="eDependente"
         label1="Sim"
         label2="Não"
-        required={true}
         register={register}
       />
       <div className={styles.buttonsBox}>

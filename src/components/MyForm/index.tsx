@@ -9,13 +9,13 @@ import styles from './styles.module.scss';
 export function MyForm() {
   const {
     handleSubmit,
+    changeStep,
+    currentStep
   } = useGlobalContext();
 
-
-  const { currentStep, currentComponent, changeStep } = useGlobalContext();
+  const { currentComponent } = useGlobalContext();
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log(data)
     changeStep(currentStep + 1)
   }
 

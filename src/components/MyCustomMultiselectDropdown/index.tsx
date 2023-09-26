@@ -5,6 +5,7 @@ import { BsChevronDown, BsCheckLg } from "react-icons/bs";
 import { Control, Controller, FieldPath } from 'react-hook-form';
 import { FormValues } from '@/types/types';
 import { SearchBar } from '../SearchBar';
+import { useGlobalContext } from '@/context/store';
 
 interface MyCustomMultiselectDropdownProps {
   title: string;
@@ -22,6 +23,9 @@ export function MyCustomMultiSelectDropdown({ title, fieldName, options, control
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [search, setSearch] = useState("");
+
+  const { errors } = useGlobalContext();
+  const errorKey = fieldName as keyof FormValues;
 
   const lowerSearch = search.toLocaleLowerCase();
 
@@ -101,6 +105,9 @@ export function MyCustomMultiSelectDropdown({ title, fieldName, options, control
             <BsChevronDown />
           </i>
         </div>
+        {errors[errorKey] && (
+          <span className={"error-message"}>{errors[errorKey]?.message}</span>
+        )}
         {isDropDownVisible && (
           <>
             {selectedOptions.length > 0 && (

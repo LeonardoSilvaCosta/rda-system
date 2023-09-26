@@ -16,18 +16,20 @@ import { AiOutlineCalendar } from "react-icons/ai";
 import styles from './styles.module.scss';
 import { Controller, Control, Path } from "react-hook-form";
 import { FormValues } from "@/types/types";
+import { useGlobalContext } from "@/context/store";
 
 interface MyDatePickerProps {
   title: string,
   name: Path<FormValues>,
   hint?: string,
   icon?: string,
-  required: boolean,
   control: Control<FormValues>,
 }
 
-export function MyDatePicker({ title, name, hint, icon, control, required }: MyDatePickerProps) {
+export function MyDatePicker({ title, name, hint, icon, control }: MyDatePickerProps) {
+  const { errors } = useGlobalContext();
   const [isDatapickerVisible, setIsDatapickerVisible] = useState(false);
+  const errorKey = name as keyof FormValues;
 
   return (
     <Controller
@@ -46,6 +48,9 @@ export function MyDatePicker({ title, name, hint, icon, control, required }: MyD
             onFocus={() => setIsDatapickerVisible(true)}
             onChange={(date) => field.onChange(date)}
           />
+          {errors[errorKey] && (
+            <span className={"error-message"}>{errors[errorKey]?.message}</span>
+          )}
           <AiOutlineCalendar className={classnames(styles.icon, { [styles.hide]: isDatapickerVisible })} />
         </div>
       )}

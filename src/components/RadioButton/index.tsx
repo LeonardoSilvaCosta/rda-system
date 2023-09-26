@@ -7,11 +7,10 @@ interface RadioButtonProps {
   id: string,
   label: string,
   name: Path<FormValues>,
-  required: boolean,
   register: UseFormRegister<FormValues>
 }
 
-export function RadioButton({ id, label, name, required, register }: RadioButtonProps) {
+export function RadioButton({ id, label, name, register }: RadioButtonProps) {
   return (
     <div className={styles.radioButtonContainer}>
       <input
@@ -19,7 +18,6 @@ export function RadioButton({ id, label, name, required, register }: RadioButton
         value={label}
         className={`${styles.input}`}
         type="radio"
-        required={required}
         {...register(name)}
       />
       <label

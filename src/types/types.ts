@@ -5,7 +5,7 @@ export type FormValues = {
   oficial: string;
   acesso: string;
   local: string;
-  temProtocolo: boolean;
+  temProtocolo: string;
   modalidade: string;
   protocolo: string;
   identificacaoPM: string;
@@ -14,10 +14,10 @@ export type FormValues = {
   dataDeNascimentoPM: Date;
   cidadeEmQueResidePM: string;
   estadoCivilPM: string;
-  eDependente: boolean;
+  eDependente: string;
   identificacaoDependente: string;
   sexoDependente: string;
-  dataDeNascimentoDependente: Date;
+  dataDeNascimentoDependente: Date | null;
   cidadeEmQueResideDependente: string;
   estadoCivilDependente: string;
   tipoDeServico: string;
@@ -28,5 +28,5 @@ export type FormValues = {
   procedimento: string;
   documentosProduzidos: string[];
   deslocamentos: string[];
-  houveAfastamento: boolean;
+  houveAfastamento: string;
 }

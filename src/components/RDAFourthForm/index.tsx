@@ -69,7 +69,7 @@ export function RDAFourthForm({ register, control }: FourthFormProps) {
         label1="Sim"
         label2="Não"
         name="houveAfastamento"
-        register={register} required
+        register={register}
       />
 
       <div className={styles.buttonsBox}>

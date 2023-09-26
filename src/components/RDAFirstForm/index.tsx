@@ -7,7 +7,7 @@ import { FormValues } from "@/types/types";
 import { listAcessos, listLocais, listOficiais, listRecepcionistas } from "@/data";
 
 import styles from './styles.module.scss';
-import { Control, FieldErrors, UseFormRegister, UseFormWatch } from "react-hook-form";
+import { Control, UseFormRegister, UseFormWatch } from "react-hook-form";
 
 interface FirstFormProps {
   watch: UseFormWatch<FormValues>,
@@ -24,7 +24,6 @@ export function RDAFirstForm({ watch, register, control }: FirstFormProps) {
       <MyDatePicker
         title="Data"
         name="data"
-        required={true}
         control={control}
       />
       <Input
@@ -32,7 +31,6 @@ export function RDAFirstForm({ watch, register, control }: FirstFormProps) {
         name="horario"
         type="time"
         hint="11:00"
-        required={true}
         register={register}
       />
       <MyCustomDropdown
@@ -64,7 +62,6 @@ export function RDAFirstForm({ watch, register, control }: FirstFormProps) {
         name="modalidade"
         label1="Presencial"
         label2="Remota"
-        required={true}
         register={register}
       />
       <RadioGroup
@@ -72,7 +69,6 @@ export function RDAFirstForm({ watch, register, control }: FirstFormProps) {
         name="temProtocolo"
         label1="Sim"
         label2="Não"
-        required={true}
         register={register}
       />
       {
@@ -82,7 +78,6 @@ export function RDAFirstForm({ watch, register, control }: FirstFormProps) {
             name="protocolo"
             type="text"
             hint="123/2023"
-            required={false}
             register={register}
           />
         ) : <></>

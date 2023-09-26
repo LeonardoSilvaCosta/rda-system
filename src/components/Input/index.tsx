@@ -12,20 +12,23 @@ interface InputProps {
   hint?: string,
   icon?: string,
   register: UseFormRegister<FormValues>
-  required: boolean,
 }
 
-export function Input({ title, type, hint, name, register, required }: InputProps) {
+export function Input({ title, type, hint, name, register }: InputProps) {
   const { errors } = useGlobalContext();
+  const errorKey = name as keyof FormValues;
+
   return (
     <div className={styles.inputContainer}>
       <label htmlFor={name}>{title}</label>
       <input
         type={type}
         placeholder={hint}
-        {...register(name, { required })}
-        />
-        {errors.data?.message}
+        {...register(name)}
+      />
+      {errors[errorKey] && (
+        <span className={"error-message"}>{errors[errorKey]?.message}</span>
+      )}
     </div>
   )
 }

@@ -24,7 +24,6 @@ export function RDAThirdForm({ register, control }: ThirdFormProps) {
         name="identificacaoDependente"
         type="text"
         hint="João Moutinho da Costa"
-        required={true}
         register={register}
       />
       <RadioGroup
@@ -32,13 +31,11 @@ export function RDAThirdForm({ register, control }: ThirdFormProps) {
         name="sexoDependente"
         label1="Masculino"
         label2="Feminino"
-        required={true}
         register={register}
       />
       <MyDatePicker
         title="Data de nascimento"
         name="dataDeNascimentoDependente"
-        required={true}
         control={control}
       />
       <MyCustomDropdown
