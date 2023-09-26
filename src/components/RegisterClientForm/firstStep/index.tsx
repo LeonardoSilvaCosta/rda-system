@@ -5,6 +5,9 @@ import { Control, UseFormRegister, UseFormWatch } from "react-hook-form";
 import { Input } from '@/components/Input';
 import { MyDatePicker } from '@/components/MyDatePicker';
 import { RadioGroup } from '@/components/RadioGroup';
+import { listEstadosCivis, listLocais } from '@/data';
+import { MyCustomDropdown } from '@/components/MyCustomDropdown';
+import { Button } from '@/components/Button';
 
 interface FirstFormProps {
   control: Control<ClientFormValues>,
@@ -16,7 +19,7 @@ export function RegisterClientFirstStep({ control, register }: FirstFormProps) {
 
   return (
     <>
-      <h2><span>Dados gerais</span></h2>
+      <h2><span>Cadastrar atendido</span></h2>
       <RadioGroup
         title="O atendido é militar?"
         name="eMilitar"
@@ -26,27 +29,34 @@ export function RegisterClientFirstStep({ control, register }: FirstFormProps) {
       />
       <Input
         title="Nome completo"
-        name="nomeCompleto"
+        name="fullName"
         type="text"
         hint="1º TEN QCOPM RG 40897 LEONARDO DA SILVA COSTA"
         register={register}
       />
+      <Input
+        title="Nome de guerra"
+        name="nickName"
+        type="text"
+        hint="LEONARDO"
+        register={register}
+      />
       <RadioGroup
         title="Sexo"
-        name="sexo"
+        name="gender"
         label1="Masculino"
         label2="Feminino"
         register={register}
       />
       <MyDatePicker
         title="Data de nascimento"
-        name="dataDeNascimento"
+        name="birthDate"
         control={control}
       />
       <MyCustomDropdown
         title="Estado civil"
-        fieldName="estadoCivil"
-        options={listRecepcionistas}
+        fieldName="maritalStatus"
+        options={listEstadosCivis}
         control={control}
       />
       <Input

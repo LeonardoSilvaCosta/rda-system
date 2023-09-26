@@ -8,7 +8,6 @@ import { AiOutlineUserAdd } from 'react-icons/ai';
 import { SlNote } from 'react-icons/sl';
 
 export default function Home() {
-
   return (
     <>
       <Header />

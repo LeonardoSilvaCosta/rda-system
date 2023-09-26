@@ -1,5 +1,8 @@
+"use client"
+
 import { IconType } from 'react-icons';
 import styles from './styles.module.scss';
+import Link from 'next/link';
 
 interface DashboardButtonProps {
   icon: IconType;
@@ -7,10 +10,23 @@ interface DashboardButtonProps {
 }
 
 export function DashboardButton({ icon: Icon, name }: DashboardButtonProps) {
+
+  const selectRoute = () => {
+    if (name === 'Cadastrar atendido') {
+      return '/RegisterClientForm'
+    } else {
+      return '/RegisterAppointment'
+    }
+  }
+
   return (
-    <div className={styles.button}>
-      <i><Icon className={styles.icon} /></i>
-      <span>{name}</span>
-    </div>
+    <Link href={selectRoute()}>
+      <div className={styles.button}>
+        <i>
+          <Icon className={styles.icon} />
+        </i>
+        <span>{name}</span>
+      </div>
+    </Link>
   )
 }

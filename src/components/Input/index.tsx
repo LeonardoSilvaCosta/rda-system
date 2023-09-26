@@ -1,8 +1,7 @@
 "use client"
 
-import { Path, UseFormRegister } from 'react-hook-form';
 import styles from './styles.module.scss';
-import { ClientFormValues, FormValues } from '@/types/types';
+import { FormValues, RegisterType, NameType } from '@/types/types';
 import { useGlobalContext } from '@/context/form';
 import { PiTextAlignRightThin } from 'react-icons/pi';
 
@@ -10,10 +9,10 @@ import { PiTextAlignRightThin } from 'react-icons/pi';
 interface InputProps {
   title: string,
   type: string,
-  name: Path<FormValues> | Path<ClientFormValues>,
+  name: NameType,
   hint?: string,
   icon?: string,
-  register: UseFormRegister<FormValues> | UseFormRegister<ClientFormValues>
+  register: RegisterType;
 }
 
 export function Input({ title, type, hint, name, register }: InputProps) {

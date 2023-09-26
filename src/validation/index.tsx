@@ -74,15 +74,16 @@ export const stepFourValidation = yup.object({
 })
 
 export const clientFormStepOne = yup.object({
-  nomeCompleto: yup.string().required(),
-  sexo: yup.string().required(),
-  dataDeNascimento: yup.date().required(),
-  estadoCivil: yup.string().required(),
+  fullName: yup.string().required(),
+  nickName: yup.string().required(),
+  gender: yup.string().required(),
+  birthDate: yup.date().required(),
+  maritalStatus: yup.string().required(),
   rg: yup.string().required(),
   cpf: yup.string().required(),
   cmd: yup.string().required(),
   opm: yup.string().required(),
   rank: yup.string().required(),
-  e_militar: yup.string().required(),
-  cidadeEmQueReside: yup.string().required(),
+  isMilitary: yup.string().required(),
+  cityOfResidence: yup.string().required(),
 })

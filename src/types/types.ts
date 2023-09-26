@@ -1,3 +1,5 @@
+import { Control, FieldPath, Path, UseFormRegister } from "react-hook-form";
+
 export type FormValues = {
   data: Date;
   horario: string;
@@ -32,15 +34,21 @@ export type FormValues = {
 }
 
 export type ClientFormValues = {
-  nomeCompleto: string;
-  sexo: string;
-  dataDeNascimento: string;
-  estadoCivil: string;
+  fullName: string;
+  nickName: string;
+  gender: string;
+  birthDate: string;
+  maritalStatus: string;
   rg: string;
   cpf: string;
   cmd: string;
   opm: string;
   rank: string;
-  eMilitar: string;
-  cidadeEmQueReside: string;
+  isMilitary: string;
+  cityOfResidence: string;
 }
+
+export type NameType = Path<FormValues> | Path<ClientFormValues>;
+export type RegisterType = UseFormRegister<ClientFormValues> | UseFormRegister<FormValues>;
+export type FieldType = FieldPath<ClientFormValues> | FieldPath<FormValues>;
+export type ControlType = Control<ClientFormValues> | Control<FormValues>;

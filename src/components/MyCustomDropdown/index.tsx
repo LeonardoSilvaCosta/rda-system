@@ -3,14 +3,14 @@ import classnames from 'classnames';
 import styles from './styles.module.scss';
 import { BsChevronDown } from "react-icons/bs";
 import { Control, Controller, FieldPath } from 'react-hook-form';
-import { FormValues } from '@/types/types';
+import { ControlType, FieldType, FormValues } from '@/types/types';
 import { useGlobalContext } from '@/context/form';
 
 interface MyCustomDropdownProps {
   title: string;
-  fieldName: FieldPath<FormValues>;
+  fieldName: FieldType;
   options: Option[];
-  control: Control<FormValues>;
+  control: ControlType;
 }
 
 type Option = {

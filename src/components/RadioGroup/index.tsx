@@ -1,15 +1,15 @@
 import { UseFormRegister, Path } from "react-hook-form";
 import { RadioButton } from '../RadioButton';
 import styles from './styles.module.scss';
-import { FormValues } from '@/types/types';
+import { FormValues, RegisterType, NameType } from '@/types/types';
 import { useGlobalContext } from "@/context/form";
 
 interface RadioGroupProps {
   title: string;
-  name: Path<FormValues>,
+  name: NameType,
   label1: string;
   label2: string;
-  register: UseFormRegister<FormValues>
+  register: RegisterType
 }
 
 export function RadioGroup({ title, name, label1, label2, register }: RadioGroupProps) {

@@ -1,13 +1,13 @@
 "use client"
 import styles from "./styles.module.scss";
-import { FormValues } from "@/types/types";
+import { FormValues, RegisterType, NameType } from "@/types/types";
 import { Path, UseFormRegister } from "react-hook-form";
 
 interface RadioButtonProps {
   id: string,
   label: string,
-  name: Path<FormValues>,
-  register: UseFormRegister<FormValues>
+  name: NameType,
+  register: RegisterType
 }
 
 export function RadioButton({ id, label, name, register }: RadioButtonProps) {
