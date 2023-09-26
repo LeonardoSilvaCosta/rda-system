@@ -72,3 +72,17 @@ export const stepFourValidation = yup.object({
   deslocamentos: yup.array().required("O campo Deslocamentos é obrigatório."),
   houveAfastamento: yup.string().required("O campo que se refere se houve ou não afastamento é obrigatório."),
 })
+
+export const clientFormStepOne = yup.object({
+  nomeCompleto: yup.string().required(),
+  sexo: yup.string().required(),
+  dataDeNascimento: yup.date().required(),
+  estadoCivil: yup.string().required(),
+  rg: yup.string().required(),
+  cpf: yup.string().required(),
+  cmd: yup.string().required(),
+  opm: yup.string().required(),
+  rank: yup.string().required(),
+  e_militar: yup.string().required(),
+  cidadeEmQueReside: yup.string().required(),
+})

@@ -30,3 +30,17 @@ export type FormValues = {
   deslocamentos: string[];
   houveAfastamento: string;
 }
+
+export type ClientFormValues = {
+  nomeCompleto: string;
+  sexo: string;
+  dataDeNascimento: string;
+  estadoCivil: string;
+  rg: string;
+  cpf: string;
+  cmd: string;
+  opm: string;
+  rank: string;
+  eMilitar: string;
+  cidadeEmQueReside: string;
+}

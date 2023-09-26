@@ -15,15 +15,15 @@ import { AiOutlineCalendar } from "react-icons/ai";
 
 import styles from './styles.module.scss';
 import { Controller, Control, Path } from "react-hook-form";
-import { FormValues } from "@/types/types";
+import { ClientFormValues, FormValues } from "@/types/types";
 import { useGlobalContext } from "@/context/form";
 
 interface MyDatePickerProps {
   title: string,
-  name: Path<FormValues>,
+  name: Path<FormValues> | Path<ClientFormValues>,
   hint?: string,
   icon?: string,
-  control: Control<FormValues>,
+  control: Control<FormValues> | Control<ClientFormValues>,
 }
 
 export function MyDatePicker({ title, name, hint, icon, control }: MyDatePickerProps) {
