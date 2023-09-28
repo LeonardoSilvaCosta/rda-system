@@ -29,7 +29,7 @@ export default function Home() {
         <div className={styles.searchbarBox}>
           <SearchBar variation={"home"} list={listClients} search={search} setSearch={setSearch} />
         </div>
-        {search && (
+        {search ? (
           <ul>
             {filteredList.map(item => (
               <ClientCard
@@ -42,11 +42,12 @@ export default function Home() {
               />
             ))}
           </ul>
-        )}
+        ) : 
         <div className={styles.dashboardButtonContainer}>
           <DashboardButton icon={AiOutlineUserAdd} name={"Cadastrar atendido"} />
           <DashboardButton icon={SlNote} name={"Registrar atendimento"} />
         </div>
+        }
       </div>
     </>
   )
