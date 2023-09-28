@@ -1,10 +1,9 @@
 "use client"
 
 import styles from './styles.module.scss';
-import { FormValues, RegisterType, NameType } from '@/types/types';
+import { FormValues, RegisterType, NameType, ClientFormValues } from '@/types/types';
 import { useGlobalContext } from '@/context/form';
 import { PiTextAlignRightThin } from 'react-icons/pi';
-
 
 interface InputProps {
   title: string,

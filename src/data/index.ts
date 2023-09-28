@@ -91,3 +91,15 @@ export const listDeslocamentos = [
   { value: "Hospitalar" },
   { value: "Residencial" },
 ]
+
+export const listClients = [
+  {
+    fullname: "Leonardo da Silva Costa",
+    posto_grad: "1º TEN",
+    cadre: "QCOPM",
+    rg: "40897",
+    nickname: "Leonardo",
+    cpf: "982.645.672-15"
+  },
+]
+

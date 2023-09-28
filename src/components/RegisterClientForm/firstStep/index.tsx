@@ -8,6 +8,7 @@ import { RadioGroup } from '@/components/RadioGroup';
 import { listEstadosCivis, listLocais } from '@/data';
 import { MyCustomDropdown } from '@/components/MyCustomDropdown';
 import { Button } from '@/components/Button';
+import { useRouter } from 'next/navigation';
 
 interface FirstFormProps {
   control: Control<ClientFormValues>,
@@ -16,13 +17,18 @@ interface FirstFormProps {
 }
 
 export function RegisterClientFirstStep({ control, register }: FirstFormProps) {
+  const router = useRouter();
+
+  const returnToDashboard = () => {
+    router.push('/')
+  }
 
   return (
     <>
       <h2><span>Cadastrar atendido</span></h2>
       <RadioGroup
         title="O atendido é militar?"
-        name="eMilitar"
+        name="isMilitary"
         label1="Sim"
         label2="Não"
         register={register}
@@ -88,9 +94,12 @@ export function RegisterClientFirstStep({ control, register }: FirstFormProps) {
       <div className={styles.buttonsBox}>
         <Button
           type="submit"
+          name="Enviar"
         />
         <Button
           type="button"
+          name="Voltar"
+          onClick={returnToDashboard}
         />
       </div>
     </>)

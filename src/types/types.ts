@@ -52,3 +52,12 @@ export type NameType = Path<FormValues> | Path<ClientFormValues>;
 export type RegisterType = UseFormRegister<ClientFormValues> | UseFormRegister<FormValues>;
 export type FieldType = FieldPath<ClientFormValues> | FieldPath<FormValues>;
 export type ControlType = Control<ClientFormValues> | Control<FormValues>;
+
+export type ClientCardType = {
+  fullname: string;
+  posto_grad: string;
+  cadre: string;
+  rg: string;
+  nickname: string;
+  cpf: string;
+}

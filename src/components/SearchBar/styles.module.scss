@@ -1,14 +1,35 @@
 .container {
+  width: 100%;
   background-color: var(--white);
   border: 1px solid var(--gray-100);
-  width: 100%;
   border-radius: 4px;
   height: 2.5rem;
   padding: 0 15px;
   display: flex;
   align-items: center;
 
+  &.home {
+    background-color: transparent;
+    width: 362px;
+    transition: background-color 2s, width 1s, border 1s;
+
+    @media(max-width: 762px) {
+      width: 100%;
+    }
+
+    &.focused {
+      width: 100%;
+      border: 0.5px solid var(--blue-400);
+      background-color: var(--white);
+
+      .searchIcon {
+        color: var(--blue-300);
+      }
+    }
+  }
+
   input {
+    width: 100%;
     background-color: transparent;
     border: none;
     height: 100%;

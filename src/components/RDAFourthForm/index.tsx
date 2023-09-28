@@ -85,9 +85,11 @@ export function RDAFourthForm({ control, register, watch }: FourthFormProps) {
       <div className={styles.buttonsBox}>
         <Button
           type="submit"
+          name="Enviar"
         />
         <Button
           type="button"
+          name="Voltar"
         />
       </div>
     </>)

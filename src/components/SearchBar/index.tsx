@@ -1,23 +1,43 @@
+"use client"
+
+import { ClientCardType } from '@/types/types';
 import styles from './styles.module.scss';
 import { BsSearch } from "react-icons/bs";
+import { useState } from 'react';
 
 
 interface SearchBarProps {
-  list: { value: string }[];
+  list: { value: string }[] | ClientCardType;
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
+  variation?: "home" ;
 }
 
-export function SearchBar({ search, setSearch }: SearchBarProps) {
+export function SearchBar({ variation, search, setSearch }: SearchBarProps) {
+  const [isFocused, setIsFocused] = useState(false);
 
   const handleChange = (value: string) => {
     setSearch(value);
   }
 
+  const handleFocus = () => {
+    console.log("is focused")
+    setIsFocused(true);
+  }
+
+  const handleBlur = () => {
+    setIsFocused(false);
+  }
+
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${variation ? styles.home : '' } ${isFocused ? styles.focused : ''}`}>
       <BsSearch className={styles.searchIcon} />
-      <input value={search} onChange={(e) => handleChange(e.target.value)} />
+      <input
+        value={search}
+        onChange={(e) => handleChange(e.target.value)}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+      />
     </div>
   )
 }

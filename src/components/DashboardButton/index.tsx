@@ -10,10 +10,9 @@ interface DashboardButtonProps {
 }
 
 export function DashboardButton({ icon: Icon, name }: DashboardButtonProps) {
-
   const selectRoute = () => {
     if (name === 'Cadastrar atendido') {
-      return '/RegisterClientForm'
+      return '/RegisterClient'
     } else {
       return '/RegisterAppointment'
     }

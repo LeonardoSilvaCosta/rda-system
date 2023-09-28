@@ -4,7 +4,7 @@ import { useRegisterClientContext } from '@/context/registerClientContext';
 import styles from './styles.module.scss';
 import { RegisterClientFirstStep } from '@/components/RegisterClientForm/firstStep';
 
-export default function RegisterClientForm() {
+export default function RegisterClient() {
   const {
     control,
     handleSubmit,

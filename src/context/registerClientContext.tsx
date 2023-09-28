@@ -6,8 +6,6 @@ import { createContext, useContext } from 'react';
 import { Control, FieldErrors, SubmitHandler, UseFormGetValues, UseFormHandleSubmit, UseFormRegister, UseFormWatch, useForm } from 'react-hook-form';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
-import { clientFormStepOne } from '@/validation';
-
 interface GlobalContextProps {
   control: Control<any, any>
   errors: FieldErrors<ClientFormValues>,
@@ -15,7 +13,8 @@ interface GlobalContextProps {
   handleSubmit: UseFormHandleSubmit<any, undefined>,
   onSubmit: SubmitHandler<ClientFormValues>,
   register: UseFormRegister<any>,
-  watch: UseFormWatch<any> ,
+  watch: UseFormWatch<any>,
+  formType: string,
 }
 
 const RegisterClientContext = createContext<GlobalContextProps | undefined>(undefined);
@@ -37,10 +36,11 @@ export const RegisterClientContextProvider = ({
     reset,
     formState: { errors }
   } = useForm<ClientFormValues | any>({
-    resolver: yupResolver(clientFormStepOne)
+    // resolver: yupResolver(clientFormStepOne)
   })
 
   const onSubmit: SubmitHandler<ClientFormValues> = async (data) => {
+    console.log(data)
     try {
       await supabase.from("clients").insert({ data });
       alert("Você cadastrou um novo usuário com sucesso.")
@@ -60,7 +60,8 @@ export const RegisterClientContextProvider = ({
         handleSubmit,
         onSubmit,
         register,
-        watch
+        watch,
+        formType: 'clientRegister',
       }}>
       {children}
     </RegisterClientContext.Provider>
