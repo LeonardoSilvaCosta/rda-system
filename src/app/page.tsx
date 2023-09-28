@@ -29,18 +29,20 @@ export default function Home() {
         <div className={styles.searchbarBox}>
           <SearchBar variation={"home"} list={listClients} search={search} setSearch={setSearch} />
         </div>
-        <ul>
-          {filteredList.map(item => (
-            <ClientCard
-              fullname={item.fullname}
-              posto_grad={item.posto_grad}
-              cadre={item.cadre}
-              rg={item.rg}
-              nickname={item.nickname}
-              cpf={item.cpf}
-            />
-          ))}
-        </ul>
+        {search && (
+          <ul>
+            {filteredList.map(item => (
+              <ClientCard
+                fullname={item.fullname}
+                posto_grad={item.posto_grad}
+                cadre={item.cadre}
+                rg={item.rg}
+                nickname={item.nickname}
+                cpf={item.cpf}
+              />
+            ))}
+          </ul>
+        )}
         <div className={styles.dashboardButtonContainer}>
           <DashboardButton icon={AiOutlineUserAdd} name={"Cadastrar atendido"} />
           <DashboardButton icon={SlNote} name={"Registrar atendimento"} />

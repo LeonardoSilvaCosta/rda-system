@@ -21,11 +21,11 @@ export function SearchBar({ variation, search, setSearch }: SearchBarProps) {
   }
 
   const handleFocus = () => {
-    console.log("is focused")
     setIsFocused(true);
   }
 
   const handleBlur = () => {
+    setSearch("")
     setIsFocused(false);
   }
 
