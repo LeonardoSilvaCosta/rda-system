@@ -79,18 +79,18 @@ export const listDemandasGerais = [
 ]
 
 export const listDemandasEspecificas = [
-  { value: "Ansiedade" },
-  { value: "Depressão" },
-  { value: "Óbito(militar)" },
-  { value: "Doença crônica" },
-  { value: "Óbito(familiar)" },
-  { value: "TEPT" },
-  { value: "Luto" },
-  { value: "Violência doméstica" },
-  { value: "Surto psicótico" },
-  { value: "Ideação suicída" },
-  { value: "Tentiva de suicídio" },
-  { value: "Suicídio" },
+  "Ansiedade",
+  "Depressão",
+  "Óbito(militar)",
+  "Doença crônica",
+  "Óbito(familiar)",
+  "TEPT",
+  "Luto",
+  "Violência doméstica",
+  "Surto psicótico",
+  "Ideação suicída",
+  "Tentiva de suicídio",
+  "Suicídio",
 ]
 
 export const listProcedimentos = [
@@ -100,15 +100,15 @@ export const listProcedimentos = [
 ]
 
 export const listDocumentos = [
-  { value: "Declaração" },
-  { value: "Atestado psicológico" },
-  { value: "Laudo social" },
+  "Declaração",
+  "Atestado psicológico",
+  "Laudo social",
 ]
 
 export const listDeslocamentos = [
-  { value: "Instuticional" },
-  { value: "Hospitalar" },
-  { value: "Residencial" },
+  "Instuticional",
+  "Hospitalar",
+  "Residencial",
 ]
 
 export const listClients = [

@@ -9,6 +9,7 @@ import { listCadre, listEstadosCivis, listLocais, listMunicipios, listRank } fro
 import { MyCustomDropdown } from '@/components/MyCustomDropdown';
 import { Button } from '@/components/Button';
 import { useRouter } from 'next/navigation';
+import { useRegisterClientContext } from '@/context/registerClientContext';
 
 interface FormComponentProps {
   type: string | null;
@@ -18,12 +19,14 @@ interface FormComponentProps {
 }
 
 export function FormComponent({ type, control, register }: FormComponentProps) {
+  const { errors, getValues, reset } = useRegisterClientContext();
   const router = useRouter();
   const isMilitary = type === "militar";
   const isDependent = type === "dependente";
   const isCivilian = type === "civil-sem-vínculo"
 
   const returnToDashboard = () => {
+    reset();
     router.push('/RegisterClient/Options')
   }
 
@@ -34,6 +37,7 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
         name="fullName"
         type="text"
         hint="LEONARDO DA SILVA COSTA"
+        errors={errors}
         register={register}
       />
       {
@@ -42,6 +46,8 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
             title="Titular"
             fieldName="policyHolder"
             options={listRank}
+            getValues={getValues}
+            errors={errors}
             control={control}
           />
         )
@@ -54,6 +60,7 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
               name="nickName"
               type="text"
               hint="LEONARDO"
+              errors={errors}
               register={register}
             />
             <Input
@@ -61,24 +68,31 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
               name="rg"
               type="text"
               hint="40897"
+              errors={errors}
               register={register}
             />
             <MyCustomDropdown
               title="Posto/graduação"
               fieldName="rank"
               options={listRank}
+              getValues={getValues}
+              errors={errors}
               control={control}
             />
             <MyCustomDropdown
               title="Quadro"
               fieldName="cadre"
               options={listCadre}
+              getValues={getValues}
+              errors={errors}
               control={control}
             />
             <MyCustomDropdown
               title="OPM"
               fieldName="opm"
               options={listLocais}
+              getValues={getValues}
+              errors={errors}
               control={control}
             />
           </>)
@@ -88,6 +102,7 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
         name="gender"
         label1="Masculino"
         label2="Feminino"
+        errors={errors}
         register={register}
       />
       <Input
@@ -95,32 +110,39 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
         name="cpf"
         type="text"
         hint="000.000.000-00"
+        errors={errors}
         register={register}
       />
       <MyDatePicker
         title="Data de nascimento"
         name="birthDate"
+        errors={errors}
         control={control}
       />
       <MyCustomDropdown
         title="Estado civil"
         fieldName="maritalStatus"
         options={listEstadosCivis}
+        getValues={getValues}
+        errors={errors}
         control={control}
       />
       <MyCustomDropdown
         title="Cidade de residência"
         fieldName="cityOfResidence"
         options={listMunicipios}
+        getValues={getValues}
+        errors={errors}
         control={control}
       />
       {
         isCivilian && (
           <RadioGroup
             title="É voluntário civil"
-            name="isVoluntario"
+            name="isCivilVolunteer"
             label1="Sim"
             label2="Não"
+            errors={errors}
             register={register}
           />
         )

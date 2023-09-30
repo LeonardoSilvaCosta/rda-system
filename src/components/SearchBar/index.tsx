@@ -5,12 +5,11 @@ import styles from './styles.module.scss';
 import { BsSearch } from "react-icons/bs";
 import { useState } from 'react';
 
-
 interface SearchBarProps {
-  list: { value: string }[] | ClientCardType;
+  list: string[] | ClientCardType[];
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
-  variation?: "home" ;
+  variation?: "home";
 }
 
 export function SearchBar({ variation, search, setSearch }: SearchBarProps) {
@@ -30,7 +29,7 @@ export function SearchBar({ variation, search, setSearch }: SearchBarProps) {
   }
 
   return (
-    <div className={`${styles.container} ${variation ? styles.home : '' } ${isFocused ? styles.focused : ''}`}>
+    <div className={`${styles.container} ${variation ? styles.home : ''} ${isFocused ? styles.focused : ''}`}>
       <BsSearch className={styles.searchIcon} />
       <input
         value={search}

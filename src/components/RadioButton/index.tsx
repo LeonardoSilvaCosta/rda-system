@@ -1,16 +1,15 @@
 "use client"
+import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 import styles from "./styles.module.scss";
-import { FormValues, RegisterType, NameType } from "@/types/types";
-import { Path, UseFormRegister } from "react-hook-form";
 
-interface RadioButtonProps {
+interface RadioButtonProps<T extends FieldValues> {
   id: string,
   label: string,
-  name: NameType,
-  register: RegisterType
+  name: Path<T>,
+  register: UseFormRegister<T>,
 }
 
-export function RadioButton({ id, label, name, register }: RadioButtonProps) {
+export function RadioButton<T extends FieldValues>({ id, label, name, register }: RadioButtonProps<T>) {
   return (
     <div className={styles.radioButtonContainer}>
       <input

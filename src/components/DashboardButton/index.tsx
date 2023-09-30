@@ -3,6 +3,7 @@
 import { IconType } from 'react-icons';
 import styles from './styles.module.scss';
 import Link from 'next/link';
+import { useRegisterClientContext } from '@/context/registerClientContext';
 
 interface DashboardButtonProps {
   icon: IconType;
@@ -10,22 +11,25 @@ interface DashboardButtonProps {
 }
 
 export function DashboardButton({ icon: Icon, name }: DashboardButtonProps) {
+  const { selectFormValidation } = useRegisterClientContext();
+
+  const routeMapping: { [key: string]: string } = {
+    'Cadastrar atendido': '/RegisterClient/Options',
+    'Registrar atendimento': '/RegisterAppointment',
+  };
+
+  const formattedName = name.toLowerCase().replaceAll(' ', '-');
+
   const selectRoute = () => {
-    switch (name) {
-      case "Cadastrar atendido":
-        return '/RegisterClient/Options'
-      case "Registrar atendimento":
-        return '/RegisterAppointmeent'
-      default:
-        return `/RegisterClient/Form?type=${name
-          .toLowerCase()
-          .replaceAll(' ', '-')
-          }`
-    }
-  }
+    return routeMapping[name] || `/RegisterClient/Form?type=${formattedName}`;
+  };
+
+  const handleClick = () => {
+    selectFormValidation(formattedName);
+  };
 
   return (
-    <Link href={selectRoute()}>
+    <Link onClick={handleClick} href={selectRoute()}>
       <div className={styles.button}>
         <i>
           <Icon className={styles.icon} />

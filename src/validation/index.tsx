@@ -73,20 +73,38 @@ export const stepFourValidation = yup.object({
   houveAfastamento: yup.string().required("O campo que se refere se houve ou não afastamento é obrigatório."),
 })
 
-export const clientFormStepOne = yup.object({
-  fullName: yup.string().required(),
-  nickName: yup.string().required(),
-  rg: yup.string().required(),
-  rank: yup.string().required(),
-  cadre: yup.string().required(),
-  gender: yup.string().required(),
-  cpf: yup.string().required(),
-  birthDate: yup.date().required(),
-  maritalStatus: yup.string().required(),
-  cityOfResidence: yup.string().required(),
-  cmd: yup.string().required(),
-  opm: yup.string().required(),
-  policyHolder: yup.string().required(),
-  isMilitary: yup.string().required(),
-  isVoluntario: yup.string().required(),
+export const militaryFormValidation = yup.object({
+  fullName: yup.string().required("O campo 'Nome completo' é obrigatório."),
+  nickName: yup.string().required("O campo 'Nome de guerra' é obrigatório."),
+  rg: yup.string().required("O campo 'RG' é obrigatório."),
+  rank: yup.string().required("O campo 'Posto/graduação' é obrigatório."),
+  cadre: yup.string().required("O campo 'Quadro' é obrigatório."),
+  gender: yup.string().required("O campo 'Gênero' é obrigatório."),
+  cpf: yup.string().required("O campo 'CPF' é obrigatório."),
+  birthDate: yup.date().required("O campo 'Data de nascimento' é obrigatório."),
+  maritalStatus: yup.string().required("O campo 'Estado civil' é obrigatório."),
+  cityOfResidence: yup.string().required("O campo 'Cidade de residência' é obrigatório."),
+  // cmd: yup.string().required("O campo 'CMD' é obrigatório."),
+  opm: yup.string().required("O campo 'OPM' é obrigatório."),
+  // isMilitary: yup.string().required(),
+})
+
+export const dependentFormValidation = yup.object({
+  fullName: yup.string().required("O campo 'Nome completo' é obrigatório."),
+  policyHolder: yup.string().required("O campo 'titular'"),
+  gender: yup.string().required("O campo 'Gênero' é obrigatório."),
+  cpf: yup.string().required("O campo 'CPF' é obrigatório."),
+  birthDate: yup.date().required("O campo 'Data de nascimento' é obrigatório."),
+  maritalStatus: yup.string().required("O campo 'Estado civil' é obrigatório."),
+  cityOfResidence: yup.string().required("O campo 'Cidade de residência' é obrigatório."),
+})
+
+export const citizenFormValidation = yup.object({
+  fullName: yup.string().required("O campo 'Nome completo' é obrigatório."),
+  gender: yup.string().required("O campo 'Gênero' é obrigatório."),
+  cpf: yup.string().required("O campo 'CPF' é obrigatório."),
+  birthDate: yup.date().required("O campo 'Data de nascimento' é obrigatório."),
+  maritalStatus: yup.string().required("O campo 'Estado civil' é obrigatório."),
+  cityOfResidence: yup.string().required("O campo 'Cidade de residência' é obrigatório."),
+  isCivilVolunteer: yup.string().required("O campo é voluntário é obrigatório."),
 })

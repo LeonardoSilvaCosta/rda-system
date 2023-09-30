@@ -14,22 +14,21 @@ import { useState } from 'react';
 import { AiOutlineCalendar } from "react-icons/ai";
 
 import styles from './styles.module.scss';
-import { Controller, Control, Path } from "react-hook-form";
-import { ClientFormValues, FormValues } from "@/types/types";
-import { useGlobalContext } from "@/context/form";
+import { Controller, Control, Path, FieldErrors, FieldValues } from "react-hook-form";
+import { ClientFormValues } from "@/types/types";
 
-interface MyDatePickerProps {
+interface MyDatePickerProps<T extends FieldValues> {
   title: string,
-  name: Path<FormValues> | Path<ClientFormValues>,
+  name: Path<T>,
   hint?: string,
   icon?: string,
-  control: Control<FormValues> | Control<ClientFormValues>,
+  errors: FieldErrors<T>,
+  control: Control<T>,
 }
 
-export function MyDatePicker({ title, name, hint, icon, control }: MyDatePickerProps) {
-  const { errors } = useGlobalContext();
+export function MyDatePicker<T extends FieldValues>({ title, name, hint, icon, errors, control }: MyDatePickerProps<T>) {
   const [isDatapickerVisible, setIsDatapickerVisible] = useState(false);
-  const errorKey = name as keyof FormValues;
+  const errorKey = name as keyof ClientFormValues;
 
   return (
     <Controller

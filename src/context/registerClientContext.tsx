@@ -2,19 +2,23 @@
 
 import { ClientFormValues } from '@/types/types';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { createContext, useContext } from 'react';
-import { Control, FieldErrors, SubmitHandler, UseFormGetValues, UseFormHandleSubmit, UseFormRegister, UseFormWatch, useForm } from 'react-hook-form';
+import { Dispatch, SetStateAction, createContext, useContext, useEffect, useState } from 'react';
+import { Control, FieldErrors, SubmitHandler, UseFormGetValues, UseFormHandleSubmit, UseFormRegister, UseFormReset, UseFormWatch, useForm } from 'react-hook-form';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { citizenFormValidation, dependentFormValidation, militaryFormValidation } from '@/validation';
+import * as yup from "yup"
 
 interface GlobalContextProps {
   control: Control<any, any>
   errors: FieldErrors<ClientFormValues>,
+  formType: string,
   getValues: UseFormGetValues<any>,
   handleSubmit: UseFormHandleSubmit<any, undefined>,
   onSubmit: SubmitHandler<ClientFormValues>,
   register: UseFormRegister<any>,
+  reset: UseFormReset<any>,
+  selectFormValidation: (formType: string) => JSX.Element,
   watch: UseFormWatch<any>,
-  formType: string,
 }
 
 const RegisterClientContext = createContext<GlobalContextProps | undefined>(undefined);
@@ -26,6 +30,7 @@ export const RegisterClientContextProvider = ({
 }) => {
 
   const supabase = createClientComponentClient();
+  const [validationSchema, setValidationSchema] = useState<yup.ObjectSchema<{}>>(militaryFormValidation);
 
   const {
     handleSubmit,
@@ -36,18 +41,55 @@ export const RegisterClientContextProvider = ({
     reset,
     formState: { errors }
   } = useForm<ClientFormValues | any>({
-    // resolver: yupResolver(clientFormStepOne)
+    resolver: yupResolver(validationSchema)
   })
 
+  const selectFormValidation = (formType: string) => {
+    switch (formType) {
+      case "militar":
+        setValidationSchema(militaryFormValidation);
+        break;
+      case "dependente":
+        setValidationSchema(dependentFormValidation);
+        break;
+      case "civil-sem-vínculo":
+        setValidationSchema(citizenFormValidation);
+        break;
+      default:
+        break;
+    }
+  }
+
   const onSubmit: SubmitHandler<ClientFormValues> = async (data) => {
-    console.log(data)
+    const birthDate = new Date(data.birthDate);
+
+    const year = birthDate.getFullYear();
+    const month = birthDate.getMonth() + 1;
+    const day = birthDate.getDate();
+
+    const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+
     try {
-      await supabase.from("clients").insert({ data });
+      await supabase.from("tb_attendeds").insert({
+        fullname: data.fullName,
+        nickname: data.nickName,
+        rg: data.rg,
+        rank: data.rank,
+        cadre: data.cadre,
+        opm: data.opm,
+        gender: data.gender,
+        cpf: data.cpf,
+        birth_date: formattedDate,
+        marital_status: data.maritalStatus,
+        city_of_residence: data.cityOfResidence,
+        policy_holder: data.policyHolder,
+        is_civil_volunteer: data.isCivilVolunteer,
+      });
       alert("Você cadastrou um novo usuário com sucesso.")
 
       reset();
     } catch (error) {
-      alert("Houve algum problema no cadastro de seu formulário. Tente novamente.")
+      alert(`Houve algum problema no cadastro de seu formulário. Erro ${error}. Tente novamente.`)
     }
   }
 
@@ -56,12 +98,14 @@ export const RegisterClientContextProvider = ({
       value={{
         control,
         errors,
+        formType: 'clientRegister',
         getValues,
         handleSubmit,
         onSubmit,
         register,
+        reset,
+        selectFormValidation,
         watch,
-        formType: 'clientRegister',
       }}>
       {children}
     </RegisterClientContext.Provider>

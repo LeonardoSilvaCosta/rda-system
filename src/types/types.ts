@@ -48,7 +48,7 @@ export type ClientFormValues = {
   opm: string;
   policyHolder: string;
   isMilitary: string;
-  isVoluntario: string;
+  isCivilVolunteer: string;
 }
 
 export type NameType = Path<FormValues> | Path<ClientFormValues>;

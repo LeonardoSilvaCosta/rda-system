@@ -1,20 +1,19 @@
-import { UseFormRegister, Path } from "react-hook-form";
+import { FieldErrors, FieldValues, Path, UseFormRegister } from "react-hook-form";
 import { RadioButton } from '../RadioButton';
 import styles from './styles.module.scss';
-import { FormValues, RegisterType, NameType } from '@/types/types';
-import { useGlobalContext } from "@/context/form";
+import { ClientFormValues, FormValues } from '@/types/types';
 
-interface RadioGroupProps {
-  title: string;
-  name: NameType,
-  label1: string;
-  label2: string;
-  register: RegisterType
+interface RadioGroupProps<T extends FieldValues> {
+  title: string,
+  name: Path<T>,
+  label1: string,
+  label2: string,
+  errors: FieldErrors<T>,
+  register: UseFormRegister<T>,
 }
 
-export function RadioGroup({ title, name, label1, label2, register }: RadioGroupProps) {
-  const { errors } = useGlobalContext();
-  const errorKey = name as keyof FormValues;
+export function RadioGroup<T extends FieldValues>({ title, name, label1, label2, errors, register }: RadioGroupProps<T>) {
+  const errorKey = name as keyof FormValues | ClientFormValues;
 
   return (
     <div className={styles.radioGroup}>

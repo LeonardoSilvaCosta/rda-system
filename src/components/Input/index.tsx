@@ -1,10 +1,9 @@
 "use client"
 
 import styles from './styles.module.scss';
-import { FormValues } from '@/types/types';
-import { useGlobalContext } from '@/context/form';
+import { ClientFormValues, FormValues } from '@/types/types';
 import { PiTextAlignRightThin } from 'react-icons/pi';
-import { FieldValues, Path, UseFormRegister } from 'react-hook-form';
+import { FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form';
 
 interface InputProps<T extends FieldValues> {
   title: string,
@@ -12,12 +11,12 @@ interface InputProps<T extends FieldValues> {
   name: Path<T>,
   hint?: string,
   icon?: string,
+  errors: FieldErrors<T>,
   register: UseFormRegister<T>,
 }
 
-export function Input<T extends FieldValues>({ title, type, hint, name, register }: InputProps<T>) {
-  const { errors } = useGlobalContext();
-  const errorKey = name as keyof FormValues;
+export function Input<T extends FieldValues>({ title, type, hint, name, errors, register }: InputProps<T>) {
+  const errorKey = name as keyof FormValues | ClientFormValues;
 
   const getTypeOfIcon = () => {
     if (type === "text") {

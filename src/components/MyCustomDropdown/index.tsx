@@ -2,14 +2,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import classnames from 'classnames';
 import styles from './styles.module.scss';
 import { BsChevronDown } from "react-icons/bs";
-import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form';
+import { Control, Controller, FieldErrors, FieldPath, FieldValues, UseFormGetValues } from 'react-hook-form';
 import { FormValues } from '@/types/types';
-import { useGlobalContext } from '@/context/form';
 
 interface MyCustomDropdownProps<T extends FieldValues> {
   title: string;
   fieldName: FieldPath<T>;
   options: Option[];
+  getValues: UseFormGetValues<any>;
+  errors: FieldErrors<T>,
   control: Control<T>;
 }
 
@@ -17,12 +18,11 @@ type Option = {
   value: string;
 }
 
-export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, options, control }: MyCustomDropdownProps<T>) {
+export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, options, getValues, errors, control }: MyCustomDropdownProps<T>) {
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
   const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const { errors, getValues } = useGlobalContext();
   const errorKey = fieldName as keyof FormValues;
 
   const closeDropdown = () => {
