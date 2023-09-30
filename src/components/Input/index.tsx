@@ -1,20 +1,21 @@
 "use client"
 
 import styles from './styles.module.scss';
-import { FormValues, RegisterType, NameType, ClientFormValues } from '@/types/types';
+import { FormValues } from '@/types/types';
 import { useGlobalContext } from '@/context/form';
 import { PiTextAlignRightThin } from 'react-icons/pi';
+import { FieldValues, Path, UseFormRegister } from 'react-hook-form';
 
-interface InputProps {
+interface InputProps<T extends FieldValues> {
   title: string,
   type: string,
-  name: NameType,
+  name: Path<T>,
   hint?: string,
   icon?: string,
-  register: RegisterType;
+  register: UseFormRegister<T>,
 }
 
-export function Input({ title, type, hint, name, register }: InputProps) {
+export function Input<T extends FieldValues>({ title, type, hint, name, register }: InputProps<T>) {
   const { errors } = useGlobalContext();
   const errorKey = name as keyof FormValues;
 

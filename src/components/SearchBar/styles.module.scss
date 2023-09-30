@@ -9,6 +9,7 @@
   align-items: center;
 
   &.home {
+    border: 1px solid var(--gray-200);
     background-color: transparent;
     width: 362px;
     transition: background-color 2s, width 1s, border 1s;

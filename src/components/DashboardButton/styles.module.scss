@@ -1,33 +1,39 @@
 .button {
-    width: 163px;
-    height: 163px;
-  
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  
-    border-radius: 8px;
-    background-color: var(--blue-400);
-    color: var(--blue-50);
-    
-    cursor: pointer;
-    transition: transform 0.2s, background-color 0.2s;
+  width: 163px;
+  height: 163px;
 
-    &:hover {
-      background-color: rgba(79, 83, 201, 0.9);
-    }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-    &:active {
-      transform: scale(0.95); 
-    }
-  
-    .icon {
-      width: 80px;
-      height: 80px;
-    }
-  
-    span {
-      font-size: 0.875rem;
-    }
+  border-radius: 8px;
+  background-color: var(--blue-400);
+  color: var(--blue-50);
+
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+
+  @media(max-width: 762px) {
+    width: 120px;
+    height: 120px;
   }
+
+  &:hover {
+    background-color: rgba(79, 83, 201, 0.9);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  .icon {
+    width: 80px;
+    height: 80px;
+    color: var(--blue-50);
+  }
+
+  span {
+    font-size: 0.875rem;
+  }
+}

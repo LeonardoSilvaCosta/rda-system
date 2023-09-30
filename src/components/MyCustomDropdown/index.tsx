@@ -2,22 +2,22 @@ import React, { useState, useEffect, useRef } from 'react';
 import classnames from 'classnames';
 import styles from './styles.module.scss';
 import { BsChevronDown } from "react-icons/bs";
-import { Control, Controller, FieldPath } from 'react-hook-form';
-import { ControlType, FieldType, FormValues } from '@/types/types';
+import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form';
+import { FormValues } from '@/types/types';
 import { useGlobalContext } from '@/context/form';
 
-interface MyCustomDropdownProps {
+interface MyCustomDropdownProps<T extends FieldValues> {
   title: string;
-  fieldName: FieldType;
+  fieldName: FieldPath<T>;
   options: Option[];
-  control: ControlType;
+  control: Control<T>;
 }
 
 type Option = {
   value: string;
 }
 
-export function MyCustomDropdown({ title, fieldName, options, control }: MyCustomDropdownProps) {
+export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, options, control }: MyCustomDropdownProps<T>) {
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
   const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);

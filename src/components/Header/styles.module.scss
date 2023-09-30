@@ -4,6 +4,7 @@
 
   display: flex;
   align-items: center;
+  margin-bottom: 2.5rem;
 
   // position: fixed;
   // top: 0;
@@ -14,7 +15,6 @@
   z-index: 10;
 
   .leftItem {
-    width: 12%;
     display: flex;
     justify-content: space-between;
     align-items: center;

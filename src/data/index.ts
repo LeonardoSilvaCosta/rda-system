@@ -10,6 +10,19 @@ export const listOficiais = [
   { value: "1º TEN Raiany" }
 ]
 
+export const listRank = [
+  { value: "CAP" },
+  { value: "1º TEN" },
+  { value: "2º TEN" },
+]
+
+export const listCadre = [
+  { value: "QCOPM" },
+  { value: "QOPM" },
+  { value: "QPPM" },
+]
+
+
 export const listAcessos = [
   { value: "Espontâneo" },
   { value: "Retorno" },
@@ -17,6 +30,12 @@ export const listAcessos = [
 
 export const listLocais = [
   { value: "CIAP/SEDE" },
+  { value: "CPC I" },
+  { value: "CPRM" }
+]
+
+export const listOpms = [
+  { value: "CIAP/QCG" },
   { value: "CPC I" },
   { value: "CPRM" }
 ]

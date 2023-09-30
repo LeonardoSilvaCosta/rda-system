@@ -36,16 +36,19 @@ export type FormValues = {
 export type ClientFormValues = {
   fullName: string;
   nickName: string;
+  rg: string;
+  rank: string;
+  cadre: string;
   gender: string;
+  cpf: string;
   birthDate: string;
   maritalStatus: string;
-  rg: string;
-  cpf: string;
+  cityOfResidence: string;
   cmd: string;
   opm: string;
-  rank: string;
+  policyHolder: string;
   isMilitary: string;
-  cityOfResidence: string;
+  isVoluntario: string;
 }
 
 export type NameType = Path<FormValues> | Path<ClientFormValues>;

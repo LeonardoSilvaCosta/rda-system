@@ -2,23 +2,23 @@ import React, { useState, useRef, useEffect } from 'react';
 import classnames from 'classnames';
 import styles from './styles.module.scss';
 import { BsChevronDown, BsCheckLg } from "react-icons/bs";
-import { Control, Controller, FieldPath } from 'react-hook-form';
+import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form';
 import { FormValues } from '@/types/types';
 import { SearchBar } from '../SearchBar';
 import { useGlobalContext } from '@/context/form';
 
-interface MyCustomMultiselectDropdownProps {
+interface MyCustomMultiselectDropdownProps<T extends FieldValues> {
   title: string;
-  fieldName: FieldPath<FormValues>;
+  fieldName: FieldPath<T>;
   options: Option[];
-  control: Control<FormValues>;
+  control: Control<T>;
 }
 
 type Option = {
   value: string;
 }
 
-export function MyCustomMultiSelectDropdown({ title, fieldName, options, control }: MyCustomMultiselectDropdownProps) {
+export function MyCustomMultiSelectDropdown<T extends FieldValues>({ title, fieldName, options, control }: MyCustomMultiselectDropdownProps<T>) {
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
