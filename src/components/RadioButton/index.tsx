@@ -14,7 +14,7 @@ export function RadioButton<T extends FieldValues>({ id, label, name, register }
     <div className={styles.radioButtonContainer}>
       <input
         id={id}
-        value={label}
+        value={id}
         className={`${styles.input}`}
         type="radio"
         {...register(name)}

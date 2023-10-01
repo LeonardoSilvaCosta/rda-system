@@ -2,7 +2,7 @@
 
 import { ClientFormValues } from '@/types/types';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Dispatch, SetStateAction, createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { Control, FieldErrors, SubmitHandler, UseFormGetValues, UseFormHandleSubmit, UseFormRegister, UseFormReset, UseFormWatch, useForm } from 'react-hook-form';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { citizenFormValidation, dependentFormValidation, militaryFormValidation } from '@/validation';
@@ -61,7 +61,9 @@ export const RegisterClientContextProvider = ({
   }
 
   const onSubmit: SubmitHandler<ClientFormValues> = async (data) => {
+    console.log(data)
     const birthDate = new Date(data.birthDate);
+    const isCivilVolunteer = data.isCivilVolunteer === "Sim" ? true : false;
 
     const year = birthDate.getFullYear();
     const month = birthDate.getMonth() + 1;
@@ -83,7 +85,7 @@ export const RegisterClientContextProvider = ({
         marital_status: data.maritalStatus,
         city_of_residence: data.cityOfResidence,
         policy_holder: data.policyHolder,
-        is_civil_volunteer: data.isCivilVolunteer,
+        is_civil_volunteer: isCivilVolunteer,
       });
       alert("Você cadastrou um novo usuário com sucesso.")
 

@@ -64,3 +64,8 @@ export type ClientCardType = {
   nickname: string;
   cpf: string;
 }
+
+export type Option = {
+  id: string;
+  name: string;
+} 

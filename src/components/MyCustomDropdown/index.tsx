@@ -1,9 +1,10 @@
+"use client"
 import React, { useState, useEffect, useRef } from 'react';
 import classnames from 'classnames';
 import styles from './styles.module.scss';
 import { BsChevronDown } from "react-icons/bs";
 import { Control, Controller, FieldErrors, FieldPath, FieldValues, UseFormGetValues } from 'react-hook-form';
-import { FormValues } from '@/types/types';
+import { FormValues, Option } from '@/types/types';
 
 interface MyCustomDropdownProps<T extends FieldValues> {
   title: string;
@@ -14,13 +15,10 @@ interface MyCustomDropdownProps<T extends FieldValues> {
   control: Control<T>;
 }
 
-type Option = {
-  value: string;
-}
-
 export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, options, getValues, errors, control }: MyCustomDropdownProps<T>) {
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
-  const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(null);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const errorKey = fieldName as keyof FormValues;
@@ -48,12 +46,14 @@ export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, opti
   }, [isDropDownVisible]);
 
   const buttonDefaultValue = () => {
-    if (selectedItemIndex !== null && !getValues(fieldName)) {
-      return options[selectedItemIndex].value
+    if (selectedItemId) {
+      const selectedOption = options.find(option => option.id === selectedItemId);
+      return selectedOption ? selectedOption.name : <span>Selecione uma opção</span>;
     } else if (getValues(fieldName)) {
-      return getValues(fieldName)
+      const selectedOption = options.find(option => option.id === getValues(fieldName));
+      return selectedOption ? selectedOption.name : <span>Selecione uma opção</span>;
     } else {
-      return <span>Selecione uma opção</span>
+      return <span>Selecione uma opção</span>;
     }
   }
 
@@ -74,9 +74,9 @@ export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, opti
         )}
         {isDropDownVisible && (
           <ul className={styles.options}>
-            {options.map((item, index) => (
+            {options.map((item) => (
               <Controller
-                key={item.value}
+                key={item.id}
                 control={control}
                 name={fieldName}
                 render={({ field }) => (
@@ -84,13 +84,13 @@ export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, opti
                     <li
                       className={styles.option}
                       onClick={() => {
-                        setSelectedItemIndex(index);
+                        setSelectedItemId(item.id);
                         setIsDropDownVisible(false);
-                        field.onChange(item.value);
+                        field.onChange(item.id);
                       }}
                     >
                       <i className={styles.optionIcon} />
-                      <span className={styles.optionText}>{item.value}</span>
+                      <span className={styles.optionText}>{item.name}</span>
                     </li>
                   </div>
                 )}

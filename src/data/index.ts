@@ -29,9 +29,9 @@ export const listAcessos = [
 ]
 
 export const listLocais = [
-  { value: "CIAP/SEDE" },
-  { value: "CPC I" },
-  { value: "CPRM" }
+  { id: "1", name: "CIAP/SEDE" },
+  { id: "2", name: "CPC I" },
+  { id: "3", name: "CPRM" }
 ]
 
 export const listOpms = [
@@ -41,9 +41,9 @@ export const listOpms = [
 ]
 
 export const listMunicipios = [
-  { value: "Belém" },
-  { value: "Ananindeua" },
-  { value: "Abaetetuba" }
+  { id: "1", name: "Belém" },
+  { id: "2", name: "Ananindeua" },
+  { id: "3", name: "Abaetetuba" }
 ]
 
 export const listEstadosCivis = [

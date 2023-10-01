@@ -1,5 +1,4 @@
 "use client"
-
 import { DashboardButton } from '@/components/DashboardButton';
 import styles from './styles.module.scss';
 

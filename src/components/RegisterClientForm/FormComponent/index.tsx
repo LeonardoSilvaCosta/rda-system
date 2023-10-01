@@ -1,15 +1,16 @@
 
-import { ClientFormValues } from '@/types/types';
+import { ClientFormValues, Option, Rank } from '@/types/types';
 import styles from './styles.module.scss';
 import { Control, UseFormRegister, UseFormWatch } from "react-hook-form";
 import { Input } from '@/components/Input';
 import { MyDatePicker } from '@/components/MyDatePicker';
 import { RadioGroup } from '@/components/RadioGroup';
-import { listCadre, listEstadosCivis, listLocais, listMunicipios, listRank } from '@/data';
+import { listEstadosCivis, listLocais, listMunicipios, listRank } from '@/data';
 import { MyCustomDropdown } from '@/components/MyCustomDropdown';
 import { Button } from '@/components/Button';
 import { useRouter } from 'next/navigation';
 import { useRegisterClientContext } from '@/context/registerClientContext';
+import { useEffect, useState } from 'react';
 
 interface FormComponentProps {
   type: string | null;
@@ -21,6 +22,12 @@ interface FormComponentProps {
 export function FormComponent({ type, control, register }: FormComponentProps) {
   const { errors, getValues, reset } = useRegisterClientContext();
   const router = useRouter();
+  const [ ranks, setRanks ] = useState<Option[]>([]);
+  const [ cadres, setCadres ] = useState<Option[]>([]);
+  const [ genders, setGenders ] = useState<Option[]>([]);
+  const [ maritalStatus, setMaritalStatus ] = useState<Option[]>([]);
+  const [ units, setUnits ] = useState<Option[]>([]);
+  const [ cities, setCities ] = useState<Option[]>([]);
   const isMilitary = type === "militar";
   const isDependent = type === "dependente";
   const isCivilian = type === "civil-sem-vínculo"
@@ -29,6 +36,38 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
     reset();
     router.push('/RegisterClient/Options')
   }
+
+  useEffect(() => {
+    const getLists = async () => {
+      try {
+        const resRanks = await fetch('/api/get_ranks');
+        const resCadres = await fetch('/api/get_cadres');
+        const resGenders = await fetch('/api/get_genders');
+        const resMaritalStatus = await fetch('/api/get_marital_status');
+        const resUnits = await fetch('/api/get_units');
+        const resCities = await fetch('/api/get_cities');
+        const ranks = await resRanks.json();
+        const cadres = await resCadres.json();
+        const genders = await resGenders.json();
+        const maritalStatus = await resMaritalStatus.json();
+        const units = await resUnits.json();
+        const cities = await resCities.json();
+
+
+        setRanks(ranks);
+        setCadres(cadres);
+        setGenders(genders);
+        setMaritalStatus(maritalStatus);
+        setUnits(units);
+   
+        setCities(cities);
+      } catch(error) {
+        console.log(error)
+      }
+    }
+
+    getLists();
+  }, [])
 
   return (
     <>
@@ -45,7 +84,7 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
           <MyCustomDropdown
             title="Titular"
             fieldName="policyHolder"
-            options={listRank}
+            options={ranks}
             getValues={getValues}
             errors={errors}
             control={control}
@@ -74,7 +113,7 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
             <MyCustomDropdown
               title="Posto/graduação"
               fieldName="rank"
-              options={listRank}
+              options={ranks}
               getValues={getValues}
               errors={errors}
               control={control}
@@ -82,7 +121,7 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
             <MyCustomDropdown
               title="Quadro"
               fieldName="cadre"
-              options={listCadre}
+              options={cadres}
               getValues={getValues}
               errors={errors}
               control={control}
@@ -90,7 +129,7 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
             <MyCustomDropdown
               title="OPM"
               fieldName="opm"
-              options={listLocais}
+              options={units}
               getValues={getValues}
               errors={errors}
               control={control}
@@ -100,8 +139,7 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
       <RadioGroup
         title="Sexo"
         name="gender"
-        label1="Masculino"
-        label2="Feminino"
+        options={genders}
         errors={errors}
         register={register}
       />
@@ -122,7 +160,7 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
       <MyCustomDropdown
         title="Estado civil"
         fieldName="maritalStatus"
-        options={listEstadosCivis}
+        options={maritalStatus}
         getValues={getValues}
         errors={errors}
         control={control}
