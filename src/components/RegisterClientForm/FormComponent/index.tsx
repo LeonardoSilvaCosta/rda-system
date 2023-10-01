@@ -1,5 +1,5 @@
 
-import { ClientFormValues, Option, Rank } from '@/types/types';
+import { City, ClientFormValues, Military, Option, Rank } from '@/types/types';
 import styles from './styles.module.scss';
 import { Control, UseFormRegister, UseFormWatch } from "react-hook-form";
 import { Input } from '@/components/Input';
@@ -28,6 +28,7 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
   const [ maritalStatus, setMaritalStatus ] = useState<Option[]>([]);
   const [ units, setUnits ] = useState<Option[]>([]);
   const [ cities, setCities ] = useState<Option[]>([]);
+  const [ militaryAttendeds, setMilitaryAttendeds ] = useState<Option[]>([]);
   const isMilitary = type === "militar";
   const isDependent = type === "dependente";
   const isCivilian = type === "civil-sem-vínculo"
@@ -46,21 +47,40 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
         const resMaritalStatus = await fetch('/api/get_marital_status');
         const resUnits = await fetch('/api/get_units');
         const resCities = await fetch('/api/get_cities');
+        const resMilitaryAttendeds = await fetch('/api/get_military_attendeds');
+
         const ranks = await resRanks.json();
         const cadres = await resCadres.json();
         const genders = await resGenders.json();
         const maritalStatus = await resMaritalStatus.json();
         const units = await resUnits.json();
         const cities = await resCities.json();
-
+        const militaryAtendeds = await resMilitaryAttendeds.json();
 
         setRanks(ranks);
         setCadres(cadres);
         setGenders(genders);
         setMaritalStatus(maritalStatus);
         setUnits(units);
+        setMilitaryAttendeds(militaryAtendeds);
+
+        
+        const formattedCities = cities.map((e: City) => {
+          return {
+            id: e.id,
+            name: `${e.name} - ${e.state_acronym}`
+          }
+        })
+
+        const formatedMilitaryAttendeds = militaryAtendeds.map((e: Military) => {
+          return {
+            id: e.id,
+            name: `${e.rank} ${e.cadre} RG ${e.rg} ${e.nickname}`
+          }
+        })
    
-        setCities(cities);
+        setCities(formattedCities);
+        setMilitaryAttendeds(formatedMilitaryAttendeds);
       } catch(error) {
         console.log(error)
       }
@@ -84,7 +104,7 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
           <MyCustomDropdown
             title="Titular"
             fieldName="policyHolder"
-            options={ranks}
+            options={militaryAttendeds}
             getValues={getValues}
             errors={errors}
             control={control}
@@ -168,7 +188,7 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
       <MyCustomDropdown
         title="Cidade de residência"
         fieldName="cityOfResidence"
-        options={listMunicipios}
+        options={cities}
         getValues={getValues}
         errors={errors}
         control={control}

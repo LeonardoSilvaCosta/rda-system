@@ -69,3 +69,19 @@ export type Option = {
   id: string;
   name: string;
 } 
+
+export type City = {
+  id: string;
+  name: string;
+  state_name: string;
+  state_acronym: string;
+}
+
+export type Military = {
+  id: string;
+  fullname: string;
+  nickname: string;
+  rg: string;
+  rank: string;
+  cadre: string;
+}
