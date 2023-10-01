@@ -7,6 +7,7 @@ import { Control, FieldErrors, SubmitHandler, UseFormGetValues, UseFormHandleSub
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { citizenFormValidation, dependentFormValidation, militaryFormValidation } from '@/validation';
 import * as yup from "yup"
+import { useRouter } from 'next/navigation';
 
 interface GlobalContextProps {
   control: Control<any, any>
@@ -17,7 +18,7 @@ interface GlobalContextProps {
   onSubmit: SubmitHandler<ClientFormValues>,
   register: UseFormRegister<any>,
   reset: UseFormReset<any>,
-  selectFormValidation: (formType: string) => JSX.Element,
+  selectFormValidation: (formType: string) => void,
   watch: UseFormWatch<any>,
 }
 
@@ -30,6 +31,7 @@ export const RegisterClientContextProvider = ({
 }) => {
 
   const supabase = createClientComponentClient();
+  const router = useRouter();
   const [validationSchema, setValidationSchema] = useState<yup.ObjectSchema<{}>>(militaryFormValidation);
 
   const {
@@ -72,6 +74,16 @@ export const RegisterClientContextProvider = ({
     const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 
     try {
+      const { data: attendedExists } = await supabase
+        .from("tb_attendeds")
+        .select()
+        .eq('cpf', data.cpf);
+
+      if (attendedExists?.length !== 0) {
+        alert("Já há um atendido cadastrado com esse CPF em nosso banco de dados.")
+        return;
+      }
+
       await supabase.from("tb_attendeds").insert({
         fullname: data.fullName,
         nickname: data.nickName,
@@ -90,6 +102,7 @@ export const RegisterClientContextProvider = ({
       alert("Você cadastrou um novo usuário com sucesso.")
 
       reset();
+      router.push("/RegisterClient/Options")
     } catch (error) {
       alert(`Houve algum problema no cadastro de seu formulário. Erro ${error}. Tente novamente.`)
     }

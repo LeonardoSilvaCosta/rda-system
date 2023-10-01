@@ -4,6 +4,8 @@ import styles from './styles.module.scss';
 import { Header } from '@/components/Header';
 import { useSearchParams } from 'next/navigation'
 import { FormComponent } from '@/components/RegisterClientForm/FormComponent';
+import { Suspense } from 'react';
+import { LoadingComponent } from '@/components/Loading/loading';
 
 export default function Form() {
   const {

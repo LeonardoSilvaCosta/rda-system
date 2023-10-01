@@ -1,16 +1,16 @@
 
-import { City, ClientFormValues, Military, Option, Rank } from '@/types/types';
+import { City, ClientFormValues, Military, Option } from '@/types/types';
 import styles from './styles.module.scss';
 import { Control, UseFormRegister, UseFormWatch } from "react-hook-form";
 import { Input } from '@/components/Input';
 import { MyDatePicker } from '@/components/MyDatePicker';
 import { RadioGroup } from '@/components/RadioGroup';
-import { listEstadosCivis, listLocais, listMunicipios, listRank } from '@/data';
 import { MyCustomDropdown } from '@/components/MyCustomDropdown';
 import { Button } from '@/components/Button';
 import { useRouter } from 'next/navigation';
 import { useRegisterClientContext } from '@/context/registerClientContext';
 import { useEffect, useState } from 'react';
+import { LoadingComponent } from '@/components/Loading/loading';
 
 interface FormComponentProps {
   type: string | null;
@@ -21,14 +21,17 @@ interface FormComponentProps {
 
 export function FormComponent({ type, control, register }: FormComponentProps) {
   const { errors, getValues, reset } = useRegisterClientContext();
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-  const [ ranks, setRanks ] = useState<Option[]>([]);
-  const [ cadres, setCadres ] = useState<Option[]>([]);
-  const [ genders, setGenders ] = useState<Option[]>([]);
-  const [ maritalStatus, setMaritalStatus ] = useState<Option[]>([]);
-  const [ units, setUnits ] = useState<Option[]>([]);
-  const [ cities, setCities ] = useState<Option[]>([]);
-  const [ militaryAttendeds, setMilitaryAttendeds ] = useState<Option[]>([]);
+  const [ranks, setRanks] = useState<Option[]>([]);
+  const [cadres, setCadres] = useState<Option[]>([]);
+  const [genders, setGenders] = useState<Option[]>([]);
+  const [maritalStatus, setMaritalStatus] = useState<Option[]>([]);
+  const [units, setUnits] = useState<Option[]>([]);
+  const [cities, setCities] = useState<Option[]>([]);
+  const [militaryAttendeds, setMilitaryAttendeds] = useState<Option[]>([]);
+  const civilVolunteerOptions = [{ id: "Sim", name: "Sim" }, { id: "Não", name: "Não" }];
+
   const isMilitary = type === "militar";
   const isDependent = type === "dependente";
   const isCivilian = type === "civil-sem-vínculo"
@@ -55,16 +58,14 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
         const maritalStatus = await resMaritalStatus.json();
         const units = await resUnits.json();
         const cities = await resCities.json();
-        const militaryAtendeds = await resMilitaryAttendeds.json();
+        const militaryAttendeds = await resMilitaryAttendeds.json();
 
         setRanks(ranks);
         setCadres(cadres);
         setGenders(genders);
         setMaritalStatus(maritalStatus);
         setUnits(units);
-        setMilitaryAttendeds(militaryAtendeds);
 
-        
         const formattedCities = cities.map((e: City) => {
           return {
             id: e.id,
@@ -72,16 +73,18 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
           }
         })
 
-        const formatedMilitaryAttendeds = militaryAtendeds.map((e: Military) => {
+        const formatedMilitaryAttendeds = await militaryAttendeds.map((e: Military) => {
           return {
             id: e.id,
             name: `${e.rank} ${e.cadre} RG ${e.rg} ${e.nickname}`
           }
         })
-   
+
         setCities(formattedCities);
         setMilitaryAttendeds(formatedMilitaryAttendeds);
-      } catch(error) {
+
+        setIsLoading(false);
+      } catch (error) {
         console.log(error)
       }
     }
@@ -91,130 +94,133 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
 
   return (
     <>
-      <Input
-        title="Nome completo"
-        name="fullName"
-        type="text"
-        hint="LEONARDO DA SILVA COSTA"
-        errors={errors}
-        register={register}
-      />
-      {
-        isDependent && (
+      {isLoading ? <LoadingComponent /> : (
+        <>
+          <Input
+            title="Nome completo"
+            name="fullName"
+            type="text"
+            hint="LEONARDO DA SILVA COSTA"
+            errors={errors}
+            register={register}
+          />
+          {
+            isDependent && (
+              <MyCustomDropdown
+                title="Titular"
+                fieldName="policyHolder"
+                options={militaryAttendeds}
+                getValues={getValues}
+                errors={errors}
+                control={control}
+              />
+            )
+          }
+          {
+            isMilitary && (
+              <>
+                <Input
+                  title="Nome de guerra"
+                  name="nickName"
+                  type="text"
+                  hint="LEONARDO"
+                  errors={errors}
+                  register={register}
+                />
+                <Input
+                  title="RG"
+                  name="rg"
+                  type="text"
+                  hint="40897"
+                  errors={errors}
+                  register={register}
+                />
+                <MyCustomDropdown
+                  title="Posto/graduação"
+                  fieldName="rank"
+                  options={ranks}
+                  getValues={getValues}
+                  errors={errors}
+                  control={control}
+                />
+                <MyCustomDropdown
+                  title="Quadro"
+                  fieldName="cadre"
+                  options={cadres}
+                  getValues={getValues}
+                  errors={errors}
+                  control={control}
+                />
+                <MyCustomDropdown
+                  title="OPM"
+                  fieldName="opm"
+                  options={units}
+                  getValues={getValues}
+                  errors={errors}
+                  control={control}
+                />
+              </>)
+          }
+          <RadioGroup
+            title="Sexo"
+            name="gender"
+            options={genders}
+            errors={errors}
+            register={register}
+          />
+          <Input
+            title="CPF"
+            name="cpf"
+            type="text"
+            hint="000.000.000-00"
+            errors={errors}
+            register={register}
+          />
+          <MyDatePicker
+            title="Data de nascimento"
+            name="birthDate"
+            errors={errors}
+            control={control}
+          />
           <MyCustomDropdown
-            title="Titular"
-            fieldName="policyHolder"
-            options={militaryAttendeds}
+            title="Estado civil"
+            fieldName="maritalStatus"
+            options={maritalStatus}
             getValues={getValues}
             errors={errors}
             control={control}
           />
-        )
-      }
-      {
-        isMilitary && (
-          <>
-            <Input
-              title="Nome de guerra"
-              name="nickName"
-              type="text"
-              hint="LEONARDO"
-              errors={errors}
-              register={register}
-            />
-            <Input
-              title="RG"
-              name="rg"
-              type="text"
-              hint="40897"
-              errors={errors}
-              register={register}
-            />
-            <MyCustomDropdown
-              title="Posto/graduação"
-              fieldName="rank"
-              options={ranks}
-              getValues={getValues}
-              errors={errors}
-              control={control}
-            />
-            <MyCustomDropdown
-              title="Quadro"
-              fieldName="cadre"
-              options={cadres}
-              getValues={getValues}
-              errors={errors}
-              control={control}
-            />
-            <MyCustomDropdown
-              title="OPM"
-              fieldName="opm"
-              options={units}
-              getValues={getValues}
-              errors={errors}
-              control={control}
-            />
-          </>)
-      }
-      <RadioGroup
-        title="Sexo"
-        name="gender"
-        options={genders}
-        errors={errors}
-        register={register}
-      />
-      <Input
-        title="CPF"
-        name="cpf"
-        type="text"
-        hint="000.000.000-00"
-        errors={errors}
-        register={register}
-      />
-      <MyDatePicker
-        title="Data de nascimento"
-        name="birthDate"
-        errors={errors}
-        control={control}
-      />
-      <MyCustomDropdown
-        title="Estado civil"
-        fieldName="maritalStatus"
-        options={maritalStatus}
-        getValues={getValues}
-        errors={errors}
-        control={control}
-      />
-      <MyCustomDropdown
-        title="Cidade de residência"
-        fieldName="cityOfResidence"
-        options={cities}
-        getValues={getValues}
-        errors={errors}
-        control={control}
-      />
-      {
-        isCivilian && (
-          <RadioGroup
-            title="É voluntário civil"
-            name="isCivilVolunteer"
-            label1="Sim"
-            label2="Não"
+          <MyCustomDropdown
+            title="Cidade de residência"
+            fieldName="cityOfResidence"
+            options={cities}
+            getValues={getValues}
             errors={errors}
-            register={register}
+            control={control}
           />
-        )
-      }
-      <div className={styles.buttonsBox}>
-        <Button
-          type="submit"
-          name="Enviar"
-        />
-        <Button
-          type="button"
-          name="Voltar"
-          onClick={returnToDashboard}
-        />
-      </div>
+          {
+            isCivilian && (
+              <RadioGroup
+                title="É voluntário civil"
+                name="isCivilVolunteer"
+                options={civilVolunteerOptions}
+                errors={errors}
+                register={register}
+              />
+            )
+          }
+          <div className={styles.buttonsBox}>
+            <Button
+              type="submit"
+              name="Enviar"
+            />
+            <Button
+              type="button"
+              name="Voltar"
+              onClick={returnToDashboard}
+            />
+          </div>
+        </>
+      )}
     </>)
 }

@@ -33,6 +33,7 @@ export default function Home() {
           <ul>
             {filteredList.map(item => (
               <ClientCard
+                key={item.cpf}
                 fullname={item.fullname}
                 posto_grad={item.posto_grad}
                 cadre={item.cadre}
@@ -42,11 +43,11 @@ export default function Home() {
               />
             ))}
           </ul>
-        ) : 
-        <div className={styles.dashboardButtonContainer}>
-          <DashboardButton icon={AiOutlineUserAdd} name={"Cadastrar atendido"} />
-          <DashboardButton icon={SlNote} name={"Registrar atendimento"} />
-        </div>
+        ) :
+          <div className={styles.dashboardButtonContainer}>
+            <DashboardButton icon={AiOutlineUserAdd} name={"Cadastrar atendido"} />
+            <DashboardButton icon={SlNote} name={"Registrar atendimento"} />
+          </div>
         }
       </div>
     </>
