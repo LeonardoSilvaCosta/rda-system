@@ -31,6 +31,7 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
   const [cities, setCities] = useState<Option[]>([]);
   const [militaryAttendeds, setMilitaryAttendeds] = useState<Option[]>([]);
   const [workStatus, setWorkStatus] = useState<Option[]>([]);
+  const [familiarBonds, setFamiliarBonds] = useState<Option[]>([]);
   const civilVolunteerOptions = [{ id: "Sim", name: "Sim" }, { id: "Não", name: "Não" }];
 
   const isMilitary = type === "militar";
@@ -53,6 +54,7 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
         const resCities = await fetch('/api/get_cities');
         const resMilitaryAttendeds = await fetch('/api/get_military_attendeds');
         const resWorkStatus = await fetch('/api/get_work_status');
+        const resFamiliarBonds = await fetch('/api/get_familiar_bonds');
 
         const ranks = await resRanks.json();
         const cadres = await resCadres.json();
@@ -62,6 +64,8 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
         const cities = await resCities.json();
         const militaryAttendeds = await resMilitaryAttendeds.json();
         const workStatus = await resWorkStatus.json();
+        const familiarBonds = await resFamiliarBonds.json();
+
 
         setRanks(ranks);
         setCadres(cadres);
@@ -69,6 +73,7 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
         setMaritalStatus(maritalStatus);
         setOpms(opms);
         setWorkStatus(workStatus);
+        setFamiliarBonds(familiarBonds);
 
         const formattedCities = cities.map((e: City) => {
           return {
@@ -110,6 +115,7 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
           />
           {
             isDependent && (
+              <>
               <MyCustomDropdown
                 title="Titular"
                 fieldName="policyHolder"
@@ -118,6 +124,15 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
                 errors={errors}
                 control={control}
               />
+              <MyCustomDropdown
+                title="Vínculo"
+                fieldName="familiarBond"
+                options={familiarBonds}
+                getValues={getValues}
+                errors={errors}
+                control={control}
+              />
+              </>
             )
           }
           {
@@ -211,7 +226,7 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
             control={control}
           />
           {
-            isCivilian && (
+            (isDependent || isCivilian) && (
               <RadioGroup
                 title="É voluntário civil"
                 name="isCivilVolunteer"

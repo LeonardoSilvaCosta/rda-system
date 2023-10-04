@@ -97,6 +97,7 @@ export const dependentFormValidation = yup.object({
   birthDate: yup.date().required("O campo 'Data de nascimento' é obrigatório."),
   maritalStatus: yup.string().required("O campo 'Estado civil' é obrigatório."),
   cityOfResidence: yup.string().required("O campo 'Cidade de residência' é obrigatório."),
+  isCivilVolunteer: yup.string().required("O campo é voluntário é obrigatório.")
 })
 
 export const citizenFormValidation = yup.object({

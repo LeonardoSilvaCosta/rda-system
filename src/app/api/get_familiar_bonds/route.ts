@@ -6,11 +6,11 @@ export async function GET(req: NextRequest) {
   const supabase = createRouteHandlerClient({ cookies });
 
   try {
-    const { data: workStatus } = await supabase
-    .from('tb_work_status')
+    const { data: familiarBonds } = await supabase
+    .from('tb_familiar_bonds')
     .select();
 
-    return Response.json(workStatus);
+    return Response.json(familiarBonds);
 
   } catch(error) {
     return new NextResponse(`select data error: ${error}`, { status: 400 });

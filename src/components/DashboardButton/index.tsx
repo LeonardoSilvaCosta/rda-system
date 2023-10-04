@@ -20,17 +20,13 @@ export function DashboardButton({ icon: Icon, name }: DashboardButtonProps) {
 
   const formattedName = name.toLowerCase().replaceAll(' ', '-');
 
-  const selectRoute = () => {
-    return routeMapping[name] || `/RegisterClient/Form?type=${formattedName}`;
-  };
-
   const handleClick = () => {
     selectFormValidation(formattedName);
   };
 
   return (
-    <Link onClick={handleClick} href={selectRoute()}>
-      <div className={styles.button}>
+    <Link href={routeMapping[name] || `/RegisterClient/Form?type=${formattedName}`}>
+      <div className={styles.button} onClick={handleClick}>
         <i>
           <Icon className={styles.icon} />
         </i>
