@@ -91,12 +91,14 @@ export const RegisterClientContextProvider = ({
         rank_id: data.rank,
         cadre_id: data.cadre,
         opm_id: data.opm,
+        work_status: data.workStatus,
         gender_id: data.gender,
         cpf: data.cpf,
         birth_date: formattedDate,
         marital_status_id: data.maritalStatus,
         city_of_residence_id: data.cityOfResidence,
         policy_holder_id: data.policyHolder,
+        familiar_bond: data.familiarBond,
         is_civil_volunteer: isCivilVolunteer,
       });
       alert("Você cadastrou um novo usuário com sucesso.")

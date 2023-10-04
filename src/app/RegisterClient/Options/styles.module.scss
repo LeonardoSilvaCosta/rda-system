@@ -29,4 +29,10 @@
       color: var(--blue-50);
     }
   }
+
+  .buttonContainer {
+    display: flex;
+    justify-content: center;
+    padding-top: 8.6875rem;
+  }
 }

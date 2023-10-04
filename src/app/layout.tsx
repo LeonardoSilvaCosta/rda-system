@@ -7,7 +7,7 @@ import { RegisterClientContextProvider } from '@/context/registerClientContext';
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'RDA System',
+  title: 'CIAP WEB',
   description: `Essa aplicação tem o objetivo de apresentar os dados do Registro Diário de Atendimento 
   e facilitar o preenchimento dos registros.`,
 }

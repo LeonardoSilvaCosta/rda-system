@@ -27,9 +27,10 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
   const [cadres, setCadres] = useState<Option[]>([]);
   const [genders, setGenders] = useState<Option[]>([]);
   const [maritalStatus, setMaritalStatus] = useState<Option[]>([]);
-  const [units, setUnits] = useState<Option[]>([]);
+  const [opms, setOpms] = useState<Option[]>([]);
   const [cities, setCities] = useState<Option[]>([]);
   const [militaryAttendeds, setMilitaryAttendeds] = useState<Option[]>([]);
+  const [workStatus, setWorkStatus] = useState<Option[]>([]);
   const civilVolunteerOptions = [{ id: "Sim", name: "Sim" }, { id: "Não", name: "Não" }];
 
   const isMilitary = type === "militar";
@@ -48,23 +49,26 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
         const resCadres = await fetch('/api/get_cadres');
         const resGenders = await fetch('/api/get_genders');
         const resMaritalStatus = await fetch('/api/get_marital_status');
-        const resUnits = await fetch('/api/get_units');
+        const resOpms = await fetch('/api/get_opms');
         const resCities = await fetch('/api/get_cities');
         const resMilitaryAttendeds = await fetch('/api/get_military_attendeds');
+        const resWorkStatus = await fetch('/api/get_work_status');
 
         const ranks = await resRanks.json();
         const cadres = await resCadres.json();
         const genders = await resGenders.json();
         const maritalStatus = await resMaritalStatus.json();
-        const units = await resUnits.json();
+        const opms = await resOpms.json();
         const cities = await resCities.json();
         const militaryAttendeds = await resMilitaryAttendeds.json();
+        const workStatus = await resWorkStatus.json();
 
         setRanks(ranks);
         setCadres(cadres);
         setGenders(genders);
         setMaritalStatus(maritalStatus);
-        setUnits(units);
+        setOpms(opms);
+        setWorkStatus(workStatus);
 
         const formattedCities = cities.map((e: City) => {
           return {
@@ -154,7 +158,15 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
                 <MyCustomDropdown
                   title="OPM"
                   fieldName="opm"
-                  options={units}
+                  options={opms}
+                  getValues={getValues}
+                  errors={errors}
+                  control={control}
+                />
+                <MyCustomDropdown
+                  title="Situação funcional"
+                  fieldName="workStatus"
+                  options={workStatus}
                   getValues={getValues}
                   errors={errors}
                   control={control}

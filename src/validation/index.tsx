@@ -84,14 +84,14 @@ export const militaryFormValidation = yup.object({
   birthDate: yup.date().required("O campo 'Data de nascimento' é obrigatório."),
   maritalStatus: yup.string().required("O campo 'Estado civil' é obrigatório."),
   cityOfResidence: yup.string().required("O campo 'Cidade de residência' é obrigatório."),
-  // cmd: yup.string().required("O campo 'CMD' é obrigatório."),
   opm: yup.string().required("O campo 'OPM' é obrigatório."),
-  // isMilitary: yup.string().required(),
+  workStatus: yup.string().required("O campo 'Situação funcional' é obrigatório.")
 })
 
 export const dependentFormValidation = yup.object({
   fullName: yup.string().required("O campo 'Nome completo' é obrigatório."),
-  policyHolder: yup.string().required("O campo 'titular'"),
+  policyHolder: yup.string().required("O campo 'titular' é obrigatório."),
+  familiarBond: yup.string().required("O campo 'vínculo é obrigatório.'"),
   gender: yup.string().required("O campo 'Gênero' é obrigatório."),
   cpf: yup.string().required("O campo 'CPF' é obrigatório."),
   birthDate: yup.date().required("O campo 'Data de nascimento' é obrigatório."),

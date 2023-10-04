@@ -44,11 +44,11 @@ export type ClientFormValues = {
   birthDate: string;
   maritalStatus: string;
   cityOfResidence: string;
-  cmd: string;
   opm: string;
   policyHolder: string;
-  isMilitary: string;
   isCivilVolunteer: string;
+  familiarBond: string;
+  workStatus: string;
 }
 
 export type NameType = Path<FormValues> | Path<ClientFormValues>;
@@ -58,7 +58,7 @@ export type ControlType = Control<ClientFormValues> | Control<FormValues>;
 
 export type ClientCardType = {
   fullname: string;
-  posto_grad: string;
+  rank: string;
   cadre: string;
   rg: string;
   nickname: string;
