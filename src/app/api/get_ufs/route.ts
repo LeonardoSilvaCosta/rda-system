@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { parseArgs } from "util";
 
 export async function GET(req: NextRequest) {
   const supabase = createRouteHandlerClient({ cookies });
@@ -9,24 +8,22 @@ export async function GET(req: NextRequest) {
   try {
     const { data } = await supabase.from('tb_states').select(`
     id, 
-    name,
-    acronym,
-    tb_cities ( id, name, state_id )`)
+    acronym`
+    )
 
-    let cities = null;
+    let formmatedStates = null;
 
     if (data) {
-      cities = data.flatMap(item => {
-        return item.tb_cities.map(city => ({
-          id: city.id,
-          name: city.name,
-          state_name: item.name,
-          state_acronym: item.acronym,
-        }));
-      });
+      formmatedStates = data.map((e) => {
+        return {
+          id: e.id,
+          name: e.acronym,
+        }
+      })
     }
 
-    return Response.json(cities);
+
+    return Response.json(formmatedStates);
 
   } catch (error) {
     return new NextResponse(`select data error: ${error}`, { status: 400 });

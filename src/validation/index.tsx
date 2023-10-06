@@ -73,6 +73,11 @@ export const stepFourValidation = yup.object({
   houveAfastamento: yup.string().required("O campo que se refere se houve ou não afastamento é obrigatório."),
 })
 
+// export const address = yup.object({
+//   zipCode: yup.string().required("O campo 'CEP' é obrigatório"),
+//   street: yup.string().required("O campo 'Logradouro' é obrigatório")
+// })
+
 export const militaryFormValidation = yup.object({
   fullName: yup.string().required("O campo 'Nome completo' é obrigatório."),
   nickName: yup.string().required("O campo 'Nome de guerra' é obrigatório."),
@@ -83,6 +88,14 @@ export const militaryFormValidation = yup.object({
   cpf: yup.string().required("O campo 'CPF' é obrigatório."),
   birthDate: yup.date().required("O campo 'Data de nascimento' é obrigatório."),
   maritalStatus: yup.string().required("O campo 'Estado civil' é obrigatório."),
+  address: yup.object({
+    zipCode: yup.string().required("O campo 'CEP' é obrigatório"),
+    street: yup.string().required("O campo 'Logradouro' é obrigatório"),
+    neighborhood: yup.string().required("O campo 'Bairro' é obrigatório"),
+    number: yup.string().required("O campo 'Número' é obrigatório."),
+    stateAcronym: yup.string().required("O campo 'UF' é obrigatório"),
+    city: yup.string().required("O campo 'Cidade' é obrigatório.")
+  }),
   cityOfResidence: yup.string().required("O campo 'Cidade de residência' é obrigatório."),
   opm: yup.string().required("O campo 'OPM' é obrigatório."),
   workStatus: yup.string().required("O campo 'Situação funcional' é obrigatório.")

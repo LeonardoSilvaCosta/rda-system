@@ -43,12 +43,22 @@ export type ClientFormValues = {
   cpf: string;
   birthDate: string;
   maritalStatus: string;
-  cityOfResidence: string;
+  address: Address;
   opm: string;
   policyHolder: string;
   isCivilVolunteer: string;
   familiarBond: string;
   workStatus: string;
+}
+
+export type Address = {
+  zipCode: string;
+  street: string;
+  neighborhood: string;
+  number: string;
+  complement: string;
+  stateAcronym: string;
+  city: string;
 }
 
 export type NameType = Path<FormValues> | Path<ClientFormValues>;
@@ -75,6 +85,7 @@ export type City = {
   name: string;
   state_name: string;
   state_acronym: string;
+  state_id: string;
 }
 
 export type Military = {

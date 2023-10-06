@@ -1,5 +1,5 @@
 
-import { City, ClientFormValues, Military, Option } from '@/types/types';
+import { Address, City, ClientFormValues, Military, Option } from '@/types/types';
 import styles from './styles.module.scss';
 import { Control, UseFormRegister, UseFormWatch } from "react-hook-form";
 import { Input } from '@/components/Input';
@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { useRegisterClientContext } from '@/context/registerClientContext';
 import { useEffect, useState } from 'react';
 import { LoadingComponent } from '@/components/Loading/loading';
+import { Options } from 'next/dist/server/base-server';
 
 interface FormComponentProps {
   type: string | null;
@@ -20,7 +21,7 @@ interface FormComponentProps {
 }
 
 export function FormComponent({ type, control, register }: FormComponentProps) {
-  const { errors, getValues, reset } = useRegisterClientContext();
+  const { errors, getValues, reset, setValue } = useRegisterClientContext();
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const [ranks, setRanks] = useState<Option[]>([]);
@@ -28,6 +29,8 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
   const [genders, setGenders] = useState<Option[]>([]);
   const [maritalStatus, setMaritalStatus] = useState<Option[]>([]);
   const [opms, setOpms] = useState<Option[]>([]);
+  const [states, setStates] = useState<Option[]>([]);
+  const [selectedState, setSelectedState] = useState("");
   const [cities, setCities] = useState<Option[]>([]);
   const [militaryAttendeds, setMilitaryAttendeds] = useState<Option[]>([]);
   const [workStatus, setWorkStatus] = useState<Option[]>([]);
@@ -51,7 +54,7 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
         const resGenders = await fetch('/api/get_genders');
         const resMaritalStatus = await fetch('/api/get_marital_status');
         const resOpms = await fetch('/api/get_opms');
-        const resCities = await fetch('/api/get_cities');
+        const resStates = await fetch('/api/get_ufs');
         const resMilitaryAttendeds = await fetch('/api/get_military_attendeds');
         const resWorkStatus = await fetch('/api/get_work_status');
         const resFamiliarBonds = await fetch('/api/get_familiar_bonds');
@@ -61,11 +64,10 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
         const genders = await resGenders.json();
         const maritalStatus = await resMaritalStatus.json();
         const opms = await resOpms.json();
-        const cities = await resCities.json();
+        const states = await resStates.json();
         const militaryAttendeds = await resMilitaryAttendeds.json();
         const workStatus = await resWorkStatus.json();
         const familiarBonds = await resFamiliarBonds.json();
-
 
         setRanks(ranks);
         setCadres(cadres);
@@ -74,13 +76,7 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
         setOpms(opms);
         setWorkStatus(workStatus);
         setFamiliarBonds(familiarBonds);
-
-        const formattedCities = cities.map((e: City) => {
-          return {
-            id: e.id,
-            name: `${e.name} - ${e.state_acronym}`
-          }
-        })
+        setStates(states);
 
         const formatedMilitaryAttendeds = await militaryAttendeds.map((e: Military) => {
           return {
@@ -89,7 +85,6 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
           }
         })
 
-        setCities(formattedCities);
         setMilitaryAttendeds(formatedMilitaryAttendeds);
 
         setIsLoading(false);
@@ -100,6 +95,51 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
 
     getLists();
   }, [])
+
+  const selectCities = async (ufId: string, cityName?: string) => {
+    fetch(`/api/get_cities_from_uf?ufId=${ufId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setCities(data);
+        const city = data.find((e: Option) => e.name === cityName);
+        if (city) {
+          setValue('address.city', city.id);
+        }
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar cidades:", error);
+      });
+  }
+
+  useEffect(() => {
+    if (selectedState) {
+      selectCities(selectedState);
+    } else {
+      setCities([]);
+    }
+  }, [selectedState]);
+
+
+  const getAddressInfo = async (e: any): Promise<void> => {
+    const cep = e.target.value.replace(/\D/g, '')
+    const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+    const address = await res.json();
+    setValue('address.street', address.logradouro);
+    setValue('address.neighborhood', address.bairro);
+    setValue('address.complement', address.complemento);
+
+    const uf = states.find(e => e.name === address.uf);
+    if (uf) {
+      setValue('address.stateAcronym', uf.id);
+      setSelectedState(uf.id);
+
+      selectCities(uf.id, address.localidade);
+    }
+    else {
+      setSelectedState("");
+      setCities([]);
+    }
+  }
 
   return (
     <>
@@ -116,22 +156,22 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
           {
             isDependent && (
               <>
-              <MyCustomDropdown
-                title="Titular"
-                fieldName="policyHolder"
-                options={militaryAttendeds}
-                getValues={getValues}
-                errors={errors}
-                control={control}
-              />
-              <MyCustomDropdown
-                title="Vínculo"
-                fieldName="familiarBond"
-                options={familiarBonds}
-                getValues={getValues}
-                errors={errors}
-                control={control}
-              />
+                <MyCustomDropdown
+                  title="Titular"
+                  fieldName="policyHolder"
+                  options={militaryAttendeds}
+                  getValues={getValues}
+                  errors={errors}
+                  control={control}
+                />
+                <MyCustomDropdown
+                  title="Vínculo"
+                  fieldName="familiarBond"
+                  options={familiarBonds}
+                  getValues={getValues}
+                  errors={errors}
+                  control={control}
+                />
               </>
             )
           }
@@ -185,6 +225,8 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
                   getValues={getValues}
                   errors={errors}
                   control={control}
+                  selectedState={selectedState}
+                  setSelectedState={setSelectedState}
                 />
               </>)
           }
@@ -217,14 +259,72 @@ export function FormComponent({ type, control, register }: FormComponentProps) {
             errors={errors}
             control={control}
           />
+          <Input
+            title="CEP"
+            name="address.zipCode"
+            type="text"
+            hint="00035-510"
+            getAddressInfo={getAddressInfo}
+            errors={errors}
+            register={register}
+          />
+          <Input
+            title="Logradouro"
+            name="address.street"
+            type="text"
+            hint="Rua Satélite"
+            errors={errors}
+            register={register}
+          />
+          <Input
+            title="Bairro"
+            name="address.neighborhood"
+            type="text"
+            hint="Parque verde"
+            errors={errors}
+            register={register}
+          />
+          <Input
+            title="Número"
+            name="address.number"
+            type="text"
+            hint="34-A"
+            errors={errors}
+            register={register}
+          />
+          <Input
+            title="Complemento"
+            name="address.complement"
+            type="text"
+            hint="Próximo ao supermercado Líder"
+            errors={errors}
+            register={register}
+          />
           <MyCustomDropdown
+            title="Estado"
+            fieldName="address.stateAcronym"
+            options={states}
+            getValues={getValues}
+            errors={errors}
+            control={control}
+            setSelectedState={setSelectedState}
+          />
+          <MyCustomDropdown
+            title="Cidade"
+            fieldName="address.city"
+            options={cities}
+            getValues={getValues}
+            errors={errors}
+            control={control}
+          />
+          {/* <MyCustomDropdown
             title="Cidade de residência"
             fieldName="cityOfResidence"
             options={cities}
             getValues={getValues}
             errors={errors}
             control={control}
-          />
+          /> */}
           {
             (isDependent || isCivilian) && (
               <RadioGroup

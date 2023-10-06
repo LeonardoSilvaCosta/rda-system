@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, SetStateAction, Dispatch } from 'react';
 import classnames from 'classnames';
 import styles from './styles.module.scss';
 import { BsChevronDown } from "react-icons/bs";
@@ -13,9 +13,11 @@ interface MyCustomDropdownProps<T extends FieldValues> {
   getValues: UseFormGetValues<any>;
   errors: FieldErrors<T>,
   control: Control<T>;
+  selectedState?: string;
+  setSelectedState?: Dispatch<SetStateAction<string>>;
 }
 
-export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, options, getValues, errors, control }: MyCustomDropdownProps<T>) {
+export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, options, getValues, errors, control, selectedState, setSelectedState }: MyCustomDropdownProps<T>) {
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
@@ -84,6 +86,7 @@ export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, opti
                     <li
                       className={styles.option}
                       onClick={() => {
+                        setSelectedState && setSelectedState(item.id);
                         setSelectedItemId(item.id);
                         setIsDropDownVisible(false);
                         field.onChange(item.id);

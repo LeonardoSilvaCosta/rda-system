@@ -3,7 +3,7 @@
 import { ClientFormValues } from '@/types/types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createContext, useContext, useEffect, useState } from 'react';
-import { Control, FieldErrors, SubmitHandler, UseFormGetValues, UseFormHandleSubmit, UseFormRegister, UseFormReset, UseFormWatch, useForm } from 'react-hook-form';
+import { Control, FieldErrors, SubmitHandler, UseFormGetValues, UseFormHandleSubmit, UseFormRegister, UseFormReset, UseFormSetValue, UseFormWatch, useForm } from 'react-hook-form';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { citizenFormValidation, dependentFormValidation, militaryFormValidation } from '@/validation';
 import * as yup from "yup"
@@ -19,6 +19,7 @@ interface GlobalContextProps {
   register: UseFormRegister<any>,
   reset: UseFormReset<any>,
   selectFormValidation: (formType: string) => void,
+  setValue: UseFormSetValue<any>;
   watch: UseFormWatch<any>,
 }
 
@@ -34,11 +35,6 @@ export const RegisterClientContextProvider = ({
   const router = useRouter();
   const [validationSchema, setValidationSchema] = useState<yup.ObjectSchema<{}>>(militaryFormValidation);
 
-useEffect(() => {
-  console.log(validationSchema)
-
-}, [validationSchema])
-
   const {
     handleSubmit,
     register,
@@ -46,6 +42,7 @@ useEffect(() => {
     control,
     getValues,
     reset,
+    setValue,
     formState: { errors }
   } = useForm<ClientFormValues | any>({
     resolver: yupResolver(validationSchema)
@@ -127,6 +124,7 @@ useEffect(() => {
         register,
         reset,
         selectFormValidation,
+        setValue,
         watch,
       }}>
       {children}
