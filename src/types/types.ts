@@ -43,12 +43,20 @@ export type ClientFormValues = {
   cpf: string;
   birthDate: string;
   maritalStatus: string;
+  contact: Contact;
   address: Address;
   opm: string;
   policyHolder: string;
   isCivilVolunteer: string;
   familiarBond: string;
   workStatus: string;
+}
+
+export type Contact = {
+  phone: string;
+  owner_identification: string;
+  attended_relationship: string;
+  attended_id: string;
 }
 
 export type Address = {
@@ -78,7 +86,7 @@ export type ClientCardType = {
 export type Option = {
   id: string;
   name: string;
-} 
+}
 
 export type City = {
   id: string;

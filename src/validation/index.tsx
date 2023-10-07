@@ -88,14 +88,6 @@ export const militaryFormValidation = yup.object({
   cpf: yup.string().required("O campo 'CPF' é obrigatório."),
   birthDate: yup.date().required("O campo 'Data de nascimento' é obrigatório."),
   maritalStatus: yup.string().required("O campo 'Estado civil' é obrigatório."),
-  address: yup.object({
-    zipCode: yup.string().required("O campo 'CEP' é obrigatório"),
-    street: yup.string().required("O campo 'Logradouro' é obrigatório"),
-    neighborhood: yup.string().required("O campo 'Bairro' é obrigatório"),
-    number: yup.string().required("O campo 'Número' é obrigatório."),
-    stateAcronym: yup.string().required("O campo 'UF' é obrigatório"),
-    city: yup.string().required("O campo 'Cidade' é obrigatório.")
-  }),
   cityOfResidence: yup.string().required("O campo 'Cidade de residência' é obrigatório."),
   opm: yup.string().required("O campo 'OPM' é obrigatório."),
   workStatus: yup.string().required("O campo 'Situação funcional' é obrigatório.")
@@ -121,4 +113,19 @@ export const citizenFormValidation = yup.object({
   maritalStatus: yup.string().required("O campo 'Estado civil' é obrigatório."),
   cityOfResidence: yup.string().required("O campo 'Cidade de residência' é obrigatório."),
   isCivilVolunteer: yup.string().required("O campo é voluntário é obrigatório.")
+})
+
+export const addressFormValidation = yup.object({
+  zipCode: yup.string().required("O campo 'CEP' é obrigatório"),
+  street: yup.string().required("O campo 'Logradouro' é obrigatório"),
+  neighborhood: yup.string().required("O campo 'Bairro' é obrigatório"),
+  number: yup.string().required("O campo 'Número' é obrigatório."),
+  stateAcronym: yup.string().required("O campo 'UF' é obrigatório"),
+  city: yup.string().required("O campo 'Cidade' é obrigatório.")
+})
+
+export const contactFormValidation = yup.object({
+  phone: yup.string().required("O campo 'Número de telefone' é obrigatório"),
+  owner_identification: yup.string().required("O campo 'Identificação do dono do celular' é obrigatório"),
+  attended_relationship: yup.string().required("O campo 'Vínculo' é obrigatório"),
 })
