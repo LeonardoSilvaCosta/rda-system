@@ -1,9 +1,8 @@
 "use client"
 
 import styles from './styles.module.scss';
-import { Address, ClientFormValues, FormValues } from '@/types/types';
 import { PiTextAlignRightThin } from 'react-icons/pi';
-import { FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form';
+import { FieldError, FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form';
 
 interface InputProps<T extends FieldValues> {
   title: string,
@@ -17,7 +16,13 @@ interface InputProps<T extends FieldValues> {
 }
 
 export function Input<T extends FieldValues>({ title, type, hint, name, getAddressInfo, errors, register }: InputProps<T>) {
-  const errorKey = name as keyof FormValues | ClientFormValues;
+
+  const errorKey = name as string;
+
+  const isNested = name.includes('.');
+
+  const nestedFields = isNested ? name.split('.') : [];
+  const topLevelField = isNested ? nestedFields[0] : name;
 
   const getTypeOfIcon = () => {
     if (type === "text") {
@@ -34,7 +39,14 @@ export function Input<T extends FieldValues>({ title, type, hint, name, getAddre
         {...register(name, { onBlur: getAddressInfo ? (e: any) => getAddressInfo(e) : undefined })}
       />
       {errors[errorKey] && (
-        <span className={"error-message"}>{errors[errorKey]?.message}</span>
+        <span className="error-message">
+          {String(errors[errorKey]?.message)}
+        </span>
+      )}
+      {isNested && nestedFields.length === 2 && errors[topLevelField] && (
+        <span className="error-message">
+          {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]]?.message}
+        </span>
       )}
       {getTypeOfIcon()}
     </div>

@@ -4,6 +4,7 @@ import { IconType } from 'react-icons';
 import styles from './styles.module.scss';
 import Link from 'next/link';
 import { useRegisterClientContext } from '@/context/registerClientContext';
+import { firstFormValidations } from '@/validation';
 
 interface DashboardButtonProps {
   icon: IconType;
@@ -11,7 +12,7 @@ interface DashboardButtonProps {
 }
 
 export function DashboardButton({ icon: Icon, name }: DashboardButtonProps) {
-  const { selectFormValidation } = useRegisterClientContext();
+  const { setCurrentFormType } = useRegisterClientContext();
 
   const routeMapping: { [key: string]: string } = {
     'Cadastrar atendido': '/RegisterClient/Options',
@@ -21,7 +22,8 @@ export function DashboardButton({ icon: Icon, name }: DashboardButtonProps) {
   const formattedName = name.toLowerCase().replaceAll(' ', '-');
 
   const handleClick = () => {
-    selectFormValidation(formattedName);
+    const keyFormType = formattedName as keyof typeof firstFormValidations;
+    setCurrentFormType(keyFormType);
   };
 
   return (

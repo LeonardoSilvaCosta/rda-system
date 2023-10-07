@@ -14,8 +14,7 @@ import { useState } from 'react';
 import { AiOutlineCalendar } from "react-icons/ai";
 
 import styles from './styles.module.scss';
-import { Controller, Control, Path, FieldErrors, FieldValues } from "react-hook-form";
-import { ClientFormValues } from "@/types/types";
+import { Controller, Control, Path, FieldErrors, FieldValues, FieldError } from "react-hook-form";
 
 interface MyDatePickerProps<T extends FieldValues> {
   title: string,
@@ -28,7 +27,12 @@ interface MyDatePickerProps<T extends FieldValues> {
 
 export function MyDatePicker<T extends FieldValues>({ title, name, hint, icon, errors, control }: MyDatePickerProps<T>) {
   const [isDatapickerVisible, setIsDatapickerVisible] = useState(false);
-  const errorKey = name as keyof ClientFormValues;
+  const errorKey = name as string;
+
+  const isNested = name.includes('.');
+
+  const nestedFields = isNested ? name.split('.') : [];
+  const topLevelField = isNested ? nestedFields[0] : name;
 
   return (
     <Controller
@@ -48,7 +52,14 @@ export function MyDatePicker<T extends FieldValues>({ title, name, hint, icon, e
             onChange={(date) => field.onChange(date)}
           />
           {errors[errorKey] && (
-            <span className={"error-message"}>{errors[errorKey]?.message}</span>
+            <span className="error-message">
+              {String(errors[errorKey]?.message)}
+            </span>
+          )}
+          {isNested && nestedFields.length === 2 && errors[topLevelField] && (
+            <span className="error-message">
+              {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]]?.message}
+            </span>
           )}
           <AiOutlineCalendar className={classnames(styles.icon, { [styles.hide]: isDatapickerVisible })} />
         </div>

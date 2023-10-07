@@ -11,16 +11,17 @@ import { useRouter } from 'next/navigation';
 import { useRegisterClientContext } from '@/context/registerClientContext';
 import { useEffect, useState } from 'react';
 import { LoadingComponent } from '@/components/Loading/loading';
+import { firstFormValidations } from '@/validation';
 
 interface FirstClientFormProps {
-  type: string | null;
+  formType: string | null;
   control: Control<ClientFormValues>,
   register: UseFormRegister<ClientFormValues>,
   watch: UseFormWatch<ClientFormValues>,
 }
 
-export function FirstClientForm({ type, control, register }: FirstClientFormProps) {
-  const { errors, getValues, reset, goToNextStep, goToPreviousStep } = useRegisterClientContext();
+export function FirstClientForm({ formType, control, register }: FirstClientFormProps) {
+  const { errors, getValues, reset, goToPreviousStep } = useRegisterClientContext();
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const [ranks, setRanks] = useState<Option[]>([]);
@@ -33,14 +34,12 @@ export function FirstClientForm({ type, control, register }: FirstClientFormProp
   const [familiarBonds, setFamiliarBonds] = useState<Option[]>([]);
   const civilVolunteerOptions = [{ id: "Sim", name: "Sim" }, { id: "Não", name: "Não" }];
 
-  const isMilitary = type === "militar";
-  const isDependent = type === "dependente";
-  const isCivilian = type === "civil-sem-vínculo"
+  if (!formType) return;
+  // const keyFormType = formType as keyof typeof firstFormValidations;
 
-  const returnToDashboard = () => {
-    reset();
-    router.push('/RegisterClient/Options')
-  }
+  const isMilitary = formType === "militar";
+  const isDependent = formType === "dependente";
+  const isCivilian = formType === "civil-sem-vínculo"
 
   useEffect(() => {
     const getLists = async () => {
@@ -219,10 +218,9 @@ export function FirstClientForm({ type, control, register }: FirstClientFormProp
           <div className={styles.buttonsBox}>
             <Button
               type="submit"
-              name="Enviar"
-              onClick={goToNextStep}
+              name="Próxima"
             />
-            <Button 
+            <Button
               type="button"
               name="Voltar"
               onClick={goToPreviousStep}

@@ -25,7 +25,7 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({ title, fiel
   const [search, setSearch] = useState("");
 
   const { errors, getValues } = useGlobalContext();
-  const errorKey = fieldName as keyof FormValues;
+  const errorKey = fieldName as string;
 
   const lowerSearch = search.toLocaleLowerCase();
 

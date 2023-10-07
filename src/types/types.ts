@@ -54,8 +54,8 @@ export type ClientFormValues = {
 
 export type Contact = {
   phone: string;
-  owner_identification: string;
-  attended_relationship: string;
+  ownerIdentification: string;
+  attendedRelationship: string;
   attended_id: string;
 }
 

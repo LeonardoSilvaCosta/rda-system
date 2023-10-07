@@ -2,10 +2,10 @@
 
 import { ClientFormValues } from '@/types/types';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, createContext, useContext, useEffect, useState } from 'react';
 import { Control, FieldErrors, SubmitHandler, UseFormGetValues, UseFormHandleSubmit, UseFormRegister, UseFormReset, UseFormSetValue, UseFormWatch, useForm } from 'react-hook-form';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { addressFormValidation, citizenFormValidation, contactFormValidation, dependentFormValidation, militaryFormValidation } from '@/validation';
+import { addressFormValidation, contactFormValidation, dependentFormValidation, militaryFormValidation, firstFormValidations } from '@/validation';
 import * as yup from "yup"
 import { useRouter } from 'next/navigation';
 import { FirstClientForm } from '@/components/RegisterClientForm/FirstClientForm';
@@ -14,10 +14,11 @@ import { ThirdClientForm } from '@/components/RegisterClientForm/ThidClientForm'
 
 interface GlobalContextProps {
   control: Control<any, any>
+  currentFormType: keyof typeof firstFormValidations;
   errors: FieldErrors<ClientFormValues>,
   formType: string,
   getValues: UseFormGetValues<any>,
-  getCurrentStepForm: (typeForm?: string) => JSX.Element | null,
+  currentComponent: JSX.Element,
   goToNextStep: () => void,
   goToPreviousStep: () => void,
   handleSubmit: UseFormHandleSubmit<any, undefined>,
@@ -26,7 +27,8 @@ interface GlobalContextProps {
   onSubmit: SubmitHandler<ClientFormValues>,
   register: UseFormRegister<any>,
   reset: UseFormReset<any>,
-  selectFormValidation: (index: number, formType: string) => void,
+  selectFormValidation: (index: number) => void,
+  setCurrentFormType: Dispatch<SetStateAction<"militar" | "dependente" | "civil-sem-vínculo">>,
   setValue: UseFormSetValue<any>;
   watch: UseFormWatch<any>,
 }
@@ -56,7 +58,8 @@ export const RegisterClientContextProvider = ({
     resolver: yupResolver(validationSchema)
   })
 
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState<number>(0);
+  const [currentFormType, setCurrentFormType] = useState<keyof typeof firstFormValidations>("militar");
 
   const scrollingTop = () => {
     window.scrollTo({
@@ -65,24 +68,29 @@ export const RegisterClientContextProvider = ({
     });
   }
 
-  const getCurrentStepForm = (typeForm?: string) => {
-    switch (currentStep) {
-      case 0:
-        return <FirstClientForm type={typeForm ? typeForm : null} register={register} control={control} watch={watch} />;
-      case 1:
-        return <SecondClientForm register={register} control={control} />;
-      case 2:
-        return <ThirdClientForm register={register} control={control} />;
-      default:
-        return null;
-    }
-  };
+  const formComponents = [
+    <FirstClientForm formType={currentFormType} register={register} control={control} watch={watch} />,
+    <SecondClientForm register={register} control={control} />,
+    <ThirdClientForm register={register} control={control} />,
+  ]
 
+  const returnToOptions = () => {
+    reset();
+    router.push('/RegisterClient/Options')
+  }
+
+  useEffect(() => {
+    selectFormValidation(0);
+  }, [currentFormType])
+
+  useEffect(() => {
+    console.log(errors)
+  }, [errors])
 
   const totalSteps = 3;
 
   const isFirstStep = currentStep === 0;
-  const isLastStep = currentStep + 1 === totalSteps - 1;
+  const isLastStep = currentStep + 1 === totalSteps;
 
   const goToNextStep = () => {
     if (currentStep + 1 >= totalSteps) return;
@@ -93,27 +101,16 @@ export const RegisterClientContextProvider = ({
   }
 
   const goToPreviousStep = () => {
-    if (currentStep - 1 < 0) return;
+    if (currentStep - 1 < 0) { returnToOptions(); return; };
 
     setCurrentStep(currentStep - 1);
     selectFormValidation(currentStep - 1);
   }
 
-  useEffect(() => {
-    selectFormValidation(currentStep);
-  }, [currentStep]);
-
-
-  const selectFormValidation = (index: number, formType?: string) => {
+  const selectFormValidation = (index: number) => {
     switch (index) {
       case 0:
-        if (formType === "militar") {
-          setValidationSchema(militaryFormValidation);
-        } else if (formType === "dependente") {
-          setValidationSchema(dependentFormValidation);
-        } else {
-          setValidationSchema(citizenFormValidation);
-        }
+        setValidationSchema(firstFormValidations[currentFormType]);
         break;
       case 1:
         setValidationSchema(addressFormValidation);
@@ -122,54 +119,87 @@ export const RegisterClientContextProvider = ({
         setValidationSchema(contactFormValidation);
         break;
       default:
-        break;
+        return null;
     }
   }
 
   const onSubmit: SubmitHandler<ClientFormValues> = async (data) => {
-    console.log(data)
-    const birthDate = new Date(data.birthDate);
-    const isCivilVolunteer = data.isCivilVolunteer === "Sim" ? true : false;
+    goToNextStep();
 
-    const year = birthDate.getFullYear();
-    const month = birthDate.getMonth() + 1;
-    const day = birthDate.getDate();
+    if (isLastStep) {
+      console.log(data)
+      const birthDate = new Date(data.birthDate);
+      const isCivilVolunteer = data.isCivilVolunteer === "Sim" ? true : false;
 
-    const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+      const year = birthDate.getFullYear();
+      const month = birthDate.getMonth() + 1;
+      const day = birthDate.getDate();
 
-    try {
-      const { data: attendedExists } = await supabase
-        .from("tb_attendeds")
-        .select()
-        .eq('cpf', data.cpf);
+      const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 
-      if (attendedExists?.length !== 0) {
-        alert("Já há um atendido cadastrado com esse CPF em nosso banco de dados.")
-        return;
+      try {
+        const { data: attendedExists } = await supabase
+          .from("tb_attendeds")
+          .select()
+          .eq('cpf', data.cpf);
+
+        if (attendedExists?.length !== 0) {
+          alert("Já há um atendido cadastrado com esse CPF em nosso banco de dados.")
+          return;
+        }
+
+        const saveRegister = async () => {
+          const res = await supabase.from("tb_attendeds").upsert({
+            fullname: data.fullName,
+            nickname: data.nickName,
+            rg: data.rg,
+            rank_id: data.rank,
+            cadre_id: data.cadre,
+            opm_id: data.opm,
+            gender_id: data.gender,
+            cpf: data.cpf,
+            birth_date: formattedDate,
+            marital_status_id: data.maritalStatus,
+            city_of_residence_id: "b9bc4145-8090-4e18-b157-a941be03c6c9",
+            registered_by: null,
+            policy_holder_id: data.policyHolder,
+            is_civil_volunteer: isCivilVolunteer,
+            familiar_bond: data.familiarBond,
+            work_status: data.workStatus,
+          }).select();
+
+          const attendedId = res.data && res.data[0].id;
+
+          console.log(data.address)
+
+          await supabase.from("tb_addresses").insert({
+            zip_code: data.address.zipCode,
+            number: data.address.number,
+            street: data.address.street,
+            neighborhood:data.address.neighborhood,
+            complement: data.address.complement,
+            city_id: "b9bc4145-8090-4e18-b157-a941be03c6c9",
+            attended_id: attendedId,
+          });
+
+          await supabase.from("tb_phones").insert({
+            phone: data.contact.phone,
+            owner_identification: data.contact.ownerIdentification,
+            attended_relationship: data.contact.attendedRelationship,
+            attended_id: attendedId,
+          });
+        }
+
+        saveRegister();
+
+        alert("Você cadastrou um novo usuário com sucesso.")
+
+        reset();
+        router.push("/RegisterClient/Options")
+      } catch (error) {
+        alert(`Houve algum problema no cadastro de seu formulário. Erro ${error}. Tente novamente.`)
       }
 
-      await supabase.from("tb_attendeds").insert({
-        fullname: data.fullName,
-        nickname: data.nickName,
-        rg: data.rg,
-        rank_id: data.rank,
-        cadre_id: data.cadre,
-        opm_id: data.opm,
-        work_status: data.workStatus,
-        gender_id: data.gender,
-        cpf: data.cpf,
-        birth_date: formattedDate,
-        marital_status_id: data.maritalStatus,
-        policy_holder_id: data.policyHolder,
-        familiar_bond: data.familiarBond,
-        is_civil_volunteer: isCivilVolunteer,
-      });
-      alert("Você cadastrou um novo usuário com sucesso.")
-
-      reset();
-      router.push("/RegisterClient/Options")
-    } catch (error) {
-      alert(`Houve algum problema no cadastro de seu formulário. Erro ${error}. Tente novamente.`)
     }
   }
 
@@ -177,7 +207,8 @@ export const RegisterClientContextProvider = ({
     <RegisterClientContext.Provider
       value={{
         control,
-        getCurrentStepForm,
+        currentComponent: formComponents[currentStep],
+        currentFormType,
         errors,
         formType: 'clientRegister',
         getValues,
@@ -189,6 +220,7 @@ export const RegisterClientContextProvider = ({
         onSubmit,
         register,
         reset,
+        setCurrentFormType,
         selectFormValidation,
         setValue,
         watch,

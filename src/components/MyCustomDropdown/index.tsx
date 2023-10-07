@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef, SetStateAction, Dispatch } from 're
 import classnames from 'classnames';
 import styles from './styles.module.scss';
 import { BsChevronDown } from "react-icons/bs";
-import { Control, Controller, FieldErrors, FieldPath, FieldValues, UseFormGetValues } from 'react-hook-form';
+import { Control, Controller, FieldError, FieldErrors, FieldPath, FieldValues, UseFormGetValues } from 'react-hook-form';
 import { FormValues, Option } from '@/types/types';
 
 interface MyCustomDropdownProps<T extends FieldValues> {
@@ -23,7 +23,12 @@ export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, opti
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const errorKey = fieldName as keyof FormValues;
+  const errorKey = fieldName as string;
+
+  const isNested = fieldName.includes('.');
+
+  const nestedFields = isNested ? fieldName.split('.') : [];
+  const topLevelField = isNested ? nestedFields[0] : fieldName;
 
   const closeDropdown = () => {
     setIsDropDownVisible(false);
@@ -72,7 +77,14 @@ export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, opti
           <BsChevronDown className={classnames(styles.chevronDown, { [styles.visible]: isDropDownVisible })} />
         </div>
         {errors[errorKey] && (
-          <span className={"error-message"}>{errors[errorKey]?.message}</span>
+          <span className="error-message">
+            {String(errors[errorKey]?.message)}
+          </span>
+        )}
+        {isNested && nestedFields.length === 2 && errors[topLevelField] && (
+          <span className="error-message">
+            {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]]?.message}
+          </span>
         )}
         {isDropDownVisible && (
           <ul className={styles.options}>

@@ -1,9 +1,7 @@
-import { FieldErrors, FieldValues, Path, UseFormRegister } from "react-hook-form";
+import { FieldError, FieldErrors, FieldValues, Path, UseFormRegister } from "react-hook-form";
 import { RadioButton } from '../RadioButton';
 import styles from './styles.module.scss';
-import { ClientFormValues, FormValues, Option } from '@/types/types';
-import { LoadingComponent } from "../Loading/loading";
-import { Suspense } from "react";
+import { Option } from "@/types/types";
 
 interface RadioGroupProps<T extends FieldValues> {
   title: string,
@@ -14,7 +12,12 @@ interface RadioGroupProps<T extends FieldValues> {
 }
 
 export function RadioGroup<T extends FieldValues>({ title, name, options, errors, register }: RadioGroupProps<T>) {
-  const errorKey = name as keyof FormValues | ClientFormValues;
+  const errorKey = name as string;
+
+  const isNested = name.includes('.');
+
+  const nestedFields = isNested ? name.split('.') : [];
+  const topLevelField = isNested ? nestedFields[0] : name;
 
   return (
     <div className={styles.radioGroup}>
@@ -29,7 +32,14 @@ export function RadioGroup<T extends FieldValues>({ title, name, options, errors
         />
       ))}
       {errors[errorKey] && (
-        <span className={"error-message"}>{errors[errorKey]?.message}</span>
+        <span className="error-message">
+          {String(errors[errorKey]?.message)}
+        </span>
+      )}
+      {isNested && nestedFields.length === 2 && errors[topLevelField] && (
+        <span className="error-message">
+          {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]]?.message}
+        </span>
       )}
     </div>
   )

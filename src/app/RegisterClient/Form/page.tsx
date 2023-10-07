@@ -6,14 +6,14 @@ import { useSearchParams } from 'next/navigation'
 
 export default function Form() {
   const {
-    getCurrentStepForm,
+    currentComponent,
     handleSubmit,
     onSubmit,
   } = useRegisterClientContext();
   const searchParams = useSearchParams()
   const formType = searchParams.get('type')
 
-  if(!formType) {
+  if (!formType) {
     alert(`Tipo de formulário não identificado: ${formType}. Tente novamente.`)
     return;
   }
@@ -26,7 +26,7 @@ export default function Form() {
           onSubmit={handleSubmit(onSubmit)}
           className={styles.form}
         >
-          {getCurrentStepForm(formType)}
+          {currentComponent}
         </form>
       </div>
     </>

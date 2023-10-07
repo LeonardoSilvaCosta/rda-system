@@ -57,7 +57,7 @@ export function ThirdClientForm({ control, register }: ThirdClientFormProps) {
           />
           <Input
             title="Identificação do dono do contato"
-            name="contact.owner_identification"
+            name="contact.ownerIdentification"
             type="text"
             hint="Leonardo"
             errors={errors}
@@ -65,7 +65,7 @@ export function ThirdClientForm({ control, register }: ThirdClientFormProps) {
           />
           <MyCustomDropdown
             title="Vínculo do dono do contato com o atendido"
-            fieldName="contact.attended_relationship"
+            fieldName="contact.attendedRelationship"
             options={familiarBonds}
             getValues={getValues}
             errors={errors}
@@ -75,7 +75,6 @@ export function ThirdClientForm({ control, register }: ThirdClientFormProps) {
             <Button
               type="submit"
               name="Enviar"
-              onClick={goToNextStep}
             />
             <Button
               type="button"

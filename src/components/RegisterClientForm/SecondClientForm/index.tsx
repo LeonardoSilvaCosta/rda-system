@@ -23,11 +23,6 @@ export function SecondClientForm({ control, register }: SecondClientFormProps) {
   const [selectedState, setSelectedState] = useState("");
   const [cities, setCities] = useState<Option[]>([]);
 
-  const returnToDashboard = () => {
-    reset();
-    router.push('/RegisterClient/Options')
-  }
-
   useEffect(() => {
     const getLists = async () => {
       try {
@@ -69,23 +64,27 @@ export function SecondClientForm({ control, register }: SecondClientFormProps) {
 
 
   const getAddressInfo = async (e: any): Promise<void> => {
-    const cep = e.target.value.replace(/\D/g, '')
-    const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-    const address = await res.json();
-    setValue('address.street', address.logradouro);
-    setValue('address.neighborhood', address.bairro);
-    setValue('address.complement', address.complemento);
-
-    const uf = states.find(e => e.name === address.uf);
-    if (uf) {
-      setValue('address.stateAcronym', uf.id);
-      setSelectedState(uf.id);
-
-      selectCities(uf.id, address.localidade);
-    }
-    else {
-      setSelectedState("");
-      setCities([]);
+    try {
+      const cep = e.target.value.replace(/\D/g, '')
+      const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const address = await res.json();
+      setValue('address.street', address.logradouro);
+      setValue('address.neighborhood', address.bairro);
+      setValue('address.complement', address.complemento);
+  
+      const uf = states.find(e => e.name === address.uf);
+      if (uf) {
+        setValue('address.stateAcronym', uf.id);
+        setSelectedState(uf.id);
+  
+        selectCities(uf.id, address.localidade);
+      }
+      else {
+        setSelectedState("");
+        setCities([]);
+      }
+    } catch(error) {
+      console.log(`Não foi possível encontrar o cep informado.`);
     }
   }
 
@@ -154,8 +153,7 @@ export function SecondClientForm({ control, register }: SecondClientFormProps) {
           <div className={styles.buttonsBox}>
             <Button
               type="submit"
-              name="Enviar"
-              onClick={goToNextStep}
+              name="Próxima"
             />
             <Button
               type="button"
