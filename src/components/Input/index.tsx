@@ -4,7 +4,7 @@ import styles from './styles.module.scss';
 import { PiTextAlignRightThin } from 'react-icons/pi';
 import { FieldError, FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form';
 
-interface InputProps<T extends FieldValues> extends React.InputHTMLAttributes<HTMLInputElement>  {
+interface InputProps<T extends FieldValues> extends React.InputHTMLAttributes<HTMLInputElement> {
   title: string,
   type: string,
   name: Path<T>,
@@ -37,6 +37,7 @@ export function Input<T extends FieldValues>({ title, type, hint, name, errors, 
         placeholder={hint}
         {...register(name, { onBlur: onBlur })}
       />
+      {getTypeOfIcon()}
       {errors[errorKey] && (
         <span className="error-message">
           {String(errors[errorKey]?.message)}
@@ -47,7 +48,6 @@ export function Input<T extends FieldValues>({ title, type, hint, name, errors, 
           {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]]?.message}
         </span>
       )}
-      {getTypeOfIcon()}
     </div>
   )
 }

@@ -44,6 +44,7 @@ export function MaskedInput<T extends FieldValues>({ title, type, hint, name, er
         placeholder={hint}
         {...register(name, { onBlur: onBlur })}
       />
+      {getTypeOfIcon()}
       {!isCPFValid && (
         <span className="error-message">
           Informe um CPF válido.
@@ -64,7 +65,6 @@ export function MaskedInput<T extends FieldValues>({ title, type, hint, name, er
           {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]]?.message}
         </span>
       )}
-      {getTypeOfIcon()}
     </div>
   )
 }

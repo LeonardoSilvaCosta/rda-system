@@ -76,6 +76,7 @@ export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, opti
           {buttonDefaultValue()}
           <BsChevronDown className={classnames(styles.chevronDown, { [styles.visible]: isDropDownVisible })} />
         </div>
+        <br />
         {errors[errorKey] && (
           <span className="error-message">
             {String(errors[errorKey]?.message)}

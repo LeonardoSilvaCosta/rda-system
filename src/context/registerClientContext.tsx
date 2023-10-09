@@ -58,7 +58,7 @@ export const RegisterClientContextProvider = ({
     control,
     getValues,
     reset,
-    setValue, 
+    setValue,
     formState: { errors }
   } = useForm<ClientFormValues | any>({
     resolver: yupResolver(validationSchema),
@@ -89,7 +89,6 @@ export const RegisterClientContextProvider = ({
   ]
 
   const returnToOptions = () => {
-    reset();
     router.push('/RegisterClient/Options')
   }
 

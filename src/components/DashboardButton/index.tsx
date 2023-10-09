@@ -12,7 +12,7 @@ interface DashboardButtonProps {
 }
 
 export function DashboardButton({ icon: Icon, name }: DashboardButtonProps) {
-  const { setCurrentFormType } = useRegisterClientContext();
+  const { setCurrentFormType, setIsCPFUnique, setIsCPFValid, reset } = useRegisterClientContext();
 
   const routeMapping: { [key: string]: string } = {
     'Cadastrar atendido': '/RegisterClient/Options',
@@ -22,6 +22,9 @@ export function DashboardButton({ icon: Icon, name }: DashboardButtonProps) {
   const formattedName = name.toLowerCase().replaceAll(' ', '-');
 
   const handleClick = () => {
+    setIsCPFUnique(true);
+    setIsCPFValid(true);
+    reset();
     const keyFormType = formattedName as keyof typeof firstFormValidations;
     setCurrentFormType(keyFormType);
   };

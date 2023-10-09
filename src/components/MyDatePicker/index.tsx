@@ -51,6 +51,7 @@ export function MyDatePicker<T extends FieldValues>({ title, name, hint, icon, e
             onFocus={() => setIsDatapickerVisible(true)}
             onChange={(date) => field.onChange(date)}
           />
+          <AiOutlineCalendar className={classnames(styles.icon, { [styles.hide]: isDatapickerVisible })} />
           {errors[errorKey] && (
             <span className="error-message">
               {String(errors[errorKey]?.message)}
@@ -61,7 +62,6 @@ export function MyDatePicker<T extends FieldValues>({ title, name, hint, icon, e
               {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]]?.message}
             </span>
           )}
-          <AiOutlineCalendar className={classnames(styles.icon, { [styles.hide]: isDatapickerVisible })} />
         </div>
       )}
     />
