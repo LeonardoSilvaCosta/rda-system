@@ -22,6 +22,8 @@ interface GlobalContextProps {
   goToNextStep: () => void,
   goToPreviousStep: () => void,
   handleSubmit: UseFormHandleSubmit<any, undefined>,
+  isCPFValid: boolean,
+  isCPFUnique: boolean,
   isFirstStep: boolean,
   isLastStep: boolean,
   onSubmit: SubmitHandler<ClientFormValues>,
@@ -29,6 +31,8 @@ interface GlobalContextProps {
   reset: UseFormReset<any>,
   selectFormValidation: (index: number) => void,
   setCurrentFormType: Dispatch<SetStateAction<"militar" | "dependente" | "civil-sem-vínculo">>,
+  setIsCPFValid: Dispatch<SetStateAction<boolean>>,
+  setIsCPFUnique: Dispatch<SetStateAction<boolean>>
   setValue: UseFormSetValue<any>;
   watch: UseFormWatch<any>,
 }
@@ -44,6 +48,8 @@ export const RegisterClientContextProvider = ({
   const supabase = createClientComponentClient();
   const router = useRouter();
   const [validationSchema, setValidationSchema] = useState<yup.ObjectSchema<{}>>(militaryFormValidation);
+  const [isCPFValid, setIsCPFValid] = useState(true);
+  const [isCPFUnique, setIsCPFUnique] = useState(true);
 
   const {
     handleSubmit,
@@ -52,7 +58,7 @@ export const RegisterClientContextProvider = ({
     control,
     getValues,
     reset,
-    setValue,
+    setValue, 
     formState: { errors }
   } = useForm<ClientFormValues | any>({
     resolver: yupResolver(validationSchema),
@@ -220,12 +226,16 @@ export const RegisterClientContextProvider = ({
         goToNextStep,
         goToPreviousStep,
         handleSubmit,
+        isCPFValid,
+        isCPFUnique,
         isFirstStep,
         isLastStep,
         onSubmit,
         register,
         reset,
         setCurrentFormType,
+        setIsCPFValid,
+        setIsCPFUnique,
         selectFormValidation,
         setValue,
         watch,

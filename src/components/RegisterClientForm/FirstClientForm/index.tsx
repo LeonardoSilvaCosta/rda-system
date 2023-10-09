@@ -13,6 +13,7 @@ import { LoadingComponent } from '@/components/Loading/loading';
 import { firstFormValidations } from '@/validation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { MaskedInput } from '@/components/MaskedInput';
+import { validateCPF } from '@/validation/validateCPF';
 
 interface FirstClientFormProps {
   formType: string | null;
@@ -23,7 +24,7 @@ interface FirstClientFormProps {
 
 export function FirstClientForm({ formType, control, register }: FirstClientFormProps) {
   const supabase = createClientComponentClient();
-  const { errors, getValues, reset, goToPreviousStep } = useRegisterClientContext();
+  const { errors, getValues, goToPreviousStep, isCPFValid, isCPFUnique, setIsCPFValid, setIsCPFUnique } = useRegisterClientContext();
   const [isLoading, setIsLoading] = useState(true);
   const [ranks, setRanks] = useState<Option[]>([]);
   const [cadres, setCadres] = useState<Option[]>([]);
@@ -33,6 +34,7 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
   const [militaryAttendeds, setMilitaryAttendeds] = useState<Option[]>([]);
   const [workStatus, setWorkStatus] = useState<Option[]>([]);
   const [familiarBonds, setFamiliarBonds] = useState<Option[]>([]);
+
   const civilVolunteerOptions = [{ id: "Sim", name: "Sim" }, { id: "Não", name: "Não" }];
 
   if (!formType) return;
@@ -88,18 +90,30 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
     getLists();
   }, [])
 
-  const userExists = async (e: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
-    const cpf = e.target.value;
+  const analyseCPF = async (e: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
+    const field = e.target;
+    const cpf = field.value;
+
+    if (cpf && !validateCPF(cpf)) {
+      field.focus();
+      setIsCPFValid(false);
+    } else {
+      setIsCPFValid(true);
+    }
+
     try {
       const { data: attendedExists } = await supabase
         .from("tb_attendeds")
         .select()
         .eq('cpf', cpf);
 
-      if (attendedExists?.length !== 0) {
-        alert("Já há um atendido cadastrado com esse CPF em nosso banco de dados.")
-        return;
+      if (cpf && attendedExists?.length !== 0) {
+        field.focus();
+        setIsCPFUnique(false)
+      } else {
+        setIsCPFUnique(true);
       }
+
     } catch (error) {
       console.log(error);
     }
@@ -207,7 +221,7 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
             errors={errors}
             register={register}
             mask={"999.999.999-99"}
-            onBlur={(e) => userExists(e)}
+            onBlur={(e) => analyseCPF(e)}
           />
           <MyDatePicker
             title="Data de nascimento"
@@ -236,8 +250,9 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
           }
           <div className={styles.buttonsBox}>
             <Button
-              type="submit"
+              type={"submit"}
               name="Próxima"
+              disabled={!isCPFValid || !isCPFUnique}
             />
             <Button
               type="button"

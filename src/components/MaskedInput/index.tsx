@@ -18,7 +18,7 @@ interface MaskedInputProps<T extends FieldValues> extends React.InputHTMLAttribu
 }
 
 export function MaskedInput<T extends FieldValues>({ title, type, hint, name, errors, register, mask, onBlur }: MaskedInputProps<T>) {
-  const { getValues } = useRegisterClientContext();
+  const { getValues, isCPFValid, isCPFUnique } = useRegisterClientContext();
 
   const errorKey = name as string;
 
@@ -44,6 +44,16 @@ export function MaskedInput<T extends FieldValues>({ title, type, hint, name, er
         placeholder={hint}
         {...register(name, { onBlur: onBlur })}
       />
+      {!isCPFValid && (
+        <span className="error-message">
+          Informe um CPF válido.
+        </span>
+      )}
+      {!isCPFUnique && (
+        <span className="error-message">
+          Já há um atendido cadastrado com esse CPF.
+        </span>
+      )}
       {errors[errorKey] && (
         <span className="error-message">
           {String(errors[errorKey]?.message)}
