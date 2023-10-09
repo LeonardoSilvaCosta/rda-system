@@ -3,7 +3,7 @@
 import { ClientFormValues } from '@/types/types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Dispatch, SetStateAction, createContext, useContext, useEffect, useState } from 'react';
-import { Control, FieldErrors, SubmitHandler, UseFormGetValues, UseFormHandleSubmit, UseFormRegister, UseFormReset, UseFormSetValue, UseFormWatch, useForm } from 'react-hook-form';
+import { Control, FieldErrors, SubmitHandler, UseFormClearErrors, UseFormGetValues, UseFormHandleSubmit, UseFormRegister, UseFormReset, UseFormSetValue, UseFormWatch, useForm } from 'react-hook-form';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { addressFormValidation, contactFormValidation, dependentFormValidation, militaryFormValidation, firstFormValidations } from '@/validation';
 import * as yup from "yup"
@@ -13,6 +13,7 @@ import { SecondClientForm } from '@/components/RegisterClientForm/SecondClientFo
 import { ThirdClientForm } from '@/components/RegisterClientForm/ThidClientForm';
 
 interface GlobalContextProps {
+  clearErrors: UseFormClearErrors<any>,
   control: Control<any, any>
   currentFormType: keyof typeof firstFormValidations;
   errors: FieldErrors<ClientFormValues>,
@@ -52,14 +53,15 @@ export const RegisterClientContextProvider = ({
   const [isCPFUnique, setIsCPFUnique] = useState(true);
 
   const {
+    clearErrors,
+    control,
+    formState: { errors },
+    getValues,
     handleSubmit,
     register,
-    watch,
-    control,
-    getValues,
     reset,
     setValue,
-    formState: { errors }
+    watch
   } = useForm<ClientFormValues | any>({
     resolver: yupResolver(validationSchema),
     defaultValues: {
@@ -216,6 +218,7 @@ export const RegisterClientContextProvider = ({
   return (
     <RegisterClientContext.Provider
       value={{
+        clearErrors,
         control,
         currentComponent: formComponents[currentStep],
         currentFormType,

@@ -87,6 +87,11 @@ export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, opti
             {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]]?.message}
           </span>
         )}
+        {isNested && nestedFields.length === 3 && errors[topLevelField] && (
+          <span className="error-message">
+            {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]][nestedFields[2]]?.message}
+          </span>
+        )}
         {isDropDownVisible && (
           <ul className={styles.options}>
             {options.map((item) => (

@@ -23,7 +23,7 @@ const contactDefaultValues = {
 }
 
 export function ThirdClientForm({ control, register }: ThirdClientFormProps) {
-  const { errors, getValues, goToPreviousStep } = useRegisterClientContext();
+  const { clearErrors, errors, getValues, goToPreviousStep } = useRegisterClientContext();
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'contacts',
@@ -118,7 +118,10 @@ export function ThirdClientForm({ control, register }: ThirdClientFormProps) {
               <Button
                 type="button"
                 name="Novo contato"
-                onClick={() => append(contactDefaultValues)}
+                onClick={() => {
+                  clearErrors();
+                  append(contactDefaultValues);
+                }}
               />
             </div>
           </div>

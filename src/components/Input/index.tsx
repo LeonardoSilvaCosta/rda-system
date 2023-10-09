@@ -48,6 +48,11 @@ export function Input<T extends FieldValues>({ title, type, hint, name, errors, 
           {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]]?.message}
         </span>
       )}
+      {isNested && nestedFields.length === 3 && errors[topLevelField] && (
+        <span className="error-message">
+           {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]][nestedFields[2]]?.message}
+        </span>
+      )}
     </div>
   )
 }

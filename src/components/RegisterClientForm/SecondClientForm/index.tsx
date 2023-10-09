@@ -16,7 +16,7 @@ interface SecondClientFormProps {
 }
 
 export function SecondClientForm({ control, register }: SecondClientFormProps) {
-  const { errors, getValues, setValue, goToPreviousStep } = useRegisterClientContext();
+  const { clearErrors, errors, getValues, setValue, goToPreviousStep } = useRegisterClientContext();
   const [isLoading, setIsLoading] = useState(true);
   const [states, setStates] = useState<Option[]>([]);
   const [selectedState, setSelectedState] = useState("");
@@ -74,6 +74,8 @@ export function SecondClientForm({ control, register }: SecondClientFormProps) {
       setValue('address.street', address.logradouro);
       setValue('address.neighborhood', address.bairro);
       setValue('address.complement', address.complemento);
+
+      clearErrors();
   
       const uf = states.find(e => e.name === address.uf);
       if (uf) {
