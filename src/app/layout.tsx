@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import '../styles/global.scss';
 import { GlobalContextProvider } from '../context/form';
 import { RegisterClientContextProvider } from '@/context/registerClientContext';
+import { RegisterAppointmentContextProvider } from '@/context/registerAppointmentContext';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,7 +24,9 @@ export default function RootLayout({
         className={inter.className}>
         <GlobalContextProvider>
           <RegisterClientContextProvider>
-            {children}
+            <RegisterAppointmentContextProvider>
+              {children}
+            </RegisterAppointmentContextProvider>
           </RegisterClientContextProvider>
         </GlobalContextProvider>
       </body>

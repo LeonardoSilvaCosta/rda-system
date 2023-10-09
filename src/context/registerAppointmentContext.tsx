@@ -1,6 +1,6 @@
 "use client"
 
-import { ClientFormValues } from '@/types/types';
+import { AppointmentFormValues, ClientFormValues } from '@/types/types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Dispatch, SetStateAction, createContext, useContext, useEffect, useState } from 'react';
 import { Control, FieldErrors, SubmitHandler, UseFormClearErrors, UseFormGetValues, UseFormHandleSubmit, UseFormRegister, UseFormReset, UseFormSetValue, UseFormWatch, useForm } from 'react-hook-form';
@@ -11,37 +11,32 @@ import { useRouter } from 'next/navigation';
 import { FirstClientForm } from '@/components/RegisterClientForm/FirstClientForm';
 import { SecondClientForm } from '@/components/RegisterClientForm/SecondClientForm';
 import { ThirdClientForm } from '@/components/RegisterClientForm/ThidClientForm';
+import { FirstAppointmentForm } from '@/components/RegisterAppointmentForm/FirstAppointmentForm';
+import { SecondAppointmentForm } from '@/components/RegisterAppointmentForm/SecondAppointmentForm';
 
 interface GlobalContextProps {
   clearErrors: UseFormClearErrors<any>,
   control: Control<any, any>
-  currentFormType: keyof typeof firstFormValidations;
-  errors: FieldErrors<ClientFormValues>,
-  formType: string,
+  errors: FieldErrors<AppointmentFormValues>,
   getValues: UseFormGetValues<any>,
   currentComponent: JSX.Element,
   goToNextStep: () => void,
   goToPreviousStep: () => void,
   handleSubmit: UseFormHandleSubmit<any, undefined>,
-  isCPFValid: boolean,
-  isCPFUnique: boolean,
   isFirstStep: boolean,
   isLastStep: boolean,
-  onSubmit: SubmitHandler<ClientFormValues>,
+  onSubmit: SubmitHandler<AppointmentFormValues>,
   register: UseFormRegister<any>,
   reset: UseFormReset<any>,
   selectFormValidation: (index: number) => void,
-  setCurrentFormType: Dispatch<SetStateAction<"militar" | "dependente" | "civil-sem-vínculo">>,
   setCurrentStep: Dispatch<SetStateAction<number>>,
-  setIsCPFValid: Dispatch<SetStateAction<boolean>>,
-  setIsCPFUnique: Dispatch<SetStateAction<boolean>>
   setValue: UseFormSetValue<any>;
   watch: UseFormWatch<any>,
 }
 
-const RegisterClientContext = createContext<GlobalContextProps | undefined>(undefined);
+const RegisterAppointmentContext = createContext<GlobalContextProps | undefined>(undefined);
 
-export const RegisterClientContextProvider = ({
+export const RegisterAppointmentContextProvider = ({
   children,
 }: {
   children: React.ReactNode;
@@ -50,8 +45,6 @@ export const RegisterClientContextProvider = ({
   const supabase = createClientComponentClient();
   const router = useRouter();
   const [validationSchema, setValidationSchema] = useState<yup.ObjectSchema<{}>>(militaryFormValidation);
-  const [isCPFValid, setIsCPFValid] = useState(true);
-  const [isCPFUnique, setIsCPFUnique] = useState(true);
 
   const {
     clearErrors,
@@ -63,7 +56,7 @@ export const RegisterClientContextProvider = ({
     reset,
     setValue,
     watch
-  } = useForm<ClientFormValues | any>({
+  } = useForm<AppointmentFormValues | any>({
     resolver: yupResolver(validationSchema),
     defaultValues: {
       contacts: [{
@@ -76,7 +69,6 @@ export const RegisterClientContextProvider = ({
   })
 
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const [currentFormType, setCurrentFormType] = useState<keyof typeof firstFormValidations>("militar");
 
   const scrollingTop = () => {
     window.scrollTo({
@@ -86,24 +78,19 @@ export const RegisterClientContextProvider = ({
   }
 
   const formComponents = [
-    <FirstClientForm formType={currentFormType} register={register} control={control} watch={watch} />,
-    <SecondClientForm register={register} control={control} />,
-    <ThirdClientForm register={register} control={control} />,
+    <FirstAppointmentForm register={register} control={control} watch={watch} />,
+    <SecondAppointmentForm register={register} control={control} />
   ]
 
-  const returnToOptions = () => {
-    router.push('/RegisterClient/Options')
+  const returnToDashboard = () => {
+    router.push('/')
   }
-
-  useEffect(() => {
-    selectFormValidation(0);
-  }, [currentFormType])
 
   // useEffect(() => {
   //   console.log(errors)
   // }, [errors])
 
-  const totalSteps = 3;
+  const totalSteps = 2;
 
   const isFirstStep = currentStep === 0;
   const isLastStep = currentStep + 1 === totalSteps;
@@ -117,7 +104,7 @@ export const RegisterClientContextProvider = ({
   }
 
   const goToPreviousStep = () => {
-    if (currentStep - 1 < 0) { returnToOptions(); return; };
+    if (currentStep - 1 < 0) { returnToDashboard(); return; };
 
     setCurrentStep(currentStep - 1);
     selectFormValidation(currentStep - 1);
@@ -217,42 +204,35 @@ export const RegisterClientContextProvider = ({
   }
 
   return (
-    <RegisterClientContext.Provider
+    <RegisterAppointmentContext.Provider
       value={{
         clearErrors,
         control,
         currentComponent: formComponents[currentStep],
-        currentFormType,
         errors,
-        formType: 'clientRegister',
         getValues,
         goToNextStep,
         goToPreviousStep,
         handleSubmit,
-        isCPFValid,
-        isCPFUnique,
         isFirstStep,
         isLastStep,
         onSubmit,
         register,
         reset,
-        setCurrentFormType,
         setCurrentStep,
-        setIsCPFValid,
-        setIsCPFUnique,
         selectFormValidation,
         setValue,
         watch,
       }}>
       {children}
-    </RegisterClientContext.Provider>
+    </RegisterAppointmentContext.Provider>
   );
 }
 
-export const useRegisterClientContext = () => {
-  const context = useContext(RegisterClientContext);
+export const useRegisterAppointmentContext = () => {
+  const context = useContext(RegisterAppointmentContext);
   if (context === undefined) {
-    throw new Error('useRegisterClientContext deve ser usado dentro de um GlobalContextProvider');
+    throw new Error('useAppointmentClientContext deve ser usado dentro de um GlobalContextProvider');
   }
   return context;
 };

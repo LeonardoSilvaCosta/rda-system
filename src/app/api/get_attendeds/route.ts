@@ -16,7 +16,23 @@ export async function GET(req: NextRequest) {
     tb_cadres ( name )
     `)
 
-    return Response.json(attendeds);
+    let formattedData = null;
+
+    if (attendeds) {
+      formattedData = attendeds.map((e: any) => {
+        return {
+          id: e.id,
+          fullname: e.fullname,
+          nickname: e.nickname ? e.nickname : null,
+          rg: e.rg ? e.rg : null,
+          rank: e.tb_ranks ? e.tb_ranks.name : null,
+          cadre: e.tb_cadres ? e.tb_cadres.name : null,
+          cpf: e.cpf,
+        }
+      })
+    }
+
+    return Response.json(formattedData);
 
   } catch (error) {
     return new NextResponse(`select data error: ${error}`, { status: 400 });

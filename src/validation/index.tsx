@@ -73,11 +73,6 @@ export const stepFourValidation = yup.object({
   houveAfastamento: yup.string().required("O campo que se refere se houve ou não afastamento é obrigatório."),
 })
 
-// export const address = yup.object({
-//   zipCode: yup.string().required("O campo 'CEP' é obrigatório"),
-//   street: yup.string().required("O campo 'Logradouro' é obrigatório")
-// })
-
 export const militaryFormValidation = yup.object({
   fullName: yup.string().required("O campo 'Nome completo' é obrigatório."),
   nickName: yup.string().required("O campo 'Nome de guerra' é obrigatório."),
@@ -130,7 +125,8 @@ const address = yup.object({
 const contacts = yup.object({
   phone: yup.string().required("O campo 'Número de telefone' é obrigatório"),
   ownerIdentification: yup.string().required("O campo 'Identificação do dono do celular' é obrigatório"),
-  attendedRelationship: yup.string().required("O campo 'Vínculo' é obrigatório"),
+  attendedRelationship: yup.string().nullable(),
+  attendedId: yup.string().nonNullable(),
 })
 
 export const addressFormValidation = yup.object({

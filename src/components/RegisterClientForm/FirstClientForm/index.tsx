@@ -105,7 +105,7 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
       const { data: attendedExists } = await supabase
         .from("tb_attendeds")
         .select()
-        .eq('cpf', cpf);
+        .eq('cpf', cpf.replace(/[^\d]/g, ""));
 
       if (cpf && attendedExists?.length !== 0) {
         field.focus();

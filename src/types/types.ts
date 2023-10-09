@@ -69,11 +69,6 @@ export type Address = {
   city: string;
 }
 
-export type NameType = Path<FormValues> | Path<ClientFormValues>;
-export type RegisterType = UseFormRegister<ClientFormValues> | UseFormRegister<FormValues>;
-export type FieldType = FieldPath<ClientFormValues> | FieldPath<FormValues>;
-export type ControlType = Control<ClientFormValues> | Control<FormValues>;
-
 export type ClientCardType = {
   fullname: string;
   rank: string;
@@ -103,4 +98,22 @@ export type Military = {
   rg: string;
   rank: string;
   cadre: string;
+  cpf: string;
 }
+
+export type AppointmentFormValues = {
+  date: string;
+  time: string;
+  specialist: string;
+  attended: string;
+  access: string;
+  facility: string;
+  modality: string;
+  hasProtocol: string;
+  protocol: string;
+}
+
+export type NameType = Path<FormValues> | Path<ClientFormValues>;
+export type RegisterType = UseFormRegister<ClientFormValues> | UseFormRegister<FormValues>;
+export type FieldType = FieldPath<ClientFormValues> | FieldPath<FormValues>;
+export type ControlType = Control<ClientFormValues> | Control<FormValues>;

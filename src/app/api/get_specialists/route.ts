@@ -4,23 +4,25 @@ import { cookies } from "next/headers";
 
 export async function GET(req: NextRequest) {
   const supabase = createRouteHandlerClient({ cookies });
+  const QCOPMId = 'df4281a9-d27f-42b8-baf9-fcf9d58d055e';
 
   try {
-    const { data: attendeds } = await supabase.from('tb_attendeds').select(`
+    const { data: specialists } = await supabase.from('tb_users').select(`
     id, 
     fullname,
     nickname,
     rg,
     cpf,
     tb_ranks ( name ),
-    tb_cadres ( name ),
+    tb_cadres ( name )
     `)
-      .neq('rg', null)
+      .eq('cadre_id', QCOPMId)
+
 
     let formattedData = null;
 
-    if (attendeds) {
-      formattedData = attendeds.map((e: any) => {
+    if (specialists) {
+      formattedData = specialists.map((e: any) => {
         return {
           id: e.id,
           fullname: e.fullname,

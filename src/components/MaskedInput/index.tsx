@@ -31,25 +31,6 @@ export function MaskedInput<T extends FieldValues>({ title, type, hint, name, er
     }
   }
 
-  const contactsError = () => {
-    if (isNested && nestedFields.length === 3 && errors[topLevelField]) {
-      const topLevelError = errors[topLevelField] as Record<string, FieldError>;
-      const indice = Number(topLevelError[nestedFields[1]]);
-      const fieldName = nestedFields[2] as string;
-      const nestedError = topLevelError[indice][fieldName] as FieldError;
-
-      if (nestedError) {
-        return (
-          <span className="error-message">
-            {nestedError.message}
-          </span>
-        );
-      } else {
-        return;
-      }
-    }
-  }
-
   return (
     <div className={styles.inputContainer}>
       <label htmlFor={name}>{title}</label>
