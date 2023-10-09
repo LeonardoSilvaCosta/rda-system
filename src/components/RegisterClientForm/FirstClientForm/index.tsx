@@ -7,11 +7,12 @@ import { MyDatePicker } from '@/components/MyDatePicker';
 import { RadioGroup } from '@/components/RadioGroup';
 import { MyCustomDropdown } from '@/components/MyCustomDropdown';
 import { Button } from '@/components/Button';
-import { useRouter } from 'next/navigation';
 import { useRegisterClientContext } from '@/context/registerClientContext';
 import { useEffect, useState } from 'react';
 import { LoadingComponent } from '@/components/Loading/loading';
 import { firstFormValidations } from '@/validation';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+
 
 interface FirstClientFormProps {
   formType: string | null;
@@ -21,9 +22,9 @@ interface FirstClientFormProps {
 }
 
 export function FirstClientForm({ formType, control, register }: FirstClientFormProps) {
+  const supabase = createClientComponentClient();
   const { errors, getValues, reset, goToPreviousStep } = useRegisterClientContext();
   const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
   const [ranks, setRanks] = useState<Option[]>([]);
   const [cadres, setCadres] = useState<Option[]>([]);
   const [genders, setGenders] = useState<Option[]>([]);
@@ -86,6 +87,23 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
 
     getLists();
   }, [])
+
+  const userExists = async (e: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
+    const cpf = e.target.value;
+    try {
+      const { data: attendedExists } = await supabase
+        .from("tb_attendeds")
+        .select()
+        .eq('cpf', cpf);
+
+      if (attendedExists?.length !== 0) {
+        alert("Já há um atendido cadastrado com esse CPF em nosso banco de dados.")
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <>
@@ -188,6 +206,7 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
             hint="000.000.000-00"
             errors={errors}
             register={register}
+            onBlur={(e) => userExists(e)}
           />
           <MyDatePicker
             title="Data de nascimento"

@@ -4,18 +4,17 @@ import styles from './styles.module.scss';
 import { PiTextAlignRightThin } from 'react-icons/pi';
 import { FieldError, FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form';
 
-interface InputProps<T extends FieldValues> {
+interface InputProps<T extends FieldValues> extends React.InputHTMLAttributes<HTMLInputElement>  {
   title: string,
   type: string,
   name: Path<T>,
   hint?: string,
   icon?: string,
-  getAddressInfo?: (cep: string) => Promise<void>
   errors: FieldErrors<T>,
   register: UseFormRegister<T>,
 }
 
-export function Input<T extends FieldValues>({ title, type, hint, name, getAddressInfo, errors, register }: InputProps<T>) {
+export function Input<T extends FieldValues>({ title, type, hint, name, errors, register, onBlur }: InputProps<T>) {
 
   const errorKey = name as string;
 
@@ -36,7 +35,7 @@ export function Input<T extends FieldValues>({ title, type, hint, name, getAddre
       <input
         type={type}
         placeholder={hint}
-        {...register(name, { onBlur: getAddressInfo ? (e: any) => getAddressInfo(e) : undefined })}
+        {...register(name, { onBlur: onBlur })}
       />
       {errors[errorKey] && (
         <span className="error-message">

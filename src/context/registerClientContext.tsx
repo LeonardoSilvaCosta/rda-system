@@ -146,16 +146,6 @@ export const RegisterClientContextProvider = ({
       const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 
       try {
-        const { data: attendedExists } = await supabase
-          .from("tb_attendeds")
-          .select()
-          .eq('cpf', data.cpf);
-
-        if (attendedExists?.length !== 0) {
-          alert("Já há um atendido cadastrado com esse CPF em nosso banco de dados.")
-          return;
-        }
-
         const saveRegister = async () => {
           const res = await supabase.from("tb_attendeds").upsert({
             fullname: data.fullName,
@@ -168,7 +158,6 @@ export const RegisterClientContextProvider = ({
             cpf: data.cpf,
             birth_date: formattedDate,
             marital_status_id: data.maritalStatus,
-            city_of_residence_id: data.address.city,
             registered_by: null,
             policy_holder_id: data.policyHolder,
             is_civil_volunteer: isCivilVolunteer,
@@ -207,12 +196,13 @@ export const RegisterClientContextProvider = ({
         alert("Você cadastrou um novo usuário com sucesso.")
 
         reset();
+
         setCurrentStep(0);
+        selectFormValidation(0);
         router.push("/RegisterClient/Options")
       } catch (error) {
         alert(`Houve algum problema no cadastro de seu formulário. Erro ${error}. Tente novamente.`)
       }
-
     }
   }
 

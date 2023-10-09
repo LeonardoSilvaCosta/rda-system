@@ -99,9 +99,9 @@ export function SecondClientForm({ control, register }: SecondClientFormProps) {
             name="address.zipCode"
             type="text"
             hint="00035-510"
-            getAddressInfo={getAddressInfo}
             errors={errors}
             register={register}
+            onBlur={getAddressInfo}
           />
           <Input
             title="Logradouro"
