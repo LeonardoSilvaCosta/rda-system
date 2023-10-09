@@ -8,6 +8,7 @@ import { Button } from '@/components/Button';
 import { useRegisterClientContext } from '@/context/registerClientContext';
 import { useEffect, useState } from 'react';
 import { LoadingComponent } from '@/components/Loading/loading';
+import { MaskedInput } from '@/components/MaskedInput';
 
 interface SecondClientFormProps {
   control: Control<ClientFormValues>,
@@ -94,7 +95,7 @@ export function SecondClientForm({ control, register }: SecondClientFormProps) {
     <>
       {isLoading ? <LoadingComponent /> : (
         <>
-          <Input
+          <MaskedInput
             title="CEP"
             name="address.zipCode"
             type="text"
@@ -102,6 +103,7 @@ export function SecondClientForm({ control, register }: SecondClientFormProps) {
             errors={errors}
             register={register}
             onBlur={getAddressInfo}
+            mask={"99999-999"}
           />
           <Input
             title="Logradouro"

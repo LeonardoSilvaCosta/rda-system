@@ -144,6 +144,8 @@ export const RegisterClientContextProvider = ({
       const day = birthDate.getDate();
 
       const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+      const cleanedCPF = data.cpf.replace(/[^\d]/g, "");
+      const cleanedZipCode = data.address.zipCode.replace(/[^\d]/g, "");
 
       try {
         const saveRegister = async () => {
@@ -155,7 +157,7 @@ export const RegisterClientContextProvider = ({
             cadre_id: data.cadre,
             opm_id: data.opm,
             gender_id: data.gender,
-            cpf: data.cpf,
+            cpf: cleanedCPF,
             birth_date: formattedDate,
             marital_status_id: data.maritalStatus,
             registered_by: null,
@@ -168,7 +170,7 @@ export const RegisterClientContextProvider = ({
           const attendedId = res.data && res.data[0].id;
 
           await supabase.from("tb_addresses").insert({
-            zip_code: data.address.zipCode,
+            zip_code: cleanedZipCode,
             number: data.address.number,
             street: data.address.street,
             neighborhood: data.address.neighborhood,
@@ -179,7 +181,7 @@ export const RegisterClientContextProvider = ({
 
           const phones = data.contacts.map((e) => {
             return {
-              phone: e.phone,
+              phone: e.phone.replace(/[^\d]/g, ""),
               owner_identification: e.ownerIdentification,
               attended_relationship: e.attendedRelationship,
               attended_id: attendedId

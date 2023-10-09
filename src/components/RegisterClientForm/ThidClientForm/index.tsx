@@ -8,6 +8,7 @@ import { useRegisterClientContext } from '@/context/registerClientContext';
 import { useEffect, useState } from 'react';
 import { LoadingComponent } from '@/components/Loading/loading';
 import { MyCustomDropdown } from '@/components/MyCustomDropdown';
+import { MaskedInput } from '@/components/MaskedInput';
 
 interface ThirdClientFormProps {
   control: Control<ClientFormValues>,
@@ -72,13 +73,14 @@ export function ThirdClientForm({ control, register }: ThirdClientFormProps) {
                   }
                 </div>
                 <div>
-                  <Input
+                  <MaskedInput
                     title="Número de telefone"
                     name={phone}
                     type="text"
                     hint="(91) 988165507"
                     errors={errors}
                     register={register}
+                    mask={"(99) 99999-9999"}
                   />
                   <Input
                     title="Identificação do dono do contato"

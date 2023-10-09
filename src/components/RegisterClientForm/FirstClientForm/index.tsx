@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import { LoadingComponent } from '@/components/Loading/loading';
 import { firstFormValidations } from '@/validation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-
+import { MaskedInput } from '@/components/MaskedInput';
 
 interface FirstClientFormProps {
   formType: string | null;
@@ -199,13 +199,14 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
             errors={errors}
             register={register}
           />
-          <Input
+          <MaskedInput
             title="CPF"
             name="cpf"
             type="text"
             hint="000.000.000-00"
             errors={errors}
             register={register}
+            mask={"999.999.999-99"}
             onBlur={(e) => userExists(e)}
           />
           <MyDatePicker
