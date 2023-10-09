@@ -17,7 +17,7 @@ interface MyCustomDropdownProps<T extends FieldValues> {
   setSelectedState?: Dispatch<SetStateAction<string>>;
 }
 
-export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, options, getValues, errors, control, selectedState, setSelectedState }: MyCustomDropdownProps<T>) {
+export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, options, getValues, errors, control, setSelectedState }: MyCustomDropdownProps<T>) {
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 

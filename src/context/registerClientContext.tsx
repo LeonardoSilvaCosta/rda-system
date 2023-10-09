@@ -55,7 +55,15 @@ export const RegisterClientContextProvider = ({
     setValue,
     formState: { errors }
   } = useForm<ClientFormValues | any>({
-    resolver: yupResolver(validationSchema)
+    resolver: yupResolver(validationSchema),
+    defaultValues: {
+      contacts: [{
+        phone: '',
+        ownerIdentification: '',
+        attendedRelationship: '',
+        attended_id: ''
+      }]
+    }
   })
 
   const [currentStep, setCurrentStep] = useState<number>(0);
@@ -160,7 +168,7 @@ export const RegisterClientContextProvider = ({
             cpf: data.cpf,
             birth_date: formattedDate,
             marital_status_id: data.maritalStatus,
-            city_of_residence_id: "b9bc4145-8090-4e18-b157-a941be03c6c9",
+            city_of_residence_id: data.address.city,
             registered_by: null,
             policy_holder_id: data.policyHolder,
             is_civil_volunteer: isCivilVolunteer,
@@ -170,24 +178,28 @@ export const RegisterClientContextProvider = ({
 
           const attendedId = res.data && res.data[0].id;
 
-          console.log(data.address)
-
           await supabase.from("tb_addresses").insert({
             zip_code: data.address.zipCode,
             number: data.address.number,
             street: data.address.street,
-            neighborhood:data.address.neighborhood,
+            neighborhood: data.address.neighborhood,
             complement: data.address.complement,
-            city_id: "b9bc4145-8090-4e18-b157-a941be03c6c9",
+            city_id: data.address.city,
             attended_id: attendedId,
           });
 
-          await supabase.from("tb_phones").insert({
-            phone: data.contact.phone,
-            owner_identification: data.contact.ownerIdentification,
-            attended_relationship: data.contact.attendedRelationship,
-            attended_id: attendedId,
-          });
+          const phones = data.contacts.map((e) => {
+            return {
+              phone: e.phone,
+              owner_identification: e.ownerIdentification,
+              attended_relationship: e.attendedRelationship,
+              attended_id: attendedId
+            }
+          })
+
+          await supabase.from("tb_phones").insert(
+            phones
+          );
         }
 
         saveRegister();
@@ -195,6 +207,7 @@ export const RegisterClientContextProvider = ({
         alert("Você cadastrou um novo usuário com sucesso.")
 
         reset();
+        setCurrentStep(0);
         router.push("/RegisterClient/Options")
       } catch (error) {
         alert(`Houve algum problema no cadastro de seu formulário. Erro ${error}. Tente novamente.`)

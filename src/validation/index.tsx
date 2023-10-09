@@ -127,7 +127,7 @@ const address = yup.object({
   city: yup.string().required("O campo 'Cidade' é obrigatório.")
 })
 
-const contact = yup.object({
+const contacts = yup.object({
   phone: yup.string().required("O campo 'Número de telefone' é obrigatório"),
   ownerIdentification: yup.string().required("O campo 'Identificação do dono do celular' é obrigatório"),
   attendedRelationship: yup.string().required("O campo 'Vínculo' é obrigatório"),
@@ -138,5 +138,11 @@ export const addressFormValidation = yup.object({
 })
 
 export const contactFormValidation = yup.object({
-  contact,
+  contacts: yup.lazy((value) => {
+    if (Array.isArray(value)) {
+      return yup.array().of(contacts);
+    } else {
+      return yup.mixed();
+    }
+  }),
 })

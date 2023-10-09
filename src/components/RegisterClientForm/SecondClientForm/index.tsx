@@ -1,11 +1,10 @@
 
 import { ClientFormValues, Option } from '@/types/types';
 import styles from './styles.module.scss';
-import { Control, UseFormRegister, UseFormWatch } from "react-hook-form";
+import { Control, UseFormRegister } from "react-hook-form";
 import { Input } from '@/components/Input';
 import { MyCustomDropdown } from '@/components/MyCustomDropdown';
 import { Button } from '@/components/Button';
-import { useRouter } from 'next/navigation';
 import { useRegisterClientContext } from '@/context/registerClientContext';
 import { useEffect, useState } from 'react';
 import { LoadingComponent } from '@/components/Loading/loading';
@@ -16,9 +15,8 @@ interface SecondClientFormProps {
 }
 
 export function SecondClientForm({ control, register }: SecondClientFormProps) {
-  const { errors, getValues, reset, setValue, goToNextStep, goToPreviousStep } = useRegisterClientContext();
+  const { errors, getValues, setValue, goToPreviousStep } = useRegisterClientContext();
   const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
   const [states, setStates] = useState<Option[]>([]);
   const [selectedState, setSelectedState] = useState("");
   const [cities, setCities] = useState<Option[]>([]);
@@ -55,8 +53,12 @@ export function SecondClientForm({ control, register }: SecondClientFormProps) {
   }
 
   useEffect(() => {
+    const stateAcronym = getValues('address.stateAcronym');
+
     if (selectedState) {
       selectCities(selectedState);
+    } else if(stateAcronym) {
+      selectCities(stateAcronym);
     } else {
       setCities([]);
     }

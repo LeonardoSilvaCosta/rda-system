@@ -1,30 +1,34 @@
 
 import { ClientFormValues, Option } from '@/types/types';
 import styles from './styles.module.scss';
-import { Control, UseFormRegister, UseFormWatch } from "react-hook-form";
+import { Control, FieldPath, Path, UseFormRegister, useFieldArray } from "react-hook-form";
 import { Input } from '@/components/Input';
-import { MyCustomDropdown } from '@/components/MyCustomDropdown';
 import { Button } from '@/components/Button';
-import { useRouter } from 'next/navigation';
 import { useRegisterClientContext } from '@/context/registerClientContext';
 import { useEffect, useState } from 'react';
 import { LoadingComponent } from '@/components/Loading/loading';
+import { MyCustomDropdown } from '@/components/MyCustomDropdown';
 
 interface ThirdClientFormProps {
   control: Control<ClientFormValues>,
   register: UseFormRegister<ClientFormValues>,
 }
 
-export function ThirdClientForm({ control, register }: ThirdClientFormProps) {
-  const { errors, getValues, reset, goToNextStep, goToPreviousStep } = useRegisterClientContext();
-  const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
-  const [familiarBonds, setFamiliarBonds] = useState<Option[]>([]);
+const contactDefaultValues = {
+  phone: '',
+  ownerIdentification: '',
+  attendedRelationship: '',
+  attended_id: ''
+}
 
-  const returnToDashboard = () => {
-    reset();
-    router.push('/RegisterClient/Options')
-  }
+export function ThirdClientForm({ control, register }: ThirdClientFormProps) {
+  const { errors, getValues, goToPreviousStep } = useRegisterClientContext();
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'contacts',
+  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [familiarBonds, setFamiliarBonds] = useState<Option[]>([]);
 
   useEffect(() => {
     const getLists = async () => {
@@ -43,34 +47,79 @@ export function ThirdClientForm({ control, register }: ThirdClientFormProps) {
     getLists();
   }, [])
 
+  const contactBoxElements = () => {
+    return (
+      <>
+        {
+          fields.map((field, index) => {
+            const phone = `contacts.${index}.phone` as Path<ClientFormValues>;
+            const ownerIdentification = `contacts.${index}.ownerIdentification` as Path<ClientFormValues>;
+            const attendedRelationship = `contacts.${index}.attendedRelationship` as FieldPath<ClientFormValues>;
+
+            const isSecondOrLater = index >= 1;
+
+            return (
+              <div key={field.id} className={`${styles.contactBox} ${isSecondOrLater ? styles.withMarginTop : ''}`}>
+                <div className={styles.boxHeader}>
+                  <span>{`Contato ${index + 1}`}</span>
+                  {fields.length > 1 && (
+                    <Button
+                      type='button'
+                      name='Remover'
+                      onClick={() => remove(index)}
+                    />
+                  )
+                  }
+                </div>
+                <div>
+                  <Input
+                    title="Número de telefone"
+                    name={phone}
+                    type="text"
+                    hint="(91) 988165507"
+                    errors={errors}
+                    register={register}
+                  />
+                  <Input
+                    title="Identificação do dono do contato"
+                    name={ownerIdentification}
+                    type="text"
+                    hint="Leonardo"
+                    errors={errors}
+                    register={register}
+                  />
+                  <MyCustomDropdown
+                    title="Vínculo do dono do contato com o atendido"
+                    fieldName={attendedRelationship}
+                    options={familiarBonds}
+                    getValues={getValues}
+                    errors={errors}
+                    control={control}
+                  />
+                </div>
+              </div >
+            )
+          })
+        }
+      </>
+    )
+  }
+
   return (
     <>
       {isLoading ? <LoadingComponent /> : (
         <>
-          <Input
-            title="Número de telefone"
-            name="contact.phone"
-            type="text"
-            hint="(91) 988165507"
-            errors={errors}
-            register={register}
-          />
-          <Input
-            title="Identificação do dono do contato"
-            name="contact.ownerIdentification"
-            type="text"
-            hint="Leonardo"
-            errors={errors}
-            register={register}
-          />
-          <MyCustomDropdown
-            title="Vínculo do dono do contato com o atendido"
-            fieldName="contact.attendedRelationship"
-            options={familiarBonds}
-            getValues={getValues}
-            errors={errors}
-            control={control}
-          />
+          <h2>Contatos</h2>
+          <div className={styles.container}>
+            {contactBoxElements()}
+            <div className={styles.moreButtonBox}>
+              <Button
+                type="button"
+                name="Novo contato"
+                onClick={() => append(contactDefaultValues)}
+              />
+            </div>
+          </div>
           <div className={styles.buttonsBox}>
             <Button
               type="submit"

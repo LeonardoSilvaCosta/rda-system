@@ -43,7 +43,7 @@ export type ClientFormValues = {
   cpf: string;
   birthDate: string;
   maritalStatus: string;
-  contact: Contact;
+  contacts: Contact[];
   address: Address;
   opm: string;
   policyHolder: string;

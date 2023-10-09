@@ -35,7 +35,6 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
   const civilVolunteerOptions = [{ id: "Sim", name: "Sim" }, { id: "Não", name: "Não" }];
 
   if (!formType) return;
-  // const keyFormType = formType as keyof typeof firstFormValidations;
 
   const isMilitary = formType === "militar";
   const isDependent = formType === "dependente";
