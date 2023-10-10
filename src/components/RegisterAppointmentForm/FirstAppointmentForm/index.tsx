@@ -12,15 +12,9 @@ import { LoadingComponent } from '@/components/Loading/loading';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRegisterAppointmentContext } from '@/context/registerAppointmentContext';
 
-interface FirstAppointmentFormProps {
-  control: Control<AppointmentFormValues>,
-  register: UseFormRegister<AppointmentFormValues>,
-  watch: UseFormWatch<AppointmentFormValues>,
-}
-
-export function FirstAppointmentForm({ control, register }: FirstAppointmentFormProps) {
+export function FirstAppointmentForm() {
   const supabase = createClientComponentClient();
-  const { errors, getValues, goToPreviousStep, watch } = useRegisterAppointmentContext();
+  const { control, errors, getValues, goToPreviousStep, register, watch } = useRegisterAppointmentContext();
   const [isLoading, setIsLoading] = useState(true);
   const [specialists, setSpecialists] = useState<Option[]>([]);
   const [attendeds, setAttendeds] = useState<Option[]>([]);

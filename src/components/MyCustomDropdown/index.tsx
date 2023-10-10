@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import styles from './styles.module.scss';
 import { BsChevronDown } from "react-icons/bs";
 import { Control, Controller, FieldError, FieldErrors, FieldPath, FieldValues, UseFormGetValues } from 'react-hook-form';
-import { FormValues, Option } from '@/types/types';
+import { Option } from '@/types/types';
 
 interface MyCustomDropdownProps<T extends FieldValues> {
   title: string;

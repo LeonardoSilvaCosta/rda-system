@@ -57,7 +57,7 @@ export const RegisterAppointmentContextProvider = ({
     setValue,
     watch
   } = useForm<AppointmentFormValues | any>({
-    resolver: yupResolver(validationSchema),
+    // resolver: yupResolver(validationSchema),
     defaultValues: {
       contacts: [{
         phone: '',
@@ -78,8 +78,8 @@ export const RegisterAppointmentContextProvider = ({
   }
 
   const formComponents = [
-    <FirstAppointmentForm register={register} control={control} watch={watch} />,
-    <SecondAppointmentForm register={register} control={control} />
+    <FirstAppointmentForm />,
+    <SecondAppointmentForm />
   ]
 
   const returnToDashboard = () => {

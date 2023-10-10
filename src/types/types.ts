@@ -111,6 +111,17 @@ export type AppointmentFormValues = {
   modality: string;
   hasProtocol: string;
   protocol: string;
+  typeOfService: string;
+  typeOfAssessment: string;
+  typeOfSocialAssessment: string;
+  psychologicalAssessment: string;
+  generalDemand: string;
+  specificDemands: string[];
+  procedure: string;
+  generatedDocuments: string[];
+  travels: string[];
+  hasLeaveOfAbsence: string;
+
 }
 
 export type NameType = Path<FormValues> | Path<ClientFormValues>;

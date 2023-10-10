@@ -1,33 +1,61 @@
 
-import { ClientFormValues, Option } from '@/types/types';
+import { AppointmentFormValues, ClientFormValues, Option } from '@/types/types';
 import styles from './styles.module.scss';
 import { Control, UseFormRegister } from "react-hook-form";
-import { Input } from '@/components/Input';
 import { MyCustomDropdown } from '@/components/MyCustomDropdown';
 import { Button } from '@/components/Button';
-import { useRegisterClientContext } from '@/context/registerClientContext';
 import { useEffect, useState } from 'react';
 import { LoadingComponent } from '@/components/Loading/loading';
-import { MaskedInput } from '@/components/MaskedInput';
+import { RadioGroup } from '@/components/RadioGroup';
+import { MyCustomMultiSelectDropdown } from '@/components/MyCustomMultiselectDropdown';
+import { useRegisterAppointmentContext } from '@/context/registerAppointmentContext';
+import { MyCustomMultiSelectAndRadioDropdown } from '@/components/MyCustomMultiselectAndRadioDropdown';
 
-interface SecondAppointmentFormProps {
-  control: Control<ClientFormValues>,
-  register: UseFormRegister<ClientFormValues>,
-}
-
-export function SecondAppointmentForm({ control, register }: SecondAppointmentFormProps) {
-  const { clearErrors, errors, getValues, setValue, goToPreviousStep } = useRegisterClientContext();
+export function SecondAppointmentForm() {
+  const { control, errors, getValues, register, setValue, goToPreviousStep, watch } = useRegisterAppointmentContext();
   const [isLoading, setIsLoading] = useState(true);
-  const [states, setStates] = useState<Option[]>([]);
-  const [selectedState, setSelectedState] = useState("");
-  const [cities, setCities] = useState<Option[]>([]);
+  const [services, setServices] = useState<Option[]>([]);
+  const [psychologicalAssessments, setPsychologicalAssessments] = useState<Option[]>([]);
+  const [socialAssessments, setSocialAssessments] = useState<Option[]>([]);
+  const [generalDemands, setGeneralDemands] = useState<Option[]>([]);
+  const [specificDemands, setSpecificsDemands] = useState<Option[]>([]);
+  const [procedures, setProcedures] = useState<Option[]>([]);
+  const [documents, setDocuments] = useState<Option[]>([]);
+  const [travels, setTravels] = useState<Option[]>([]);
+
+  const psychologicalId = "8f911cb1-9a72-4765-bf84-1c273eab0139";
+  const socialId = "736eb33d-b012-46e2-9443-29858b965337";
+  const watchTypeOfService = watch("typeOfService");
 
   useEffect(() => {
     const getLists = async () => {
       try {
-        const resStates = await fetch('/api/get_ufs');
-        const states = await resStates.json();
-        setStates(states);
+        const resServices = await fetch('/api/get_services');
+        const resPsychologicalAssessments = await fetch('/api/get_psychological_assessments');
+        const resSocialAssessments = await fetch('/api/get_social_assessments');
+        const resGeneralDemands = await fetch('/api/get_general_demands');
+        const resSpecificDemands = await fetch('/api/get_specific_demands');
+        const resProcedures = await fetch('/api/get_procedures');
+        const resDocuments = await fetch('/api/get_documents');
+        const resTravels = await fetch('/api/get_travels');
+
+        const services = await resServices.json();
+        const psychologicalAssessments = await resPsychologicalAssessments.json();
+        const socialAssessments = await resSocialAssessments.json();
+        const generalDemands = await resGeneralDemands.json();
+        const specificDemands = await resSpecificDemands.json();
+        const procedures = await resProcedures.json();
+        const documents = await resDocuments.json();
+        const travels = await resTravels.json();
+
+        setServices(services);
+        setPsychologicalAssessments(psychologicalAssessments);
+        setSocialAssessments(socialAssessments);
+        setGeneralDemands(generalDemands);
+        setSpecificsDemands(specificDemands);
+        setProcedures(procedures);
+        setDocuments(documents);
+        setTravels(travels);
 
         setIsLoading(false);
       } catch (error) {
@@ -38,123 +66,96 @@ export function SecondAppointmentForm({ control, register }: SecondAppointmentFo
     getLists();
   }, [])
 
-  const selectCities = async (ufId: string, cityName?: string) => {
-    fetch(`/api/get_cities_from_uf?ufId=${ufId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setCities(data);
-        const city = data.find((e: Option) => e.name === cityName);
-        if (city) {
-          setValue('address.city', city.id);
-        }
-      })
-      .catch((error) => {
-        console.error("Erro ao buscar cidades:", error);
-      });
-  }
-
-  useEffect(() => {
-    const stateAcronym = getValues('address.stateAcronym');
-
-    if (selectedState) {
-      selectCities(selectedState);
-    } else if(stateAcronym) {
-      selectCities(stateAcronym);
-    } else {
-      setCities([]);
-    }
-  }, [selectedState]);
-
-
-  const getAddressInfo = async (e: any): Promise<void> => {
-    try {
-      const cep = e.target.value.replace(/\D/g, '')
-      const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-      const address = await res.json();
-      setValue('address.street', address.logradouro);
-      setValue('address.neighborhood', address.bairro);
-      setValue('address.complement', address.complemento);
-
-      clearErrors();
-  
-      const uf = states.find(e => e.name === address.uf);
-      if (uf) {
-        setValue('address.stateAcronym', uf.id);
-        setSelectedState(uf.id);
-  
-        selectCities(uf.id, address.localidade);
-      }
-      else {
-        setSelectedState("");
-        setCities([]);
-      }
-    } catch(error) {
-      console.log(`Não foi possível encontrar o cep informado.`);
-    }
-  }
-
   return (
     <>
       {isLoading ? <LoadingComponent /> : (
         <>
-          <MaskedInput
-            title="CEP"
-            name="address.zipCode"
-            type="text"
-            hint="00035-510"
-            errors={errors}
-            register={register}
-            onBlur={getAddressInfo}
-            mask={"99999-999"}
-          />
-          <Input
-            title="Logradouro"
-            name="address.street"
-            type="text"
-            hint="Rua Satélite"
-            errors={errors}
-            register={register}
-          />
-          <Input
-            title="Bairro"
-            name="address.neighborhood"
-            type="text"
-            hint="Parque verde"
-            errors={errors}
-            register={register}
-          />
-          <Input
-            title="Número"
-            name="address.number"
-            type="text"
-            hint="34-A"
-            errors={errors}
-            register={register}
-          />
-          <Input
-            title="Complemento"
-            name="address.complement"
-            type="text"
-            hint="Próximo ao supermercado Líder"
-            errors={errors}
-            register={register}
-          />
           <MyCustomDropdown
-            title="Estado"
-            fieldName="address.stateAcronym"
-            options={states}
-            getValues={getValues}
+            title="Tipo de serviço"
+            fieldName="typeOfService"
+            options={services}
             errors={errors}
             control={control}
-            setSelectedState={setSelectedState}
-          />
-          <MyCustomDropdown
-            title="Cidade"
-            fieldName="address.city"
-            options={cities}
             getValues={getValues}
+          />
+          {
+            String(watchTypeOfService) === psychologicalId ? (
+              <MyCustomDropdown
+                title="Tipo de avaliação psicológica"
+                fieldName="typeOfAssessment"
+                options={psychologicalAssessments}
+                errors={errors}
+                control={control}
+                getValues={getValues}
+              />
+            ) : <></>
+          }
+          {
+            String(watchTypeOfService) === socialId ? (
+              <MyCustomDropdown
+                title="Tipo de avaliação social"
+                fieldName="typeOfSocialAssessment"
+                options={socialAssessments}
+                errors={errors}
+                control={control}
+                getValues={getValues}
+              />
+            ) : <></>
+          }
+          <MyCustomDropdown
+            title="Demanda geral"
+            fieldName="generalDemand"
+            options={generalDemands}
             errors={errors}
             control={control}
+            getValues={getValues}
+          />
+          <MyCustomMultiSelectDropdown
+            title="Demanda específica"
+            fieldName="specificDemands"
+            getValues={getValues}
+            options={specificDemands}
+            errors={errors}
+            control={control}
+          />
+          <MyCustomDropdown
+            title="Procedimento"
+            fieldName="procedure"
+            options={procedures}
+            errors={errors}
+            control={control}
+            getValues={getValues}
+          />
+          <MyCustomMultiSelectDropdown
+            title="Documentos produzidos"
+            fieldName="generatedDocuments"
+            getValues={getValues}
+            options={documents}
+            errors={errors}
+            control={control}
+          />
+          <MyCustomMultiSelectDropdown
+            title="Deslocamentos"
+            fieldName="travels"
+            getValues={getValues}
+            options={travels}
+            errors={errors}
+            control={control}
+          />
+          <MyCustomMultiSelectAndRadioDropdown
+            title="Encaminhamentos"
+            fieldName="generatedDocuments"
+            getValues={getValues}
+            options={documents}
+            errors={errors}
+            control={control}
+          />
+          <RadioGroup
+            title="Houve afastamento?"
+            options={[{ id: "1", name: "Sim" }, { id: "2", name: "Não" }]}
+            name="hasLeaveOfAbsence"
+            errors={errors}
+            register={register}
           />
           <div className={styles.buttonsBox}>
             <Button

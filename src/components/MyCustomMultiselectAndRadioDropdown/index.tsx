@@ -6,7 +6,7 @@ import { Control, Controller, FieldError, FieldErrors, FieldPath, FieldValues, U
 import { Option } from '@/types/types';
 import { SearchBar } from '../SearchBar';
 
-interface MyCustomMultiselectDropdownProps<T extends FieldValues> {
+interface MyCustomMultiselectAndRadioDropdownProps<T extends FieldValues> {
   title: string;
   fieldName: FieldPath<T>;
   getValues: UseFormGetValues<any>;
@@ -15,11 +15,15 @@ interface MyCustomMultiselectDropdownProps<T extends FieldValues> {
   errors: FieldErrors<T>,
 }
 
-export function MyCustomMultiSelectDropdown<T extends FieldValues>({ title, fieldName, getValues, options, control, errors }: MyCustomMultiselectDropdownProps<T>) {
+export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({ title, fieldName, getValues, options, control, errors }: MyCustomMultiselectAndRadioDropdownProps<T>) {
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [search, setSearch] = useState("");
+  const typesOfReferral = [{ id: "1", name: "Interno" }, { id: "2", name: "Externo" }];
+
+  const [selectedFirstOptions, setSelectedFirstOptions] = useState<Record<string, string[]>>({ id: []});
+
 
   const errorKey = fieldName as string;
 
@@ -39,11 +43,40 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({ title, fiel
     setIsDropDownVisible(false);
   };
 
-  const toggleOption = (value: string) => {
-    if (selectedOptions.includes(value)) {
-      setSelectedOptions(selectedOptions.filter((option) => option !== value));
+  const toggleOption = (option: Option) => {
+    if (selectedOptions.some((selectedOption) => selectedOption.name === option.name)) {
+      const updatedSelectedOptions = selectedOptions.filter((item) => item.name !== option.name);
+      const updatedSelectedFirstOptions = { ...selectedFirstOptions };
+      delete updatedSelectedFirstOptions[option.id];
+      setSelectedFirstOptions(updatedSelectedFirstOptions);
+
+      setSelectedOptions(updatedSelectedOptions);
     } else {
-      setSelectedOptions([...selectedOptions, value]);
+      setSelectedOptions([...selectedOptions, option]);
+    }
+  };
+
+  useEffect(() => {
+    console.log(selectedFirstOptions)
+
+  }, [selectedFirstOptions])
+
+
+  const toggleOption2 = (value: string, itemId: string) => {
+    const currentSelections = selectedFirstOptions[itemId] || [];
+
+    if (currentSelections.includes(value)) {
+      // Remova a seleção se já estiver presente
+      setSelectedFirstOptions({
+        ...selectedFirstOptions,
+        [itemId]: currentSelections.filter((option) => option !== value),
+      });
+    } else {
+      // Adicione a seleção se não estiver presente
+      setSelectedFirstOptions({
+        ...selectedFirstOptions,
+        [itemId]: [...currentSelections, value],
+      });
     }
   };
 
@@ -57,18 +90,13 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({ title, fiel
     }
   }
 
-  const insertItens = (value: string) => {
-    const updatedSelectedOptions = selectedOptions.includes(value)
-      ? selectedOptions.filter((option) => option !== value)
-      : [...selectedOptions, value];
+  const insertItens = (option: Option) => {
+    const updatedSelectedOptions = selectedOptions.some((selectedOption) => selectedOption.name === option.name)
+      ? selectedOptions.filter((selectedOption) => selectedOption.name !== option.name)
+      : [...selectedOptions, option];
 
     return updatedSelectedOptions;
-  }
-
-  const deleteItens = (value: string) => {
-    const updatedSelectedOptions = selectedOptions.filter((item) => item !== value);
-    return updatedSelectedOptions;
-  }
+  };
 
   useEffect(() => {
     if (getValues(fieldName)) {
@@ -128,18 +156,17 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({ title, fiel
               <ul className={styles.selectedItensBox}>
                 {selectedOptions.map((item) => (
                   <Controller
-                    key={item}
+                    key={item.id}
                     control={control}
                     name={fieldName}
                     render={({ field }) => (
                       <li
-                        key={item}
                         className={styles.selectedItem}
-                        onClick={() => {
-                          field.onChange(deleteItens(item))
-                        }}
                       >
-                        {item}
+                        {selectedFirstOptions[item.id] && selectedFirstOptions[item.id].length > 0
+                          ? `${item.name} - ${selectedFirstOptions[item.id].join(', ')}`
+                          : `${item.name}`
+                        }
                         <span
                           className={styles.removeItemButton}
                           onClick={() => toggleOption(item)}
@@ -161,20 +188,44 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({ title, fiel
                     <div className={styles.inputContainer}>
                       <li
                         className={classnames(styles.option, {
-                          checked: selectedOptions.includes(item.name),
                         })}
-                        onClick={() => {
-                          toggleOption(item.name);
-                          field.onChange(insertItens(item.id));
-                        }}
                       >
-                        <span className={styles.checkbox}>
-                          {selectedOptions.includes(item.name) && (
-                            <i className={styles.checkIcon}><BsCheckLg /></i>
-                          )}
-                        </span>
-                        <i className={styles.optionIcon} />
-                        <span className={styles.optionText}>{item.name}</span>
+                        <div className={classnames(styles.firstOptions, {
+                          checked: selectedOptions.includes(item),
+                        })}
+                          onClick={() => {
+                            toggleOption(item);
+                            field.onChange(insertItens(item));
+                          }}
+                        >
+                          <span className={styles.checkbox}>
+                            {selectedOptions.includes(item) && (
+                              <i className={styles.checkIcon}><BsCheckLg /></i>
+                            )}
+                          </span>
+                          <i className={styles.optionIcon} />
+                          <span className={styles.optionText}>{item.name}</span>
+                        </div>
+                        <div className={classnames(styles.secondOptions)}>
+                          {typesOfReferral.map((e) => (
+                            <div key={e.id} className={classnames(styles.secondCheckboxesWrapper, {
+                              checked: selectedFirstOptions[item.id]?.includes(e.name),
+                            })}
+                              onClick={() => {
+                                if (selectedOptions.some((selectedItem) => selectedItem.id === item.id)) {
+                                  toggleOption2(e.name, item.id);
+                                }
+                              }}
+                            >
+                              <span className={styles.checkbox}>
+                                {selectedFirstOptions[item.id]?.includes(e.name) && (
+                                  <i className={styles.checkIcon}><BsCheckLg /></i>
+                                )}
+                              </span>
+                              <span className={styles.optionText}>{e.name}</span>
+                            </div>
+                          ))}
+                        </div>
                       </li>
                     </div>
                   )}
