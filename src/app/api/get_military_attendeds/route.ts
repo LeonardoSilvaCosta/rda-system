@@ -13,9 +13,9 @@ export async function GET(req: NextRequest) {
     rg,
     cpf,
     tb_ranks ( name ),
-    tb_cadres ( name ),
+    tb_cadres ( name )
     `)
-      .neq('rg', null)
+      .neq('rg', null);
 
     let formattedData = null;
 
@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
         }
       })
     }
-
+    
     return Response.json(formattedData);
 
   } catch (error) {

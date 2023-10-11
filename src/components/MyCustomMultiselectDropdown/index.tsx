@@ -17,7 +17,7 @@ interface MyCustomMultiselectDropdownProps<T extends FieldValues> {
 
 export function MyCustomMultiSelectDropdown<T extends FieldValues>({ title, fieldName, getValues, options, control, errors }: MyCustomMultiselectDropdownProps<T>) {
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [search, setSearch] = useState("");
 
@@ -39,11 +39,11 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({ title, fiel
     setIsDropDownVisible(false);
   };
 
-  const toggleOption = (value: string) => {
-    if (selectedOptions.includes(value)) {
-      setSelectedOptions(selectedOptions.filter((option) => option !== value));
+  const toggleOption = (option: Option) => {
+    if (selectedOptions.map(e => e.name).includes(option.name)) {
+      setSelectedOptions(selectedOptions.filter((item) => item.name !== option.name));
     } else {
-      setSelectedOptions([...selectedOptions, value]);
+      setSelectedOptions([...selectedOptions, option]);
     }
   };
 
@@ -57,16 +57,16 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({ title, fiel
     }
   }
 
-  const insertItens = (value: string) => {
-    const updatedSelectedOptions = selectedOptions.includes(value)
-      ? selectedOptions.filter((option) => option !== value)
-      : [...selectedOptions, value];
+  const insertItens = (option: Option) => {
+    const updatedSelectedOptions = selectedOptions.map(e => e.name).includes(option.name)
+      ? selectedOptions.filter((option) => option.name !== option.name)
+      : [...selectedOptions, option];
 
     return updatedSelectedOptions;
   }
 
-  const deleteItens = (value: string) => {
-    const updatedSelectedOptions = selectedOptions.filter((item) => item !== value);
+  const deleteItens = (option: Option) => {
+    const updatedSelectedOptions = selectedOptions.filter((item) => item.name !== option.name);
     return updatedSelectedOptions;
   }
 
@@ -128,21 +128,21 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({ title, fiel
               <ul className={styles.selectedItensBox}>
                 {selectedOptions.map((item) => (
                   <Controller
-                    key={item}
+                    key={item.id}
                     control={control}
                     name={fieldName}
                     render={({ field }) => (
                       <li
-                        key={item}
                         className={styles.selectedItem}
-                        onClick={() => {
-                          field.onChange(deleteItens(item))
-                        }}
                       >
-                        {item}
+                        {item.name}
                         <span
                           className={styles.removeItemButton}
-                          onClick={() => toggleOption(item)}
+                          onClick={() => {
+                            toggleOption(item);
+                            field.onChange(deleteItens(item));
+
+                          }}
                         >x</span>
                       </li>
                     )}
@@ -161,15 +161,15 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({ title, fiel
                     <div className={styles.inputContainer}>
                       <li
                         className={classnames(styles.option, {
-                          checked: selectedOptions.includes(item.name),
+                          checked: selectedOptions.includes(item),
                         })}
                         onClick={() => {
-                          toggleOption(item.name);
-                          field.onChange(insertItens(item.id));
+                          toggleOption(item);
+                          field.onChange(insertItens(item));
                         }}
                       >
                         <span className={styles.checkbox}>
-                          {selectedOptions.includes(item.name) && (
+                          {selectedOptions.includes(item) && (
                             <i className={styles.checkIcon}><BsCheckLg /></i>
                           )}
                         </span>

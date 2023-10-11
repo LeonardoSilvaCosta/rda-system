@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Dispatch, SetStateAction, createContext, useContext, useEffect, useState } from 'react';
 import { Control, FieldErrors, SubmitHandler, UseFormClearErrors, UseFormGetValues, UseFormHandleSubmit, UseFormRegister, UseFormReset, UseFormSetValue, UseFormWatch, useForm } from 'react-hook-form';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { addressFormValidation, contactFormValidation, dependentFormValidation, militaryFormValidation, firstFormValidations } from '@/validation';
+import { addressFormValidation, contactFormValidation, militaryFormValidation, firstClientFormValidations } from '@/validation';
 import * as yup from "yup"
 import { useRouter } from 'next/navigation';
 import { FirstClientForm } from '@/components/RegisterClientForm/FirstClientForm';
@@ -15,7 +15,7 @@ import { ThirdClientForm } from '@/components/RegisterClientForm/ThidClientForm'
 interface GlobalContextProps {
   clearErrors: UseFormClearErrors<any>,
   control: Control<any, any>
-  currentFormType: keyof typeof firstFormValidations;
+  currentFormType: keyof typeof firstClientFormValidations;
   errors: FieldErrors<ClientFormValues>,
   formType: string,
   getValues: UseFormGetValues<any>,
@@ -76,7 +76,7 @@ export const RegisterClientContextProvider = ({
   })
 
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const [currentFormType, setCurrentFormType] = useState<keyof typeof firstFormValidations>("militar");
+  const [currentFormType, setCurrentFormType] = useState<keyof typeof firstClientFormValidations>("militar");
 
   const scrollingTop = () => {
     window.scrollTo({
@@ -126,7 +126,7 @@ export const RegisterClientContextProvider = ({
   const selectFormValidation = (index: number) => {
     switch (index) {
       case 0:
-        setValidationSchema(firstFormValidations[currentFormType]);
+        setValidationSchema(firstClientFormValidations[currentFormType]);
         break;
       case 1:
         setValidationSchema(addressFormValidation);

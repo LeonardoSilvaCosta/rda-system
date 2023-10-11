@@ -112,17 +112,27 @@ export type AppointmentFormValues = {
   hasProtocol: string;
   protocol: string;
   typeOfService: string;
-  typeOfAssessment: string;
+  typeOfPsychologicalAssessment: string;
   typeOfSocialAssessment: string;
-  psychologicalAssessment: string;
   generalDemand: string;
-  specificDemands: string[];
+  specificDemands: SpecificDemands[];
   procedure: string;
+  referrals: Referrals[];
   generatedDocuments: string[];
   travels: string[];
   hasLeaveOfAbsence: string;
-
 }
+
+type SpecificDemands = {
+  id: string,
+  name: string,
+}
+
+type Referrals = {
+  destination: string,
+  types: Record<string, Option[]>
+}
+
 
 export type NameType = Path<FormValues> | Path<ClientFormValues>;
 export type RegisterType = UseFormRegister<ClientFormValues> | UseFormRegister<FormValues>;

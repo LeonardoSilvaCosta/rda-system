@@ -1,16 +1,13 @@
 "use client"
 
-import { AppointmentFormValues, ClientFormValues } from '@/types/types';
+import { AppointmentFormValues } from '@/types/types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Dispatch, SetStateAction, createContext, useContext, useEffect, useState } from 'react';
 import { Control, FieldErrors, SubmitHandler, UseFormClearErrors, UseFormGetValues, UseFormHandleSubmit, UseFormRegister, UseFormReset, UseFormSetValue, UseFormWatch, useForm } from 'react-hook-form';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { addressFormValidation, contactFormValidation, dependentFormValidation, militaryFormValidation, firstFormValidations } from '@/validation';
+import { firstAppointmentStepValidation, secondAppointmentStepValidation } from '@/validation';
 import * as yup from "yup"
 import { useRouter } from 'next/navigation';
-import { FirstClientForm } from '@/components/RegisterClientForm/FirstClientForm';
-import { SecondClientForm } from '@/components/RegisterClientForm/SecondClientForm';
-import { ThirdClientForm } from '@/components/RegisterClientForm/ThidClientForm';
 import { FirstAppointmentForm } from '@/components/RegisterAppointmentForm/FirstAppointmentForm';
 import { SecondAppointmentForm } from '@/components/RegisterAppointmentForm/SecondAppointmentForm';
 
@@ -44,7 +41,7 @@ export const RegisterAppointmentContextProvider = ({
 
   const supabase = createClientComponentClient();
   const router = useRouter();
-  const [validationSchema, setValidationSchema] = useState<yup.ObjectSchema<{}>>(militaryFormValidation);
+  const [validationSchema, setValidationSchema] = useState<yup.ObjectSchema<{}>>(firstAppointmentStepValidation);
 
   const {
     clearErrors,
@@ -86,9 +83,9 @@ export const RegisterAppointmentContextProvider = ({
     router.push('/')
   }
 
-  // useEffect(() => {
-  //   console.log(errors)
-  // }, [errors])
+  useEffect(() => {
+    console.log(errors)
+  }, [errors])
 
   const totalSteps = 2;
 
@@ -113,93 +110,56 @@ export const RegisterAppointmentContextProvider = ({
   const selectFormValidation = (index: number) => {
     switch (index) {
       case 0:
-        setValidationSchema(firstFormValidations[currentFormType]);
+        setValidationSchema(firstAppointmentStepValidation);
         break;
       case 1:
-        setValidationSchema(addressFormValidation);
-        break;
-      case 2:
-        setValidationSchema(contactFormValidation);
+        setValidationSchema(secondAppointmentStepValidation);
         break;
       default:
         return null;
     }
   }
 
-  const onSubmit: SubmitHandler<ClientFormValues> = async (data) => {
+  const onSubmit: SubmitHandler<AppointmentFormValues> = async (data) => {
     goToNextStep();
 
     if (isLastStep) {
-      console.log(data)
-      const birthDate = new Date(data.birthDate);
-      const isCivilVolunteer = data.isCivilVolunteer === "Sim" ? true : false;
+      console.log("dados", data)
+      // try {
+      //   const saveRegister = async () => {
+      //     const res = await supabase.from("tb_appointments").upsert({
+      //       date: data.date,
+      //       time: data.time,
+      //       specialist: data.specialist,
+      //       attended: data.attended,
+      //       access: data.access,
+      //       facility: data.facility,
+      //       modality: data.modality,
+      //       protocol: data.protocol,
+      //       typeOfService: data.typeOfService,
+      //       typeOfPsychologicalAssessment: data.typeOfPsychologicalAssessment,
+      //       typeOfSocialAssessment: data.typeOfSocialAssessment,
+      //       generalDemand: data.generalDemand,
+      //       specificDemands: data.specificDemands.map(e => e.id),
+      //       procedure: data.procedure,
+      //       generatedDocuments: data.generatedDocuments.map(e => e.id),
+      //       travels: data.travels.map(e => e.id),
+      //       hasLeaveOfAbsence: data.hasLeaveOfAbsence,
+      //     }).select();
+      //   }
 
-      const year = birthDate.getFullYear();
-      const month = birthDate.getMonth() + 1;
-      const day = birthDate.getDate();
+      //   saveRegister();
 
-      const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-      const cleanedCPF = data.cpf.replace(/[^\d]/g, "");
-      const cleanedZipCode = data.address.zipCode.replace(/[^\d]/g, "");
+      //   alert("Você registrou um novo atendimento com sucesso.")
 
-      try {
-        const saveRegister = async () => {
-          const res = await supabase.from("tb_attendeds").upsert({
-            fullname: data.fullName,
-            nickname: data.nickName,
-            rg: data.rg,
-            rank_id: data.rank,
-            cadre_id: data.cadre,
-            opm_id: data.opm,
-            gender_id: data.gender,
-            cpf: cleanedCPF,
-            birth_date: formattedDate,
-            marital_status_id: data.maritalStatus,
-            registered_by: null,
-            policy_holder_id: data.policyHolder,
-            is_civil_volunteer: isCivilVolunteer,
-            familiar_bond: data.familiarBond,
-            work_status: data.workStatus,
-          }).select();
+      //   reset();
 
-          const attendedId = res.data && res.data[0].id;
-
-          await supabase.from("tb_addresses").insert({
-            zip_code: cleanedZipCode,
-            number: data.address.number,
-            street: data.address.street,
-            neighborhood: data.address.neighborhood,
-            complement: data.address.complement,
-            city_id: data.address.city,
-            attended_id: attendedId,
-          });
-
-          const phones = data.contacts.map((e) => {
-            return {
-              phone: e.phone.replace(/[^\d]/g, ""),
-              owner_identification: e.ownerIdentification,
-              attended_relationship: e.attendedRelationship ? e.attendedRelationship : null,
-              attended_id: attendedId,
-            }
-          })
-
-          await supabase.from("tb_phones").insert(
-            phones
-          );
-        }
-
-        saveRegister();
-
-        alert("Você cadastrou um novo usuário com sucesso.")
-
-        reset();
-
-        setCurrentStep(0);
-        selectFormValidation(0);
-        router.push("/RegisterClient/Options")
-      } catch (error) {
-        alert(`Houve algum problema no cadastro de seu formulário. Erro ${error}. Tente novamente.`)
-      }
+      //   setCurrentStep(0);
+      //   selectFormValidation(0);
+      //   router.push("/")
+      // } catch (error) {
+      //   alert(`Houve algum problema no cadastro de seu formulário. Erro ${error}. Tente novamente.`)
+      // }
     }
   }
 

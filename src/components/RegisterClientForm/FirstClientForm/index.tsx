@@ -46,40 +46,48 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
   useEffect(() => {
     const getLists = async () => {
       try {
-        const resRanks = await fetch('/api/get_ranks');
-        const resCadres = await fetch('/api/get_cadres');
         const resGenders = await fetch('/api/get_genders');
         const resMaritalStatus = await fetch('/api/get_marital_status');
-        const resOpms = await fetch('/api/get_opms');
-        const resMilitaryAttendeds = await fetch('/api/get_military_attendeds');
-        const resWorkStatus = await fetch('/api/get_work_status');
-        const resFamiliarBonds = await fetch('/api/get_familiar_bonds');
-
-        const ranks = await resRanks.json();
-        const cadres = await resCadres.json();
         const genders = await resGenders.json();
         const maritalStatus = await resMaritalStatus.json();
-        const opms = await resOpms.json();
-        const militaryAttendeds = await resMilitaryAttendeds.json();
-        const workStatus = await resWorkStatus.json();
-        const familiarBonds = await resFamiliarBonds.json();
 
-        setRanks(ranks);
-        setCadres(cadres);
-        setGenders(genders);
         setMaritalStatus(maritalStatus);
-        setOpms(opms);
-        setWorkStatus(workStatus);
-        setFamiliarBonds(familiarBonds);
+        setGenders(genders);
 
-        const formatedMilitaryAttendeds = await militaryAttendeds.map((e: Military) => {
-          return {
-            id: e.id,
-            name: `${e.rank} ${e.cadre} RG ${e.rg} ${e.nickname}`
-          }
-        })
+        if (isMilitary) {
+          const resRanks = await fetch('/api/get_ranks');
+          const resCadres = await fetch('/api/get_cadres');
+          const resOpms = await fetch('/api/get_opms');
+          const resWorkStatus = await fetch('/api/get_work_status');
 
-        setMilitaryAttendeds(formatedMilitaryAttendeds);
+          const ranks = await resRanks.json();
+          const cadres = await resCadres.json();
+          const opms = await resOpms.json();
+          const workStatus = await resWorkStatus.json();
+
+          setRanks(ranks);
+          setCadres(cadres);
+          setOpms(opms);
+          setWorkStatus(workStatus);
+        }
+
+        if (isDependent) {
+          const resMilitaryAttendeds = await fetch('/api/get_military_attendeds');
+          const resFamiliarBonds = await fetch('/api/get_familiar_bonds');
+
+          const militaryAttendeds = await resMilitaryAttendeds.json();
+          const familiarBonds = await resFamiliarBonds.json();
+
+          setFamiliarBonds(familiarBonds);
+          const formatedMilitaryAttendeds = await militaryAttendeds.map((e: Military) => {
+            return {
+              id: e.id,
+              name: `${e.rank} ${e.cadre} RG ${e.rg} ${e.nickname}`
+            }
+          })
+
+          setMilitaryAttendeds(formatedMilitaryAttendeds);
+        }
 
         setIsLoading(false);
       } catch (error) {

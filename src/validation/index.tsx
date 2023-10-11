@@ -107,7 +107,7 @@ export const citizenFormValidation = yup.object({
   isCivilVolunteer: yup.string().required("O campo é voluntário é obrigatório.")
 })
 
-export const firstFormValidations = {
+export const firstClientFormValidations = {
   militar: militaryFormValidation,
   dependente: dependentFormValidation,
   'civil-sem-vínculo': citizenFormValidation
@@ -141,4 +141,60 @@ export const contactFormValidation = yup.object({
       return yup.mixed();
     }
   }),
+})
+
+export const firstAppointmentStepValidation = yup.object({
+  // date: yup.date().required("O campo 'Data' é obrigatório.").default(null),
+  // time: yup.string().required("O campo 'Horário' é obrigatório."),
+  // specialist: yup.string().required("O campo 'Oficial' é obrigatório"),
+  // attended: yup.string().required("O campo 'Atendido' é obrigatório"),
+  // access: yup.string().required("O campo 'Acesso ao atendimento' é obrigatório"),
+  // facility: yup.string().required("O campo 'Local do atendimento' é obrigatório"),
+  // modality: yup.string().required("O campo 'Modalidade' é obrigatório"),
+  // hasProtocol: yup.string().required("O campo 'Tem protocolo PAE?' é obrigatório."),
+  // protocol: yup.string().when('hasProtocol', {
+  //   is: "1",
+  //   then: () => yup.string().required("O campo 'Protocolo' é obrigatório."),
+  //   otherwise: () => yup.string(),
+  // }).default("Não se aplica"),
+})
+
+const referrals = yup.object({
+  destination: yup.array().of(yup.string()),
+  types: yup.array().of(yup.string().when('destination', {
+    is: (destination: []) => destination && destination.length > 0,
+    then: () => yup.array().of(yup.string()).required("É necessário especificar o tipo de encaminhamento."),
+    otherwise: () => yup.array().of(yup.string())
+  }).default(null))
+})
+
+const specificDemands = yup.object({
+  id: yup.string().required(),
+  name: yup.string(),
+})
+
+const generatedDocuments = yup.object({
+  id: yup.string().required(),
+  name: yup.string(),
+})
+
+export const secondAppointmentStepValidation = yup.object({
+  typeOfService: yup.string().required("O campo 'Tipo de serviço' é obrigatório."),
+  typeOfPsychologycalAssessment: yup.string().when('typeOfService', {
+    is: "Avaliação psicológica",
+    then: () => yup.string().required("O campo 'Tipo de avaliação psicológica' é obrigatório."),
+    otherwise: () => yup.string(),
+  }).default("Não se aplica"),
+  typeOfSocialAssessment: yup.string().when('typeOfService', {
+    is: "Avaliação social",
+    then: () => yup.string().required("O campo 'Tipo de avaliação social' é obrigatório"),
+    otherwise: () => yup.string(),
+  }).default("Não se aplica"),
+  generalDemand: yup.string().required("O campo 'Demanda Geral' é obrigatório"),
+  specificDemands: yup.array(specificDemands).required("O campo 'Demandas específicas' é obrigatório."),
+  procedure: yup.string().required("O campo 'Procedimento' é obrigatório"),
+  generatedDocuments: yup.array(generatedDocuments).required("O campo 'Documentos produzidos' é obrigatório."),
+  travels: yup.array().of(yup.string()).required("O campo 'Deslocamentos' é obrigatório."),
+  referrals,
+  hasLeaveOfAbsence: yup.string().required("O campo 'Houve afastamento?' é obrigatório."),
 })

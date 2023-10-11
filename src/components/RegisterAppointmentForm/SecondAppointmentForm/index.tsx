@@ -20,6 +20,8 @@ export function SecondAppointmentForm() {
   const [generalDemands, setGeneralDemands] = useState<Option[]>([]);
   const [specificDemands, setSpecificsDemands] = useState<Option[]>([]);
   const [procedures, setProcedures] = useState<Option[]>([]);
+  const [referralDestinations, setReferralDestinations] = useState<Option[]>([]);
+  const [referralTypes, setReferralTypes] = useState<Option[]>([]);
   const [documents, setDocuments] = useState<Option[]>([]);
   const [travels, setTravels] = useState<Option[]>([]);
 
@@ -36,6 +38,8 @@ export function SecondAppointmentForm() {
         const resGeneralDemands = await fetch('/api/get_general_demands');
         const resSpecificDemands = await fetch('/api/get_specific_demands');
         const resProcedures = await fetch('/api/get_procedures');
+        const resReferralDestinations = await fetch('/api/get_referral_destinations');
+        const resReferralTypes = await fetch('/api/get_referral_types');
         const resDocuments = await fetch('/api/get_documents');
         const resTravels = await fetch('/api/get_travels');
 
@@ -45,6 +49,8 @@ export function SecondAppointmentForm() {
         const generalDemands = await resGeneralDemands.json();
         const specificDemands = await resSpecificDemands.json();
         const procedures = await resProcedures.json();
+        const referralDestinations = await resReferralDestinations.json();
+        const referralTypes = await resReferralTypes.json();
         const documents = await resDocuments.json();
         const travels = await resTravels.json();
 
@@ -54,6 +60,8 @@ export function SecondAppointmentForm() {
         setGeneralDemands(generalDemands);
         setSpecificsDemands(specificDemands);
         setProcedures(procedures);
+        setReferralDestinations(referralDestinations);
+        setReferralTypes(referralTypes);
         setDocuments(documents);
         setTravels(travels);
 
@@ -82,7 +90,7 @@ export function SecondAppointmentForm() {
             String(watchTypeOfService) === psychologicalId ? (
               <MyCustomDropdown
                 title="Tipo de avaliação psicológica"
-                fieldName="typeOfAssessment"
+                fieldName="typeOfPsychologicalAssessment"
                 options={psychologicalAssessments}
                 errors={errors}
                 control={control}
@@ -144,15 +152,18 @@ export function SecondAppointmentForm() {
           />
           <MyCustomMultiSelectAndRadioDropdown
             title="Encaminhamentos"
-            fieldName="generatedDocuments"
+            firstFieldName="referrals.destination"
+            secondFieldName="referrals.types"
             getValues={getValues}
-            options={documents}
+            setValue={setValue}
+            firstOptions={referralDestinations}
+            secondOptions={referralTypes}
             errors={errors}
             control={control}
           />
           <RadioGroup
             title="Houve afastamento?"
-            options={[{ id: "1", name: "Sim" }, { id: "2", name: "Não" }]}
+            options={referralTypes}
             name="hasLeaveOfAbsence"
             errors={errors}
             register={register}
