@@ -10,6 +10,7 @@ import { RadioGroup } from '@/components/RadioGroup';
 import { MyCustomMultiSelectDropdown } from '@/components/MyCustomMultiselectDropdown';
 import { useRegisterAppointmentContext } from '@/context/registerAppointmentContext';
 import { MyCustomMultiSelectAndRadioDropdown } from '@/components/MyCustomMultiselectAndRadioDropdown';
+import { TextArea } from '@/components/TextArea';
 
 export function SecondAppointmentForm() {
   const { control, errors, getValues, register, setValue, goToPreviousStep, watch } = useRegisterAppointmentContext();
@@ -168,6 +169,13 @@ export function SecondAppointmentForm() {
             name="hasLeaveOfAbsence"
             errors={errors}
             register={register}
+          />
+          <TextArea 
+           title="Evolução"
+           name="recordProgress"
+           hint="O atendido apresentou discurso coerente e organizado..."
+           errors={errors}
+           register={register}
           />
           <div className={styles.buttonsBox}>
             <Button

@@ -157,6 +157,7 @@ export const RegisterAppointmentContextProvider = ({
             // generated_documents: data.generatedDocuments.map(e => e.id), // many-to-many
             // travels_id: data.travels.map(e => e.id), // many-to-many
             // has_leave_of_absence: hasLeaveOfAbsence,
+            record_progress: data.recordProgress,
           }).select();
 
           const appointmentId = res.data && res.data[0].id;

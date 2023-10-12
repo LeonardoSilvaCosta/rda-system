@@ -121,6 +121,7 @@ export type AppointmentFormValues = {
   documents: Option[];
   travels: Option[];
   hasLeaveOfAbsence: string;
+  recordProgress: string;
 }
 
 type Referrals = {

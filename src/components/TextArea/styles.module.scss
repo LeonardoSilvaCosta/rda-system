@@ -1,0 +1,38 @@
+.inputContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  margin: 0 auto;
+
+  @media(max-width: 1192px) {
+    width: calc(100% - 40px);
+  }
+
+  label {
+    padding-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  textarea {
+    width: 100%;
+    height: 12rem;
+
+    border: none;
+    border-radius: 8px;
+
+    padding: 1rem 12px;
+    background: var(--white);
+    color: var(--gray-500);
+    outline: none;
+    resize: none;
+
+    &::placeholder {
+      color: var(--gray-200);
+    }
+
+    &:focus {
+      outline: 0.5px solid var(--blue-500);
+    }
+  }
+}
