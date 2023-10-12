@@ -4,9 +4,12 @@ import { cookies } from "next/headers";
 
 export async function GET(req: NextRequest) {
   const supabase = createRouteHandlerClient({ cookies });
+  const { searchParams } = new URL(req.url);
+  const q = searchParams.get('q');
 
   try {
-    const { data: attendeds } = await supabase.from('tb_attendeds').select(`
+    if (q) {
+      const { data: attendeds } = await supabase.from('tb_attendeds').select(`
     id, 
     fullname,
     nickname,
@@ -15,26 +18,58 @@ export async function GET(req: NextRequest) {
     tb_ranks ( name ),
     tb_cadres ( name )
     `)
-      .neq('rg', null)
-      .limit(10);
+        .neq('rg', null)
+        .ilike('rg', `%${q}%`)
+        .limit(10);
 
-    let formattedData = null;
+      let formattedData = null;
 
-    if (attendeds) {
-      formattedData = attendeds.map((e: any) => {
-        return {
-          id: e.id,
-          fullname: e.fullname,
-          nickname: e.nickname,
-          rg: e.rg,
-          rank: e.tb_ranks.name,
-          cadre: e.tb_cadres.name,
-          cpf: e.cpf,
-        }
-      })
+      if (attendeds) {
+        formattedData = attendeds.map((e: any) => {
+          return {
+            id: e.id,
+            fullname: e.fullname,
+            nickname: e.nickname,
+            rg: e.rg,
+            rank: e.tb_ranks.name,
+            cadre: e.tb_cadres.name,
+            cpf: e.cpf,
+          }
+        })
+      }
+
+      return Response.json(formattedData);
+    } else {
+      const { data: attendeds } = await supabase.from('tb_attendeds').select(`
+    id, 
+    fullname,
+    nickname,
+    rg,
+    cpf,
+    tb_ranks ( name ),
+    tb_cadres ( name )
+    `)
+        .neq('rg', null)
+        .limit(10);
+
+      let formattedData = null;
+
+      if (attendeds) {
+        formattedData = attendeds.map((e: any) => {
+          return {
+            id: e.id,
+            fullname: e.fullname,
+            nickname: e.nickname,
+            rg: e.rg,
+            rank: e.tb_ranks.name,
+            cadre: e.tb_cadres.name,
+            cpf: e.cpf,
+          }
+        })
+      }
+
+      return Response.json(formattedData);
     }
-    
-    return Response.json(formattedData);
 
   } catch (error) {
     return new NextResponse(`select data error: ${error}`, { status: 400 });

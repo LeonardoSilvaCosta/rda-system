@@ -4,16 +4,26 @@ import { cookies } from "next/headers";
 
 export async function GET(req: NextRequest) {
   const supabase = createRouteHandlerClient({ cookies });
+  const { searchParams } = new URL(req.url);
+  const q = searchParams.get('q');
 
   try {
-    const { data: familiarBonds } = await supabase
-    .from('tb_familiar_bonds')
-    .select()
-    .limit(10);
+    if (q) {
+      const { data: familiarBonds } = await supabase
+        .from('tb_familiar_bonds')
+        .select()
+        .ilike('name', `%${q}%`)
+        .limit(10);
+      return Response.json(familiarBonds);
+    } else {
+      const { data: familiarBonds } = await supabase
+        .from('tb_familiar_bonds')
+        .select()
+        .limit(10);
+      return Response.json(familiarBonds);
+    }
 
-    return Response.json(familiarBonds);
-
-  } catch(error) {
+  } catch (error) {
     return new NextResponse(`select data error: ${error}`, { status: 400 });
   }
 

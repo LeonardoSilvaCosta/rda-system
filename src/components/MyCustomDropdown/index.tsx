@@ -16,11 +16,10 @@ interface MyCustomDropdownProps<T extends FieldValues> {
   control: Control<T>;
   selectedState?: string;
   setSelectedState?: Dispatch<SetStateAction<string>>;
-  tableToSearch: string,
-  columnToSearch: string
+  routeToSearch: string,
 }
 
-export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, options, getValues, errors, control, setSelectedState, tableToSearch, columnToSearch }: MyCustomDropdownProps<T>) {
+export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, options, getValues, errors, control, setSelectedState, routeToSearch }: MyCustomDropdownProps<T>) {
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [filteredData, setFilteredData] = useState<Option[]>(options);
@@ -84,16 +83,11 @@ export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, opti
     const qToLower = q.toLowerCase();
     setQuery(q);
 
-    if (!tableToSearch) return;
-
     if (q !== "") {
-      if (!columnToSearch) return
-      const { data } = await supabase
-        .from(tableToSearch)
-        .select()
-        .ilike(columnToSearch, `%${qToLower}%`);
+      const res = await fetch(`${routeToSearch}?q=${qToLower}`);
+      const data = await res.json();
       if (!data) return;
-      const filteredData = data?.map(e => {
+      const filteredData = data.map((e: any) => {
         return {
           id: e.id,
           name: e.name
@@ -111,7 +105,7 @@ export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, opti
       <div
         ref={dropdownRef}
         className={classnames(styles.selectMenu, { [styles.visible]: isDropDownVisible })}
-        onClick={() => { setIsDropDownVisible(!isDropDownVisible)}}
+        onClick={() => { setIsDropDownVisible(!isDropDownVisible) }}
       >
         <div>
           <input

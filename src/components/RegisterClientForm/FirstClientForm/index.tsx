@@ -149,8 +149,7 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
                   getValues={getValues}
                   errors={errors}
                   control={control}
-                  tableToSearch={'tb_attendeds'}
-                  columnToSearch={'rg'}
+                  routeToSearch={'/api/get_military_attendeds'}
                 />
                 <MyCustomDropdown
                   title="Vínculo"
@@ -159,8 +158,7 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
                   getValues={getValues}
                   errors={errors}
                   control={control}
-                  tableToSearch={'tb_familiar_bonds'}
-                  columnToSearch={'name'}
+                  routeToSearch={'/api/get_familiar_bonds'}
                 />
               </>
             )
@@ -191,8 +189,7 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
                   getValues={getValues}
                   errors={errors}
                   control={control}
-                  tableToSearch={'tb_ranks'}
-                  columnToSearch={'name'}
+                  routeToSearch={'/api/get_ranks'}
                 />
                 <MyCustomDropdown
                   title="Quadro"
@@ -201,8 +198,7 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
                   getValues={getValues}
                   errors={errors}
                   control={control}
-                  tableToSearch={'tb_cadres'}
-                  columnToSearch={'name'}
+                  routeToSearch={'/api/get_cadres'}
                 />
                 <MyCustomDropdown
                   title="OPM"
@@ -211,8 +207,7 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
                   getValues={getValues}
                   errors={errors}
                   control={control}
-                  tableToSearch={'tb_opms'}
-                  columnToSearch={'name'}
+                  routeToSearch={'/api/get_opms'}
                 />
                 <MyCustomDropdown
                   title="Situação funcional"
@@ -221,8 +216,7 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
                   getValues={getValues}
                   errors={errors}
                   control={control}
-                  tableToSearch={'tb_work_status'}
-                  columnToSearch={'name'}
+                  routeToSearch={'/api/get_work_status'}
                 />
               </>)
           }
@@ -256,8 +250,7 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
             getValues={getValues}
             errors={errors}
             control={control}
-            tableToSearch={'tb_marital_status'}
-            columnToSearch={'name'}
+            routeToSearch={'/api/get_marital_status'}
           />
           {
             (isDependent || isCivilian) && (

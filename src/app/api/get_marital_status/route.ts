@@ -4,14 +4,24 @@ import { cookies } from "next/headers";
 
 export async function GET(req: NextRequest) {
   const supabase = createRouteHandlerClient({ cookies });
+  const { searchParams } = new URL(req.url);
+  const q = searchParams.get('q');
 
   try {
-    const { data: marital_status } = await supabase
-    .from('tb_marital_status')
-    .select()
-    .limit(10);
-
-    return Response.json(marital_status);
+    if (q) {
+      const { data: maritalStatus } = await supabase
+        .from('tb_marital_status')
+        .select()
+        .ilike('name', `%${q}%`)
+        .limit(10);
+      return Response.json(maritalStatus);
+    } else {
+      const { data: maritalStatus } = await supabase
+        .from('tb_marital_status')
+        .select()
+        .limit(10);
+      return Response.json(maritalStatus);
+    }
 
   } catch(error) {
     return new NextResponse(`select data error: ${error}`, { status: 400 });
