@@ -24,6 +24,7 @@ export function SecondAppointmentForm() {
   const [referralTypes, setReferralTypes] = useState<Option[]>([]);
   const [documents, setDocuments] = useState<Option[]>([]);
   const [travels, setTravels] = useState<Option[]>([]);
+  const leaveOfAbsenceOptions = [{ id: 'Sim', name: 'Sim'}, { id: 'Não', name: 'Não'}]
 
   const psychologicalId = "8f911cb1-9a72-4765-bf84-1c273eab0139";
   const socialId = "736eb33d-b012-46e2-9443-29858b965337";
@@ -136,7 +137,7 @@ export function SecondAppointmentForm() {
           />
           <MyCustomMultiSelectDropdown
             title="Documentos produzidos"
-            fieldName="generatedDocuments"
+            fieldName="documents"
             getValues={getValues}
             options={documents}
             errors={errors}
@@ -152,7 +153,7 @@ export function SecondAppointmentForm() {
           />
           <MyCustomMultiSelectAndRadioDropdown
             title="Encaminhamentos"
-            firstFieldName="referrals.destination"
+            firstFieldName="referrals.destinations"
             secondFieldName="referrals.types"
             getValues={getValues}
             setValue={setValue}
@@ -163,7 +164,7 @@ export function SecondAppointmentForm() {
           />
           <RadioGroup
             title="Houve afastamento?"
-            options={referralTypes}
+            options={leaveOfAbsenceOptions}
             name="hasLeaveOfAbsence"
             errors={errors}
             register={register}

@@ -104,8 +104,8 @@ export type Military = {
 export type AppointmentFormValues = {
   date: string;
   time: string;
-  specialist: string;
-  attended: string;
+  specialists: Option[];
+  attendeds: Option[];
   access: string;
   facility: string;
   modality: string;
@@ -115,24 +115,18 @@ export type AppointmentFormValues = {
   typeOfPsychologicalAssessment: string;
   typeOfSocialAssessment: string;
   generalDemand: string;
-  specificDemands: SpecificDemands[];
+  specificDemands: Option[];
   procedure: string;
-  referrals: Referrals[];
-  generatedDocuments: string[];
-  travels: string[];
+  referrals: Referrals;
+  documents: Option[];
+  travels: Option[];
   hasLeaveOfAbsence: string;
 }
 
-type SpecificDemands = {
-  id: string,
-  name: string,
-}
-
 type Referrals = {
-  destination: string,
+  destinations: Option[],
   types: Record<string, Option[]>
 }
-
 
 export type NameType = Path<FormValues> | Path<ClientFormValues>;
 export type RegisterType = UseFormRegister<ClientFormValues> | UseFormRegister<FormValues>;

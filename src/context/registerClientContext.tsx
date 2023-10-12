@@ -157,7 +157,7 @@ export const RegisterClientContextProvider = ({
 
       try {
         const saveRegister = async () => {
-          const res = await supabase.from("tb_attendeds").upsert({
+          const res = await supabase.from("tb_attendeds").insert({
             fullname: data.fullName,
             nickname: data.nickName,
             rg: data.rg,

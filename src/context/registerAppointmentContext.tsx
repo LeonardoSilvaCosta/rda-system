@@ -125,41 +125,118 @@ export const RegisterAppointmentContextProvider = ({
 
     if (isLastStep) {
       console.log("dados", data)
-      // try {
-      //   const saveRegister = async () => {
-      //     const res = await supabase.from("tb_appointments").upsert({
-      //       date: data.date,
-      //       time: data.time,
-      //       specialist: data.specialist,
-      //       attended: data.attended,
-      //       access: data.access,
-      //       facility: data.facility,
-      //       modality: data.modality,
-      //       protocol: data.protocol,
-      //       typeOfService: data.typeOfService,
-      //       typeOfPsychologicalAssessment: data.typeOfPsychologicalAssessment,
-      //       typeOfSocialAssessment: data.typeOfSocialAssessment,
-      //       generalDemand: data.generalDemand,
-      //       specificDemands: data.specificDemands.map(e => e.id),
-      //       procedure: data.procedure,
-      //       generatedDocuments: data.generatedDocuments.map(e => e.id),
-      //       travels: data.travels.map(e => e.id),
-      //       hasLeaveOfAbsence: data.hasLeaveOfAbsence,
-      //     }).select();
-      //   }
+      try {
+        const hasLeaveOfAbsence = data.hasLeaveOfAbsence === "Sim" ? true : false;
+        const date = new Date(data.date);
 
-      //   saveRegister();
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
 
-      //   alert("Você registrou um novo atendimento com sucesso.")
+        const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 
-      //   reset();
+        const newDate = new Date();
+        const [hour, minutes] = data.time.split(':');
+        newDate.setHours(Number(hour), Number(minutes), 0);
 
-      //   setCurrentStep(0);
-      //   selectFormValidation(0);
-      //   router.push("/")
-      // } catch (error) {
-      //   alert(`Houve algum problema no cadastro de seu formulário. Erro ${error}. Tente novamente.`)
-      // }
+        const formattedHour = newDate.toLocaleTimeString('en-US', { hour12: false });
+
+        const saveRegister = async () => {
+          const res = await supabase.from("tb_appointments").insert({
+            date: formattedDate,
+            // time: formattedHour,
+            // access_id: data.access,
+            // facility_id: data.facility,
+            // modality_id: data.modality,
+            // protocol: data.protocol,
+            // type_of_service_id: data.typeOfService,
+            // type_of_psychological_assessment_id: data.typeOfPsychologicalAssessment,
+            // type_of_social_assessment_id: data.typeOfSocialAssessment,
+            // general_demand_id: data.generalDemand,
+            // procedure_id: data.procedure,
+            // generated_documents: data.generatedDocuments.map(e => e.id), // many-to-many
+            // travels_id: data.travels.map(e => e.id), // many-to-many
+            // has_leave_of_absence: hasLeaveOfAbsence,
+          }).select();
+
+          const appointmentId = res.data && res.data[0].id;
+
+          const specialists = data.specialists.map(e => {
+            return {
+              appointment_id: appointmentId,
+              specialist_id: e.id,
+            }
+          })
+
+          await supabase.from('tb_appointments_specialists').insert(specialists);
+
+          const attendeds = data.attendeds.map(e => {
+            return {
+              appointment_id: appointmentId,
+              attended_id: e.id,
+            }
+          })
+
+          await supabase.from('tb_appointments_attendeds').insert(attendeds);
+
+          const specificDemands = data.specificDemands.map(e => {
+            return {
+              appointment_id: appointmentId,
+              specific_demand_id: e.id,
+            }
+          });
+
+          await supabase.from('tb_appointments_specific_demands').insert(specificDemands);
+
+          const documents = data.documents.map(e => {
+            return {
+              appointment_id: appointmentId,
+              document_id: e.id
+            }
+          });
+
+          await supabase.from('tb_appointments_documents').insert(documents);
+
+          const travels = data.travels.map(e => {
+            return {
+              appointment_id: appointmentId,
+              travel_id: e.id
+            }
+          });
+
+          await supabase.from('tb_appointments_travels').insert(travels);
+
+          const destinationsId = data.referrals.destinations.map(destination => destination.id);
+
+          const referrals = destinationsId.flatMap(destinationId => {
+            const types = data.referrals.types[destinationId] || [];
+
+            return types.map(type => {
+              return {
+                destination: destinationId,
+                type: type.id,
+                appointment_id: appointmentId
+              };
+            });
+          });
+
+          await supabase.from('tb_referrals').insert(referrals);
+
+        }
+
+
+        saveRegister();
+
+        alert("Você registrou um novo atendimento com sucesso.")
+
+        reset();
+
+        setCurrentStep(0);
+        selectFormValidation(0);
+        router.push("/")
+      } catch (error) {
+        alert(`Houve algum problema no cadastro de seu formulário. Erro ${error}. Tente novamente.`)
+      }
     }
   }
 

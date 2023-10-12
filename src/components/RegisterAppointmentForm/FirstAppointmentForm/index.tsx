@@ -1,7 +1,6 @@
 
-import { AppointmentFormValues, Military, Option } from '@/types/types';
+import { Military, Option } from '@/types/types';
 import styles from './styles.module.scss';
-import { Control, UseFormRegister, UseFormWatch } from "react-hook-form";
 import { Input } from '@/components/Input';
 import { MyDatePicker } from '@/components/MyDatePicker';
 import { RadioGroup } from '@/components/RadioGroup';
@@ -11,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { LoadingComponent } from '@/components/Loading/loading';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRegisterAppointmentContext } from '@/context/registerAppointmentContext';
+import { MyCustomMultiSelectDropdown } from '@/components/MyCustomMultiselectDropdown';
 
 export function FirstAppointmentForm() {
   const supabase = createClientComponentClient();
@@ -21,6 +21,7 @@ export function FirstAppointmentForm() {
   const [accesses, setAccesses] = useState<Option[]>([]);
   const [facilities, setFacilities] = useState<Option[]>([]);
   const [modalities, setModalities] = useState<Option[]>([]);
+  const hasProtocolOptions = [{ id: 'Sim', name: 'Sim' }, { id: 'Não', name: 'Não'}]
   const watchHasProtocol = watch("hasProtocol");
 
   useEffect(() => {
@@ -85,19 +86,19 @@ export function FirstAppointmentForm() {
             errors={errors}
             register={register}
           />
-          <MyCustomDropdown
-            title="Oficial"
-            fieldName="specialist"
-            options={specialists}
+          <MyCustomMultiSelectDropdown
+            title="Oficiais"
+            fieldName="specialists"
             getValues={getValues}
+            options={specialists}
             errors={errors}
             control={control}
           />
-          <MyCustomDropdown
-            title="Atendido"
-            fieldName="attended"
-            options={attendeds}
+           <MyCustomMultiSelectDropdown
+            title="Atendidos"
+            fieldName="attendeds"
             getValues={getValues}
+            options={attendeds}
             errors={errors}
             control={control}
           />
@@ -127,12 +128,12 @@ export function FirstAppointmentForm() {
           <RadioGroup
             title="Tem protocolo PAE?"
             name="hasProtocol"
-            options={[{ id: "1", name: "Sim" }, { id: "2", name: "Não" }]}
+            options={hasProtocolOptions}
             errors={errors}
             register={register}
           />
           {
-            String(watchHasProtocol) === "1" ? (
+            String(watchHasProtocol) === "Sim" ? (
               <Input
                 title="Protocolo"
                 name="protocol"
