@@ -10,6 +10,7 @@ export async function GET(req: NextRequest) {
     id, 
     acronym`
     )
+      .limit(10);
 
     let formmatedStates = null;
 

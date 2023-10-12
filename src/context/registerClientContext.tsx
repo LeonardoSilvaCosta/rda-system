@@ -64,7 +64,7 @@ export const RegisterClientContextProvider = ({
     setValue,
     watch
   } = useForm<ClientFormValues | any>({
-    resolver: yupResolver(validationSchema),
+    // resolver: yupResolver(validationSchema),
     defaultValues: {
       contacts: [{
         phone: '',

@@ -58,7 +58,7 @@ export function SecondClientForm({ control, register }: SecondClientFormProps) {
 
     if (selectedState) {
       selectCities(selectedState);
-    } else if(stateAcronym) {
+    } else if (stateAcronym) {
       selectCities(stateAcronym);
     } else {
       setCities([]);
@@ -76,19 +76,19 @@ export function SecondClientForm({ control, register }: SecondClientFormProps) {
       setValue('address.complement', address.complemento);
 
       clearErrors();
-  
+
       const uf = states.find(e => e.name === address.uf);
       if (uf) {
         setValue('address.stateAcronym', uf.id);
         setSelectedState(uf.id);
-  
+
         selectCities(uf.id, address.localidade);
       }
       else {
         setSelectedState("");
         setCities([]);
       }
-    } catch(error) {
+    } catch (error) {
       console.log(`Não foi possível encontrar o cep informado.`);
     }
   }
@@ -147,6 +147,8 @@ export function SecondClientForm({ control, register }: SecondClientFormProps) {
             errors={errors}
             control={control}
             setSelectedState={setSelectedState}
+            tableToSearch={'tb_states'}
+            columnToSearch={'name'}
           />
           <MyCustomDropdown
             title="Cidade"
@@ -155,6 +157,8 @@ export function SecondClientForm({ control, register }: SecondClientFormProps) {
             getValues={getValues}
             errors={errors}
             control={control}
+            tableToSearch={'tb_cities'}
+            columnToSearch={'name'}
           />
           <div className={styles.buttonsBox}>
             <Button

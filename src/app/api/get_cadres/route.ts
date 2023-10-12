@@ -7,12 +7,13 @@ export async function GET(req: NextRequest) {
 
   try {
     const { data: cadres } = await supabase
-    .from('tb_cadres')
-    .select();
+      .from('tb_cadres')
+      .select()
+      .limit(10);
 
     return Response.json(cadres);
 
-  } catch(error) {
+  } catch (error) {
     return new NextResponse(`select data error: ${error}`, { status: 400 });
   }
 

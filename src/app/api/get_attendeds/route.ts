@@ -15,6 +15,7 @@ export async function GET(req: NextRequest) {
     tb_ranks ( name ),
     tb_cadres ( name )
     `)
+    .limit(10);
 
     let formattedData = null;
 

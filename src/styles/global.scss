@@ -51,6 +51,11 @@ body {
   color: var(--gray-500);
 }
 
+input,
+textarea {
+  caret-color: var(--blue-300);
+}
+
 body,
 input,
 textarea,

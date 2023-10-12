@@ -109,6 +109,8 @@ export function FirstAppointmentForm() {
             getValues={getValues}
             errors={errors}
             control={control}
+            tableToSearch={'tb_accesses'}
+            columnToSearch={'name'}
           />
           <MyCustomDropdown
             title="Local do atendimento"
@@ -117,9 +119,11 @@ export function FirstAppointmentForm() {
             getValues={getValues}
             errors={errors}
             control={control}
+            tableToSearch={'tb_opms'}
+            columnToSearch={'name'}
           />
           <RadioGroup
-            title="Moalidade de atendimento"
+            title="Modalidade de atendimento"
             name="modality"
             options={modalities}
             errors={errors}

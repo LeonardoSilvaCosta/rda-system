@@ -8,7 +8,8 @@ export async function GET(req: NextRequest) {
   try {
     const { data: modalities } = await supabase
     .from('tb_modalities')
-    .select();
+    .select()
+    .limit(10);
 
     return Response.json(modalities);
 

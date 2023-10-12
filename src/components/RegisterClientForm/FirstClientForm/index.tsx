@@ -149,6 +149,8 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
                   getValues={getValues}
                   errors={errors}
                   control={control}
+                  tableToSearch={'tb_attendeds'}
+                  columnToSearch={'rg'}
                 />
                 <MyCustomDropdown
                   title="Vínculo"
@@ -157,6 +159,8 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
                   getValues={getValues}
                   errors={errors}
                   control={control}
+                  tableToSearch={'tb_familiar_bonds'}
+                  columnToSearch={'name'}
                 />
               </>
             )
@@ -187,6 +191,8 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
                   getValues={getValues}
                   errors={errors}
                   control={control}
+                  tableToSearch={'tb_ranks'}
+                  columnToSearch={'name'}
                 />
                 <MyCustomDropdown
                   title="Quadro"
@@ -195,6 +201,8 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
                   getValues={getValues}
                   errors={errors}
                   control={control}
+                  tableToSearch={'tb_cadres'}
+                  columnToSearch={'name'}
                 />
                 <MyCustomDropdown
                   title="OPM"
@@ -203,6 +211,8 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
                   getValues={getValues}
                   errors={errors}
                   control={control}
+                  tableToSearch={'tb_opms'}
+                  columnToSearch={'name'}
                 />
                 <MyCustomDropdown
                   title="Situação funcional"
@@ -211,6 +221,8 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
                   getValues={getValues}
                   errors={errors}
                   control={control}
+                  tableToSearch={'tb_work_status'}
+                  columnToSearch={'name'}
                 />
               </>)
           }
@@ -244,6 +256,8 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
             getValues={getValues}
             errors={errors}
             control={control}
+            tableToSearch={'tb_marital_status'}
+            columnToSearch={'name'}
           />
           {
             (isDependent || isCivilian) && (

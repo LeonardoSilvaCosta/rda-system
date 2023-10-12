@@ -17,6 +17,7 @@ export async function GET(req: NextRequest) {
     tb_cadres ( name )
     `)
       .eq('cadre_id', QCOPMId)
+      .limit(10);
 
 
     let formattedData = null;

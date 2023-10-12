@@ -13,7 +13,8 @@ export async function GET(req: NextRequest) {
     name,
     state_id
     `)
-      .eq("state_id", ufId);
+      .eq("state_id", ufId)
+      .limit(10);
 
     return Response.json(data);
 

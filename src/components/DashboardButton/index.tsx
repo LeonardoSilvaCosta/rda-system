@@ -4,7 +4,7 @@ import { IconType } from 'react-icons';
 import styles from './styles.module.scss';
 import Link from 'next/link';
 import { useRegisterClientContext } from '@/context/registerClientContext';
-import { firstFormValidations } from '@/validation';
+import { firstClientFormValidations } from '@/validation';
 
 interface DashboardButtonProps {
   icon: IconType;
@@ -26,7 +26,7 @@ export function DashboardButton({ icon: Icon, name }: DashboardButtonProps) {
     setIsCPFValid(true);
     reset();
     setCurrentStep(0);
-    const keyFormType = formattedName as keyof typeof firstFormValidations;
+    const keyFormType = formattedName as keyof typeof firstClientFormValidations;
     setCurrentFormType(keyFormType);
   };
 

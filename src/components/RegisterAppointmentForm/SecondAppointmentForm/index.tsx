@@ -25,7 +25,7 @@ export function SecondAppointmentForm() {
   const [referralTypes, setReferralTypes] = useState<Option[]>([]);
   const [documents, setDocuments] = useState<Option[]>([]);
   const [travels, setTravels] = useState<Option[]>([]);
-  const leaveOfAbsenceOptions = [{ id: 'Sim', name: 'Sim'}, { id: 'Não', name: 'Não'}]
+  const leaveOfAbsenceOptions = [{ id: 'Sim', name: 'Sim' }, { id: 'Não', name: 'Não' }]
 
   const psychologicalId = "8f911cb1-9a72-4765-bf84-1c273eab0139";
   const socialId = "736eb33d-b012-46e2-9443-29858b965337";
@@ -87,6 +87,8 @@ export function SecondAppointmentForm() {
             errors={errors}
             control={control}
             getValues={getValues}
+            tableToSearch={'tb_type_of_services'}
+            columnToSearch={'name'}
           />
           {
             String(watchTypeOfService) === psychologicalId ? (
@@ -97,6 +99,8 @@ export function SecondAppointmentForm() {
                 errors={errors}
                 control={control}
                 getValues={getValues}
+                tableToSearch={'tb_type_of_psychological_assessments'}
+                columnToSearch={'name'}
               />
             ) : <></>
           }
@@ -109,6 +113,8 @@ export function SecondAppointmentForm() {
                 errors={errors}
                 control={control}
                 getValues={getValues}
+                tableToSearch={'tb_type_of_social_assessments'}
+                columnToSearch={'name'}
               />
             ) : <></>
           }
@@ -119,6 +125,8 @@ export function SecondAppointmentForm() {
             errors={errors}
             control={control}
             getValues={getValues}
+            tableToSearch={'tb_general_demands'}
+            columnToSearch={'name'}
           />
           <MyCustomMultiSelectDropdown
             title="Demanda específica"
@@ -135,6 +143,8 @@ export function SecondAppointmentForm() {
             errors={errors}
             control={control}
             getValues={getValues}
+            tableToSearch={'tb_procedures'}
+            columnToSearch={'name'}
           />
           <MyCustomMultiSelectDropdown
             title="Documentos produzidos"
@@ -170,12 +180,12 @@ export function SecondAppointmentForm() {
             errors={errors}
             register={register}
           />
-          <TextArea 
-           title="Evolução"
-           name="recordProgress"
-           hint="O atendido apresentou discurso coerente e organizado..."
-           errors={errors}
-           register={register}
+          <TextArea
+            title="Evolução"
+            name="recordProgress"
+            hint="O atendido apresentou discurso coerente e organizado..."
+            errors={errors}
+            register={register}
           />
           <div className={styles.buttonsBox}>
             <Button

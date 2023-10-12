@@ -8,7 +8,8 @@ export async function GET(req: NextRequest) {
   try {
     const { data: opms } = await supabase
     .from('tb_opms')
-    .select();
+    .select()
+    .limit(10);
 
     return Response.json(opms);
 

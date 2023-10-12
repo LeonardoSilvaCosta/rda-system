@@ -8,7 +8,8 @@ export async function GET(req: NextRequest) {
   try {
     const { data: referral_types } = await supabase
     .from('tb_referral_types')
-    .select();
+    .select()
+    .limit(10);
 
     return Response.json(referral_types);
 

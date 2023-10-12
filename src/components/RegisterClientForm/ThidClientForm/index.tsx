@@ -97,6 +97,8 @@ export function ThirdClientForm({ control, register }: ThirdClientFormProps) {
                     getValues={getValues}
                     errors={errors}
                     control={control}
+                    tableToSearch={'tb_familiar_bonds'}
+                    columnToSearch={'name'}
                   />
                 </div>
               </div >
