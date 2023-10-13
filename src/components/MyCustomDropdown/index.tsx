@@ -87,7 +87,7 @@ export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, opti
       const filteredData = data.map((e: any) => {
         return {
           id: e.id,
-          name: e.name
+          name: e.name ? e.name : `${e.rank} ${e.cadre} RG ${e.rg} ${e.nickname}`
         }
       })
       setFilteredData(filteredData);

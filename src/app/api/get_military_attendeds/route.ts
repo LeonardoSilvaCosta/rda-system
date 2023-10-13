@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
     tb_cadres ( name )
     `)
         .neq('rg', null)
-        .ilike('rg', `%${q}%`)
+        .or(`rg.ilike.%${q}%, fullname.ilike.%${q}%`)
         .limit(10);
 
       let formattedData = null;
