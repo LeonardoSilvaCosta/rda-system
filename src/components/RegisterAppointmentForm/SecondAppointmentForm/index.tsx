@@ -1,7 +1,6 @@
 
-import { AppointmentFormValues, ClientFormValues, Option } from '@/types/types';
+import { Option } from '@/types/types';
 import styles from './styles.module.scss';
-import { Control, UseFormRegister } from "react-hook-form";
 import { MyCustomDropdown } from '@/components/MyCustomDropdown';
 import { Button } from '@/components/Button';
 import { useEffect, useState } from 'react';
@@ -30,6 +29,9 @@ export function SecondAppointmentForm() {
   const psychologicalId = "8f911cb1-9a72-4765-bf84-1c273eab0139";
   const socialId = "736eb33d-b012-46e2-9443-29858b965337";
   const watchTypeOfService = watch("typeOfService");
+
+  String(watchTypeOfService) !== psychologicalId && setValue('typeOfPsychologicalAssessment', null);
+  String(watchTypeOfService) !== socialId && setValue('typeOfSocialAssessment', null);
 
   useEffect(() => {
     const getLists = async () => {
@@ -81,52 +83,48 @@ export function SecondAppointmentForm() {
       {isLoading ? <LoadingComponent /> : (
         <>
           <MyCustomDropdown
-            title="Tipo de serviço"
+            title="Tipo de serviço*"
             fieldName="typeOfService"
             options={services}
             errors={errors}
             control={control}
             getValues={getValues}
-            tableToSearch={'tb_type_of_services'}
-            columnToSearch={'name'}
+            routeToSearch={'/api/get_services'}
           />
           {
             String(watchTypeOfService) === psychologicalId ? (
               <MyCustomDropdown
-                title="Tipo de avaliação psicológica"
+                title="Tipo de avaliação psicológica*"
                 fieldName="typeOfPsychologicalAssessment"
                 options={psychologicalAssessments}
                 errors={errors}
                 control={control}
                 getValues={getValues}
-                tableToSearch={'tb_type_of_psychological_assessments'}
-                columnToSearch={'name'}
+                routeToSearch={'/api/get_psychological_assessments'}
               />
             ) : <></>
           }
           {
             String(watchTypeOfService) === socialId ? (
               <MyCustomDropdown
-                title="Tipo de avaliação social"
+                title="Tipo de avaliação social*"
                 fieldName="typeOfSocialAssessment"
                 options={socialAssessments}
                 errors={errors}
                 control={control}
                 getValues={getValues}
-                tableToSearch={'tb_type_of_social_assessments'}
-                columnToSearch={'name'}
+                routeToSearch={'/api/get_social_assessments'}
               />
             ) : <></>
           }
           <MyCustomDropdown
-            title="Demanda geral"
+            title="Demanda geral*"
             fieldName="generalDemand"
             options={generalDemands}
             errors={errors}
             control={control}
             getValues={getValues}
-            tableToSearch={'tb_general_demands'}
-            columnToSearch={'name'}
+            routeToSearch={'/api/get_general_demands'}
           />
           <MyCustomMultiSelectDropdown
             title="Demanda específica"
@@ -137,14 +135,13 @@ export function SecondAppointmentForm() {
             control={control}
           />
           <MyCustomDropdown
-            title="Procedimento"
+            title="Procedimento*"
             fieldName="procedure"
             options={procedures}
             errors={errors}
             control={control}
             getValues={getValues}
-            tableToSearch={'tb_procedures'}
-            columnToSearch={'name'}
+            routeToSearch={'/api/get_procedures'}
           />
           <MyCustomMultiSelectDropdown
             title="Documentos produzidos"
@@ -174,14 +171,14 @@ export function SecondAppointmentForm() {
             control={control}
           />
           <RadioGroup
-            title="Houve afastamento?"
+            title="Houve afastamento?*"
             options={leaveOfAbsenceOptions}
             name="hasLeaveOfAbsence"
             errors={errors}
             register={register}
           />
           <TextArea
-            title="Evolução"
+            title="Evolução*"
             name="recordProgress"
             hint="O atendido apresentou discurso coerente e organizado..."
             errors={errors}

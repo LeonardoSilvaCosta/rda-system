@@ -126,7 +126,7 @@ export type AppointmentFormValues = {
 
 type Referrals = {
   destinations: Option[],
-  types: Record<string, Option[]>
+  types: [{ destination: string, type: string }]
 }
 
 export type NameType = Path<FormValues> | Path<ClientFormValues>;

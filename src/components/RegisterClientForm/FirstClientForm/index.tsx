@@ -10,7 +10,6 @@ import { Button } from '@/components/Button';
 import { useRegisterClientContext } from '@/context/registerClientContext';
 import { useEffect, useState } from 'react';
 import { LoadingComponent } from '@/components/Loading/loading';
-import { firstFormValidations } from '@/validation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { MaskedInput } from '@/components/MaskedInput';
 import { validateCPF } from '@/validation/validateCPF';
@@ -132,7 +131,7 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
       {isLoading ? <LoadingComponent /> : (
         <>
           <Input
-            title="Nome completo"
+            title="Nome completo*"
             name="fullName"
             type="text"
             hint="LEONARDO DA SILVA COSTA"
@@ -143,7 +142,7 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
             isDependent && (
               <>
                 <MyCustomDropdown
-                  title="Titular"
+                  title="Titular*"
                   fieldName="policyHolder"
                   options={militaryAttendeds}
                   getValues={getValues}
@@ -152,7 +151,7 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
                   routeToSearch={'/api/get_military_attendeds'}
                 />
                 <MyCustomDropdown
-                  title="Vínculo"
+                  title="Vínculo*"
                   fieldName="familiarBond"
                   options={familiarBonds}
                   getValues={getValues}
@@ -167,7 +166,7 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
             isMilitary && (
               <>
                 <Input
-                  title="Nome de guerra"
+                  title="Nome de guerra*"
                   name="nickName"
                   type="text"
                   hint="LEONARDO"
@@ -175,7 +174,7 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
                   register={register}
                 />
                 <Input
-                  title="RG"
+                  title="RG*"
                   name="rg"
                   type="text"
                   hint="40897"
@@ -183,7 +182,7 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
                   register={register}
                 />
                 <MyCustomDropdown
-                  title="Posto/graduação"
+                  title="Posto/graduação*"
                   fieldName="rank"
                   options={ranks}
                   getValues={getValues}
@@ -192,7 +191,7 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
                   routeToSearch={'/api/get_ranks'}
                 />
                 <MyCustomDropdown
-                  title="Quadro"
+                  title="Quadro*"
                   fieldName="cadre"
                   options={cadres}
                   getValues={getValues}
@@ -201,7 +200,7 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
                   routeToSearch={'/api/get_cadres'}
                 />
                 <MyCustomDropdown
-                  title="OPM"
+                  title="OPM*"
                   fieldName="opm"
                   options={opms}
                   getValues={getValues}
@@ -210,7 +209,7 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
                   routeToSearch={'/api/get_opms'}
                 />
                 <MyCustomDropdown
-                  title="Situação funcional"
+                  title="Situação funcional*"
                   fieldName="workStatus"
                   options={workStatus}
                   getValues={getValues}
@@ -221,14 +220,14 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
               </>)
           }
           <RadioGroup
-            title="Sexo"
+            title="Sexo*"
             name="gender"
             options={genders}
             errors={errors}
             register={register}
           />
           <MaskedInput
-            title="CPF"
+            title="CPF*"
             name="cpf"
             type="text"
             hint="000.000.000-00"

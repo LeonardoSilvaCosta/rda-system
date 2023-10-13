@@ -5,7 +5,6 @@ import styles from './styles.module.scss';
 import { BsChevronDown } from "react-icons/bs";
 import { Control, Controller, FieldError, FieldErrors, FieldPath, FieldValues, UseFormGetValues } from 'react-hook-form';
 import { Option } from '@/types/types';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 interface MyCustomDropdownProps<T extends FieldValues> {
   title: string;
@@ -24,8 +23,6 @@ export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, opti
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [filteredData, setFilteredData] = useState<Option[]>(options);
   const [query, setQuery] = useState("");
-
-  const supabase = createClientComponentClient();
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 

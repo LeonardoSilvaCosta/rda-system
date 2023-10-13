@@ -54,7 +54,7 @@ export const RegisterAppointmentContextProvider = ({
     setValue,
     watch
   } = useForm<AppointmentFormValues | any>({
-    // resolver: yupResolver(validationSchema),
+    resolver: yupResolver(validationSchema),
     defaultValues: {
       contacts: [{
         phone: '',
@@ -148,7 +148,7 @@ export const RegisterAppointmentContextProvider = ({
             // access_id: data.access,
             // facility_id: data.facility,
             // modality_id: data.modality,
-            // protocol: data.protocol,
+            protocol: data.protocol,
             // type_of_service_id: data.typeOfService,
             // type_of_psychological_assessment_id: data.typeOfPsychologicalAssessment,
             // type_of_social_assessment_id: data.typeOfSocialAssessment,
@@ -207,19 +207,13 @@ export const RegisterAppointmentContextProvider = ({
 
           await supabase.from('tb_appointments_travels').insert(travels);
 
-          const destinationsId = data.referrals.destinations.map(destination => destination.id);
-
-          const referrals = destinationsId.flatMap(destinationId => {
-            const types = data.referrals.types[destinationId] || [];
-
-            return types.map(type => {
-              return {
-                destination: destinationId,
-                type: type.id,
-                appointment_id: appointmentId
-              };
-            });
-          });
+          const referrals = data.referrals.types.map(e => {
+            return {
+              destination: e.destination,
+              type: e.type,
+              appointment_id: appointmentId
+            }
+          })
 
           await supabase.from('tb_referrals').insert(referrals);
 

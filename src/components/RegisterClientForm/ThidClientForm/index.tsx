@@ -74,7 +74,7 @@ export function ThirdClientForm({ control, register }: ThirdClientFormProps) {
                 </div>
                 <div>
                   <MaskedInput
-                    title="Número de telefone"
+                    title="Número de telefone*"
                     name={phone}
                     type="text"
                     hint="(91) 988165507"
@@ -83,7 +83,7 @@ export function ThirdClientForm({ control, register }: ThirdClientFormProps) {
                     mask={"(99) 99999-9999"}
                   />
                   <Input
-                    title="Identificação do dono do contato"
+                    title="Identificação do dono do contato*"
                     name={ownerIdentification}
                     type="text"
                     hint="Leonardo"
@@ -97,8 +97,7 @@ export function ThirdClientForm({ control, register }: ThirdClientFormProps) {
                     getValues={getValues}
                     errors={errors}
                     control={control}
-                    tableToSearch={'tb_familiar_bonds'}
-                    columnToSearch={'name'}
+                    routeToSearch={'/api/get_familiar_bonds'}
                   />
                 </div>
               </div >

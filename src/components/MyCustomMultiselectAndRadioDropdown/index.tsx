@@ -91,19 +91,39 @@ export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({ tit
     return updatedSelectedOptions;
   };
 
+  const convertSecondOptionToInsert = (referralRecord: Record<string, Option[]>) => {
+    const destinationsId = selectedOptions.map(destination => destination.id);
+
+   const typesArray = destinationsId.flatMap((destinationId: string) => {
+      const types = referralRecord[destinationId] || [];
+
+      return types.map((type) => {
+        return {
+          destination: destinationId,
+          type: type.id,
+        };
+      });
+    });
+    return typesArray;
+  }
+
   const insertSecondOptionsItens = (secondOption: Option, firstOptionId: string) => {
     const currentSelections = selectedSecondOptionsForFirstOption[firstOptionId] || [];
 
     if (currentSelections.map(e => e.id).includes(secondOption.id)) {
-      return {
-        ...selectedSecondOptionsForFirstOption,
-        [firstOptionId]: currentSelections.filter((item) => item.name !== secondOption.name),
-      };
+      return convertSecondOptionToInsert(
+        {
+          ...selectedSecondOptionsForFirstOption,
+          [firstOptionId]: currentSelections.filter((item) => item.name !== secondOption.name),
+        }
+      );
     } else {
-      return {
-        ...selectedSecondOptionsForFirstOption,
-        [firstOptionId]: [...currentSelections, secondOption],
-      };
+      return convertSecondOptionToInsert(
+        {
+          ...selectedSecondOptionsForFirstOption,
+          [firstOptionId]: [...currentSelections, secondOption],
+        }
+      )
     }
   };
 

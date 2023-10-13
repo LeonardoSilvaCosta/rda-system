@@ -108,7 +108,7 @@ export function SecondClientForm({ control, register }: SecondClientFormProps) {
             mask={"99999-999"}
           />
           <Input
-            title="Logradouro"
+            title="Logradouro*"
             name="address.street"
             type="text"
             hint="Rua Satélite"
@@ -116,7 +116,7 @@ export function SecondClientForm({ control, register }: SecondClientFormProps) {
             register={register}
           />
           <Input
-            title="Bairro"
+            title="Bairro*"
             name="address.neighborhood"
             type="text"
             hint="Parque verde"
@@ -124,7 +124,7 @@ export function SecondClientForm({ control, register }: SecondClientFormProps) {
             register={register}
           />
           <Input
-            title="Número"
+            title="Número*"
             name="address.number"
             type="text"
             hint="34-A"
@@ -140,25 +140,23 @@ export function SecondClientForm({ control, register }: SecondClientFormProps) {
             register={register}
           />
           <MyCustomDropdown
-            title="Estado"
+            title="Estado*"
             fieldName="address.stateAcronym"
             options={states}
             getValues={getValues}
             errors={errors}
             control={control}
             setSelectedState={setSelectedState}
-            tableToSearch={'tb_states'}
-            columnToSearch={'name'}
+            routeToSearch={'/api/get_ufs'}
           />
           <MyCustomDropdown
-            title="Cidade"
+            title="Cidade*"
             fieldName="address.city"
             options={cities}
             getValues={getValues}
             errors={errors}
             control={control}
-            tableToSearch={'tb_cities'}
-            columnToSearch={'name'}
+            routeToSearch={'/api/cities'}
           />
           <div className={styles.buttonsBox}>
             <Button

@@ -8,12 +8,10 @@ import { MyCustomDropdown } from '@/components/MyCustomDropdown';
 import { Button } from '@/components/Button';
 import { useEffect, useState } from 'react';
 import { LoadingComponent } from '@/components/Loading/loading';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRegisterAppointmentContext } from '@/context/registerAppointmentContext';
 import { MyCustomMultiSelectDropdown } from '@/components/MyCustomMultiselectDropdown';
 
 export function FirstAppointmentForm() {
-  const supabase = createClientComponentClient();
   const { control, errors, getValues, goToPreviousStep, register, watch } = useRegisterAppointmentContext();
   const [isLoading, setIsLoading] = useState(true);
   const [specialists, setSpecialists] = useState<Option[]>([]);
@@ -73,13 +71,13 @@ export function FirstAppointmentForm() {
       {isLoading ? <LoadingComponent /> : (
         <>
           <MyDatePicker
-            title="Data"
+            title="Data*"
             name="date"
             errors={errors}
             control={control}
           />
           <Input
-            title="Horário"
+            title="Horário*"
             name="time"
             type="time"
             hint="10:00"
@@ -87,7 +85,7 @@ export function FirstAppointmentForm() {
             register={register}
           />
           <MyCustomMultiSelectDropdown
-            title="Oficiais"
+            title="Oficiais*"
             fieldName="specialists"
             getValues={getValues}
             options={specialists}
@@ -95,7 +93,7 @@ export function FirstAppointmentForm() {
             control={control}
           />
            <MyCustomMultiSelectDropdown
-            title="Atendidos"
+            title="Atendidos*"
             fieldName="attendeds"
             getValues={getValues}
             options={attendeds}
@@ -103,34 +101,32 @@ export function FirstAppointmentForm() {
             control={control}
           />
           <MyCustomDropdown
-            title="Acesso ao atendimento"
+            title="Acesso ao atendimento*"
             fieldName="access"
             options={accesses}
             getValues={getValues}
             errors={errors}
             control={control}
-            tableToSearch={'tb_accesses'}
-            columnToSearch={'name'}
+            routeToSearch={'/api/get_accesses'}
           />
           <MyCustomDropdown
-            title="Local do atendimento"
+            title="Local do atendimento*"
             fieldName="facility"
             options={facilities}
             getValues={getValues}
             errors={errors}
             control={control}
-            tableToSearch={'tb_opms'}
-            columnToSearch={'name'}
+            routeToSearch={'api/get_opms'}
           />
           <RadioGroup
-            title="Modalidade de atendimento"
+            title="Modalidade de atendimento*"
             name="modality"
             options={modalities}
             errors={errors}
             register={register}
           />
           <RadioGroup
-            title="Tem protocolo PAE?"
+            title="Tem protocolo PAE*?"
             name="hasProtocol"
             options={hasProtocolOptions}
             errors={errors}
@@ -139,7 +135,7 @@ export function FirstAppointmentForm() {
           {
             String(watchHasProtocol) === "Sim" ? (
               <Input
-                title="Protocolo"
+                title="Protocolo*"
                 name="protocol"
                 type="text"
                 hint="123/2023"

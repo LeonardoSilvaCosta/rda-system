@@ -4,27 +4,49 @@ import { cookies } from "next/headers";
 
 export async function GET(req: NextRequest) {
   const supabase = createRouteHandlerClient({ cookies });
+  const { searchParams } = new URL(req.url);
+  const q = searchParams.get('q');
 
   try {
-    const { data } = await supabase.from('tb_states').select(`
-    id, 
-    acronym`
-    )
-      .limit(10);
+    if (q) {
+      const { data } = await supabase
+        .from('tb_states')
+        .select(`id, acronym`)
+        .ilike('acronym', `%${q}%`)
+        .limit(10);
 
-    let formmatedStates = null;
+      let formmatedStates = null;
 
-    if (data) {
-      formmatedStates = data.map((e) => {
-        return {
-          id: e.id,
-          name: e.acronym,
-        }
-      })
+      if (data) {
+        formmatedStates = data.map((e) => {
+          return {
+            id: e.id,
+            name: e.acronym,
+          }
+        })
+      }
+
+      return Response.json(formmatedStates);
+    } else {
+      const { data } = await supabase.from('tb_states').select(`
+      id, 
+      acronym`
+      )
+        .limit(10);
+
+      let formmatedStates = null;
+
+      if (data) {
+        formmatedStates = data.map((e) => {
+          return {
+            id: e.id,
+            name: e.acronym,
+          }
+        })
+      }
+
+      return Response.json(formmatedStates);
     }
-
-
-    return Response.json(formmatedStates);
 
   } catch (error) {
     return new NextResponse(`select data error: ${error}`, { status: 400 });
