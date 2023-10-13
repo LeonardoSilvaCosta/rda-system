@@ -187,7 +187,7 @@ export function SecondAppointmentForm() {
           <div className={styles.buttonsBox}>
             <Button
               type="submit"
-              name="Próxima"
+              name="Enviar"
             />
             <Button
               type="button"
