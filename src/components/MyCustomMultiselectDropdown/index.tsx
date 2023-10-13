@@ -57,17 +57,21 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({ title, fiel
     }
   }
 
+  const convertToDeleteAndToInsert = (options: Option[]) => { 
+    return options.map(e => e.id);
+  }
+
   const insertItens = (option: Option) => {
     const updatedSelectedOptions = selectedOptions.map(e => e.name).includes(option.name)
       ? selectedOptions.filter((option) => option.name !== option.name)
       : [...selectedOptions, option];
 
-    return updatedSelectedOptions;
+    return convertToDeleteAndToInsert(updatedSelectedOptions);
   }
 
   const deleteItens = (option: Option) => {
     const updatedSelectedOptions = selectedOptions.filter((item) => item.name !== option.name);
-    return updatedSelectedOptions;
+    return convertToDeleteAndToInsert(updatedSelectedOptions);
   }
 
   useEffect(() => {

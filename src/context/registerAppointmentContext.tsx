@@ -144,64 +144,62 @@ export const RegisterAppointmentContextProvider = ({
         const saveRegister = async () => {
           const res = await supabase.from("tb_appointments").insert({
             date: formattedDate,
-            // time: formattedHour,
-            // access_id: data.access,
-            // facility_id: data.facility,
-            // modality_id: data.modality,
+            time: formattedHour,
+            access_id: data.access,
+            facility_id: data.facility,
+            modality_id: data.modality,
             protocol: data.protocol,
-            // type_of_service_id: data.typeOfService,
-            // type_of_psychological_assessment_id: data.typeOfPsychologicalAssessment,
-            // type_of_social_assessment_id: data.typeOfSocialAssessment,
-            // general_demand_id: data.generalDemand,
-            // procedure_id: data.procedure,
-            // generated_documents: data.generatedDocuments.map(e => e.id), // many-to-many
-            // travels_id: data.travels.map(e => e.id), // many-to-many
-            // has_leave_of_absence: hasLeaveOfAbsence,
+            type_of_service_id: data.typeOfService,
+            type_of_psychological_assessment_id: data.typeOfPsychologicalAssessment,
+            type_of_social_assessment_id: data.typeOfSocialAssessment,
+            general_demand_id: data.generalDemand,
+            procedure_id: data.procedure,
+            has_leave_of_absence: hasLeaveOfAbsence,
             record_progress: data.recordProgress,
           }).select();
 
           const appointmentId = res.data && res.data[0].id;
 
-          const specialists = data.specialists.map(e => {
+          const specialists = data.specialists.map(specialist => {
             return {
               appointment_id: appointmentId,
-              specialist_id: e.id,
+              specialist_id: specialist,
             }
           })
 
           await supabase.from('tb_appointments_specialists').insert(specialists);
 
-          const attendeds = data.attendeds.map(e => {
+          const attendeds = data.attendeds.map(attended => {
             return {
               appointment_id: appointmentId,
-              attended_id: e.id,
+              attended_id: attended,
             }
           })
 
           await supabase.from('tb_appointments_attendeds').insert(attendeds);
 
-          const specificDemands = data.specificDemands.map(e => {
+          const specificDemands = data.specificDemands.map(specificDemand => {
             return {
               appointment_id: appointmentId,
-              specific_demand_id: e.id,
+              specific_demand_id: specificDemand,
             }
           });
 
           await supabase.from('tb_appointments_specific_demands').insert(specificDemands);
 
-          const documents = data.documents.map(e => {
+          const documents = data.documents.map(document => {
             return {
               appointment_id: appointmentId,
-              document_id: e.id
+              document_id: document
             }
           });
 
           await supabase.from('tb_appointments_documents').insert(documents);
 
-          const travels = data.travels.map(e => {
+          const travels = data.travels.map(travel => {
             return {
               appointment_id: appointmentId,
-              travel_id: e.id
+              travel_id: travel
             }
           });
 
@@ -209,16 +207,15 @@ export const RegisterAppointmentContextProvider = ({
 
           const referrals = data.referrals.types.map(e => {
             return {
-              destination: e.destination,
-              type: e.type,
-              appointment_id: appointmentId
+              destination: e.firstOption,
+              type: e.secondOption,
+              appointment_id: appointmentId,
             }
           })
 
-          await supabase.from('tb_referrals').insert(referrals);
+          await supabase.from('tb_appointment_referrals').insert(referrals);
 
         }
-
 
         saveRegister();
 

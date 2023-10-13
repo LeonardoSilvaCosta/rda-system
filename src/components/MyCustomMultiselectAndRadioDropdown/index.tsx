@@ -91,20 +91,20 @@ export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({ tit
     return updatedSelectedOptions;
   };
 
-  const convertSecondOptionToInsert = (referralRecord: Record<string, Option[]>) => {
-    const destinationsId = selectedOptions.map(destination => destination.id);
+  const convertSecondOptionToInsert = (selectedSecondOptionsForFirstOption: Record<string, Option[]>) => {
+    const firstOptionsId = selectedOptions.map(firstOption => firstOption.id);
 
-   const typesArray = destinationsId.flatMap((destinationId: string) => {
-      const types = referralRecord[destinationId] || [];
+   const arrayWithFirstOptionIdAndSecondOptionId = firstOptionsId.flatMap((firstOptionId: string) => {
+      const secondOptions = selectedSecondOptionsForFirstOption[firstOptionId] || [];
 
-      return types.map((type) => {
+      return secondOptions.map((secondOption) => {
         return {
-          destination: destinationId,
-          type: type.id,
+          firstOptionId: firstOptionId,
+          secondOptionId: secondOption.id,
         };
       });
     });
-    return typesArray;
+    return arrayWithFirstOptionIdAndSecondOptionId;
   }
 
   const insertSecondOptionsItens = (secondOption: Option, firstOptionId: string) => {

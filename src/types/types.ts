@@ -115,18 +115,18 @@ export type AppointmentFormValues = {
   typeOfPsychologicalAssessment: string;
   typeOfSocialAssessment: string;
   generalDemand: string;
-  specificDemands: Option[];
+  specificDemands: string[];
   procedure: string;
   referrals: Referrals;
-  documents: Option[];
-  travels: Option[];
+  documents: string[];
+  travels: string[];
   hasLeaveOfAbsence: string;
   recordProgress: string;
 }
 
 type Referrals = {
   destinations: Option[],
-  types: [{ destination: string, type: string }]
+  types: [{ firstOption: string, secondOption: string }]
 }
 
 export type NameType = Path<FormValues> | Path<ClientFormValues>;

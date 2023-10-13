@@ -148,18 +148,14 @@ const Option = yup.object({
   name: yup.string(),
 })
 
-const Referral = yup.object({
-  destination: yup.string(),
-  type: yup.string(),
-})
-
-
+const psychologicalId = "8f911cb1-9a72-4765-bf84-1c273eab0139";
+const socialId = "736eb33d-b012-46e2-9443-29858b965337";
 
 export const firstAppointmentStepValidation = yup.object({
   // date: yup.date().required("O campo 'Data' é obrigatório."),
   // time: yup.string().required("O campo 'Horário' é obrigatório."),
-  // specialists: yup.array().of(Option).required("O campo 'Oficiais' é obrigatório"),
-  // attendeds: yup.array().of(Option).required("O campo 'Atendidos' é obrigatório"),
+  // specialists: yup.array().of(yup.string()).required("O campo 'Oficiais' é obrigatório"),
+  // attendeds: yup.array().of(yup.string()).required("O campo 'Atendidos' é obrigatório"),
   // access: yup.string().required("O campo 'Acesso' ao atendimento' é obrigatório"),
   // facility: yup.string().required("O campo 'Local' do atendimento' é obrigatório"),
   // modality: yup.string().required("O campo 'Modalidade' é obrigatório"),
@@ -171,33 +167,38 @@ export const firstAppointmentStepValidation = yup.object({
   // }).default("Não se aplica"),
 })
 
+const Referral = yup.object({
+  firstOption: yup.string(),
+  secondOption: yup.string(),
+})
+
 const referrals = yup.object({
   destination: yup.array().of(Option),
   types: yup.array().of(Referral).when('destination', {
     is: (destination: []) => destination && destination.length > 0,
     then: () => yup.array().of(Referral).required('É necessário selecionar ao menos uma opção de tipo de encaminhamento.'),
-    otherwise: () => yup.array().of(Referral),
-  }).default([])
+    otherwise: () => yup.array().of(Referral).nullable(),
+  })
 })
 
-
 export const secondAppointmentStepValidation = yup.object({
-  // typeOfService: yup.string().required("O campo 'Tipo de serviço' é obrigatório."),
-  // typeOfPsychologycalAssessment: yup.string().when('typeOfService', {
-  //   is: "Avaliação psicológica",
-  //   then: () => yup.string().required("O campo 'Tipo de avaliação psicológica' é obrigatório."),
-  //   otherwise: () => yup.string().nullable(),
-  // }).default(null),
-  // typeOfSocialAssessment: yup.string().when('typeOfService', {
-  //   is: "Avaliação social",
-  //   then: () => yup.string().required("O campo 'Tipo de avaliação social' é obrigatório"),
-  //   otherwise: () => yup.string().nullable(),
-  // }).default(null),
-  // generalDemand: yup.string().required("O campo 'Demanda Geral' é obrigatório"),
-  // specificDemands: yup.array(Option).default([]),
-  // procedure: yup.string().required("O campo 'Procedimento' é obrigatório"),
-  // documents: yup.array(Option).default([]),
-  // travels: yup.array().of(Option).default([]),
+  typeOfService: yup.string().required("O campo 'Tipo de serviço' é obrigatório."),
+  typeOfPsychologicalAssessment: yup.string().when('typeOfService', {
+    is: psychologicalId,
+    then: () => yup.string().required("O campo 'Tipo de avaliação psicológica' é obrigatório"),
+    otherwise: () => yup.string().nullable(),
+  }),
+  typeOfSocialAssessment: yup.string().when('typeOfService', {
+    is: socialId,
+    then: () => yup.string().required("O campo 'Tipo de avaliação social' é obrigatório"),
+    otherwise: () => yup.string().nullable(),
+  }),
+  generalDemand: yup.string().required("O campo 'Demanda Geral' é obrigatório"),
+  specificDemands: yup.array(yup.string()).default([]),
+  procedure: yup.string().required("O campo 'Procedimento' é obrigatório"),
+  documents: yup.array(yup.string()).default([]),
+  travels: yup.array().of(yup.string()).default([]),
   referrals,
-  // hasLeaveOfAbsence: yup.string().required("O campo 'Houve afastamento?' é obrigatório."),
+  hasLeaveOfAbsence: yup.string().required("O campo 'Houve afastamento?' é obrigatório."),
+  recordProgress: yup.string().required("O campo 'Evolução' é obrigatório.")
 })
