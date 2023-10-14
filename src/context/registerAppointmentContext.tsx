@@ -60,7 +60,13 @@ export const RegisterAppointmentContextProvider = ({
         phone: '',
         ownerIdentification: '',
         attendedRelationship: '',
-        attended_id: ''
+        attended_id: '',
+        specialists: [],
+        attendeds: [],
+        specificDemands: [],
+        referrals: [],
+        documents: [],
+        travels: [],
       }]
     }
   })
@@ -205,10 +211,10 @@ export const RegisterAppointmentContextProvider = ({
 
           await supabase.from('tb_appointments_travels').insert(travels);
 
-          const referrals = data.referrals.types.map(e => {
+          const referrals = data.referrals.map(e => {
             return {
-              destination: e.firstOption,
-              type: e.secondOption,
+              destination: e.firstOptionId,
+              type: e.secondOptionId,
               appointment_id: appointmentId,
             }
           })

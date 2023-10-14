@@ -12,3 +12,12 @@
 - [x] react-datepicker - https://www.npmjs.com/package//react-datepicker - melhor tutorial https://www.youtube.com/watch?v=iYZryimRK9w&t=33s
 - [x] react-hook-form
 - [x] yup
+
+- [] Corregir recuperação do multiselectDropdownRadio
+- [] Corrigir problemas de envio de formulário de atendimento.
+- [] Corrigir problemas de validação de formulário de atendimento.
+- [] Verificar e validar lógicas de validação do banco de dados para a tabela de atendimentos
+
+----Nova fase
+- [] Criar lógica e sistema de autenticação com provider ou email
+- [] Criar estrutura de prontuário do atendido

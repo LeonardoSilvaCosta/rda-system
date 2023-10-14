@@ -117,17 +117,14 @@ export type AppointmentFormValues = {
   generalDemand: string;
   specificDemands: string[];
   procedure: string;
-  referrals: Referrals;
+  referrals: Referral[];
   documents: string[];
   travels: string[];
   hasLeaveOfAbsence: string;
   recordProgress: string;
 }
 
-type Referrals = {
-  destinations: Option[],
-  types: [{ firstOption: string, secondOption: string }]
-}
+export type Referral = { firstOptionId: string, secondOptionId: string };
 
 export type NameType = Path<FormValues> | Path<ClientFormValues>;
 export type RegisterType = UseFormRegister<ClientFormValues> | UseFormRegister<FormValues>;

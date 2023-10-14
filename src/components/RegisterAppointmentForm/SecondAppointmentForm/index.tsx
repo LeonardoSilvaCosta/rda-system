@@ -161,8 +161,7 @@ export function SecondAppointmentForm() {
           />
           <MyCustomMultiSelectAndRadioDropdown
             title="Encaminhamentos"
-            firstFieldName="referrals.destinations"
-            secondFieldName="referrals.types"
+            fieldname="referrals"
             getValues={getValues}
             setValue={setValue}
             firstOptions={referralDestinations}

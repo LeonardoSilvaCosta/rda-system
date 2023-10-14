@@ -172,14 +172,21 @@ const Referral = yup.object({
   secondOption: yup.string(),
 })
 
-const referrals = yup.object({
-  destination: yup.array().of(Option),
-  types: yup.array().of(Referral).when('destination', {
-    is: (destination: []) => destination && destination.length > 0,
-    then: () => yup.array().of(Referral).required('É necessário selecionar ao menos uma opção de tipo de encaminhamento.'),
-    otherwise: () => yup.array().of(Referral).nullable(),
-  })
-})
+const referrals = yup.array().of(Referral).test({
+  test: (referralArray) => {
+    // Verifique se pelo menos um item no array de referral tem um valor em "firstOption"
+    const atLeastOneHasFirstOption = referralArray?.some((referral) => !!referral.firstOption);
+
+    // Se pelo menos um item tiver "firstOption", então "secondOption" deve ser obrigatório
+    if (atLeastOneHasFirstOption) {
+      return referralArray?.every((referral) => !!referral.secondOption);
+    }
+
+    // Caso contrário, "referrals" não é obrigatório
+    return true;
+  },
+  message: 'O campo secondOption é obrigatório quando pelo menos um item em referrals tem um valor em firstOption',
+});
 
 export const secondAppointmentStepValidation = yup.object({
   typeOfService: yup.string().required("O campo 'Tipo de serviço' é obrigatório."),

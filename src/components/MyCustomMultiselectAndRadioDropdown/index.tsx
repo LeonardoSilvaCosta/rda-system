@@ -3,13 +3,12 @@ import classnames from 'classnames';
 import styles from './styles.module.scss';
 import { BsChevronDown, BsCheckLg } from "react-icons/bs";
 import { Control, Controller, FieldError, FieldErrors, FieldPath, FieldValues, Path, UseFormGetValues, UseFormSetValue } from 'react-hook-form';
-import { Option } from '@/types/types';
+import { Option, Referral } from '@/types/types';
 import { SearchBar } from '../SearchBar';
 
 interface MyCustomMultiselectAndRadioDropdownProps<T extends FieldValues> {
   title: string;
-  firstFieldName: FieldPath<T>;
-  secondFieldName: FieldPath<T>;
+  fieldname: FieldPath<T>;
   getValues: UseFormGetValues<any>;
   setValue: UseFormSetValue<any>;
   firstOptions: Option[];
@@ -18,19 +17,19 @@ interface MyCustomMultiselectAndRadioDropdownProps<T extends FieldValues> {
   errors: FieldErrors<T>,
 }
 
-export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({ title, firstFieldName, secondFieldName, getValues, setValue, firstOptions, secondOptions, control, errors }: MyCustomMultiselectAndRadioDropdownProps<T>) {
+export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({ title, fieldname, getValues, setValue, firstOptions, secondOptions, control, errors }: MyCustomMultiselectAndRadioDropdownProps<T>) {
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
   const [selectedSecondOptionsForFirstOption, setSelectedSecondOptionsForFirstOption] = useState<Record<string, Option[]>>({});
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [search, setSearch] = useState("");
 
-  const errorKey = firstFieldName as string;
+  const errorKey = fieldname as string;
 
-  const isNested = firstFieldName.includes('.');
+  const isNested = fieldname.includes('.');
 
-  const nestedFields = isNested ? firstFieldName.split('.') : [];
-  const topLevelField = isNested ? nestedFields[0] : firstFieldName;
+  const nestedFields = isNested ? fieldname.split('.') : [];
+  const topLevelField = isNested ? nestedFields[0] : fieldname;
 
   const lowerSearch = search.toLocaleLowerCase();
 
@@ -44,18 +43,22 @@ export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({ tit
   };
 
   const toggleFirstOption = (option: Option) => {
-    if (selectedOptions.some((selectedOption) => selectedOption.name === option.name)) {
-      const updatedSelectedOptions = selectedOptions.filter((item) => item.name !== option.name);
-      const updatedSelectedFirstOptions = { ...selectedSecondOptionsForFirstOption };
-      delete updatedSelectedFirstOptions[option.id];
-      setSelectedSecondOptionsForFirstOption(updatedSelectedFirstOptions);
-      deleteSecondOptionsItens(option);
-
-      setSelectedOptions(updatedSelectedOptions);
+    const isOptionSelected = selectedOptions.some((selectedOption) => selectedOption.name === option.name);
+  
+    if (isOptionSelected) {
+      setSelectedOptions(selectedOptions.filter((item) => item.name !== option.name));
+      setSelectedSecondOptionsForFirstOption((prevSelectedSecondOptions) => {
+        const updatedSecondOptions = { ...prevSelectedSecondOptions };
+        delete updatedSecondOptions[option.id];
+        deleteSecondOptionsItens(option);
+        return updatedSecondOptions;
+      });
     } else {
       setSelectedOptions([...selectedOptions, option]);
     }
   };
+  
+  
 
   const toggleSecondOption = (secondOption: Option, itemId: string) => {
     const currentSelections = selectedSecondOptionsForFirstOption[itemId] || [];
@@ -83,18 +86,10 @@ export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({ tit
     }
   }
 
-  const insertFirstOptionsItens = (firstOption: Option) => {
-    const updatedSelectedOptions = selectedOptions.some((selectedOption) => selectedOption.name === firstOption.name)
-      ? selectedOptions.filter((selectedOption) => selectedOption.name !== firstOption.name)
-      : [...selectedOptions, firstOption];
-
-    return updatedSelectedOptions;
-  };
-
   const convertSecondOptionToInsert = (selectedSecondOptionsForFirstOption: Record<string, Option[]>) => {
     const firstOptionsId = selectedOptions.map(firstOption => firstOption.id);
 
-   const arrayWithFirstOptionIdAndSecondOptionId = firstOptionsId.flatMap((firstOptionId: string) => {
+    const arrayWithFirstOptionIdAndSecondOptionId = firstOptionsId.flatMap((firstOptionId: string) => {
       const secondOptions = selectedSecondOptionsForFirstOption[firstOptionId] || [];
 
       return secondOptions.map((secondOption) => {
@@ -127,21 +122,50 @@ export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({ tit
     }
   };
 
-  const deleteFirstOptionsItens = (firstOption: Option) => {
-    const updatedSelectedOptions = selectedOptions.filter((item) => item.name !== firstOption.name);
-    return updatedSelectedOptions;
-  }
-
   const deleteSecondOptionsItens = (firstOption: Option) => {
-    if (selectedOptions.some((selectedOption) => selectedOption.name === firstOption.name)) {
-      setValue(secondFieldName as string, []);
-    }
-  }
-
+    const fieldValues = getValues(fieldname) as Referral[];
+  
+    const updatedValues = fieldValues.filter((referral) => referral.firstOptionId !== firstOption.id);
+  
+    setValue(fieldname as string, updatedValues);
+  };
+  
 
   useEffect(() => {
-    if (getValues(firstFieldName)) {
-      setSelectedOptions(getValues(firstFieldName))
+    if (getValues(fieldname)) {
+      const preReferrals: { firstOptionId: string, secondOptionId: string }[] = getValues(fieldname);
+  
+      const preSelectedFirstOptions: Option[] = firstOptions.filter((e) => preReferrals.some((item) => item.firstOptionId === e.id));
+  
+      const preSelectedSecondOptionsForFirstOption: Record<string, Option[]> = {};
+  
+      preReferrals.forEach((item) => {
+        const secondOptionSelected = secondOptions.find((e) => e.id === item.secondOptionId);
+  
+        if (secondOptionSelected) {
+          if (!preSelectedSecondOptionsForFirstOption[item.firstOptionId]) {
+            preSelectedSecondOptionsForFirstOption[item.firstOptionId] = [];
+          }
+  
+          preSelectedSecondOptionsForFirstOption[item.firstOptionId].push({
+            id: secondOptionSelected.id,
+            name: secondOptionSelected.name,
+          });
+        }
+      });
+  
+      setSelectedOptions((prevOptions) => [...prevOptions, ...preSelectedFirstOptions]);
+      setSelectedSecondOptionsForFirstOption((prevSecondOptions) => {
+        const updatedSecondOptions = { ...prevSecondOptions };
+        for (const key in preSelectedSecondOptionsForFirstOption) {
+          if (updatedSecondOptions[key]) {
+            updatedSecondOptions[key].push(...preSelectedSecondOptionsForFirstOption[key]);
+          } else {
+            updatedSecondOptions[key] = preSelectedSecondOptionsForFirstOption[key];
+          }
+        }
+        return updatedSecondOptions;
+      });
     }
   }, [])
 
@@ -196,92 +220,80 @@ export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({ tit
             {selectedOptions.length > 0 && (
               <ul className={styles.selectedItensBox}>
                 {selectedOptions.map((item) => (
-                  <Controller
-                    key={item.id}
-                    control={control}
-                    name={firstFieldName}
-                    render={({ field }) => (
-                      <li
-                        className={styles.selectedItem}
-                      >
-                        {selectedSecondOptionsForFirstOption[item.id] && selectedSecondOptionsForFirstOption[item.id].length > 0
-                          ? `${item.name} - ${selectedSecondOptionsForFirstOption[item.id].map(e => e.name).join(', ')}`
-                          : `${item.name}`
-                        }
-                        <span
-                          className={styles.removeItemButton}
-                          onClick={() => {
-                            toggleFirstOption(item);
-                            field.onChange(deleteFirstOptionsItens(item));
-                          }}
-                        >x</span>
-                      </li>
-                    )}
-                  />
+                  <div key={item.id}>
+                    <li
+                      className={styles.selectedItem}
+                    >
+                      {selectedSecondOptionsForFirstOption[item.id] && selectedSecondOptionsForFirstOption[item.id].length > 0
+                        ? `${item.name} - ${selectedSecondOptionsForFirstOption[item.id].map(e => e.name).join(', ')}`
+                        : `${item.name}`
+                      }
+                      <span
+                        className={styles.removeItemButton}
+                        onClick={() => {
+                          toggleFirstOption(item);
+                        }}
+                      >x</span>
+                    </li>
+                  </div>
                 ))}
               </ul>
             )}
             <ul className={styles.options}>
               <SearchBar list={firstOptions.map(e => e.name)} search={search} setSearch={setSearch} />
               {filteredList.map((item) => (
-                <Controller
-                  key={item.name}
-                  control={control}
-                  name={firstFieldName}
-                  render={({ field }) => (
-                    <div className={styles.inputContainer}>
-                      <li
-                        className={classnames(styles.option, {
-                        })}
+                <div key={item.name}>
+                  <div className={styles.inputContainer}>
+                    <li
+                      className={classnames(styles.option, {
+                      })}
+                    >
+                      <div className={classnames(styles.firstOptions, {
+                        checked: selectedOptions.includes(item),
+                      })}
+                        onClick={() => {
+                          toggleFirstOption(item);
+                        }}
                       >
-                        <div className={classnames(styles.firstOptions, {
-                          checked: selectedOptions.includes(item),
-                        })}
-                          onClick={() => {
-                            toggleFirstOption(item);
-                            field.onChange(insertFirstOptionsItens(item));
-                          }}
-                        >
-                          <span className={styles.checkbox}>
-                            {selectedOptions.includes(item) && (
-                              <i className={styles.checkIcon}><BsCheckLg /></i>
-                            )}
-                          </span>
-                          <i className={styles.optionIcon} />
-                          <span className={styles.optionText}>{item.name}</span>
-                        </div>
-                        <Controller
-                          key={item.name}
-                          control={control}
-                          name={secondFieldName}
-                          render={({ field }) => (
-                            <div className={classnames(styles.secondOptions)}>
-                              {secondOptions.map((e) => (
-                                <div key={e.id} className={classnames(styles.secondCheckboxesWrapper, {
-                                  checked: selectedSecondOptionsForFirstOption[item.id]?.map(e => e.name).includes(e.name),
-                                })}
-                                  onClick={() => {
-                                    if (selectedOptions.some((selectedItem) => selectedItem.id === item.id)) {
-                                      toggleSecondOption(e, item.id);
-                                      field.onChange(insertSecondOptionsItens(e, item.id));
-                                    }
-                                  }}
-                                >
-                                  <span className={styles.checkbox}>
-                                    {selectedSecondOptionsForFirstOption[item.id]?.map(e => e.name).includes(e.name) && (
-                                      <i className={styles.checkIcon}><BsCheckLg /></i>
-                                    )}
-                                  </span>
-                                  <span className={styles.optionText}>{e.name}</span>
-                                </div>
-                              ))}
-                            </div>
+                        <span className={styles.checkbox}>
+                          {selectedOptions.includes(item) && (
+                            <i className={styles.checkIcon}><BsCheckLg /></i>
                           )}
-                        />
-                      </li>
-                    </div>
-                  )}
-                />
+                        </span>
+                        <i className={styles.optionIcon} />
+                        <span className={styles.optionText}>{item.name}</span>
+                      </div>
+                      <Controller
+                        key={item.name}
+                        control={control}
+                        name={fieldname}
+                        render={({ field }) => (
+                          <div className={classnames(styles.secondOptions)}>
+                            {secondOptions.map((e) => (
+                              <div key={e.id} className={classnames(styles.secondCheckboxesWrapper, {
+                                checked: selectedSecondOptionsForFirstOption[item.id]?.map(e => e.name).includes(e.name),
+                              })}
+                                onClick={() => {
+                                  if (selectedOptions.some((selectedItem) => selectedItem.id === item.id)) {
+                                    toggleSecondOption(e, item.id);
+                                    field.onChange(insertSecondOptionsItens(e, item.id));
+                                  }
+                                }}
+                              >
+                                <span className={styles.checkbox}>
+                                  {selectedSecondOptionsForFirstOption[item.id]?.map(e => e.name).includes(e.name) && (
+                                    <i className={styles.checkIcon}><BsCheckLg /></i>
+                                  )}
+                                </span>
+                                <span className={styles.optionText}>{e.name}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      />
+                    </li>
+                  </div>
+                </div>
               ))}
             </ul>
           </>
