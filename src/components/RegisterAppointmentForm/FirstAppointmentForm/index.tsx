@@ -138,7 +138,7 @@ export function FirstAppointmentForm() {
                 title="Protocolo*"
                 name="protocol"
                 type="text"
-                hint="123/2023"
+                hint="2023/123"
                 errors={errors}
                 register={register}
               />

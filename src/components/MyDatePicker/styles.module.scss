@@ -2,7 +2,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin-bottom: -1.75rem;
+  position: relative;
 
   margin: 0 auto;
 
@@ -32,9 +32,14 @@
     }
   }
 
+  span {
+    padding-top: 0.5rem;
+  }
+
+
   .icon {
-    position: relative;
-    top: -2.2rem;
+    position: absolute;
+    top: 3.3rem;
     left: calc(100% - 32px);
   }
 }

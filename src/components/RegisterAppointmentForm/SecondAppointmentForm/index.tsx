@@ -33,6 +33,8 @@ export function SecondAppointmentForm() {
   String(watchTypeOfService) !== psychologicalId && setValue('typeOfPsychologicalAssessment', null);
   String(watchTypeOfService) !== socialId && setValue('typeOfSocialAssessment', null);
 
+  const [ hasReferralDestinationWithouType, setHasReferralDestinationWithouType ] = useState(false);
+
   useEffect(() => {
     const getLists = async () => {
       try {
@@ -166,6 +168,8 @@ export function SecondAppointmentForm() {
             setValue={setValue}
             firstOptions={referralDestinations}
             secondOptions={referralTypes}
+            hasFirstOptionWithoutSecondOption={hasReferralDestinationWithouType}
+            setHasFirstOptionWithoutSecondOption={setHasReferralDestinationWithouType}
             errors={errors}
             control={control}
           />
@@ -187,6 +191,7 @@ export function SecondAppointmentForm() {
             <Button
               type="submit"
               name="Enviar"
+              disabled={hasDestination}
             />
             <Button
               type="button"

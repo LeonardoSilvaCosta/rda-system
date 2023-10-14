@@ -57,7 +57,7 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({ title, fiel
     }
   }
 
-  const convertToDeleteAndToInsert = (options: Option[]) => { 
+  const convertToDeleteAndToInsert = (options: Option[]) => {
     return options.map(e => e.id);
   }
 
@@ -116,16 +116,6 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({ title, fiel
             <BsChevronDown />
           </i>
         </div>
-        {errors[errorKey] && (
-          <span className="error-message">
-            {String(errors[errorKey]?.message)}
-          </span>
-        )}
-        {isNested && nestedFields.length === 2 && errors[topLevelField] && (
-          <span className="error-message">
-            {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]]?.message}
-          </span>
-        )}
         {isDropDownVisible && (
           <>
             {selectedOptions.length > 0 && (
@@ -186,6 +176,16 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({ title, fiel
               ))}
             </ul>
           </>
+        )}
+         {errors[errorKey] && (
+          <span className="error-message">
+            {String(errors[errorKey]?.message)}
+          </span>
+        )}
+        {isNested && nestedFields.length === 2 && errors[topLevelField] && (
+          <span className="error-message">
+            {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]]?.message}
+          </span>
         )}
       </div>
     </div>

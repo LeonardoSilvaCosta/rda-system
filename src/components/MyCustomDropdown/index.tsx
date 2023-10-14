@@ -116,22 +116,6 @@ export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, opti
           />
           <BsChevronDown className={classnames(styles.chevronDown, { [styles.visible]: isDropDownVisible })} />
         </div>
-        <br />
-        {errors[errorKey] && (
-          <span className="error-message">
-            {String(errors[errorKey]?.message)}
-          </span>
-        )}
-        {isNested && nestedFields.length === 2 && errors[topLevelField] && (
-          <span className="error-message">
-            {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]]?.message}
-          </span>
-        )}
-        {isNested && nestedFields.length === 3 && errors[topLevelField] && (
-          <span className="error-message">
-            {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]][nestedFields[2]]?.message}
-          </span>
-        )}
         {isDropDownVisible && (
           <ul className={styles.options}>
             {filteredData.map((item) => (
@@ -159,6 +143,21 @@ export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, opti
               />
             ))}
           </ul>
+        )}
+                {errors[errorKey] && (
+          <span className="error-message">
+            {String(errors[errorKey]?.message)}
+          </span>
+        )}
+        {isNested && nestedFields.length === 2 && errors[topLevelField] && (
+          <span className="error-message">
+            {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]]?.message}
+          </span>
+        )}
+        {isNested && nestedFields.length === 3 && errors[topLevelField] && (
+          <span className="error-message">
+            {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]][nestedFields[2]]?.message}
+          </span>
         )}
       </div>
     </div>

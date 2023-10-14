@@ -2,10 +2,10 @@
 - [x] Criar componente input básico
 - [x] Criar input customizado para select - https://www.youtube.com/watch?v=weCKm6AWuO4
 - [x] Criar input customizado para data - lib react-datepicker
-- [ ] Criar input customizado para radiogroup
+- [x] Criar input customizado para radiogroup
 - [ ] Criar input customizado para tempo
-- [ ] Criar input customizado para multiselect
-- [ ] Colocar ícone em editText e botão componente
+- [x] Criar input customizado para multiselect
+- [x] Colocar ícone em editText e botão componente
 
 ## libs
 - [x] react-icons
@@ -13,11 +13,11 @@
 - [x] react-hook-form
 - [x] yup
 
-- [] Corregir recuperação do multiselectDropdownRadio
+- [x] Corrigir recuperação do multiselectDropdownRadio
 - [] Corrigir problemas de envio de formulário de atendimento.
 - [] Corrigir problemas de validação de formulário de atendimento.
 - [] Verificar e validar lógicas de validação do banco de dados para a tabela de atendimentos
 
-----Nova fase
+----Nova fase Autenticação e prontuário
 - [] Criar lógica e sistema de autenticação com provider ou email
 - [] Criar estrutura de prontuário do atendido

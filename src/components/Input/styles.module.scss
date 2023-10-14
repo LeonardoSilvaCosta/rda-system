@@ -2,6 +2,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  position: relative;
 
   margin: 0 auto;
 
@@ -29,10 +30,14 @@
       outline: 0.5px solid var(--blue-500);
     }
   }
+
+  span {
+    padding-top: 0.5rem;
+  }
   
   .icon {
-    position: relative;
-    top: -2.2rem;
-    left: calc(100% - 40px);
+    position: absolute;
+    top: 3.3rem;
+    left: calc(100% - 32px);
   }
 }
