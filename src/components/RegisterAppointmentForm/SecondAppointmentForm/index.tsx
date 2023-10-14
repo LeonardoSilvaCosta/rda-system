@@ -12,7 +12,7 @@ import { MyCustomMultiSelectAndRadioDropdown } from '@/components/MyCustomMultis
 import { TextArea } from '@/components/TextArea';
 
 export function SecondAppointmentForm() {
-  const { control, errors, getValues, register, setValue, goToPreviousStep, watch } = useRegisterAppointmentContext();
+  const { control, errors, getValues, onSubmit, register, setValue, goToPreviousStep, watch } = useRegisterAppointmentContext();
   const [isLoading, setIsLoading] = useState(true);
   const [services, setServices] = useState<Option[]>([]);
   const [psychologicalAssessments, setPsychologicalAssessments] = useState<Option[]>([]);
@@ -30,11 +30,8 @@ export function SecondAppointmentForm() {
   const socialId = "736eb33d-b012-46e2-9443-29858b965337";
   const watchTypeOfService = watch("typeOfService");
 
-  String(watchTypeOfService) !== psychologicalId && setValue('typeOfPsychologicalAssessment', null);
+  String(watchTypeOfService) !== psychologicalId && setValue('typeOfPsychologicalAssessment', true);
   String(watchTypeOfService) !== socialId && setValue('typeOfSocialAssessment', null);
-
-  const [ hasReferralDestinationWithouType, setHasReferralDestinationWithouType ] = useState(false);
-  const [ shouldValidate, setShouldValidate ] = useState(false);
 
   useEffect(() => {
     const getLists = async () => {
@@ -169,10 +166,7 @@ export function SecondAppointmentForm() {
             setValue={setValue}
             firstOptions={referralDestinations}
             secondOptions={referralTypes}
-            hasFirstOptionWithoutSecondOption={hasReferralDestinationWithouType}
-            setHasFirstOptionWithoutSecondOption={setHasReferralDestinationWithouType}
-            shouldValidate={shouldValidate}
-            setShouldValidate={setShouldValidate}
+
             errors={errors}
             control={control}
           />
@@ -194,8 +188,6 @@ export function SecondAppointmentForm() {
             <Button
               type="submit"
               name="Enviar"
-              onClick={() => setShouldValidate(true)}
-              disabled={hasReferralDestinationWithouType}
             />
             <Button
               type="button"

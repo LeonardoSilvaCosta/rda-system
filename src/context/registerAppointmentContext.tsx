@@ -57,16 +57,26 @@ export const RegisterAppointmentContextProvider = ({
     resolver: yupResolver(validationSchema),
     defaultValues: {
       contacts: [{
-        phone: '',
-        ownerIdentification: '',
-        attendedRelationship: '',
-        attended_id: '',
+        date: null,
+        time: '',
         specialists: [],
         attendeds: [],
+        access: '',
+        facility: '',
+        modality: '',
+        hasProtocol: '',
+        protocol: '',
+        typeOfService: '',
+        typeOfPsychologicalAssessment: '',
+        typeOfSocialAssessment: '',
+        generalDemand: '',
         specificDemands: [],
+        procedure: '',
         referrals: [],
         documents: [],
         travels: [],
+        hasLeaveOfAbsence: '',
+        recordProgress: '',
       }]
     }
   })
@@ -128,7 +138,6 @@ export const RegisterAppointmentContextProvider = ({
 
   const onSubmit: SubmitHandler<AppointmentFormValues> = async (data) => {
     goToNextStep();
-
     if (isLastStep) {
       console.log("dados", data)
       try {

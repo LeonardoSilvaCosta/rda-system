@@ -163,30 +163,14 @@ export const firstAppointmentStepValidation = yup.object({
   // protocol: yup.string().when('hasProtocol', {
   //   is: "Sim",
   //   then: () => yup.string().required("O campo 'Protocolo' é obrigatório."),
-  //   otherwise: () => yup.string(),
-  // }).default("Não se aplica"),
+  //   otherwise: () => yup.string().nullable(),
+  // }),
 })
 
 const Referral = yup.object({
   firstOption: yup.string(),
-  secondOption: yup.string(),
+  secondOption: yup.string()
 })
-
-const referrals = yup.array().of(Referral).test({
-  test: (referralArray) => {
-    // Verifique se pelo menos um item no array de referral tem um valor em "firstOption"
-    const atLeastOneHasFirstOption = referralArray?.some((referral) => !!referral.firstOption);
-
-    // Se pelo menos um item tiver "firstOption", então "secondOption" deve ser obrigatório
-    if (atLeastOneHasFirstOption) {
-      return referralArray?.every((referral) => !!referral.secondOption);
-    }
-
-    // Caso contrário, "referrals" não é obrigatório
-    return true;
-  },
-  message: 'O campo secondOption é obrigatório quando pelo menos um item em referrals tem um valor em firstOption',
-});
 
 export const secondAppointmentStepValidation = yup.object({
   typeOfService: yup.string().required("O campo 'Tipo de serviço' é obrigatório."),
@@ -205,7 +189,12 @@ export const secondAppointmentStepValidation = yup.object({
   procedure: yup.string().required("O campo 'Procedimento' é obrigatório"),
   documents: yup.array(yup.string()).default([]),
   travels: yup.array().of(yup.string()).default([]),
-  referrals,
+  hasFirstOptionWithoutSecondOption: yup.boolean(),
+  referrals: yup.array().of(Referral).when('hasFirstOptionWithoutSecondOption', {
+    is: true,
+    then: () => yup.array().of(Referral).required('Informe o tipo de encaminhamento.'),
+    otherwise: () => yup.array().of(Referral).nullable()
+  }),
   hasLeaveOfAbsence: yup.string().required("O campo 'Houve afastamento?' é obrigatório."),
   recordProgress: yup.string().required("O campo 'Evolução' é obrigatório.")
 })

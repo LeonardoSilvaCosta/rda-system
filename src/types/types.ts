@@ -117,6 +117,7 @@ export type AppointmentFormValues = {
   generalDemand: string;
   specificDemands: string[];
   procedure: string;
+  hasFirstOptionWithoutSecondOption: boolean
   referrals: Referral[];
   documents: string[];
   travels: string[];
