@@ -34,6 +34,7 @@ export function SecondAppointmentForm() {
   String(watchTypeOfService) !== socialId && setValue('typeOfSocialAssessment', null);
 
   const [ hasReferralDestinationWithouType, setHasReferralDestinationWithouType ] = useState(false);
+  const [ shouldValidate, setShouldValidate ] = useState(false);
 
   useEffect(() => {
     const getLists = async () => {
@@ -170,6 +171,8 @@ export function SecondAppointmentForm() {
             secondOptions={referralTypes}
             hasFirstOptionWithoutSecondOption={hasReferralDestinationWithouType}
             setHasFirstOptionWithoutSecondOption={setHasReferralDestinationWithouType}
+            shouldValidate={shouldValidate}
+            setShouldValidate={setShouldValidate}
             errors={errors}
             control={control}
           />
@@ -191,7 +194,8 @@ export function SecondAppointmentForm() {
             <Button
               type="submit"
               name="Enviar"
-              disabled={hasDestination}
+              onClick={() => setShouldValidate(true)}
+              disabled={hasReferralDestinationWithouType}
             />
             <Button
               type="button"

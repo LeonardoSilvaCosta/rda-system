@@ -16,10 +16,12 @@ interface MyCustomMultiselectAndRadioDropdownProps<T extends FieldValues> {
   control: Control<T>;
   hasFirstOptionWithoutSecondOption: boolean,
   setHasFirstOptionWithoutSecondOption: Dispatch<SetStateAction<boolean>>,
-  errors: FieldErrors<T>,
+  shouldValidate: boolean,
+  setShouldValidate:  Dispatch<SetStateAction<boolean>>;
+  errors: FieldErrors<T>;
 }
 
-export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({ title, fieldname, getValues, setValue, firstOptions, secondOptions, control, hasFirstOptionWithoutSecondOption, setHasFirstOptionWithoutSecondOption, errors }: MyCustomMultiselectAndRadioDropdownProps<T>) {
+export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({ title, fieldname, getValues, setValue, firstOptions, secondOptions, control, hasFirstOptionWithoutSecondOption, setHasFirstOptionWithoutSecondOption, shouldValidate, setShouldValidate, errors }: MyCustomMultiselectAndRadioDropdownProps<T>) {
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
   const [selectedSecondOptionsForFirstOption, setSelectedSecondOptionsForFirstOption] = useState<Record<string, Option[]>>({});
@@ -55,6 +57,7 @@ export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({ tit
         deleteSecondOptionsItens(option);
         return updatedSecondOptions;
       });
+      setShouldValidate(true);
     } else {
       setSelectedOptions([...selectedOptions, option]);
     }
@@ -73,6 +76,7 @@ export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({ tit
         ...selectedSecondOptionsForFirstOption,
         [itemId]: [...currentSelections, secondOption],
       });
+      setShouldValidate(true)
     }
   };
 
@@ -188,14 +192,17 @@ export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({ tit
   }, [isDropDownVisible]);
 
   useEffect(() => {
-    const hasFirstOptionWithoutSecondOption = selectedOptions.some(option => {
-      const secondOptions = selectedSecondOptionsForFirstOption[option.id];
-      return !secondOptions || secondOptions.length === 0;
-    });
+    if(shouldValidate) {
+      const hasFirstOptionWithoutSecondOption = selectedOptions.some(option => {
+        const secondOptions = selectedSecondOptionsForFirstOption[option.id];
+        return !secondOptions || secondOptions.length === 0;
+      });
+  
+      setHasFirstOptionWithoutSecondOption(hasFirstOptionWithoutSecondOption);
+      setShouldValidate(false);
+    }
 
-    setHasFirstOptionWithoutSecondOption(hasFirstOptionWithoutSecondOption);
-
-  }, [selectedOptions, selectedSecondOptionsForFirstOption])
+  }, [shouldValidate])
 
   return (
     <div className={styles.dropdownContainer}>
