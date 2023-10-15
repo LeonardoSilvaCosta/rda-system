@@ -28,19 +28,7 @@ export default function Home() {
         const resAttendeds = await fetch('/api/get_attendeds');
         const attendeds = await resAttendeds.json();
 
-        const formattedData = attendeds.map((e: any) => {
-          return {
-            id: e.id,
-            fullname: e.fullname,
-            nickname: e.nickname,
-            rg: e.rg,
-            cpf: e.cpf,
-            rank: e.tb_ranks ? e.tb_ranks.name : null,
-            cadre: e.tb_cadres ? e.tb_cadres.name : null,
-          };
-        });
-
-        setAttendeds(formattedData);
+        setAttendeds(attendeds);
 
       } catch (error) {
         console.log(error)

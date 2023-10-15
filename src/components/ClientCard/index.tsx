@@ -26,7 +26,7 @@ export function ClientCard({ avatar = "/default-user.svg", fullname, rank, cadre
         <p>{fullname}</p>
         <div className={styles.textFooter}>
           {
-            rg && < p > {`${rank} ${cadre} ${rg} ${nickname}`}</p>
+            rg && <p> {`${rank} ${cadre} ${rg} ${nickname}`}</p>
           }
           <p>{cpf}</p>
         </div>

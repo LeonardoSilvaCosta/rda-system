@@ -19,5 +19,9 @@
 - [x] Verificar e validar lógicas de validação do banco de dados para a tabela de atendimentos
 
 ----Nova fase Autenticação e prontuário
-- [] Criar lógica e sistema de autenticação com provider ou email
+- [x] Criar lógica e sistema de autenticação com provider ou email
+- [ ] Criar formulário para cadastro de usuário
 - [] Criar estrutura de prontuário do atendido
+- [ ] Refatorar Header para responsividade
+- [ ] Refatorar tela de Login para responsividade (versão web)
+- [ ] Refatorar Dashboard para responsividade
