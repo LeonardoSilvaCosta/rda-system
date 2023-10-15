@@ -64,7 +64,7 @@ export const RegisterClientContextProvider = ({
     setValue,
     watch
   } = useForm<ClientFormValues | any>({
-    // resolver: yupResolver(validationSchema),
+    resolver: yupResolver(validationSchema),
     defaultValues: {
       contacts: [{
         phone: '',
@@ -144,6 +144,10 @@ export const RegisterClientContextProvider = ({
 
     if (isLastStep) {
       console.log(data)
+      const { data: logedUserData } = (await supabase.auth.getUser());
+      const userEmail = logedUserData.user?.email;
+      const { data: userData } = await supabase.from('tb_users').select().eq('email', userEmail).single();
+
       const birthDate = new Date(data.birthDate);
       const isCivilVolunteer = data.isCivilVolunteer === "Sim" ? true : false;
 
@@ -168,11 +172,11 @@ export const RegisterClientContextProvider = ({
             cpf: cleanedCPF,
             birth_date: formattedDate,
             marital_status_id: data.maritalStatus,
-            registered_by: null,
             policy_holder_id: data.policyHolder,
             is_civil_volunteer: isCivilVolunteer,
             familiar_bond: data.familiarBond,
             work_status: data.workStatus,
+            registered_by: await userData.id,
           }).select();
 
           const attendedId = res.data && res.data[0].id;

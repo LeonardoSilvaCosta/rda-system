@@ -5,7 +5,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { createContext, useContext, useEffect } from 'react';
 import { Control, FieldErrors, SubmitHandler, UseFormClearErrors, UseFormGetValues, UseFormHandleSubmit, UseFormRegister, UseFormReset, UseFormSetValue, UseFormWatch, useForm } from 'react-hook-form';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import * as yup from "yup"
 import { useRouter } from 'next/navigation';
 import { loginValidation } from '@/validation';
 
@@ -45,7 +44,7 @@ export const LoginContextProvider = ({
     watch
   } = useForm<LoginFormValues | any>({
     resolver: yupResolver(loginValidation),
-    defaultValues: { email: '', password: ''}
+    defaultValues: { email: '', password: '' }
   })
 
   const goToDashboard = () => {
@@ -57,25 +56,21 @@ export const LoginContextProvider = ({
   }, [errors])
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
-      try {
-        const res = await supabase.auth.signUp({
-          email: data.email,
-          password: data.password,
-          options: {
-            emailRedirectTo: `${location.origin}/callback`,
-          },
-        })
-
-        if(res.data.session) alert('Autenticado com sucesso!')
-
-        alert(JSON.stringify(res, null, 2))
-
-        // reset();
-
-        // goToDashboard();
-      } catch (error) {
-        alert(`Houve algum problema no cadastro de seu formulário. Erro ${error}. Tente novamente.`)
+    try {
+      const res = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.password,
+      })
+      
+      if(res.data.user) { 
+        alert("Autenticado com sucesso!")
+        router.refresh(); 
+      } else {
+        alert('Login ou senha inválidos.')
       }
+    } catch (error) {
+      alert(`Houve algum problema no cadastro de seu formulário. Erro ${error}. Tente novamente.`)
+    }
   }
 
   return (

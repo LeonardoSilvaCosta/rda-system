@@ -144,6 +144,10 @@ export const RegisterAppointmentContextProvider = ({
     if (isLastStep) {
       console.log("dados", data)
       try {
+        const { data: logedUserData } = (await supabase.auth.getUser());
+        const userEmail = logedUserData.user?.email;
+        const { data: userData } = await supabase.from('tb_users').select().eq('email', userEmail).single();
+
         const hasLeaveOfAbsence = data.hasLeaveOfAbsence === "Sim" ? true : false;
         const date = new Date(data.date);
 
@@ -174,6 +178,7 @@ export const RegisterAppointmentContextProvider = ({
             procedure_id: data.procedure,
             has_leave_of_absence: hasLeaveOfAbsence,
             record_progress: data.recordProgress,
+            registered_by: await userData.id,
           }).select();
 
           const appointmentId = res.data && res.data[0].id;
@@ -192,7 +197,7 @@ export const RegisterAppointmentContextProvider = ({
               appointment_id: appointmentId,
               attended_id: attended,
             }
-          }): [];
+          }) : [];
 
           await supabase.from('tb_appointments_attendeds').insert(attendeds);
 
@@ -210,7 +215,7 @@ export const RegisterAppointmentContextProvider = ({
               appointment_id: appointmentId,
               document_id: document
             }
-          }): [];
+          }) : [];
 
           await supabase.from('tb_appointments_documents').insert(documents);
 
@@ -219,7 +224,7 @@ export const RegisterAppointmentContextProvider = ({
               appointment_id: appointmentId,
               travel_id: travel
             }
-          }): [];
+          }) : [];
 
           await supabase.from('tb_appointments_travels').insert(travels);
 
