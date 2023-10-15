@@ -146,13 +146,13 @@ export function FirstAppointmentForm() {
           }
           <div className={styles.buttonsBox}>
             <Button
-              type={"submit"}
-              name="Próxima"
-            />
-            <Button
               type="button"
               name="Voltar"
               onClick={goToPreviousStep}
+            />
+            <Button
+              type={"submit"}
+              name="Próxima"
             />
           </div>
         </>

@@ -12,7 +12,7 @@ import { MyCustomMultiSelectAndRadioDropdown } from '@/components/MyCustomMultis
 import { TextArea } from '@/components/TextArea';
 
 export function SecondAppointmentForm() {
-  const { control, errors, getValues, onSubmit, register, setValue, goToPreviousStep, watch } = useRegisterAppointmentContext();
+  const { control, errors, getValues, onSubmit, register, setError, setValue, goToPreviousStep, watch } = useRegisterAppointmentContext();
   const [isLoading, setIsLoading] = useState(true);
   const [services, setServices] = useState<Option[]>([]);
   const [psychologicalAssessments, setPsychologicalAssessments] = useState<Option[]>([]);
@@ -30,7 +30,7 @@ export function SecondAppointmentForm() {
   const socialId = "736eb33d-b012-46e2-9443-29858b965337";
   const watchTypeOfService = watch("typeOfService");
 
-  String(watchTypeOfService) !== psychologicalId && setValue('typeOfPsychologicalAssessment', true);
+  String(watchTypeOfService) !== psychologicalId && setValue('typeOfPsychologicalAssessment', null);
   String(watchTypeOfService) !== socialId && setValue('typeOfSocialAssessment', null);
 
   useEffect(() => {
@@ -166,8 +166,9 @@ export function SecondAppointmentForm() {
             setValue={setValue}
             firstOptions={referralDestinations}
             secondOptions={referralTypes}
-
+            fieldErrorName={'hasFirstOptionWithoutSecondOption'}
             errors={errors}
+            setError={setError}
             control={control}
           />
           <RadioGroup
@@ -186,13 +187,13 @@ export function SecondAppointmentForm() {
           />
           <div className={styles.buttonsBox}>
             <Button
-              type="submit"
-              name="Enviar"
-            />
-            <Button
               type="button"
               name="Voltar"
               onClick={goToPreviousStep}
+            />
+             <Button
+              type="submit"
+              name="Enviar"
             />
           </div>
         </>

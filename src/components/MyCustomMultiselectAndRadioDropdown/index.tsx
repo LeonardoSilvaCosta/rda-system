@@ -2,22 +2,24 @@ import React, { useState, useRef, useEffect, Dispatch, SetStateAction } from 're
 import classnames from 'classnames';
 import styles from './styles.module.scss';
 import { BsChevronDown, BsCheckLg } from "react-icons/bs";
-import { Control, Controller, FieldError, FieldErrors, FieldPath, FieldValues, Path, UseFormGetValues, UseFormSetValue } from 'react-hook-form';
+import { Control, Controller, FieldError, FieldErrors, FieldPath, FieldValues, Path, UseFormGetValues, UseFormSetError, UseFormSetValue } from 'react-hook-form';
 import { Option, Referral } from '@/types/types';
 import { SearchBar } from '../SearchBar';
 
 interface MyCustomMultiselectAndRadioDropdownProps<T extends FieldValues> {
   title: string;
-  fieldname: FieldPath<T>;
-  getValues: UseFormGetValues<any>;
-  setValue: UseFormSetValue<any>;
+  fieldname: FieldPath<T>,
+  getValues: UseFormGetValues<any>,
+  setValue: UseFormSetValue<any>,
   firstOptions: Option[];
-  secondOptions: Option[];
-  control: Control<T>;
-  errors: FieldErrors<T>;
+  secondOptions: Option[],
+  control: Control<T>,
+  fieldErrorName: string;
+  errors: FieldErrors<T>,
+  setError: UseFormSetError<any>,
 }
 
-export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({ title, fieldname, getValues, setValue, firstOptions, secondOptions, control, errors }: MyCustomMultiselectAndRadioDropdownProps<T>) {
+export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({ title, fieldname, getValues, setValue, firstOptions, secondOptions, control, errors, fieldErrorName, setError }: MyCustomMultiselectAndRadioDropdownProps<T>) {
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
   const [selectedSecondOptionsForFirstOption, setSelectedSecondOptionsForFirstOption] = useState<Record<string, Option[]>>({});
@@ -53,6 +55,7 @@ export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({ tit
 
   useEffect(() => {
     setValue('hasFirstOptionWithoutSecondOption', validate())
+    setError('hasFirstOptionWithoutSecondOption', { message: ''});
   }, [selectedOptions, selectedSecondOptionsForFirstOption])
 
   const toggleFirstOption = (option: Option) => {
@@ -63,7 +66,6 @@ export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({ tit
       setSelectedSecondOptionsForFirstOption((prevSelectedSecondOptions) => {
         const updatedSecondOptions = { ...prevSelectedSecondOptions };
         delete updatedSecondOptions[option.id];
-        deleteSecondOptionsItens(option);
         return updatedSecondOptions;
       });
     } else {
@@ -131,15 +133,6 @@ export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({ tit
           [firstOptionId]: [...currentSelections, secondOption],
         }
       )
-    }
-  };
-
-  const deleteSecondOptionsItens = (firstOption: Option) => {
-    const fieldValues = getValues(fieldname) as Referral[] | undefined;
-
-    if (fieldValues) {
-      const updatedValues = fieldValues.filter((referral) => referral.firstOptionId !== firstOption.id);
-      setValue(fieldname as string, updatedValues);
     }
   };
 
@@ -299,6 +292,11 @@ export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({ tit
               ))}
             </ul>
           </>
+        )}
+        {errors[fieldErrorName] && (
+          <span className="error-message">
+            {String(errors[fieldErrorName]?.message)}
+          </span>
         )}
         {errors[errorKey] && (
           <span className="error-message">

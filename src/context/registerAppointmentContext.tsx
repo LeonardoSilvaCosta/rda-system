@@ -3,7 +3,7 @@
 import { AppointmentFormValues } from '@/types/types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Dispatch, SetStateAction, createContext, useContext, useEffect, useState } from 'react';
-import { Control, FieldErrors, SubmitHandler, UseFormClearErrors, UseFormGetValues, UseFormHandleSubmit, UseFormRegister, UseFormReset, UseFormSetValue, UseFormWatch, useForm } from 'react-hook-form';
+import { Control, FieldErrors, SubmitHandler, UseFormClearErrors, UseFormGetValues, UseFormHandleSubmit, UseFormRegister, UseFormReset, UseFormSetError, UseFormSetValue, UseFormWatch, useForm } from 'react-hook-form';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { firstAppointmentStepValidation, secondAppointmentStepValidation } from '@/validation';
 import * as yup from "yup"
@@ -27,7 +27,8 @@ interface GlobalContextProps {
   reset: UseFormReset<any>,
   selectFormValidation: (index: number) => void,
   setCurrentStep: Dispatch<SetStateAction<number>>,
-  setValue: UseFormSetValue<any>;
+  setError: UseFormSetError<any>,
+  setValue: UseFormSetValue<any>,
   watch: UseFormWatch<any>,
 }
 
@@ -51,6 +52,7 @@ export const RegisterAppointmentContextProvider = ({
     handleSubmit,
     register,
     reset,
+    setError,
     setValue,
     watch
   } = useForm<AppointmentFormValues | any>({
@@ -72,6 +74,7 @@ export const RegisterAppointmentContextProvider = ({
         generalDemand: '',
         specificDemands: [],
         procedure: '',
+        hasFirstOptionWithoutSecondOption: false,
         referrals: [],
         documents: [],
         travels: [],
@@ -175,58 +178,58 @@ export const RegisterAppointmentContextProvider = ({
 
           const appointmentId = res.data && res.data[0].id;
 
-          const specialists = data.specialists.map(specialist => {
+          const specialists = (data.specialists.length > 0) ? data.specialists.map(specialist => {
             return {
               appointment_id: appointmentId,
               specialist_id: specialist,
             }
-          })
+          }) : [];
 
           await supabase.from('tb_appointments_specialists').insert(specialists);
 
-          const attendeds = data.attendeds.map(attended => {
+          const attendeds = (data.attendeds.length > 0) ? data.attendeds.map(attended => {
             return {
               appointment_id: appointmentId,
               attended_id: attended,
             }
-          })
+          }): [];
 
           await supabase.from('tb_appointments_attendeds').insert(attendeds);
 
-          const specificDemands = data.specificDemands.map(specificDemand => {
+          const specificDemands = (data.specificDemands.length > 0) ? data.specificDemands.map(specificDemand => {
             return {
               appointment_id: appointmentId,
               specific_demand_id: specificDemand,
             }
-          });
+          }) : [];
 
           await supabase.from('tb_appointments_specific_demands').insert(specificDemands);
 
-          const documents = data.documents.map(document => {
+          const documents = (data.documents.length > 0) ? data.documents.map(document => {
             return {
               appointment_id: appointmentId,
               document_id: document
             }
-          });
+          }): [];
 
           await supabase.from('tb_appointments_documents').insert(documents);
 
-          const travels = data.travels.map(travel => {
+          const travels = (data.travels.length > 0) ? data.travels.map(travel => {
             return {
               appointment_id: appointmentId,
               travel_id: travel
             }
-          });
+          }): [];
 
           await supabase.from('tb_appointments_travels').insert(travels);
 
-          const referrals = data.referrals.map(e => {
+          const referrals = (data.referrals.length > 0) ? data.referrals.map(e => {
             return {
               destination: e.firstOptionId,
               type: e.secondOptionId,
               appointment_id: appointmentId,
             }
-          })
+          }) : [];
 
           await supabase.from('tb_appointment_referrals').insert(referrals);
 
@@ -265,6 +268,7 @@ export const RegisterAppointmentContextProvider = ({
         reset,
         setCurrentStep,
         selectFormValidation,
+        setError,
         setValue,
         watch,
       }}>

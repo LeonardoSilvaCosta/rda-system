@@ -264,14 +264,14 @@ export function FirstClientForm({ formType, control, register }: FirstClientForm
           }
           <div className={styles.buttonsBox}>
             <Button
-              type={"submit"}
-              name="Próxima"
-              disabled={!isCPFValid || !isCPFUnique}
-            />
-            <Button
               type="button"
               name="Voltar"
               onClick={goToPreviousStep}
+            />
+            <Button
+              type={"submit"}
+              name="Próxima"
+              disabled={!isCPFValid || !isCPFUnique}
             />
           </div>
         </>

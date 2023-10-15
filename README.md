@@ -14,8 +14,8 @@
 - [x] yup
 
 - [x] Corrigir recuperação do multiselectDropdownRadio
-- [] Corrigir problemas de envio de formulário de atendimento.
-- [] Corrigir problemas de validação de formulário de atendimento.
+- [x] Corrigir problemas de envio de formulário de atendimento.
+- [x] Corrigir problemas de validação de formulário de atendimento.
 - [] Verificar e validar lógicas de validação do banco de dados para a tabela de atendimentos
 
 ----Nova fase Autenticação e prontuário

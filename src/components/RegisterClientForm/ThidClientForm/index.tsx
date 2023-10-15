@@ -128,13 +128,13 @@ export function ThirdClientForm({ control, register }: ThirdClientFormProps) {
           </div>
           <div className={styles.buttonsBox}>
             <Button
-              type="submit"
-              name="Enviar"
-            />
-            <Button
               type="button"
               name="Voltar"
               onClick={goToPreviousStep}
+            />
+            <Button
+              type="submit"
+              name="Enviar"
             />
           </div>
         </>
