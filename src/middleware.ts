@@ -13,21 +13,21 @@ export async function middleware(req: NextRequest) {
     data: { user }
   } = await supabase.auth.getUser();
 
-  if (user && req.nextUrl.pathname === "/signin") {
+  if (user && req.nextUrl.pathname === "/login") {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
   if (
     !user &&
     // req.nextUrl.pathname !== "/" &&
-    req.nextUrl.pathname !== "/signin"
+    req.nextUrl.pathname !== "/login"
   ) {
-    return NextResponse.redirect(new URL("/signin", req.url));
+    return NextResponse.redirect(new URL("/login", req.url));
   }
 
   return res;
 }
 
 export const config = {
-  matcher: ["/signin", "/" ]
+  matcher: ["/login", "/" ]
 };

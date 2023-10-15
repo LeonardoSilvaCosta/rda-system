@@ -125,6 +125,11 @@ export type AppointmentFormValues = {
   recordProgress: string;
 }
 
+export type LoginFormValues = {
+  email: string,
+  password: string,
+}
+
 export type Referral = { firstOptionId: string, secondOptionId: string };
 
 export type NameType = Path<FormValues> | Path<ClientFormValues>;

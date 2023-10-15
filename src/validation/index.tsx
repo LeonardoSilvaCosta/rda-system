@@ -194,3 +194,8 @@ export const secondAppointmentStepValidation = yup.object({
   hasLeaveOfAbsence: yup.string().required("O campo 'Houve afastamento?' é obrigatório."),
   recordProgress: yup.string().required("O campo 'Evolução' é obrigatório.")
 })
+
+export const loginValidation = yup.object({
+  email: yup.string().email('O email deve ser válido.').required("O campo 'email' é obrigatório"),
+  password: yup.string().required("O campo 'senha' é obrigatório.")
+})

@@ -4,6 +4,7 @@ import '../styles/global.scss';
 import { GlobalContextProvider } from '../context/form';
 import { RegisterClientContextProvider } from '@/context/registerClientContext';
 import { RegisterAppointmentContextProvider } from '@/context/registerAppointmentContext';
+import { LoginContextProvider } from '@/context/loginContext';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,11 +24,13 @@ export default function RootLayout({
       <body
         className={inter.className}>
         <GlobalContextProvider>
+          <LoginContextProvider>
           <RegisterClientContextProvider>
             <RegisterAppointmentContextProvider>
               {children}
             </RegisterAppointmentContextProvider>
           </RegisterClientContextProvider>
+          </LoginContextProvider>
         </GlobalContextProvider>
       </body>
     </html>
