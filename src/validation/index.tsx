@@ -81,8 +81,8 @@ export const militaryFormValidation = yup.object({
   cadre: yup.string().required("O campo 'Quadro' é obrigatório."),
   gender: yup.string().required("O campo 'Gênero' é obrigatório."),
   cpf: yup.string().required("O campo 'CPF' é obrigatório."),
-  birthDate: yup.date().required("O campo 'Data de nascimento' é obrigatório."),
-  maritalStatus: yup.string().required("O campo 'Estado civil' é obrigatório."),
+  birthDate: yup.date(),
+  maritalStatus: yup.string(),
   opm: yup.string().required("O campo 'OPM' é obrigatório."),
   workStatus: yup.string().required("O campo 'Situação funcional' é obrigatório.")
 })
@@ -93,8 +93,8 @@ export const dependentFormValidation = yup.object({
   familiarBond: yup.string().required("O campo 'vínculo é obrigatório.'"),
   gender: yup.string().required("O campo 'Gênero' é obrigatório."),
   cpf: yup.string().required("O campo 'CPF' é obrigatório."),
-  birthDate: yup.date().required("O campo 'Data de nascimento' é obrigatório."),
-  maritalStatus: yup.string().required("O campo 'Estado civil' é obrigatório."),
+  birthDate: yup.date(),
+  maritalStatus: yup.string(),
   isCivilVolunteer: yup.string().required("O campo é voluntário é obrigatório.")
 })
 
@@ -102,8 +102,8 @@ export const citizenFormValidation = yup.object({
   fullName: yup.string().required("O campo 'Nome completo' é obrigatório."),
   gender: yup.string().required("O campo 'Sexo' é obrigatório."),
   cpf: yup.string().required("O campo 'CPF' é obrigatório."),
-  birthDate: yup.date().required("O campo 'Data de nascimento' é obrigatório."),
-  maritalStatus: yup.string().required("O campo 'Estado civil' é obrigatório."),
+  birthDate: yup.date(),
+  maritalStatus: yup.string(),
   isCivilVolunteer: yup.string().required("O campo é voluntário é obrigatório.")
 })
 
@@ -152,19 +152,19 @@ const psychologicalId = "8f911cb1-9a72-4765-bf84-1c273eab0139";
 const socialId = "736eb33d-b012-46e2-9443-29858b965337";
 
 export const firstAppointmentStepValidation = yup.object({
-  // date: yup.date().required("O campo 'Data' é obrigatório."),
-  // time: yup.string().required("O campo 'Horário' é obrigatório."),
-  // specialists: yup.array().of(yup.string()).required("O campo 'Oficiais' é obrigatório").default([]),
-  // attendeds: yup.array().of(yup.string()).required("O campo 'Atendidos' é obrigatório").default([]),
-  // access: yup.string().required("O campo 'Acesso' ao atendimento' é obrigatório"),
-  // facility: yup.string().required("O campo 'Local' do atendimento' é obrigatório"),
-  // modality: yup.string().required("O campo 'Modalidade' é obrigatório"),
-  // hasProtocol: yup.string().required("O campo 'Tem protocolo PAE?' é obrigatório."),
-  // protocol: yup.string().when('hasProtocol', {
-  //   is: "Sim",
-  //   then: () => yup.string().required("O campo 'Protocolo' é obrigatório."),
-  //   otherwise: () => yup.string().nullable(),
-  // }).default(''),
+  date: yup.date().required("O campo 'Data' é obrigatório."),
+  time: yup.string().required("O campo 'Horário' é obrigatório."),
+  specialists: yup.array().of(yup.string()).required("O campo 'Oficiais' é obrigatório").default([]),
+  attendeds: yup.array().of(yup.string()).required("O campo 'Atendidos' é obrigatório").default([]),
+  access: yup.string().required("O campo 'Acesso' ao atendimento' é obrigatório"),
+  facility: yup.string().required("O campo 'Local' do atendimento' é obrigatório"),
+  modality: yup.string().required("O campo 'Modalidade' é obrigatório"),
+  hasProtocol: yup.string().required("O campo 'Tem protocolo PAE?' é obrigatório."),
+  protocol: yup.string().when('hasProtocol', {
+    is: "Sim",
+    then: () => yup.string().required("O campo 'Protocolo' é obrigatório."),
+    otherwise: () => yup.string().nullable(),
+  }).default(''),
 })
 
 const Referral = yup.object({
