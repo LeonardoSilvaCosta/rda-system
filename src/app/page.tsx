@@ -46,7 +46,7 @@ export default function Home() {
           <SearchBar variation={"home"} list={attendeds} search={search} setSearch={setSearch} />
         </div>
         {search ? (
-          <ul>
+          <ul className={styles.clientCardContainer}>
             {filteredList.map(item => (
               <ClientCard
                 key={item.cpf}

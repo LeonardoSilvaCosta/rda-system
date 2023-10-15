@@ -5,14 +5,9 @@
 
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
 
   @media(max-width: 1440px) {
     width: calc(100vw - 60px);
-  }
-
-  @media(max-width: 762px) {
-    height: 1350px;
   }
 
   .dashboardButtonContainer {
