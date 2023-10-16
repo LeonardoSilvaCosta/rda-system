@@ -4,8 +4,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useContext, createContext, useState, SetStateAction, Dispatch } from "react";
 
 interface GlobalContextProps {
-  headerClickRoute: string,
-  setHeaderClickRoute: Dispatch<SetStateAction<string>>,
+ 
 }
 
 const GlobalContext = createContext<GlobalContextProps | undefined>(undefined);
@@ -16,13 +15,15 @@ export const GlobalContextProvider = ({
   children: React.ReactNode;
 }) => {
   const router = useRouter();
-  const [ headerClickRoute, setHeaderClickRoute ] = useState('/');
+
+  const goToDashboard = () => {
+    router.push('/')
+  }
+  
 
   return (
     <GlobalContext.Provider
       value={{
-        headerClickRoute,
-        setHeaderClickRoute
       }}>
       {children}
     </GlobalContext.Provider>

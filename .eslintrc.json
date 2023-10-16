@@ -38,19 +38,19 @@
                 "newlinesBetween": "always",
                 "groups": [
                     [
-                        "/ˆreact/",
-                        "/ˆnext/",
-                        "/@next/"
+                        "^react/",
+                        "^next/",
+                        "^@next/"
                     ],
-                    "/components/",
-                    "/module/",
-                    "/^@shared/",
-                    "/absolute/",
+                    "^components/",
+                    "^module/",
+                    "^@shared/",
+                    "^absolute/",
                     [
                         "parent",
                         "sibling",
                         "index"
-                    ],
+                    ]
                 ],
                 "alphabetize": {
                     "order": "asc",

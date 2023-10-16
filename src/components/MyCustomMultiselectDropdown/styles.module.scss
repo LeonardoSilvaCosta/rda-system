@@ -53,12 +53,16 @@
       gap: 0.5rem;
 
       .selectedItem {
-        
+
         display: inline;
         background-color: var(--blue-50);
         color: var(--blue-400);
         padding: 0.4rem;
         border-radius: 8px;
+
+        @media(max-width: 599px) {
+          font-size: 10px;
+        }
 
         .removeItemButton {
           content: 'x';
@@ -125,6 +129,10 @@
         .optionText {
           font-size: 18px;
           color: var(--gray-500);
+
+          @media(max-width: 599px) {
+            font-size: 12px;
+          }
         }
       }
     }

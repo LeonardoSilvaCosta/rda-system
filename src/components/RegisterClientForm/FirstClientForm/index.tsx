@@ -13,6 +13,7 @@ import { LoadingComponent } from '@/components/Loading/loading';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { MaskedInput } from '@/components/MaskedInput';
 import { validateCPF } from '@/validation/validateCPF';
+import { useGlobalContext } from '@/context/globalContext';
 
 interface FirstClientFormProps {
   formType: string | null;
@@ -22,6 +23,7 @@ interface FirstClientFormProps {
 }
 
 export function FirstClientForm({ formType, control, register }: FirstClientFormProps) {
+  const { setHeaderHandleClick } = useGlobalContext();
   const supabase = createClientComponentClient();
   const { errors, getValues, goToPreviousStep, isCPFValid, isCPFUnique, setIsCPFValid, setIsCPFUnique } = useRegisterClientContext();
   const [isLoading, setIsLoading] = useState(true);
