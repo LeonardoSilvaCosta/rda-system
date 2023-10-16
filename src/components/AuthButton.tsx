@@ -1,13 +1,12 @@
-"use client";
+'use client';
 
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { Provider } from "@supabase/supabase-js";
-import Image from "next/image";
-import { Button } from "./Button";
+import { Button } from './Button';
+
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 type AuthButtonProps = {
   email: string;
-  password: string
+  password: string;
 };
 
 export default function AuthButton({ email, password }: AuthButtonProps) {
@@ -16,18 +15,13 @@ export default function AuthButton({ email, password }: AuthButtonProps) {
   const handleSignIn = async () => {
     await supabase.auth.signInWithPassword({
       email,
-      password,
+      password
     });
   };
 
   return (
     <div>
-      <Button 
-        type="button"
-        name="Entrar"
-        onClick={handleSignIn}
-      />
+      <Button type="button" name="Entrar" onClick={handleSignIn} />
     </div>
   );
 }
-

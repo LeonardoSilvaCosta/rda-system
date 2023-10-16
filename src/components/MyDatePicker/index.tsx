@@ -1,31 +1,41 @@
-"use client"
-import DatePicker from "react-datepicker";
-import { registerLocale } from "react-datepicker";
-import classnames from 'classnames';
-
-
-import "react-datepicker/dist/react-datepicker.css";
-import br from 'date-fns/locale/pt-BR';
-
-registerLocale('br', br)
-
+'use client';
 import { useState } from 'react';
+import { registerLocale } from 'react-datepicker';
+import DatePicker from 'react-datepicker';
 
-import { AiOutlineCalendar } from "react-icons/ai";
+import 'react-datepicker/dist/react-datepicker.css';
+
+registerLocale('br', br);
+import {
+  Controller,
+  Control,
+  Path,
+  FieldErrors,
+  FieldValues,
+  FieldError
+} from 'react-hook-form';
+import { AiOutlineCalendar } from 'react-icons/ai';
 
 import styles from './styles.module.scss';
-import { Controller, Control, Path, FieldErrors, FieldValues, FieldError } from "react-hook-form";
+
+import classnames from 'classnames';
+import br from 'date-fns/locale/pt-BR';
 
 interface MyDatePickerProps<T extends FieldValues> {
-  title: string,
-  name: Path<T>,
-  hint?: string,
-  icon?: string,
-  errors: FieldErrors<T>,
-  control: Control<T>,
+  title: string;
+  name: Path<T>;
+  hint?: string;
+  icon?: string;
+  errors: FieldErrors<T>;
+  control: Control<T>;
 }
 
-export function MyDatePicker<T extends FieldValues>({ title, name, hint, icon, errors, control }: MyDatePickerProps<T>) {
+export function MyDatePicker<T extends FieldValues>({
+  title,
+  name,
+  errors,
+  control
+}: MyDatePickerProps<T>) {
   const [isDatapickerVisible, setIsDatapickerVisible] = useState(false);
   const errorKey = name as string;
 
@@ -51,7 +61,11 @@ export function MyDatePicker<T extends FieldValues>({ title, name, hint, icon, e
             onFocus={() => setIsDatapickerVisible(true)}
             onChange={(date) => field.onChange(date)}
           />
-          <AiOutlineCalendar className={classnames(styles.icon, { [styles.hide]: isDatapickerVisible })} />
+          <AiOutlineCalendar
+            className={classnames(styles.icon, {
+              [styles.hide]: isDatapickerVisible
+            })}
+          />
           {errors[errorKey] && (
             <span className="error-message">
               {String(errors[errorKey]?.message)}
@@ -59,11 +73,15 @@ export function MyDatePicker<T extends FieldValues>({ title, name, hint, icon, e
           )}
           {isNested && nestedFields.length === 2 && errors[topLevelField] && (
             <span className="error-message">
-              {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]]?.message}
+              {
+                (errors[topLevelField] as Record<string, FieldError>)[
+                  nestedFields[1]
+                ]?.message
+              }
             </span>
           )}
         </div>
       )}
     />
-  )
+  );
 }

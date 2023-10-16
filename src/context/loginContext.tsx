@@ -1,34 +1,47 @@
-"use client"
+/* eslint-disable @typescript-eslint/no-explicit-any */
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { createContext, useContext, useEffect } from 'react';
+import {
+  Control,
+  FieldErrors,
+  SubmitHandler,
+  UseFormClearErrors,
+  UseFormGetValues,
+  UseFormHandleSubmit,
+  UseFormRegister,
+  UseFormReset,
+  UseFormSetValue,
+  UseFormWatch,
+  useForm
+} from 'react-hook-form';
 
 import { LoginFormValues } from '@/types/types';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { createContext, useContext, useEffect } from 'react';
-import { Control, FieldErrors, SubmitHandler, UseFormClearErrors, UseFormGetValues, UseFormHandleSubmit, UseFormRegister, UseFormReset, UseFormSetValue, UseFormWatch, useForm } from 'react-hook-form';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { useRouter } from 'next/navigation';
 import { loginValidation } from '@/validation';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 interface LoginContextProps {
-  clearErrors: UseFormClearErrors<any>,
-  control: Control<any, any>
-  errors: FieldErrors<LoginFormValues>,
-  getValues: UseFormGetValues<any>,
-  handleSubmit: UseFormHandleSubmit<any, undefined>,
-  onSubmit: SubmitHandler<LoginFormValues>,
-  register: UseFormRegister<any>,
-  reset: UseFormReset<any>,
+  clearErrors: UseFormClearErrors<any>;
+  control: Control<any, any>;
+  errors: FieldErrors<LoginFormValues>;
+  getValues: UseFormGetValues<any>;
+  handleSubmit: UseFormHandleSubmit<any, undefined>;
+  onSubmit: SubmitHandler<LoginFormValues>;
+  register: UseFormRegister<any>;
+  reset: UseFormReset<any>;
   setValue: UseFormSetValue<any>;
-  watch: UseFormWatch<any>,
+  watch: UseFormWatch<any>;
 }
 
 const LoginContext = createContext<LoginContextProps | undefined>(undefined);
 
 export const LoginContextProvider = ({
-  children,
+  children
 }: {
   children: React.ReactNode;
 }) => {
-
   const supabase = createClientComponentClient();
   const router = useRouter();
 
@@ -45,33 +58,31 @@ export const LoginContextProvider = ({
   } = useForm<LoginFormValues | any>({
     resolver: yupResolver(loginValidation),
     defaultValues: { email: '', password: '' }
-  })
-
-  const goToDashboard = () => {
-    router.push('/')
-  }
+  });
 
   useEffect(() => {
-    console.log(errors)
-  }, [errors])
+    console.log(errors);
+  }, [errors]);
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     try {
       const res = await supabase.auth.signInWithPassword({
         email: data.email,
-        password: data.password,
-      })
-      
-      if(res.data.user) { 
-        alert("Autenticado com sucesso!")
-        router.refresh(); 
+        password: data.password
+      });
+
+      if (res.data.user) {
+        alert('Autenticado com sucesso!');
+        router.refresh();
       } else {
-        alert('Login ou senha inválidos.')
+        alert('Login ou senha inválidos.');
       }
     } catch (error) {
-      alert(`Houve algum problema no cadastro de seu formulário. Erro ${error}. Tente novamente.`)
+      alert(
+        `Houve algum problema no cadastro de seu formulário. Erro ${error}. Tente novamente.`
+      );
     }
-  }
+  };
 
   return (
     <LoginContext.Provider
@@ -85,18 +96,20 @@ export const LoginContextProvider = ({
         register,
         reset,
         setValue,
-        watch,
-      }}>
+        watch
+      }}
+    >
       {children}
     </LoginContext.Provider>
   );
-}
-
+};
 
 export const useLoginClientContext = () => {
   const context = useContext(LoginContext);
   if (context === undefined) {
-    throw new Error('useLoginContext deve ser usado dentro de um GlobalContextProvider');
+    throw new Error(
+      'useLoginContext deve ser usado dentro de um GlobalContextProvider'
+    );
   }
   return context;
 };

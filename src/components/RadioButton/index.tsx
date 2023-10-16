@@ -1,15 +1,21 @@
-"use client"
-import { FieldValues, Path, UseFormRegister } from "react-hook-form";
-import styles from "./styles.module.scss";
+'use client';
+import { FieldValues, Path, UseFormRegister } from 'react-hook-form';
+
+import styles from './styles.module.scss';
 
 interface RadioButtonProps<T extends FieldValues> {
-  id: string,
-  label: string,
-  name: Path<T>,
-  register: UseFormRegister<T>,
+  id: string;
+  label: string;
+  name: Path<T>;
+  register: UseFormRegister<T>;
 }
 
-export function RadioButton<T extends FieldValues>({ id, label, name, register }: RadioButtonProps<T>) {
+export function RadioButton<T extends FieldValues>({
+  id,
+  label,
+  name,
+  register
+}: RadioButtonProps<T>) {
   return (
     <div className={styles.radioButtonContainer}>
       <input
@@ -19,8 +25,9 @@ export function RadioButton<T extends FieldValues>({ id, label, name, register }
         type="radio"
         {...register(name)}
       />
-      <label
-        htmlFor={id} className={styles.label}>{label}</label>
+      <label htmlFor={id} className={styles.label}>
+        {label}
+      </label>
     </div>
-  )
+  );
 }

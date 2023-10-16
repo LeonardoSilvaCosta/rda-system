@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import styles from './styles.module.scss';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -17,5 +17,5 @@ export function Button({ type, name, disabled = false, onClick }: ButtonProps) {
     >
       {name}
     </button>
-  )
+  );
 }

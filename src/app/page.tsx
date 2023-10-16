@@ -1,15 +1,15 @@
-"use client"
-import { Header } from "@/components/Header";
+'use client';
+import { useEffect, useState } from 'react';
+import { AiOutlineUserAdd } from 'react-icons/ai';
+import { SlNote } from 'react-icons/sl';
 
 import styles from './styles.module.scss';
 
-import { DashboardButton } from "@/components/DashboardButton";
-import { AiOutlineUserAdd } from 'react-icons/ai';
-import { SlNote } from 'react-icons/sl';
-import { SearchBar } from "@/components/SearchBar";
-import { useEffect, useState } from "react";
-import { ClientCard } from "@/components/ClientCard";
-import { ClientCardType } from "@/types/types";
+import { ClientCard } from '@/components/ClientCard';
+import { DashboardButton } from '@/components/DashboardButton';
+import { Header } from '@/components/Header';
+import { SearchBar } from '@/components/SearchBar';
+import { ClientCardType } from '@/types/types';
 
 export default function Home() {
   const [attendeds, setAttendeds] = useState<ClientCardType[]>([]);
@@ -18,9 +18,8 @@ export default function Home() {
   const lowerSearch = search.toLocaleLowerCase();
 
   const filteredList = attendeds.filter((item) =>
-    item.fullname
-      .toLocaleLowerCase()
-      .includes(lowerSearch));
+    item.fullname.toLocaleLowerCase().includes(lowerSearch)
+  );
 
   useEffect(() => {
     const getAttendeds = async () => {
@@ -29,25 +28,29 @@ export default function Home() {
         const attendeds = await resAttendeds.json();
 
         setAttendeds(attendeds);
-
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
+    };
 
     getAttendeds();
-  }, [])
+  }, []);
 
   return (
     <>
       <Header title="Home" />
       <div className={styles.container}>
         <div className={styles.searchbarBox}>
-          <SearchBar variation={"home"} list={attendeds} search={search} setSearch={setSearch} />
+          <SearchBar
+            variation={'home'}
+            list={attendeds}
+            search={search}
+            setSearch={setSearch}
+          />
         </div>
         {search ? (
           <ul className={styles.clientCardContainer}>
-            {filteredList.map(item => (
+            {filteredList.map((item) => (
               <ClientCard
                 key={item.cpf}
                 fullname={item.fullname}
@@ -59,13 +62,16 @@ export default function Home() {
               />
             ))}
           </ul>
-        ) :
+        ) : (
           <div className={styles.dashboardButtonContainer}>
-            <DashboardButton icon={AiOutlineUserAdd} name={"Cadastrar atendido"} />
-            <DashboardButton icon={SlNote} name={"Registrar atendimento"} />
+            <DashboardButton
+              icon={AiOutlineUserAdd}
+              name={'Cadastrar atendido'}
+            />
+            <DashboardButton icon={SlNote} name={'Registrar atendimento'} />
           </div>
-        }
+        )}
       </div>
     </>
-  )
+  );
 }

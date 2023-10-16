@@ -1,28 +1,63 @@
-"use client"
-import React, { useState, useEffect, useRef, SetStateAction, Dispatch } from 'react';
-import classnames from 'classnames';
+'use client';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  SetStateAction,
+  Dispatch
+} from 'react';
+import {
+  Control,
+  Controller,
+  FieldError,
+  FieldErrors,
+  FieldPath,
+  FieldValues,
+  UseFormGetValues
+} from 'react-hook-form';
+import { BsChevronDown } from 'react-icons/bs';
+
 import styles from './styles.module.scss';
-import { BsChevronDown } from "react-icons/bs";
-import { Control, Controller, FieldError, FieldErrors, FieldPath, FieldValues, UseFormGetValues } from 'react-hook-form';
+
 import { Option } from '@/types/types';
+import classnames from 'classnames';
 
 interface MyCustomDropdownProps<T extends FieldValues> {
   title: string;
   fieldName: FieldPath<T>;
   options: Option[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getValues: UseFormGetValues<any>;
-  errors: FieldErrors<T>,
+  errors: FieldErrors<T>;
   control: Control<T>;
   selectedState?: string;
   setSelectedState?: Dispatch<SetStateAction<string>>;
-  routeToSearch: string,
+  routeToSearch: string;
 }
 
-export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, options, getValues, errors, control, setSelectedState, routeToSearch }: MyCustomDropdownProps<T>) {
+type Attended = {
+  id: string;
+  name: string;
+  nickname: string;
+  rg: string;
+  cadre: string;
+  rank: string;
+};
+
+export function MyCustomDropdown<T extends FieldValues>({
+  title,
+  fieldName,
+  options,
+  getValues,
+  errors,
+  control,
+  setSelectedState,
+  routeToSearch
+}: MyCustomDropdownProps<T>) {
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [filteredData, setFilteredData] = useState<Option[]>(options);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -39,7 +74,10 @@ export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, opti
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         closeDropdown();
       }
     };
@@ -56,40 +94,46 @@ export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, opti
   }, [isDropDownVisible]);
 
   useEffect(() => {
-    setFilteredData(options)
-  }, [options])
+    setFilteredData(options);
+  }, [options]);
 
   useEffect(() => {
-    setQuery(buttonDefaultValue())
-  }, [getValues(fieldName)])
+    setQuery(buttonDefaultValue());
+  }, [getValues(fieldName)]);
 
   const buttonDefaultValue = () => {
     if (selectedItemId) {
-      const selectedOption = options.find(option => option.id === selectedItemId);
-      return selectedOption ? selectedOption.name : "";
+      const selectedOption = options.find(
+        (option) => option.id === selectedItemId
+      );
+      return selectedOption ? selectedOption.name : '';
     } else if (getValues(fieldName)) {
-      const selectedOption = options.find(option => option.id === getValues(fieldName));
-      return selectedOption ? selectedOption.name : "";
+      const selectedOption = options.find(
+        (option) => option.id === getValues(fieldName)
+      );
+      return selectedOption ? selectedOption.name : '';
     } else {
-      return "";
+      return '';
     }
-  }
+  };
 
-  const handleChangeInput = async (e: any) => {
+  const handleChangeInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const q = e.target.value;
     const qToLower = q.toLowerCase();
     setQuery(q);
 
-    if (q !== "") {
+    if (q !== '') {
       const res = await fetch(`${routeToSearch}?q=${qToLower}`);
       const data = await res.json();
       if (!data) return;
-      const filteredData = data.map((e: any) => {
+      const filteredData = data.map((e: Attended) => {
         return {
           id: e.id,
-          name: e.name ? e.name : `${e.rank} ${e.cadre} RG ${e.rg} ${e.nickname}`
-        }
-      })
+          name: e.name
+            ? e.name
+            : `${e.rank} ${e.cadre} RG ${e.rg} ${e.nickname}`
+        };
+      });
       setFilteredData(filteredData);
     } else {
       setFilteredData(options);
@@ -101,12 +145,18 @@ export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, opti
       <label htmlFor={title}>{title}</label>
       <div
         ref={dropdownRef}
-        className={classnames(styles.selectMenu, { [styles.visible]: isDropDownVisible })}
-        onClick={() => { setIsDropDownVisible(!isDropDownVisible) }}
+        className={classnames(styles.selectMenu, {
+          [styles.visible]: isDropDownVisible
+        })}
+        onClick={() => {
+          setIsDropDownVisible(!isDropDownVisible);
+        }}
       >
         <div>
           <input
-            className={classnames(styles.selectInput, { [styles.visible]: isDropDownVisible })}
+            className={classnames(styles.selectInput, {
+              [styles.visible]: isDropDownVisible
+            })}
             type="text"
             name="search"
             autoComplete={'off'}
@@ -114,7 +164,11 @@ export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, opti
             placeholder={'Selecione uma opção'}
             onChange={(e) => handleChangeInput(e)}
           />
-          <BsChevronDown className={classnames(styles.chevronDown, { [styles.visible]: isDropDownVisible })} />
+          <BsChevronDown
+            className={classnames(styles.chevronDown, {
+              [styles.visible]: isDropDownVisible
+            })}
+          />
         </div>
         {isDropDownVisible && (
           <ul className={styles.options}>
@@ -132,7 +186,7 @@ export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, opti
                         setSelectedItemId(item.id);
                         setIsDropDownVisible(false);
                         field.onChange(item.id);
-                        setQuery(item.name)
+                        setQuery(item.name);
                       }}
                     >
                       <i className={styles.optionIcon} />
@@ -144,19 +198,27 @@ export function MyCustomDropdown<T extends FieldValues>({ title, fieldName, opti
             ))}
           </ul>
         )}
-                {errors[errorKey] && (
+        {errors[errorKey] && (
           <span className="error-message">
             {String(errors[errorKey]?.message)}
           </span>
         )}
         {isNested && nestedFields.length === 2 && errors[topLevelField] && (
           <span className="error-message">
-            {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]]?.message}
+            {
+              (errors[topLevelField] as Record<string, FieldError>)[
+                nestedFields[1]
+              ]?.message
+            }
           </span>
         )}
         {isNested && nestedFields.length === 3 && errors[topLevelField] && (
           <span className="error-message">
-            {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]][nestedFields[2]]?.message}
+            {
+              (errors[topLevelField] as Record<string, FieldError>)[
+                nestedFields[1]
+              ][nestedFields[2]]?.message
+            }
           </span>
         )}
       </div>

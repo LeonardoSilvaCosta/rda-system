@@ -1,28 +1,15 @@
-"use client";
-import { useEffect, useState } from "react";
-// import {} from 'react-icons';
-
-import { createClientComponentClient, Session } from "@supabase/auth-helpers-nextjs";
+'use client';
+import Image from 'next/image';
+import { useState } from 'react';
 
 import styles from './styles.module.scss';
-import Image from "next/image";
-import { Input } from "@/components/Input";
-import { useLoginClientContext } from "@/context/loginContext";
-import { Button } from "@/components/Button";
+
+import { Button } from '@/components/Button';
+import { Input } from '@/components/Input';
+import { useLoginClientContext } from '@/context/loginContext';
 
 export default function Login() {
   const { errors, register, handleSubmit, onSubmit } = useLoginClientContext();
-
-
-  // const [toast, setToaste] = useState<TypeToast>({
-  //   enable: false,
-  //   title: "",
-  //   description: "",
-  //   buttonVariant: "secondary"
-  // });
-  const [user, setUser] = useState<Session>();
-  const [magicLink, setMagicLink] = useState<boolean>(false);
-  const supabase = createClientComponentClient();
 
   return (
     <main className={styles.container}>
@@ -35,10 +22,7 @@ export default function Login() {
             height={169.79}
           />
         </header>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className={styles.form}
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <Input
             title={'Email'}
             type={'email'}
@@ -57,12 +41,9 @@ export default function Login() {
             errors={errors}
             register={register}
           />
-          <Button
-            type={'submit'}
-            name={'Entrar'}
-          />
+          <Button type={'submit'} name={'Entrar'} />
         </form>
       </div>
     </main>
   );
-};
+}

@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
+
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 
 export async function GET(req: NextRequest) {
   const supabase = createRouteHandlerClient({ cookies });
@@ -16,15 +17,10 @@ export async function GET(req: NextRequest) {
         .limit(10);
       return Response.json(opms);
     } else {
-      const { data: opms } = await supabase
-        .from('tb_opms')
-        .select()
-        .limit(10);
+      const { data: opms } = await supabase.from('tb_opms').select().limit(10);
       return Response.json(opms);
     }
-
   } catch (error) {
     return new NextResponse(`select data error: ${error}`, { status: 400 });
   }
-
 }

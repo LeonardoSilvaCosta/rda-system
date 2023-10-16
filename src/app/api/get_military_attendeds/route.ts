@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
+
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 
 export async function GET(req: NextRequest) {
   const supabase = createRouteHandlerClient({ cookies });
@@ -9,7 +10,10 @@ export async function GET(req: NextRequest) {
 
   try {
     if (q) {
-      const { data: attendeds } = await supabase.from('tb_attendeds').select(`
+      const { data: attendeds } = await supabase
+        .from('tb_attendeds')
+        .select(
+          `
     id, 
     fullname,
     nickname,
@@ -17,7 +21,8 @@ export async function GET(req: NextRequest) {
     cpf,
     tb_ranks ( name ),
     tb_cadres ( name )
-    `)
+    `
+        )
         .neq('rg', null)
         .or(`rg.ilike.%${q}%, fullname.ilike.%${q}%`)
         .limit(10);
@@ -33,14 +38,17 @@ export async function GET(req: NextRequest) {
             rg: e.rg,
             rank: e.tb_ranks.name,
             cadre: e.tb_cadres.name,
-            cpf: e.cpf,
-          }
-        })
+            cpf: e.cpf
+          };
+        });
       }
 
       return Response.json(formattedData);
     } else {
-      const { data: attendeds } = await supabase.from('tb_attendeds').select(`
+      const { data: attendeds } = await supabase
+        .from('tb_attendeds')
+        .select(
+          `
     id, 
     fullname,
     nickname,
@@ -48,7 +56,8 @@ export async function GET(req: NextRequest) {
     cpf,
     tb_ranks ( name ),
     tb_cadres ( name )
-    `)
+    `
+        )
         .neq('rg', null)
         .limit(10);
 
@@ -63,16 +72,14 @@ export async function GET(req: NextRequest) {
             rg: e.rg,
             rank: e.tb_ranks.name,
             cadre: e.tb_cadres.name,
-            cpf: e.cpf,
-          }
-        })
+            cpf: e.cpf
+          };
+        });
       }
 
       return Response.json(formattedData);
     }
-
   } catch (error) {
     return new NextResponse(`select data error: ${error}`, { status: 400 });
   }
-
 }

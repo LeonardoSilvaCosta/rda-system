@@ -1,4 +1,4 @@
-import { Control, FieldPath, Path, UseFormRegister } from "react-hook-form";
+import { Control, FieldPath, Path, UseFormRegister } from 'react-hook-form';
 
 export type FormValues = {
   data: Date;
@@ -31,7 +31,7 @@ export type FormValues = {
   documentosProduzidos: string[];
   deslocamentos: string[];
   houveAfastamento: string;
-}
+};
 
 export type ClientFormValues = {
   fullName: string;
@@ -50,14 +50,14 @@ export type ClientFormValues = {
   isCivilVolunteer: string;
   familiarBond: string;
   workStatus: string;
-}
+};
 
 export type Contact = {
   phone: string;
   ownerIdentification: string;
   attendedRelationship: string;
   attended_id: string;
-}
+};
 
 export type Address = {
   zipCode: string;
@@ -67,7 +67,7 @@ export type Address = {
   complement: string;
   stateAcronym: string;
   city: string;
-}
+};
 
 export type ClientCardType = {
   fullname: string;
@@ -76,12 +76,12 @@ export type ClientCardType = {
   rg: string;
   nickname: string;
   cpf: string;
-}
+};
 
 export type Option = {
   id: string;
   name: string;
-}
+};
 
 export type City = {
   id: string;
@@ -89,7 +89,7 @@ export type City = {
   state_name: string;
   state_acronym: string;
   state_id: string;
-}
+};
 
 export type Military = {
   id: string;
@@ -99,7 +99,7 @@ export type Military = {
   rank: string;
   cadre: string;
   cpf: string;
-}
+};
 
 export type AppointmentFormValues = {
   date: string;
@@ -123,16 +123,18 @@ export type AppointmentFormValues = {
   travels: string[];
   hasLeaveOfAbsence: string;
   recordProgress: string;
-}
+};
 
 export type LoginFormValues = {
-  email: string,
-  password: string,
-}
+  email: string;
+  password: string;
+};
 
-export type Referral = { firstOptionId: string, secondOptionId: string };
+export type Referral = { firstOptionId: string; secondOptionId: string };
 
 export type NameType = Path<FormValues> | Path<ClientFormValues>;
-export type RegisterType = UseFormRegister<ClientFormValues> | UseFormRegister<FormValues>;
+export type RegisterType =
+  | UseFormRegister<ClientFormValues>
+  | UseFormRegister<FormValues>;
 export type FieldType = FieldPath<ClientFormValues> | FieldPath<FormValues>;
 export type ControlType = Control<ClientFormValues> | Control<FormValues>;

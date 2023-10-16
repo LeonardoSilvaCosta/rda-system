@@ -1,23 +1,41 @@
-"use client"
+'use client';
+
+import {
+  FieldError,
+  FieldErrors,
+  FieldValues,
+  Path,
+  UseFormRegister
+} from 'react-hook-form';
+import { PiTextAlignRightThin } from 'react-icons/pi';
+import InputMask from 'react-input-mask';
 
 import styles from './styles.module.scss';
-import { PiTextAlignRightThin } from 'react-icons/pi';
-import { FieldError, FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form';
-import InputMask from 'react-input-mask';
+
 import { useRegisterClientContext } from '@/context/registerClientContext';
 
-interface MaskedInputProps<T extends FieldValues> extends React.InputHTMLAttributes<HTMLInputElement> {
-  title: string,
-  type: string,
-  name: Path<T>,
-  hint?: string,
-  icon?: string,
-  errors: FieldErrors<T>,
-  register: UseFormRegister<T>,
-  mask: string,
+interface MaskedInputProps<T extends FieldValues>
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  title: string;
+  type: string;
+  name: Path<T>;
+  hint?: string;
+  icon?: string;
+  errors: FieldErrors<T>;
+  register: UseFormRegister<T>;
+  mask: string;
 }
 
-export function MaskedInput<T extends FieldValues>({ title, type, hint, name, errors, register, mask, onBlur }: MaskedInputProps<T>) {
+export function MaskedInput<T extends FieldValues>({
+  title,
+  type,
+  hint,
+  name,
+  errors,
+  register,
+  mask,
+  onBlur
+}: MaskedInputProps<T>) {
   const { getValues, isCPFValid, isCPFUnique } = useRegisterClientContext();
 
   const errorKey = name as string;
@@ -26,27 +44,25 @@ export function MaskedInput<T extends FieldValues>({ title, type, hint, name, er
   const topLevelField = isNested ? nestedFields[0] : name;
 
   const getTypeOfIcon = () => {
-    if (type === "text") {
-      return <PiTextAlignRightThin className={styles.icon} />
+    if (type === 'text') {
+      return <PiTextAlignRightThin className={styles.icon} />;
     }
-  }
+  };
 
   return (
     <div className={styles.inputContainer}>
       <label htmlFor={name}>{title}</label>
       <InputMask
         mask={mask}
-        maskChar={""}
+        maskChar={''}
         type={type}
-        defaultValue={getValues(name) ? getValues(name) : ""}
+        defaultValue={getValues(name) ? getValues(name) : ''}
         placeholder={hint}
         {...register(name, { onBlur: onBlur })}
       />
       {getTypeOfIcon()}
       {!isCPFValid && (
-        <span className="error-message">
-          Informe um CPF válido.
-        </span>
+        <span className="error-message">Informe um CPF válido.</span>
       )}
       {!isCPFUnique && (
         <span className="error-message">
@@ -60,14 +76,22 @@ export function MaskedInput<T extends FieldValues>({ title, type, hint, name, er
       )}
       {isNested && nestedFields.length === 2 && errors[topLevelField] && (
         <span className="error-message">
-          {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]]?.message}
+          {
+            (errors[topLevelField] as Record<string, FieldError>)[
+              nestedFields[1]
+            ]?.message
+          }
         </span>
       )}
       {isNested && nestedFields.length === 3 && errors[topLevelField] && (
         <span className="error-message">
-        {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]][nestedFields[2]]?.message}
-      </span>
+          {
+            (errors[topLevelField] as Record<string, FieldError>)[
+              nestedFields[1]
+            ][nestedFields[2]]?.message
+          }
+        </span>
       )}
     </div>
-  )
+  );
 }

@@ -1,25 +1,43 @@
 import React, { useState, useRef, useEffect } from 'react';
-import classnames from 'classnames';
-import styles from './styles.module.scss';
-import { BsChevronDown, BsCheckLg } from "react-icons/bs";
-import { Control, Controller, FieldError, FieldErrors, FieldPath, FieldValues, UseFormGetValues } from 'react-hook-form';
-import { Option } from '@/types/types';
+import {
+  Control,
+  Controller,
+  FieldError,
+  FieldErrors,
+  FieldPath,
+  FieldValues,
+  UseFormGetValues
+} from 'react-hook-form';
+import { BsChevronDown, BsCheckLg } from 'react-icons/bs';
+
 import { SearchBar } from '../SearchBar';
+import styles from './styles.module.scss';
+
+import { Option } from '@/types/types';
+import classnames from 'classnames';
 
 interface MyCustomMultiselectDropdownProps<T extends FieldValues> {
   title: string;
   fieldName: FieldPath<T>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getValues: UseFormGetValues<any>;
   options: Option[];
   control: Control<T>;
-  errors: FieldErrors<T>,
+  errors: FieldErrors<T>;
 }
 
-export function MyCustomMultiSelectDropdown<T extends FieldValues>({ title, fieldName, getValues, options, control, errors }: MyCustomMultiselectDropdownProps<T>) {
+export function MyCustomMultiSelectDropdown<T extends FieldValues>({
+  title,
+  fieldName,
+  getValues,
+  options,
+  control,
+  errors
+}: MyCustomMultiselectDropdownProps<T>) {
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
 
   const errorKey = fieldName as string;
 
@@ -31,17 +49,18 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({ title, fiel
   const lowerSearch = search.toLocaleLowerCase();
 
   const filteredList = options.filter((item) =>
-    item.name
-      .toLocaleLowerCase()
-      .includes(lowerSearch));
+    item.name.toLocaleLowerCase().includes(lowerSearch)
+  );
 
   const closeDropdown = () => {
     setIsDropDownVisible(false);
   };
 
   const toggleOption = (option: Option) => {
-    if (selectedOptions.map(e => e.name).includes(option.name)) {
-      setSelectedOptions(selectedOptions.filter((item) => item.name !== option.name));
+    if (selectedOptions.map((e) => e.name).includes(option.name)) {
+      setSelectedOptions(
+        selectedOptions.filter((item) => item.name !== option.name)
+      );
     } else {
       setSelectedOptions([...selectedOptions, option]);
     }
@@ -49,40 +68,47 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({ title, fiel
 
   const selectButtonLabel = () => {
     if (selectedOptions.length == 1) {
-      return <span>{`${selectedOptions.length} item selecionado`}</span>
+      return <span>{`${selectedOptions.length} item selecionado`}</span>;
     } else if (selectedOptions.length > 1) {
-      return <span>{`${selectedOptions.length} itens selecionados`}</span>
+      return <span>{`${selectedOptions.length} itens selecionados`}</span>;
     } else {
-      return <span>Selecione uma opção</span>
+      return <span>Selecione uma opção</span>;
     }
-  }
+  };
 
   const convertToDeleteAndToInsert = (options: Option[]) => {
-    return options.map(e => e.id);
-  }
+    return options.map((e) => e.id);
+  };
 
   const insertItens = (option: Option) => {
-    const updatedSelectedOptions = selectedOptions.map(e => e.name).includes(option.name)
+    const updatedSelectedOptions = selectedOptions
+      .map((e) => e.name)
+      .includes(option.name)
       ? selectedOptions.filter((option) => option.name !== option.name)
       : [...selectedOptions, option];
 
     return convertToDeleteAndToInsert(updatedSelectedOptions);
-  }
+  };
 
   const deleteItens = (option: Option) => {
-    const updatedSelectedOptions = selectedOptions.filter((item) => item.name !== option.name);
+    const updatedSelectedOptions = selectedOptions.filter(
+      (item) => item.name !== option.name
+    );
     return convertToDeleteAndToInsert(updatedSelectedOptions);
-  }
+  };
 
   useEffect(() => {
     if (getValues(fieldName)) {
-      setSelectedOptions(getValues(fieldName))
+      setSelectedOptions(getValues(fieldName));
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         closeDropdown();
       }
     };
@@ -103,15 +129,21 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({ title, fiel
       <label htmlFor={title}>{title}</label>
       <div
         ref={dropdownRef}
-        className={classnames(styles.selectMenu, { [styles.visible]: isDropDownVisible })}
+        className={classnames(styles.selectMenu, {
+          [styles.visible]: isDropDownVisible
+        })}
       >
         <div
-          className={classnames(styles.selectButton, { [styles.visible]: isDropDownVisible })}
+          className={classnames(styles.selectButton, {
+            [styles.visible]: isDropDownVisible
+          })}
           onClick={() => setIsDropDownVisible(!isDropDownVisible)}
         >
           {selectButtonLabel()}
           <i
-            className={classnames(styles.chevronDown, { [styles.visible]: isDropDownVisible })}
+            className={classnames(styles.chevronDown, {
+              [styles.visible]: isDropDownVisible
+            })}
           >
             <BsChevronDown />
           </i>
@@ -126,18 +158,17 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({ title, fiel
                     control={control}
                     name={fieldName}
                     render={({ field }) => (
-                      <li
-                        className={styles.selectedItem}
-                      >
+                      <li className={styles.selectedItem}>
                         {item.name}
                         <span
                           className={styles.removeItemButton}
                           onClick={() => {
                             toggleOption(item);
                             field.onChange(deleteItens(item));
-
                           }}
-                        >x</span>
+                        >
+                          x
+                        </span>
                       </li>
                     )}
                   />
@@ -145,7 +176,11 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({ title, fiel
               </ul>
             )}
             <ul className={styles.options}>
-              <SearchBar list={options.map(e => e.name)} search={search} setSearch={setSearch} />
+              <SearchBar
+                list={options.map((e) => e.name)}
+                search={search}
+                setSearch={setSearch}
+              />
               {filteredList.map((item) => (
                 <Controller
                   key={item.name}
@@ -155,7 +190,7 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({ title, fiel
                     <div className={styles.inputContainer}>
                       <li
                         className={classnames(styles.option, {
-                          checked: selectedOptions.includes(item),
+                          checked: selectedOptions.includes(item)
                         })}
                         onClick={() => {
                           toggleOption(item);
@@ -164,7 +199,9 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({ title, fiel
                       >
                         <span className={styles.checkbox}>
                           {selectedOptions.includes(item) && (
-                            <i className={styles.checkIcon}><BsCheckLg /></i>
+                            <i className={styles.checkIcon}>
+                              <BsCheckLg />
+                            </i>
                           )}
                         </span>
                         <i className={styles.optionIcon} />
@@ -177,14 +214,18 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({ title, fiel
             </ul>
           </>
         )}
-         {errors[errorKey] && (
+        {errors[errorKey] && (
           <span className="error-message">
             {String(errors[errorKey]?.message)}
           </span>
         )}
         {isNested && nestedFields.length === 2 && errors[topLevelField] && (
           <span className="error-message">
-            {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]]?.message}
+            {
+              (errors[topLevelField] as Record<string, FieldError>)[
+                nestedFields[1]
+              ]?.message
+            }
           </span>
         )}
       </div>

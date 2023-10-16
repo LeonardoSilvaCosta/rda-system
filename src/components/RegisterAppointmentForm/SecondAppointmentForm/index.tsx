@@ -1,54 +1,78 @@
-
-import { Option } from '@/types/types';
-import styles from './styles.module.scss';
-import { MyCustomDropdown } from '@/components/MyCustomDropdown';
-import { Button } from '@/components/Button';
 import { useEffect, useState } from 'react';
+
+import styles from './styles.module.scss';
+
+import { Button } from '@/components/Button';
 import { LoadingComponent } from '@/components/Loading/loading';
-import { RadioGroup } from '@/components/RadioGroup';
-import { MyCustomMultiSelectDropdown } from '@/components/MyCustomMultiselectDropdown';
-import { useRegisterAppointmentContext } from '@/context/registerAppointmentContext';
+import { MyCustomDropdown } from '@/components/MyCustomDropdown';
 import { MyCustomMultiSelectAndRadioDropdown } from '@/components/MyCustomMultiselectAndRadioDropdown';
+import { MyCustomMultiSelectDropdown } from '@/components/MyCustomMultiselectDropdown';
+import { RadioGroup } from '@/components/RadioGroup';
 import { TextArea } from '@/components/TextArea';
+import { useRegisterAppointmentContext } from '@/context/registerAppointmentContext';
+import { Option } from '@/types/types';
 
 export function SecondAppointmentForm() {
-  const { control, errors, getValues, onSubmit, register, setError, setValue, goToPreviousStep, watch } = useRegisterAppointmentContext();
+  const {
+    control,
+    errors,
+    getValues,
+    register,
+    setError,
+    setValue,
+    goToPreviousStep,
+    watch
+  } = useRegisterAppointmentContext();
   const [isLoading, setIsLoading] = useState(true);
   const [services, setServices] = useState<Option[]>([]);
-  const [psychologicalAssessments, setPsychologicalAssessments] = useState<Option[]>([]);
+  const [psychologicalAssessments, setPsychologicalAssessments] = useState<
+    Option[]
+  >([]);
   const [socialAssessments, setSocialAssessments] = useState<Option[]>([]);
   const [generalDemands, setGeneralDemands] = useState<Option[]>([]);
   const [specificDemands, setSpecificsDemands] = useState<Option[]>([]);
   const [procedures, setProcedures] = useState<Option[]>([]);
-  const [referralDestinations, setReferralDestinations] = useState<Option[]>([]);
+  const [referralDestinations, setReferralDestinations] = useState<Option[]>(
+    []
+  );
   const [referralTypes, setReferralTypes] = useState<Option[]>([]);
   const [documents, setDocuments] = useState<Option[]>([]);
   const [travels, setTravels] = useState<Option[]>([]);
-  const leaveOfAbsenceOptions = [{ id: 'Sim', name: 'Sim' }, { id: 'Não', name: 'Não' }]
+  const leaveOfAbsenceOptions = [
+    { id: 'Sim', name: 'Sim' },
+    { id: 'Não', name: 'Não' }
+  ];
 
-  const psychologicalId = "8f911cb1-9a72-4765-bf84-1c273eab0139";
-  const socialId = "736eb33d-b012-46e2-9443-29858b965337";
-  const watchTypeOfService = watch("typeOfService");
+  const psychologicalId = '8f911cb1-9a72-4765-bf84-1c273eab0139';
+  const socialId = '736eb33d-b012-46e2-9443-29858b965337';
+  const watchTypeOfService = watch('typeOfService');
 
-  String(watchTypeOfService) !== psychologicalId && setValue('typeOfPsychologicalAssessment', null);
-  String(watchTypeOfService) !== socialId && setValue('typeOfSocialAssessment', null);
+  String(watchTypeOfService) !== psychologicalId &&
+    setValue('typeOfPsychologicalAssessment', null);
+  String(watchTypeOfService) !== socialId &&
+    setValue('typeOfSocialAssessment', null);
 
   useEffect(() => {
     const getLists = async () => {
       try {
         const resServices = await fetch('/api/get_services');
-        const resPsychologicalAssessments = await fetch('/api/get_psychological_assessments');
+        const resPsychologicalAssessments = await fetch(
+          '/api/get_psychological_assessments'
+        );
         const resSocialAssessments = await fetch('/api/get_social_assessments');
         const resGeneralDemands = await fetch('/api/get_general_demands');
         const resSpecificDemands = await fetch('/api/get_specific_demands');
         const resProcedures = await fetch('/api/get_procedures');
-        const resReferralDestinations = await fetch('/api/get_referral_destinations');
+        const resReferralDestinations = await fetch(
+          '/api/get_referral_destinations'
+        );
         const resReferralTypes = await fetch('/api/get_referral_types');
         const resDocuments = await fetch('/api/get_documents');
         const resTravels = await fetch('/api/get_travels');
 
         const services = await resServices.json();
-        const psychologicalAssessments = await resPsychologicalAssessments.json();
+        const psychologicalAssessments =
+          await resPsychologicalAssessments.json();
         const socialAssessments = await resSocialAssessments.json();
         const generalDemands = await resGeneralDemands.json();
         const specificDemands = await resSpecificDemands.json();
@@ -71,16 +95,18 @@ export function SecondAppointmentForm() {
 
         setIsLoading(false);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
+    };
 
     getLists();
-  }, [])
+  }, []);
 
   return (
     <>
-      {isLoading ? <LoadingComponent /> : (
+      {isLoading ? (
+        <LoadingComponent />
+      ) : (
         <>
           <MyCustomDropdown
             title="Tipo de serviço*"
@@ -91,32 +117,32 @@ export function SecondAppointmentForm() {
             getValues={getValues}
             routeToSearch={'/api/get_services'}
           />
-          {
-            String(watchTypeOfService) === psychologicalId ? (
-              <MyCustomDropdown
-                title="Tipo de avaliação psicológica*"
-                fieldName="typeOfPsychologicalAssessment"
-                options={psychologicalAssessments}
-                errors={errors}
-                control={control}
-                getValues={getValues}
-                routeToSearch={'/api/get_psychological_assessments'}
-              />
-            ) : <></>
-          }
-          {
-            String(watchTypeOfService) === socialId ? (
-              <MyCustomDropdown
-                title="Tipo de avaliação social*"
-                fieldName="typeOfSocialAssessment"
-                options={socialAssessments}
-                errors={errors}
-                control={control}
-                getValues={getValues}
-                routeToSearch={'/api/get_social_assessments'}
-              />
-            ) : <></>
-          }
+          {String(watchTypeOfService) === psychologicalId ? (
+            <MyCustomDropdown
+              title="Tipo de avaliação psicológica*"
+              fieldName="typeOfPsychologicalAssessment"
+              options={psychologicalAssessments}
+              errors={errors}
+              control={control}
+              getValues={getValues}
+              routeToSearch={'/api/get_psychological_assessments'}
+            />
+          ) : (
+            <></>
+          )}
+          {String(watchTypeOfService) === socialId ? (
+            <MyCustomDropdown
+              title="Tipo de avaliação social*"
+              fieldName="typeOfSocialAssessment"
+              options={socialAssessments}
+              errors={errors}
+              control={control}
+              getValues={getValues}
+              routeToSearch={'/api/get_social_assessments'}
+            />
+          ) : (
+            <></>
+          )}
           <MyCustomDropdown
             title="Demanda geral*"
             fieldName="generalDemand"
@@ -186,17 +212,11 @@ export function SecondAppointmentForm() {
             register={register}
           />
           <div className={styles.buttonsBox}>
-            <Button
-              type="button"
-              name="Voltar"
-              onClick={goToPreviousStep}
-            />
-             <Button
-              type="submit"
-              name="Enviar"
-            />
+            <Button type="button" name="Voltar" onClick={goToPreviousStep} />
+            <Button type="submit" name="Enviar" />
           </div>
         </>
       )}
-    </>)
+    </>
+  );
 }

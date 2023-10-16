@@ -1,20 +1,33 @@
-"use client"
+'use client';
+
+import {
+  FieldError,
+  FieldErrors,
+  FieldValues,
+  Path,
+  UseFormRegister
+} from 'react-hook-form';
 
 import styles from './styles.module.scss';
-import { PiTextAlignRightThin } from 'react-icons/pi';
-import { FieldError, FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form';
 
-interface TextAreaProps<T extends FieldValues> extends React.InputHTMLAttributes<HTMLInputElement> {
-  title: string,
-  name: Path<T>,
-  hint?: string,
-  icon?: string,
-  errors: FieldErrors<T>,
-  register: UseFormRegister<T>,
+interface TextAreaProps<T extends FieldValues>
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  title: string;
+  name: Path<T>;
+  hint?: string;
+  icon?: string;
+  errors: FieldErrors<T>;
+  register: UseFormRegister<T>;
 }
 
-export function TextArea<T extends FieldValues>({ title, hint, name, errors, register, onBlur }: TextAreaProps<T>) {
-
+export function TextArea<T extends FieldValues>({
+  title,
+  hint,
+  name,
+  errors,
+  register,
+  onBlur
+}: TextAreaProps<T>) {
   const errorKey = name as string;
 
   const isNested = name.includes('.');
@@ -28,8 +41,7 @@ export function TextArea<T extends FieldValues>({ title, hint, name, errors, reg
       <textarea
         placeholder={hint}
         {...register(name, { onBlur: onBlur })}
-      >
-      </textarea>
+      ></textarea>
       {errors[errorKey] && (
         <span className="error-message">
           {String(errors[errorKey]?.message)}
@@ -37,14 +49,22 @@ export function TextArea<T extends FieldValues>({ title, hint, name, errors, reg
       )}
       {isNested && nestedFields.length === 2 && errors[topLevelField] && (
         <span className="error-message">
-          {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]]?.message}
+          {
+            (errors[topLevelField] as Record<string, FieldError>)[
+              nestedFields[1]
+            ]?.message
+          }
         </span>
       )}
       {isNested && nestedFields.length === 3 && errors[topLevelField] && (
         <span className="error-message">
-          {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]][nestedFields[2]]?.message}
+          {
+            (errors[topLevelField] as Record<string, FieldError>)[
+              nestedFields[1]
+            ][nestedFields[2]]?.message
+          }
         </span>
       )}
     </div>
-  )
+  );
 }

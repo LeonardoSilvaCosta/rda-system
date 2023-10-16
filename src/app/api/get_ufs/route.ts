@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
+
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 
 export async function GET(req: NextRequest) {
   const supabase = createRouteHandlerClient({ cookies });
@@ -21,17 +22,20 @@ export async function GET(req: NextRequest) {
         formmatedStates = data.map((e) => {
           return {
             id: e.id,
-            name: e.acronym,
-          }
-        })
+            name: e.acronym
+          };
+        });
       }
 
       return Response.json(formmatedStates);
     } else {
-      const { data } = await supabase.from('tb_states').select(`
+      const { data } = await supabase
+        .from('tb_states')
+        .select(
+          `
       id, 
       acronym`
-      )
+        )
         .limit(10);
 
       let formmatedStates = null;
@@ -40,16 +44,14 @@ export async function GET(req: NextRequest) {
         formmatedStates = data.map((e) => {
           return {
             id: e.id,
-            name: e.acronym,
-          }
-        })
+            name: e.acronym
+          };
+        });
       }
 
       return Response.json(formmatedStates);
     }
-
   } catch (error) {
     return new NextResponse(`select data error: ${error}`, { status: 400 });
   }
-
 }

@@ -1,26 +1,31 @@
+import { useEffect, useState } from 'react';
 
-import { Military, Option } from '@/types/types';
 import styles from './styles.module.scss';
+
+import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
+import { LoadingComponent } from '@/components/Loading/loading';
+import { MyCustomDropdown } from '@/components/MyCustomDropdown';
+import { MyCustomMultiSelectDropdown } from '@/components/MyCustomMultiselectDropdown';
 import { MyDatePicker } from '@/components/MyDatePicker';
 import { RadioGroup } from '@/components/RadioGroup';
-import { MyCustomDropdown } from '@/components/MyCustomDropdown';
-import { Button } from '@/components/Button';
-import { useEffect, useState } from 'react';
-import { LoadingComponent } from '@/components/Loading/loading';
 import { useRegisterAppointmentContext } from '@/context/registerAppointmentContext';
-import { MyCustomMultiSelectDropdown } from '@/components/MyCustomMultiselectDropdown';
+import { Military, Option } from '@/types/types';
 
 export function FirstAppointmentForm() {
-  const { control, errors, getValues, goToPreviousStep, register, watch } = useRegisterAppointmentContext();
+  const { control, errors, getValues, goToPreviousStep, register, watch } =
+    useRegisterAppointmentContext();
   const [isLoading, setIsLoading] = useState(true);
   const [specialists, setSpecialists] = useState<Option[]>([]);
   const [attendeds, setAttendeds] = useState<Option[]>([]);
   const [accesses, setAccesses] = useState<Option[]>([]);
   const [facilities, setFacilities] = useState<Option[]>([]);
   const [modalities, setModalities] = useState<Option[]>([]);
-  const hasProtocolOptions = [{ id: 'Sim', name: 'Sim' }, { id: 'Não', name: 'Não'}]
-  const watchHasProtocol = watch("hasProtocol");
+  const hasProtocolOptions = [
+    { id: 'Sim', name: 'Sim' },
+    { id: 'Não', name: 'Não' }
+  ];
+  const watchHasProtocol = watch('hasProtocol');
 
   useEffect(() => {
     const getLists = async () => {
@@ -40,16 +45,19 @@ export function FirstAppointmentForm() {
         const formattedEspecialists = await specialists.map((e: Military) => {
           return {
             id: e.id,
-            name: `${e.rank} ${e.cadre} RG ${e.rg} ${e.nickname}`,
-          }
-        })
+            name: `${e.rank} ${e.cadre} RG ${e.rg} ${e.nickname}`
+          };
+        });
 
         const formatedAttendeds = await attendeds.map((e: Military) => {
           return {
             id: e.id,
-            name: (e.rank && e.cadre && e.rg && e.nickname) ? `${e.rank} ${e.cadre} RG ${e.rg} ${e.nickname}` : `${e.fullname} - ${e.cpf}`,
-          }
-        })
+            name:
+              e.rank && e.cadre && e.rg && e.nickname
+                ? `${e.rank} ${e.cadre} RG ${e.rg} ${e.nickname}`
+                : `${e.fullname} - ${e.cpf}`
+          };
+        });
 
         setSpecialists(formattedEspecialists);
         setAttendeds(formatedAttendeds);
@@ -59,16 +67,18 @@ export function FirstAppointmentForm() {
 
         setIsLoading(false);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
+    };
 
     getLists();
-  }, [])
+  }, []);
 
   return (
     <>
-      {isLoading ? <LoadingComponent /> : (
+      {isLoading ? (
+        <LoadingComponent />
+      ) : (
         <>
           <MyDatePicker
             title="Data*"
@@ -92,7 +102,7 @@ export function FirstAppointmentForm() {
             errors={errors}
             control={control}
           />
-           <MyCustomMultiSelectDropdown
+          <MyCustomMultiSelectDropdown
             title="Atendidos*"
             fieldName="attendeds"
             getValues={getValues}
@@ -132,30 +142,24 @@ export function FirstAppointmentForm() {
             errors={errors}
             register={register}
           />
-          {
-            String(watchHasProtocol) === "Sim" ? (
-              <Input
-                title="Protocolo*"
-                name="protocol"
-                type="text"
-                hint="2023/123"
-                errors={errors}
-                register={register}
-              />
-            ) : <></>
-          }
+          {String(watchHasProtocol) === 'Sim' ? (
+            <Input
+              title="Protocolo*"
+              name="protocol"
+              type="text"
+              hint="2023/123"
+              errors={errors}
+              register={register}
+            />
+          ) : (
+            <></>
+          )}
           <div className={styles.buttonsBox}>
-            <Button
-              type="button"
-              name="Voltar"
-              onClick={goToPreviousStep}
-            />
-            <Button
-              type={"submit"}
-              name="Próxima"
-            />
+            <Button type="button" name="Voltar" onClick={goToPreviousStep} />
+            <Button type={'submit'} name="Próxima" />
           </div>
         </>
       )}
-    </>)
+    </>
+  );
 }

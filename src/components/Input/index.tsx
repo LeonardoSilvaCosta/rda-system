@@ -1,21 +1,36 @@
-"use client"
+'use client';
+
+import {
+  FieldError,
+  FieldErrors,
+  FieldValues,
+  Path,
+  UseFormRegister
+} from 'react-hook-form';
+import { PiTextAlignRightThin } from 'react-icons/pi';
 
 import styles from './styles.module.scss';
-import { PiTextAlignRightThin } from 'react-icons/pi';
-import { FieldError, FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form';
 
-interface InputProps<T extends FieldValues> extends React.InputHTMLAttributes<HTMLInputElement> {
-  title: string,
-  type: string,
-  name: Path<T>,
-  hint?: string,
-  icon?: string,
-  errors: FieldErrors<T>,
-  register: UseFormRegister<T>,
+interface InputProps<T extends FieldValues>
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  title: string;
+  type: string;
+  name: Path<T>;
+  hint?: string;
+  icon?: string;
+  errors: FieldErrors<T>;
+  register: UseFormRegister<T>;
 }
 
-export function Input<T extends FieldValues>({ title, type, hint, name, errors, register, onBlur }: InputProps<T>) {
-
+export function Input<T extends FieldValues>({
+  title,
+  type,
+  hint,
+  name,
+  errors,
+  register,
+  onBlur
+}: InputProps<T>) {
   const errorKey = name as string;
 
   const isNested = name.includes('.');
@@ -24,10 +39,10 @@ export function Input<T extends FieldValues>({ title, type, hint, name, errors, 
   const topLevelField = isNested ? nestedFields[0] : name;
 
   const getTypeOfIcon = () => {
-    if (type === "text") {
-      return <PiTextAlignRightThin className={styles.icon} />
+    if (type === 'text') {
+      return <PiTextAlignRightThin className={styles.icon} />;
     }
-  }
+  };
 
   return (
     <div className={styles.inputContainer}>
@@ -45,14 +60,22 @@ export function Input<T extends FieldValues>({ title, type, hint, name, errors, 
       )}
       {isNested && nestedFields.length === 2 && errors[topLevelField] && (
         <span className="error-message">
-          {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]]?.message}
+          {
+            (errors[topLevelField] as Record<string, FieldError>)[
+              nestedFields[1]
+            ]?.message
+          }
         </span>
       )}
       {isNested && nestedFields.length === 3 && errors[topLevelField] && (
         <span className="error-message">
-           {(errors[topLevelField] as Record<string, FieldError>)[nestedFields[1]][nestedFields[2]]?.message}
+          {
+            (errors[topLevelField] as Record<string, FieldError>)[
+              nestedFields[1]
+            ][nestedFields[2]]?.message
+          }
         </span>
       )}
     </div>
-  )
+  );
 }

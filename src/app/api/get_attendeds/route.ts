@@ -1,12 +1,17 @@
-import { NextRequest, NextResponse } from "next/server";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
 
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function GET(req: NextRequest) {
   const supabase = createRouteHandlerClient({ cookies });
 
   try {
-    const { data: attendeds } = await supabase.from('tb_attendeds').select(`
+    const { data: attendeds } = await supabase
+      .from('tb_attendeds')
+      .select(
+        `
     id, 
     fullname,
     nickname,
@@ -14,12 +19,14 @@ export async function GET(req: NextRequest) {
     cpf,
     tb_ranks ( name ),
     tb_cadres ( name )
-    `)
-    .limit(10);
+    `
+      )
+      .limit(10);
 
     let formattedData = null;
 
     if (attendeds) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       formattedData = attendeds.map((e: any) => {
         return {
           id: e.id,
@@ -28,15 +35,13 @@ export async function GET(req: NextRequest) {
           rg: e.rg ? e.rg : null,
           rank: e.tb_ranks ? e.tb_ranks.name : null,
           cadre: e.tb_cadres ? e.tb_cadres.name : null,
-          cpf: e.cpf,
-        }
-      })
+          cpf: e.cpf
+        };
+      });
     }
 
     return Response.json(formattedData);
-
   } catch (error) {
     return new NextResponse(`select data error: ${error}`, { status: 400 });
   }
-
 }

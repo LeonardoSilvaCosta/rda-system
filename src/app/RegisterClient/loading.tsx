@@ -1,7 +1,5 @@
-import { LoadingComponent } from "@/components/Loading/loading";
+import { LoadingComponent } from '@/components/Loading/loading';
 
 export default function Loading() {
-  return (
-    <LoadingComponent />
-  )
+  return <LoadingComponent />;
 }
