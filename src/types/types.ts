@@ -1,5 +1,3 @@
-import { Control, FieldPath, Path, UseFormRegister } from 'react-hook-form';
-
 export type ClientFormValues = {
   fullName: string;
   nickName: string;
