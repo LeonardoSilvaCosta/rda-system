@@ -10,7 +10,7 @@ import { Button } from '@/components/Button';
 import { DashboardButton } from '@/components/DashboardButton';
 import { Header } from '@/components/Header';
 
-export default function Options() {
+export default async function Options() {
   const router = useRouter();
 
   const handleClick = () => {
