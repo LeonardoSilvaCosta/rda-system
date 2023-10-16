@@ -7,9 +7,6 @@ import { LoginContextProvider } from '@/context/loginContext';
 import { RegisterAppointmentContextProvider } from '@/context/registerAppointmentContext';
 import { RegisterClientContextProvider } from '@/context/registerClientContext';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const dynamic = 'force-dynamic';
-
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
