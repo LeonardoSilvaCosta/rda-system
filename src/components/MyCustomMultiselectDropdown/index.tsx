@@ -101,6 +101,7 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({
     if (getValues(fieldName)) {
       setSelectedOptions(getValues(fieldName));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

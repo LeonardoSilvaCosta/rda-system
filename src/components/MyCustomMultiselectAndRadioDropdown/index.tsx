@@ -84,6 +84,7 @@ export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({
   useEffect(() => {
     setValue('hasFirstOptionWithoutSecondOption', validate());
     setError('hasFirstOptionWithoutSecondOption', { message: '' });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedOptions, selectedSecondOptionsForFirstOption]);
 
   const toggleFirstOption = (option: Option) => {
@@ -225,6 +226,7 @@ export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({
         return updatedSecondOptions;
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

@@ -65,6 +65,7 @@ export function SecondClientForm({ control, register }: SecondClientFormProps) {
     } else {
       setCities([]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedState]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
