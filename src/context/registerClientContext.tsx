@@ -12,7 +12,7 @@ import { FirstClientForm } from '@/components/RegisterClientForm/FirstClientForm
 import { SecondClientForm } from '@/components/RegisterClientForm/SecondClientForm';
 import { ThirdClientForm } from '@/components/RegisterClientForm/ThidClientForm';
 
-interface GlobalContextProps {
+interface RegisteClientContextProps {
   clearErrors: UseFormClearErrors<any>,
   control: Control<any, any>
   currentFormType: keyof typeof firstClientFormValidations;
@@ -39,7 +39,7 @@ interface GlobalContextProps {
   watch: UseFormWatch<any>,
 }
 
-const RegisterClientContext = createContext<GlobalContextProps | undefined>(undefined);
+const RegisterClientContext = createContext<RegisteClientContextProps | undefined>(undefined);
 
 export const RegisterClientContextProvider = ({
   children,

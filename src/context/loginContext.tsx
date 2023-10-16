@@ -8,7 +8,7 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
 import { loginValidation } from '@/validation';
 
-interface GlobalContextProps {
+interface LoginContextProps {
   clearErrors: UseFormClearErrors<any>,
   control: Control<any, any>
   errors: FieldErrors<LoginFormValues>,
@@ -21,7 +21,7 @@ interface GlobalContextProps {
   watch: UseFormWatch<any>,
 }
 
-const LoginContext = createContext<GlobalContextProps | undefined>(undefined);
+const LoginContext = createContext<LoginContextProps | undefined>(undefined);
 
 export const LoginContextProvider = ({
   children,

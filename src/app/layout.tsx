@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import '../styles/global.scss';
-import { GlobalContextProvider } from '../context/form';
 import { RegisterClientContextProvider } from '@/context/registerClientContext';
 import { RegisterAppointmentContextProvider } from '@/context/registerAppointmentContext';
 import { LoginContextProvider } from '@/context/loginContext';
+import { GlobalContextProvider } from '@/context/globalContext';
 
 const inter = Inter({ subsets: ['latin'] })
 

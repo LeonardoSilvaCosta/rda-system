@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import { FirstAppointmentForm } from '@/components/RegisterAppointmentForm/FirstAppointmentForm';
 import { SecondAppointmentForm } from '@/components/RegisterAppointmentForm/SecondAppointmentForm';
 
-interface GlobalContextProps {
+interface RegisterAppointmentContextProps {
   clearErrors: UseFormClearErrors<any>,
   control: Control<any, any>
   errors: FieldErrors<AppointmentFormValues>,
@@ -32,7 +32,7 @@ interface GlobalContextProps {
   watch: UseFormWatch<any>,
 }
 
-const RegisterAppointmentContext = createContext<GlobalContextProps | undefined>(undefined);
+const RegisterAppointmentContext = createContext<RegisterAppointmentContextProps | undefined>(undefined);
 
 export const RegisterAppointmentContextProvider = ({
   children,

@@ -1,4 +1,18 @@
-.leftItemContainer {
+.container {
+  position: static;
+  top: 0;
+
+  z-index: 100;
+
+  @media(max-width: 599px) {
+    position: sticky;
+    top: 0;
+
+    &.home {
+      position: sticky;
+    }
+}
+.leftItemWrapper {
   width: 100%;
   height: 4.5rem;
 
@@ -6,13 +20,9 @@
   align-items: center;
   margin-bottom: 2.5rem;
 
-  // position: fixed;
-  // top: 0;
-
   background: var(--blue-400);
   color: var(--blue-50);
-
-  z-index: 10;
+  }
 
   .leftItem {
     display: flex;
@@ -25,9 +35,15 @@
 
     .topArrow {
       display: none;
+      cursor: pointer;
 
       @media(max-width: 599px) {
-        // display: block;
+        display: block;
+        margin-right: 1rem;
+
+        &.home {
+          display: none;
+        }
       }
     }
   }

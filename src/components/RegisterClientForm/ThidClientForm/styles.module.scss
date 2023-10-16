@@ -63,7 +63,7 @@
   @media(max-width: 762px) {
     justify-content: center;
 
-    button+button {
+    button:first-child {
       display: none;
     }
   }
