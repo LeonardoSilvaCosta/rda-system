@@ -14,16 +14,19 @@ export function validateCPF(cpf: string) {
     sum += parseInt(cpf.charAt(i)) * (10 - i);
   }
   let remainder = 11 - (sum % 11);
-  let digit1 = remainder >= 10 ? 0 : remainder;
+  const digit1 = remainder >= 10 ? 0 : remainder;
 
   sum = 0;
   for (let i = 0; i < 10; i++) {
     sum += parseInt(cpf.charAt(i)) * (11 - i);
   }
   remainder = 11 - (sum % 11);
-  let digit2 = remainder >= 10 ? 0 : remainder;
+  const digit2 = remainder >= 10 ? 0 : remainder;
 
-  if (parseInt(cpf.charAt(9)) !== digit1 || parseInt(cpf.charAt(10)) !== digit2) {
+  if (
+    parseInt(cpf.charAt(9)) !== digit1 ||
+    parseInt(cpf.charAt(10)) !== digit2
+  ) {
     return false;
   }
 

@@ -212,15 +212,6 @@ export function MyCustomDropdown<T extends FieldValues>({
             }
           </span>
         )}
-        {isNested && nestedFields.length === 3 && errors[topLevelField] && (
-          <span className="error-message">
-            {
-              (errors[topLevelField] as Record<string, FieldError>)[
-                nestedFields[1]
-              ][nestedFields[2]]?.message
-            }
-          </span>
-        )}
       </div>
     </div>
   );

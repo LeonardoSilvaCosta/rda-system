@@ -94,14 +94,21 @@ export function ThirdClientForm({ control, register }: ThirdClientFormProps) {
                   register={register}
                   mask={'(99) 99999-9999'}
                 />
+                <span className="error-message">
+                  {errors.contacts && errors.contacts[index]?.phone?.message}
+                </span>
                 <Input
                   title="Identificação do dono do contato*"
                   name={ownerIdentification}
                   type="text"
-                  hint="Leonardo"
+                  hint="Próprio"
                   errors={errors}
                   register={register}
                 />
+                <span className="error-message">
+                  {errors.contacts &&
+                    errors.contacts[index]?.ownerIdentification?.message}
+                </span>
                 <MyCustomDropdown
                   title="Vínculo do dono do contato com o atendido"
                   fieldName={attendedRelationship}

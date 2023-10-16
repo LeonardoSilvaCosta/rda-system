@@ -139,9 +139,9 @@ export const RegisterClientContextProvider = ({
     selectFormValidation(0);
   }, [currentFormType]);
 
-  // useEffect(() => {
-  //   console.log(errors)
-  // }, [errors])
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
 
   const totalSteps = 3;
 

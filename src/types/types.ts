@@ -1,38 +1,5 @@
 import { Control, FieldPath, Path, UseFormRegister } from 'react-hook-form';
 
-export type FormValues = {
-  data: Date;
-  horario: string;
-  recepcionista: string;
-  oficial: string;
-  acesso: string;
-  local: string;
-  temProtocolo: string;
-  modalidade: string;
-  protocolo: string;
-  identificacaoPM: string;
-  opm: string;
-  sexoPM: string;
-  dataDeNascimentoPM: Date;
-  cidadeEmQueResidePM: string;
-  estadoCivilPM: string;
-  eDependente: string;
-  identificacaoDependente: string;
-  sexoDependente: string;
-  dataDeNascimentoDependente: Date | null;
-  cidadeEmQueResideDependente: string;
-  estadoCivilDependente: string;
-  tipoDeServico: string;
-  tipoDeAvaliacaoPsicologica: string;
-  tipoDeAvaliacaoSocial: string;
-  demandaGeral: string;
-  tiposDeDemandaEspecifica: string[];
-  procedimento: string;
-  documentosProduzidos: string[];
-  deslocamentos: string[];
-  houveAfastamento: string;
-};
-
 export type ClientFormValues = {
   fullName: string;
   nickName: string;
@@ -52,13 +19,6 @@ export type ClientFormValues = {
   workStatus: string;
 };
 
-export type Contact = {
-  phone: string;
-  ownerIdentification: string;
-  attendedRelationship: string;
-  attended_id: string;
-};
-
 export type Address = {
   zipCode: string;
   street: string;
@@ -67,6 +27,13 @@ export type Address = {
   complement: string;
   stateAcronym: string;
   city: string;
+};
+
+export type Contact = {
+  phone: string;
+  ownerIdentification: string;
+  attendedRelationship: string;
+  attended_id: string;
 };
 
 export type ClientCardType = {
