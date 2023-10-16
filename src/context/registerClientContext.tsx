@@ -137,6 +137,7 @@ export const RegisterClientContextProvider = ({
 
   useEffect(() => {
     selectFormValidation(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentFormType]);
 
   useEffect(() => {

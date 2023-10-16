@@ -98,10 +98,3 @@ export type LoginFormValues = {
 };
 
 export type Referral = { firstOptionId: string; secondOptionId: string };
-
-export type NameType = Path<FormValues> | Path<ClientFormValues>;
-export type RegisterType =
-  | UseFormRegister<ClientFormValues>
-  | UseFormRegister<FormValues>;
-export type FieldType = FieldPath<ClientFormValues> | FieldPath<FormValues>;
-export type ControlType = Control<ClientFormValues> | Control<FormValues>;
