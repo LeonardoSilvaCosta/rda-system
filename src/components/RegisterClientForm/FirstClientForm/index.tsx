@@ -52,8 +52,6 @@ export function FirstClientForm({
     { id: 'Não', name: 'Não' }
   ];
 
-  if (!formType) return;
-
   const isMilitary = formType === 'militar';
   const isDependent = formType === 'dependente';
   const isCivilian = formType === 'civil-sem-vínculo';
@@ -115,7 +113,7 @@ export function FirstClientForm({
     };
 
     getLists();
-  }, []);
+  }, [isMilitary, isDependent]);
 
   const analyseCPF = async (
     e: React.ChangeEvent<HTMLInputElement>

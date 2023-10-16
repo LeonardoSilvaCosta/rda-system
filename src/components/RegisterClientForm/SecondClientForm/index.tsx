@@ -1,25 +1,27 @@
-
-import { ClientFormValues, Option } from '@/types/types';
-import styles from './styles.module.scss';
-import { Control, UseFormRegister } from "react-hook-form";
-import { Input } from '@/components/Input';
-import { MyCustomDropdown } from '@/components/MyCustomDropdown';
-import { Button } from '@/components/Button';
-import { useRegisterClientContext } from '@/context/registerClientContext';
 import { useEffect, useState } from 'react';
+import { Control, UseFormRegister } from 'react-hook-form';
+
+import styles from './styles.module.scss';
+
+import { Button } from '@/components/Button';
+import { Input } from '@/components/Input';
 import { LoadingComponent } from '@/components/Loading/loading';
 import { MaskedInput } from '@/components/MaskedInput';
+import { MyCustomDropdown } from '@/components/MyCustomDropdown';
+import { useRegisterClientContext } from '@/context/registerClientContext';
+import { ClientFormValues, Option } from '@/types/types';
 
 interface SecondClientFormProps {
-  control: Control<ClientFormValues>,
-  register: UseFormRegister<ClientFormValues>,
+  control: Control<ClientFormValues>;
+  register: UseFormRegister<ClientFormValues>;
 }
 
 export function SecondClientForm({ control, register }: SecondClientFormProps) {
-  const { clearErrors, errors, getValues, setValue, goToPreviousStep } = useRegisterClientContext();
+  const { clearErrors, errors, getValues, setValue, goToPreviousStep } =
+    useRegisterClientContext();
   const [isLoading, setIsLoading] = useState(true);
   const [states, setStates] = useState<Option[]>([]);
-  const [selectedState, setSelectedState] = useState("");
+  const [selectedState, setSelectedState] = useState('');
   const [cities, setCities] = useState<Option[]>([]);
 
   useEffect(() => {
@@ -31,12 +33,12 @@ export function SecondClientForm({ control, register }: SecondClientFormProps) {
 
         setIsLoading(false);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
+    };
 
     getLists();
-  }, [])
+  }, []);
 
   const selectCities = async (ufId: string, cityName?: string) => {
     fetch(`/api/get_cities_from_uf?ufId=${ufId}`)
@@ -49,9 +51,9 @@ export function SecondClientForm({ control, register }: SecondClientFormProps) {
         }
       })
       .catch((error) => {
-        console.error("Erro ao buscar cidades:", error);
+        console.error('Erro ao buscar cidades:', error);
       });
-  }
+  };
 
   useEffect(() => {
     const stateAcronym = getValues('address.stateAcronym');
@@ -65,10 +67,10 @@ export function SecondClientForm({ control, register }: SecondClientFormProps) {
     }
   }, [selectedState]);
 
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getAddressInfo = async (e: any): Promise<void> => {
     try {
-      const cep = e.target.value.replace(/\D/g, '')
+      const cep = e.target.value.replace(/\D/g, '');
       const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
       const address = await res.json();
       setValue('address.street', address.logradouro);
@@ -77,25 +79,26 @@ export function SecondClientForm({ control, register }: SecondClientFormProps) {
 
       clearErrors();
 
-      const uf = states.find(e => e.name === address.uf);
+      const uf = states.find((e) => e.name === address.uf);
       if (uf) {
         setValue('address.stateAcronym', uf.id);
         setSelectedState(uf.id);
 
         selectCities(uf.id, address.localidade);
-      }
-      else {
-        setSelectedState("");
+      } else {
+        setSelectedState('');
         setCities([]);
       }
     } catch (error) {
       console.log(`Não foi possível encontrar o cep informado.`);
     }
-  }
+  };
 
   return (
     <>
-      {isLoading ? <LoadingComponent /> : (
+      {isLoading ? (
+        <LoadingComponent />
+      ) : (
         <>
           <MaskedInput
             title="CEP"
@@ -105,7 +108,7 @@ export function SecondClientForm({ control, register }: SecondClientFormProps) {
             errors={errors}
             register={register}
             onBlur={getAddressInfo}
-            mask={"99999-999"}
+            mask={'99999-999'}
           />
           <Input
             title="Logradouro*"
@@ -159,17 +162,11 @@ export function SecondClientForm({ control, register }: SecondClientFormProps) {
             routeToSearch={'/api/cities'}
           />
           <div className={styles.buttonsBox}>
-            <Button
-              type="button"
-              name="Voltar"
-              onClick={goToPreviousStep}
-            />
-            <Button
-              type="submit"
-              name="Próxima"
-            />
+            <Button type="button" name="Voltar" onClick={goToPreviousStep} />
+            <Button type="submit" name="Próxima" />
           </div>
         </>
       )}
-    </>)
+    </>
+  );
 }

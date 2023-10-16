@@ -30,6 +30,7 @@ export async function GET(req: NextRequest) {
       let formattedData = null;
 
       if (attendeds) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         formattedData = attendeds.map((e: any) => {
           return {
             id: e.id,
@@ -64,6 +65,7 @@ export async function GET(req: NextRequest) {
       let formattedData = null;
 
       if (attendeds) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         formattedData = attendeds.map((e: any) => {
           return {
             id: e.id,
