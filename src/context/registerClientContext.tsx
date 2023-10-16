@@ -140,10 +140,6 @@ export const RegisterClientContextProvider = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentFormType]);
 
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
-
   const totalSteps = 3;
 
   const isFirstStep = currentStep === 0;

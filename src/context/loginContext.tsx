@@ -60,10 +60,6 @@ export const LoginContextProvider = ({
     defaultValues: { email: '', password: '' }
   });
 
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
-
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     try {
       const res = await supabase.auth.signInWithPassword({

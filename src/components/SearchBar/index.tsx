@@ -25,6 +25,11 @@ export function SearchBar({ variation, search, setSearch }: SearchBarProps) {
     setIsFocused(true);
   };
 
+  const handleBlur = () => {
+    setSearch('');
+    setIsFocused(false);
+  };
+
   return (
     <div
       className={`${styles.container} ${variation ? styles.home : ''} ${
@@ -36,6 +41,7 @@ export function SearchBar({ variation, search, setSearch }: SearchBarProps) {
         value={search}
         onChange={(e) => handleChange(e.target.value)}
         onFocus={handleFocus}
+        onBlur={handleBlur}
       />
     </div>
   );

@@ -132,10 +132,6 @@ export const RegisterAppointmentContextProvider = ({
     router.push('/');
   };
 
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
-
   const totalSteps = 2;
 
   const isFirstStep = currentStep === 0;
