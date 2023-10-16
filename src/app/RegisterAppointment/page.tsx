@@ -4,7 +4,7 @@ import styles from './styles.module.scss';
 import { Header } from '@/components/Header';
 import { useRegisterAppointmentContext } from '@/context/registerAppointmentContext';
 
-export default async function Form() {
+export default function Form() {
   const { currentComponent, handleSubmit, onSubmit } =
     useRegisterAppointmentContext();
 

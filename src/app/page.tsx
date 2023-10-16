@@ -11,7 +11,7 @@ import { Header } from '@/components/Header';
 import { SearchBar } from '@/components/SearchBar';
 import { ClientCardType } from '@/types/types';
 
-export default async function Home() {
+export default function Home() {
   const [attendeds, setAttendeds] = useState<ClientCardType[]>([]);
   const [search, setSearch] = useState('');
 

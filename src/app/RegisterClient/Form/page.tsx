@@ -6,7 +6,7 @@ import styles from './styles.module.scss';
 import { Header } from '@/components/Header';
 import { useRegisterClientContext } from '@/context/registerClientContext';
 
-export default async function Form() {
+export default function Form() {
   const { currentComponent, handleSubmit, onSubmit } =
     useRegisterClientContext();
   const searchParams = useSearchParams();

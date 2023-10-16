@@ -69,11 +69,15 @@
           font-size: 0.8rem;
 
           position: relative;
-          top: -8px;
+          top: -7px;
           left: 2px;
 
           cursor: pointer;
           color: var(--gray-300);
+
+          @media(max-width: 599px) {
+            top: -2px;
+          }
         }
       }
     }
@@ -95,6 +99,10 @@
         border-radius: 8px;
         align-items: center;
         background: var(--white);
+
+        @media(max-width: 599px) {
+          padding: 0;
+        }
 
         &:hover {
           background: var(--blue-50);
@@ -131,7 +139,7 @@
           color: var(--gray-500);
 
           @media(max-width: 599px) {
-            font-size: 12px;
+            font-size: 13px;
           }
         }
       }

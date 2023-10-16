@@ -92,9 +92,12 @@
         align-items: center;
         background: var(--white);
 
+        @media(max-width: 599px) {
+          padding: 0;
+        }
+
         .firstOptions {
           display: flex;
-
         }
 
         .secondOptions {
@@ -143,6 +146,10 @@
         .optionText {
           font-size: 18px;
           color: var(--gray-500);
+
+          @media(max-width: 599px) {
+            font-size: 12px;
+          }
         }
       }
     }
