@@ -8,7 +8,7 @@ import { RegisterAppointmentContextProvider } from '@/context/registerAppointmen
 import { RegisterClientContextProvider } from '@/context/registerClientContext';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic';
 
 const inter = Inter({ subsets: ['latin'] });
 
