@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
 import '../styles/global.scss';
+import { Toaster } from 'react-hot-toast';
+
 import { GlobalContextProvider } from '@/context/globalContext';
 import { LoginContextProvider } from '@/context/loginContext';
 import { RegisterAppointmentContextProvider } from '@/context/registerAppointmentContext';
@@ -28,6 +30,7 @@ export default function RootLayout({
             <RegisterClientContextProvider>
               <RegisterAppointmentContextProvider>
                 {children}
+                <Toaster />
               </RegisterAppointmentContextProvider>
             </RegisterClientContextProvider>
           </LoginContextProvider>

@@ -208,7 +208,7 @@ export const RegisterClientContextProvider = ({
 
       try {
         const saveRegister = async () => {
-          const res = await supabase
+          const { data: attendedData, error: attendedError } = await supabase
             .from('tb_attendeds')
             .insert({
               fullname: data.fullName,
@@ -223,23 +223,35 @@ export const RegisterClientContextProvider = ({
               marital_status_id: data.maritalStatus,
               policy_holder_id: data.policyHolder,
               is_civil_volunteer: isCivilVolunteer,
-              familiar_bond: data.familiarBond,
-              work_status: data.workStatus,
+              familiar_bond_id: data.familiarBond,
+              work_status_id: data.workStatus,
               registered_by: await userData.id
             })
             .select();
 
-          const attendedId = res.data && res.data[0].id;
+          if (attendedError) {
+            toast.error('Erro na transação, usuário não cadastrado');
+            return;
+          }
 
-          await supabase.from('tb_addresses').insert({
-            zip_code: cleanedZipCode,
-            number: data.address.number,
-            street: data.address.street,
-            neighborhood: data.address.neighborhood,
-            complement: data.address.complement,
-            city_id: data.address.city,
-            attended_id: attendedId
-          });
+          const attendedId = attendedData && attendedData[0].id;
+
+          const { error: addressError } = await supabase
+            .from('tb_addresses')
+            .insert({
+              zip_code: cleanedZipCode,
+              number: data.address.number,
+              street: data.address.street,
+              neighborhood: data.address.neighborhood,
+              complement: data.address.complement,
+              city_id: data.address.city,
+              attended_id: attendedId
+            });
+
+          if (addressError) {
+            toast.error('Erro na transaão, usuário não cadastrado');
+            return;
+          }
 
           const phones = data.contacts.map((e) => {
             return {

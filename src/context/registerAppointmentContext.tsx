@@ -202,28 +202,35 @@ export const RegisterAppointmentContextProvider = ({
         });
 
         const saveRegister = async () => {
-          const res = await supabase
-            .from('tb_appointments')
-            .insert({
-              date: formattedDate,
-              time: formattedHour,
-              access_id: data.access,
-              facility_id: data.facility,
-              modality_id: data.modality,
-              protocol: data.protocol,
-              type_of_service_id: data.typeOfService,
-              type_of_psychological_assessment_id:
-                data.typeOfPsychologicalAssessment,
-              type_of_social_assessment_id: data.typeOfSocialAssessment,
-              general_demand_id: data.generalDemand,
-              procedure_id: data.procedure,
-              has_leave_of_absence: hasLeaveOfAbsence,
-              record_progress: data.recordProgress,
-              registered_by: await userData.id
-            })
-            .select();
+          const { data: appointmentData, error: appointmentError } =
+            await supabase
+              .from('tb_appointments')
+              .insert({
+                date: formattedDate,
+                time: formattedHour,
+                access_id: data.access,
+                facility_id: data.facility,
+                modality_id: data.modality,
+                protocol: data.protocol,
+                type_of_service_id: data.typeOfService,
+                type_of_psychological_assessment_id:
+                  data.typeOfPsychologicalAssessment,
+                type_of_social_assessment_id: data.typeOfSocialAssessment,
+                general_demand_id: data.generalDemand,
+                procedure_id: data.procedure,
+                has_leave_of_absence: hasLeaveOfAbsence,
+                record_progress: data.recordProgress,
+                registered_by: await userData.id
+              })
+              .select();
 
-          const appointmentId = res.data && res.data[0].id;
+          if (appointmentError) {
+            toast.error('Erro na transação, atendimento não cadastrado');
+            return;
+          }
+
+          const appointmentId =
+            appointmentData.data && appointmentData.data[0].id;
 
           const specialists =
             data.specialists.length > 0

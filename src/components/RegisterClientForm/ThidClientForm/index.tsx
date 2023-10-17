@@ -6,7 +6,6 @@ import {
   UseFormRegister,
   useFieldArray
 } from 'react-hook-form';
-import { Toaster } from 'react-hot-toast';
 
 import styles from './styles.module.scss';
 
@@ -150,7 +149,6 @@ export function ThirdClientForm({ control, register }: ThirdClientFormProps) {
           <div className={styles.buttonsBox}>
             <Button type="button" name="Voltar" onClick={goToPreviousStep} />
             <Button type="submit" name="Enviar" />
-            <Toaster />
           </div>
         </>
       )}

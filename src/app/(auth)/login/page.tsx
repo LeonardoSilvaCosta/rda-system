@@ -1,6 +1,5 @@
 'use client';
 import Image from 'next/image';
-import { Toaster } from 'react-hot-toast';
 
 import styles from './styles.module.scss';
 
@@ -42,7 +41,6 @@ export default function Login() {
             register={register}
           />
           <Button type={'submit'} name={'Entrar'} />
-          <Toaster />
         </form>
       </div>
     </main>
