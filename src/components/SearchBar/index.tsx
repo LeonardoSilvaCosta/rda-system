@@ -21,13 +21,13 @@ export function SearchBar({ variation, search, setSearch }: SearchBarProps) {
     setSearch(value);
   };
 
-  const handleFocus = () => {
-    setIsFocused(true);
-  };
-
-  const handleBlur = () => {
+  const handleClick = () => {
     setSearch('');
     setIsFocused(false);
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true);
   };
 
   return (
@@ -36,12 +36,11 @@ export function SearchBar({ variation, search, setSearch }: SearchBarProps) {
         isFocused ? styles.focused : ''
       }`}
     >
-      <BsSearch className={styles.searchIcon} />
+      <BsSearch className={styles.searchIcon} onClick={handleClick} />
       <input
         value={search}
         onChange={(e) => handleChange(e.target.value)}
         onFocus={handleFocus}
-        onBlur={handleBlur}
       />
     </div>
   );

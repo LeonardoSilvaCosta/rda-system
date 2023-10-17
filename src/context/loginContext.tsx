@@ -2,7 +2,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { createContext, useContext, useEffect } from 'react';
+import { createContext, useContext } from 'react';
 import {
   Control,
   FieldErrors,
@@ -16,6 +16,7 @@ import {
   UseFormWatch,
   useForm
 } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 import { LoginFormValues } from '@/types/types';
 import { loginValidation } from '@/validation';
@@ -68,13 +69,13 @@ export const LoginContextProvider = ({
       });
 
       if (res.data.user) {
-        alert('Autenticado com sucesso!');
+        toast.success('Autenticado com sucesso!');
         router.refresh();
       } else {
-        alert('Login ou senha inválidos.');
+        toast.error('Login ou senha inválidos.');
       }
     } catch (error) {
-      alert(
+      toast.error(
         `Houve algum problema no cadastro de seu formulário. Erro ${error}. Tente novamente.`
       );
     }

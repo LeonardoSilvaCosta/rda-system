@@ -23,6 +23,7 @@ import {
   UseFormWatch,
   useForm
 } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 import { FirstClientForm } from '@/components/RegisterClientForm/FirstClientForm';
 import { SecondClientForm } from '@/components/RegisterClientForm/SecondClientForm';
@@ -256,7 +257,7 @@ export const RegisterClientContextProvider = ({
 
         saveRegister();
 
-        alert('Você cadastrou um novo usuário com sucesso.');
+        toast.success('Você cadastrou um novo usuário com sucesso.');
 
         reset();
 
@@ -264,7 +265,7 @@ export const RegisterClientContextProvider = ({
         selectFormValidation(0);
         router.push('/RegisterClient/Options');
       } catch (error) {
-        alert(
+        toast.error(
           `Houve algum problema no cadastro de seu formulário. Erro ${error}. Tente novamente.`
         );
       }

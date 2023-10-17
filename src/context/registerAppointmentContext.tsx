@@ -7,7 +7,6 @@ import {
   SetStateAction,
   createContext,
   useContext,
-  useEffect,
   useState
 } from 'react';
 import {
@@ -24,6 +23,7 @@ import {
   UseFormWatch,
   useForm
 } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 import { FirstAppointmentForm } from '@/components/RegisterAppointmentForm/FirstAppointmentForm';
 import { SecondAppointmentForm } from '@/components/RegisterAppointmentForm/SecondAppointmentForm';
@@ -305,7 +305,7 @@ export const RegisterAppointmentContextProvider = ({
 
         saveRegister();
 
-        alert('Você registrou um novo atendimento com sucesso.');
+        toast.success('Você registrou um novo atendimento com sucesso.');
 
         reset();
 
@@ -313,7 +313,7 @@ export const RegisterAppointmentContextProvider = ({
         selectFormValidation(0);
         router.push('/');
       } catch (error) {
-        alert(
+        toast.error(
           `Houve algum problema no cadastro de seu formulário. Erro ${error}. Tente novamente.`
         );
       }

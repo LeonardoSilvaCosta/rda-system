@@ -27,8 +27,6 @@ export async function GET(req: NextRequest) {
       .eq('email', email)
       .single();
 
-    alert(currentUser);
-
     return Response.json(currentUser);
   } catch (error) {
     return new NextResponse(`select data error: ${error}`, { status: 400 });

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Toaster } from 'react-hot-toast';
 
 import styles from './styles.module.scss';
 
@@ -214,6 +215,7 @@ export function SecondAppointmentForm() {
           <div className={styles.buttonsBox}>
             <Button type="button" name="Voltar" onClick={goToPreviousStep} />
             <Button type="submit" name="Enviar" />
+            <Toaster />
           </div>
         </>
       )}
