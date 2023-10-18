@@ -11,15 +11,16 @@ type CardValue = {
   value: string;
 };
 
-export function ProfileCard({
+export function RecordProfileCard({
   title,
   keyValues,
   numberToSlice
 }: ProfileCardProps) {
   const getColumns = (array: CardValue[], numberToSlice: number) => {
+    const noEmptyArray = array.filter((e) => e.value !== '');
     if (array.length > numberToSlice) {
-      const firstArray = array.slice(0, numberToSlice);
-      const secondArray = array.slice(numberToSlice);
+      const firstArray = noEmptyArray.slice(0, numberToSlice);
+      const secondArray = noEmptyArray.slice(numberToSlice);
 
       return [firstArray, secondArray];
     } else {

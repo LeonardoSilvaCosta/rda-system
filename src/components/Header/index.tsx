@@ -1,8 +1,11 @@
-import { usePathname } from 'next/navigation';
+// import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { ImExit } from 'react-icons/im';
 import { MdOutlineArrowBackIosNew } from 'react-icons/md';
 
 import styles from './styles.module.scss';
 
+import { useGlobalContext } from '@/context/globalContext';
 import { useRegisterAppointmentContext } from '@/context/registerAppointmentContext';
 import { useRegisterClientContext } from '@/context/registerClientContext';
 
@@ -11,38 +14,56 @@ interface HeaderProps {
 }
 
 export function Header({ title }: HeaderProps) {
+  const { returnToDashboard } = useGlobalContext();
   const { goToPreviousStep: previousRegisterClientStep } =
     useRegisterClientContext();
   const { goToPreviousStep: previousRegisterAppointmentStep } =
     useRegisterAppointmentContext();
-  const pathname = usePathname();
+  const [showExitButton, setShowExitButton] = useState(false);
+
+  useEffect(() => {
+    if (title === 'Prontuário') {
+      setShowExitButton(true);
+    } else {
+      setShowExitButton(false);
+    }
+  }, [title]);
 
   const handleClick = () => {
-    switch (pathname) {
-      case '/RegisterClient/Form':
+    switch (title) {
+      case 'Prontuário':
+        returnToDashboard();
+        break;
+      case 'Cadastrar atendido':
         previousRegisterClientStep();
         break;
-      case '/RegisterAppointment':
+      case 'Registrar atendimento':
         previousRegisterAppointmentStep();
         break;
     }
   };
 
   return (
-    <header
-      className={`${styles.container} ${pathname === '/' ? styles.home : ''}`}
+    <main
+      className={`${styles.wrapper} ${title === 'Home' ? styles.home : ''}`}
     >
-      <div className={`${styles.leftItemWrapper}`}>
-        <div className={`${styles.leftItem}`}>
-          <MdOutlineArrowBackIosNew
-            className={`${styles.topArrow} ${
-              pathname === '/' ? styles.home : ''
-            }`}
-            onClick={handleClick}
-          />
-          <span>{title}</span>
+      <header className={styles.container}>
+        <div className={`${styles.leftColumn}`}>
+          <div className={`${styles.leftContent}`}>
+            <MdOutlineArrowBackIosNew
+              className={`${styles.topArrow} ${
+                title === 'Home' ? styles.home : ''
+              }`}
+              onClick={handleClick}
+            />
+            <span>{title}</span>
+          </div>
         </div>
-      </div>
-    </header>
+        <ImExit
+          onClick={returnToDashboard}
+          className={`${styles.exitIcon} ${showExitButton ? styles.show : ''}`}
+        />
+      </header>
+    </main>
   );
 }

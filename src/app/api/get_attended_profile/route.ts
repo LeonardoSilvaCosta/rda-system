@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
-import { Contact } from '@/types/types';
+import { formatDate } from '@/utils/formatDate';
 import { formatPhoneNumber } from '@/utils/formatPhoneNumber';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 
@@ -16,6 +16,10 @@ type Phone = {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function GET(req: NextRequest) {
   const supabase = createRouteHandlerClient({ cookies });
+  const { searchParams } = new URL(req.url);
+  const cpf = searchParams.get('cpf');
+
+  console.log(cpf);
 
   try {
     const { data: attended } = await supabase
@@ -39,6 +43,7 @@ export async function GET(req: NextRequest) {
       tb_phones ( phone, owner_identification, attended_relationship )
       `
       )
+      .eq('cpf', cpf)
       .limit(1)
       .single();
 
@@ -66,7 +71,10 @@ export async function GET(req: NextRequest) {
           fullname: attended.fullname
         },
         generalData: {
-          birthDate: { key: 'Data de nascimento', value: attended.birth_date },
+          birthDate: {
+            key: 'Data de nascimento',
+            value: formatDate(attended.birth_date)
+          },
           age: { key: 'Idade', value: '31 anos' },
           cpf: { key: 'CPF', value: attended.cpf },
           maritalStatus: attended.tb_marital_status

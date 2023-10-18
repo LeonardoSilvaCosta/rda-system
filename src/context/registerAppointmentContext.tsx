@@ -25,6 +25,8 @@ import {
 } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
+import { useGlobalContext } from './globalContext';
+
 import { FirstAppointmentForm } from '@/components/RegisterAppointmentForm/FirstAppointmentForm';
 import { SecondAppointmentForm } from '@/components/RegisterAppointmentForm/SecondAppointmentForm';
 import { AppointmentFormValues } from '@/types/types';
@@ -66,6 +68,7 @@ export const RegisterAppointmentContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  const { returnToDashboard } = useGlobalContext();
   const supabase = createClientComponentClient();
   const router = useRouter();
   const [validationSchema, setValidationSchema] = useState<
@@ -127,10 +130,6 @@ export const RegisterAppointmentContextProvider = ({
     <FirstAppointmentForm key="first" />,
     <SecondAppointmentForm key="second" />
   ];
-
-  const returnToDashboard = () => {
-    router.push('/');
-  };
 
   const totalSteps = 2;
 

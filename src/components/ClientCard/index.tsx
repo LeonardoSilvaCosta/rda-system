@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import styles from './styles.module.scss';
 
@@ -21,8 +22,13 @@ export function ClientCard({
   nickname,
   cpf
 }: ClientCardProps) {
+  const router = useRouter();
+  const handleClick = () => {
+    router.push(`/RecordProfile?cpf=${cpf}`);
+  };
+
   return (
-    <div className={styles.container}>
+    <div onClick={handleClick} className={styles.container}>
       <div>
         <Image src={avatar} width="60" height="60" alt="profile" />
       </div>
