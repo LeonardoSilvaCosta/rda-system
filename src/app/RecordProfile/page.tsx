@@ -14,6 +14,7 @@ type Attended = {
   generalData: GeneralData;
   addressData: AddressData;
   contactsData: KeyValue[];
+  familiarBondsData: KeyValue[];
 };
 
 type HeaderData = {
@@ -58,6 +59,7 @@ export default function RecordProfile() {
   const searchParams = useSearchParams();
   const cpf = searchParams.get('cpf');
   const [attended, setAttended] = useState<Attended>({
+    familiarBondsData: [],
     headerData: { avatar: '', fullname: '' },
     generalData: {
       birthDate: initialKeyValue,
@@ -85,20 +87,21 @@ export default function RecordProfile() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    async function request() {
+    async function requests() {
       try {
-        const res = await fetch(`/api/get_attended_profile?cpf=${cpf}`, {
-          cache: 'no-cache'
-        });
-        const attendedData: Attended = await res.json();
+        const attendedProfileRes = await fetch(
+          `/api/get_attended_profile?cpf=${cpf}`
+        );
+        const attendedData: Attended = await attendedProfileRes.json();
         setAttended(attendedData);
+
         setIsLoading(false);
       } catch (error) {
         console.error('Erro na solicitação:', error);
       }
     }
 
-    request();
+    requests();
   }, [cpf]);
 
   const generalData = attended.generalData
@@ -148,7 +151,7 @@ export default function RecordProfile() {
               />
               <RecordProfileCard
                 title={'Vínculos cadastrados'}
-                keyValues={addressData}
+                keyValues={attended.familiarBondsData}
                 numberToSlice={3}
               />
             </div>

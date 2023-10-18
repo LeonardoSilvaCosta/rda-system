@@ -17,8 +17,17 @@
   .columns {
     display: flex;
     justify-content: space-between;
+
+    &.link {
+      .contentColumn {
+        color: var(--blue-400);
+        cursor: pointer;
+      }
+    }
+
     @media(max-width: 599px) {
       flex-direction: column;
+
     }
     .contentColumn {
       max-width: 564px;
