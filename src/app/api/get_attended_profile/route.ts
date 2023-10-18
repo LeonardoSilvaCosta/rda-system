@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { calculateAge } from '@/utils/calculateAge';
-import { formatDate } from '@/utils/formatDate';
+import { formatDate } from '@/utils/formatDateTime';
 import { formatPhoneNumber } from '@/utils/formatPhoneNumber';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 

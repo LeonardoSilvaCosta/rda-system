@@ -228,8 +228,9 @@ export const RegisterAppointmentContextProvider = ({
             return;
           }
 
-          const appointmentId =
-            appointmentData.data && appointmentData.data[0].id;
+          const appointmentId = appointmentData && appointmentData[0].id;
+
+          alert(appointmentId);
 
           const specialists =
             data.specialists.length > 0

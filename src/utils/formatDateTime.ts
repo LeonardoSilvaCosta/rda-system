@@ -9,3 +9,14 @@ export function formatDate(date: string) {
     return 'Data inválida';
   }
 }
+
+export function formatHour(hour: string) {
+  const parts = hour.split(':');
+  if (parts.length === 3) {
+    const hours = parts[0];
+    const minutes = parts[1];
+    return `${hours}h${minutes}`;
+  } else {
+    return hour;
+  }
+}

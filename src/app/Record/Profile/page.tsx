@@ -55,7 +55,7 @@ const initialKeyValue = {
   value: ''
 };
 
-export default function RecordProfile() {
+export default function Profile() {
   const searchParams = useSearchParams();
   const cpf = searchParams.get('cpf');
   const [attended, setAttended] = useState<Attended>({
@@ -132,27 +132,32 @@ export default function RecordProfile() {
               avatar={attended.headerData.avatar}
               fullname={attended.headerData.fullname}
               buttonTitle={'Atendimentos'}
+              goToRoute={`/Record/Appointments?cpf=${attended.generalData.cpf}`}
             />
             <div className={styles.cards}>
               <RecordProfileCard
                 title={'Dados gerais'}
                 keyValues={generalData}
                 numberToSlice={6}
+                maxItems={8}
               />
               <RecordProfileCard
                 title={'Endereço'}
                 keyValues={addressData}
                 numberToSlice={3}
+                maxItems={6}
               />
               <RecordProfileCard
                 title={'Contatos'}
                 keyValues={attended.contactsData}
                 numberToSlice={3}
+                maxItems={6}
               />
               <RecordProfileCard
                 title={'Vínculos cadastrados'}
                 keyValues={attended.familiarBondsData}
                 numberToSlice={3}
+                maxItems={6}
               />
             </div>
           </main>

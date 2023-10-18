@@ -6,6 +6,7 @@ interface ProfileCardProps {
   title: string;
   keyValues: CardValue[];
   numberToSlice: number;
+  maxItems: number;
 }
 
 type CardValue = {
@@ -16,17 +17,18 @@ type CardValue = {
 export function RecordProfileCard({
   title,
   keyValues,
-  numberToSlice
+  numberToSlice,
+  maxItems
 }: ProfileCardProps) {
   const router = useRouter();
   const handleClick = (cpf: string) => {
-    router.push(`/RecordProfile?cpf=${cpf}`);
+    router.push(`/Record/Profile?cpf=${cpf}`);
   };
   const getColumns = (array: CardValue[], numberToSlice: number) => {
     const noEmptyArray = array.filter((e) => e.value !== '');
     if (array.length > numberToSlice) {
       const firstArray = noEmptyArray.slice(0, numberToSlice);
-      const secondArray = noEmptyArray.slice(numberToSlice);
+      const secondArray = noEmptyArray.slice(numberToSlice, maxItems);
 
       return [firstArray, secondArray];
     } else {

@@ -69,8 +69,8 @@ export type Military = {
 export type AppointmentFormValues = {
   date: string;
   time: string;
-  specialists: Option[];
-  attendeds: Option[];
+  specialists: string[];
+  attendeds: string[];
   access: string;
   facility: string;
   modality: string;

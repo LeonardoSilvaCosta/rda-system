@@ -10,10 +10,6 @@
     width: calc(100vw - 60px);
   }
 
-  @media(max-width: 762px) {
-    height: 1350px;
-  }
-
   h2 {
     font-size: 1.8rem;
     padding: 3.32rem 0;
@@ -29,6 +25,7 @@
   }
 
   .searchbarBox {
+    margin-top: 2.5rem;
     display: flex;
     align-items: flex-end;
     justify-content: flex-end;

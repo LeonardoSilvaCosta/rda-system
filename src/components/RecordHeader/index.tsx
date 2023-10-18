@@ -1,17 +1,28 @@
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import styles from './styles.module.scss';
 interface RecordHeaderProps {
   buttonTitle: string;
   avatar?: string;
   fullname: string;
+  goToRoute?: string;
 }
 
 export function RecordHeader({
   buttonTitle,
   avatar,
-  fullname
+  fullname,
+  goToRoute
 }: RecordHeaderProps) {
+  const router = useRouter();
+  const handleClick = () => {
+    if (goToRoute) {
+      router.push(`${goToRoute}`);
+    } else {
+      router.back();
+    }
+  };
   return (
     <header className={styles.header}>
       <div className={styles.firstColumn}>
@@ -23,7 +34,7 @@ export function RecordHeader({
         />
         <span>{fullname}</span>
       </div>
-      <div className={styles.secondColumn}>
+      <div className={styles.secondColumn} onClick={handleClick}>
         <button type="button">{buttonTitle}</button>
       </div>
     </header>

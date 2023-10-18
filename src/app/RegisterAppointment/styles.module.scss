@@ -4,11 +4,6 @@
   margin: 0 auto;
   padding: 0 0 2rem 0;
 
-  @media(max-width: 762px) {
-    justify-content: center;
-    height: 1350px;
-  }
-
   h2 {
     font-size: 1.6rem;
     font-weight: bold;
@@ -17,6 +12,7 @@
   }
 
   .form {
+    margin-top: 2.5rem;
     display: flex;
     flex-direction: column;
     gap: 1.85rem;
