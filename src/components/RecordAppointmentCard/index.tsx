@@ -1,4 +1,3 @@
-import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { BsChevronDown } from 'react-icons/bs';
 

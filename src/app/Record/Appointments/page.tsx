@@ -59,6 +59,7 @@ export default function Appointments() {
   }, [cpf]);
 
   const keyValueArray = appointments.flatMap((appointment) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const keyValue = Object.entries(appointment).map(([key, value]) => ({
       key: value.key,
       value: value.value
