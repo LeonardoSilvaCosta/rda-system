@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { Database } from '@/types/supabase';
 import { calculateAge } from '@/utils/calculateAge';
 import { formatDate } from '@/utils/formatDateTime';
 import { formatPhoneNumber } from '@/utils/formatPhoneNumber';
@@ -11,14 +12,17 @@ export const dynamic = 'force-dynamic';
 type Phone = {
   phone: string;
   owner_identification: string;
-  attended_relationship: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  attended_relationship: any;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function GET(req: NextRequest) {
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createRouteHandlerClient<Database>({ cookies });
   const { searchParams } = new URL(req.url);
   const cpf = searchParams.get('cpf');
+
+  if (!cpf) return;
 
   try {
     const { data: attended } = await supabase
@@ -39,7 +43,7 @@ export async function GET(req: NextRequest) {
       tb_marital_status ( name ),
       tb_work_status ( name ),
       tb_addresses ( zip_code, number, street, complement, neighborhood ),
-      tb_phones ( phone, owner_identification, attended_relationship!inner(name) )      
+      tb_phones ( phone, owner_identification, attended_relationship )     
       `
       )
       .eq('cpf', cpf)
@@ -66,7 +70,7 @@ export async function GET(req: NextRequest) {
     const formattedFamiliarBonds = familiarBonds.map((e) => {
       return {
         key: e.cpf,
-        value: `${e.fullname} (${e.tb_familiar_bonds.name})`
+        value: `${e.fullname} (${e.tb_familiar_bonds?.name})`
       };
     });
 
@@ -92,11 +96,13 @@ export async function GET(req: NextRequest) {
       generalData: {
         birthDate: {
           key: 'Data de nascimento',
-          value: formatDate(attended.birth_date)
+          value: attended.birth_date ? formatDate(attended.birth_date) : ''
         },
         age: {
           key: 'Idade',
-          value: calculateAge(new Date(attended.birth_date))
+          value: attended.birth_date
+            ? calculateAge(new Date(attended.birth_date))
+            : ''
         },
         cpf: { key: 'CPF', value: attended.cpf },
         maritalStatus: attended.tb_marital_status
@@ -116,7 +122,10 @@ export async function GET(req: NextRequest) {
           ? { key: 'Quadro', value: attended.tb_cadres.name }
           : null,
         workStatus: attended.tb_work_status
-          ? { key: 'Condição funcional', value: attended.tb_work_status.name }
+          ? {
+              key: 'Condição funcional',
+              value: attended.tb_work_status.name
+            }
           : null,
         opm: attended.tb_opms
           ? { key: 'OPM', value: attended.tb_opms.name }

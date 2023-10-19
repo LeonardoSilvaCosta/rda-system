@@ -139,7 +139,7 @@ export default function Profile() {
                 title={'Dados gerais'}
                 keyValues={generalData}
                 numberToSlice={6}
-                maxItems={8}
+                maxItems={12}
               />
               <RecordProfileCard
                 title={'Endereço'}
