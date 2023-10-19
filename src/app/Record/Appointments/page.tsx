@@ -10,6 +10,17 @@ import { RecordAppointmentCard } from '@/components/RecordAppointmentCard';
 import { RecordHeader } from '@/components/RecordHeader';
 
 type Appointment = {
+  headerData: HeaderData;
+  generalData: GeneralData[];
+};
+
+type HeaderData = {
+  id: string;
+  avatar: string;
+  fullname: string;
+};
+
+type GeneralData = {
   date: KeyValue;
   time: KeyValue;
   protocol: KeyValue;
@@ -36,16 +47,29 @@ type KeyValue = {
   value: string;
 };
 
+const appointmentInitialValue = {
+  headerData: {
+    id: '',
+    avatar: '',
+    fullname: ''
+  },
+  generalData: []
+};
+
 export default function Appointments() {
   const searchParams = useSearchParams();
   const cpf = searchParams.get('cpf');
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [appointments, setAppointments] = useState<Appointment>(
+    appointmentInitialValue
+  );
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function requests() {
       try {
-        const appointmentsRes = await fetch(`/api/get_attended_appointments`);
+        const appointmentsRes = await fetch(
+          `/api/get_attended_appointments?cpf=${cpf}`
+        );
         const appointmentData = await appointmentsRes.json();
         setAppointments(appointmentData);
 
@@ -58,7 +82,7 @@ export default function Appointments() {
     requests();
   }, [cpf]);
 
-  const keyValueArray = appointments.flatMap((appointment) => {
+  const keyValueArray = appointments.generalData.flatMap((appointment) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const keyValue = Object.entries(appointment).map(([key, value]) => ({
       key: value.key,
@@ -75,9 +99,9 @@ export default function Appointments() {
           <Header title="Prontuário" />
           <main className={styles.container}>
             <RecordHeader
-              fullname={'LEONARDO DA SILVA COSTA'}
+              fullname={appointments.headerData.fullname}
               buttonTitle="Voltar ao perfil"
-              avatar="/profile.png"
+              avatar={appointments.headerData.avatar}
             />
             <div className={styles.cards}>
               <RecordAppointmentCard

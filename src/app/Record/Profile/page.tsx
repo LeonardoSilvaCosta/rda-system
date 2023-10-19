@@ -132,7 +132,7 @@ export default function Profile() {
               avatar={attended.headerData.avatar}
               fullname={attended.headerData.fullname}
               buttonTitle={'Atendimentos'}
-              goToRoute={`/Record/Appointments?cpf=${attended.generalData.cpf}`}
+              goToRoute={`/Record/Appointments?cpf=${attended.generalData.cpf.value}`}
             />
             <div className={styles.cards}>
               <RecordProfileCard

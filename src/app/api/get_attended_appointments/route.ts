@@ -35,15 +35,17 @@ type Appointment = {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function GET(req: NextRequest) {
   const supabase = createRouteHandlerClient<Database>({ cookies });
-  // const { searchParams } = new URL(req.url);
-  // const cpf = searchParams.get('cpf');
+  const { searchParams } = new URL(req.url);
+  const cpf = searchParams.get('cpf');
+
+  if (!cpf) return;
 
   try {
-    const { data: appointments } = await supabase
-      .from('tb_appointments')
+    const { data: attended } = await supabase
+      .from('tb_attendeds')
       .select(
-        `
-      id, 
+        ` id, avatar, fullname, 
+      tb_appointments (id, 
       date,
       time,
       protocol,
@@ -58,23 +60,56 @@ export async function GET(req: NextRequest) {
       tb_general_demands ( name ),
       tb_procedures( name ),
       tb_users ( rank_id (name), nickname ),
-      tb_attendeds ( fullname ),
+      tb_attendeds ( fullname, cpf ),
       tb_specific_demands ( name ),
       tb_documents ( name ),
       tb_travels ( name ),
       tb_appointment_referrals (destination (name), type (name))
+      )
       `
       )
-      // .eq('', cpf)
-      .limit(10);
+      .eq('cpf', cpf)
+      .limit(1)
+      .single();
 
-    console.log(JSON.stringify(appointments, null, 2));
+    // console.log(JSON.stringify(attended, null, 2));
 
-    if (!appointments) return;
+    // const { data: appointments } = await supabase
+    //   .from('tb_appointments')
+    //   .select(
+    //     `
+    //   id,
+    //   date,
+    //   time,
+    //   protocol,
+    //   has_leave_of_absence,
+    //   record_progress,
+    //   tb_accesses ( name ),
+    //   tb_opms ( name ),
+    //   tb_modalities ( name ),
+    //   tb_services ( name ),
+    //   tb_psychological_assessments ( name ),
+    //   tb_social_assessments ( name ),
+    //   tb_general_demands ( name ),
+    //   tb_procedures( name ),
+    //   tb_users ( rank_id (name), nickname ),
+    //   tb_attendeds ( fullname, cpf ),
+    //   tb_specific_demands ( name ),
+    //   tb_documents ( name ),
+    //   tb_travels ( name ),
+    //   tb_appointment_referrals (destination (name), type (name)),
+    //   `
+    //   )
+    //   .eq('tb_attendeds:cumulative.attended.cpf', String(cpf))
+    //   .limit(10);
+
+    // console.log(JSON.stringify(appointments, null, 2));
+
+    if (!attended) return;
 
     // appointments.map(e => e.tb_appointment_referrals.map(e => e.))
 
-    const formattedData = appointments.map((e: Appointment) => {
+    const formattedData = attended.tb_appointments.map((e: Appointment) => {
       return {
         date: {
           key: 'Realizado em',
@@ -159,11 +194,14 @@ export async function GET(req: NextRequest) {
       };
     });
 
-    if (!appointments) return;
-
-    // console.log(JSON.stringify(appointments, null, 2));
-
-    return Response.json(formattedData);
+    return Response.json({
+      headerData: {
+        id: attended,
+        avatar: attended.avatar,
+        fullname: attended.fullname
+      },
+      generalData: formattedData
+    });
   } catch (error) {
     return new NextResponse(`select data error: ${error}`, { status: 400 });
   }
