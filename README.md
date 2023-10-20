@@ -21,7 +21,10 @@
 ----Nova fase Autenticação e prontuário
 - [x] Criar lógica e sistema de autenticação com provider ou email
 - [ ] Criar formulário para cadastro de usuário
-- [] Criar estrutura de prontuário do atendido
+- [x] Criar estrutura de prontuário do atendido
 - [x] Refatorar Header para responsividade
 - [ ] Refatorar tela de Login para responsividade (versão web)
-- [ ] Refatorar Dashboard para responsividade
+- [x] Refatorar Dashboard para responsividade
+- [] Desenha nova Dashboard
+- [ ] Implementar função de gerar prontuário em pdf
+- [ ] Implementar função de assinatura digital

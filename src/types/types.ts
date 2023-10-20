@@ -96,3 +96,36 @@ export type LoginFormValues = {
 };
 
 export type Referral = { firstOptionId: string; secondOptionId: string };
+
+export type HeaderData = {
+  avatar: string;
+  fullname: string;
+};
+
+export type GeneralData = {
+  birthDate: KeyValue;
+  age: KeyValue;
+  cpf: KeyValue;
+  maritalStatus: KeyValue;
+  rg: KeyValue;
+  nickname: KeyValue;
+  rank: KeyValue;
+  cadre: KeyValue;
+  workStatus: KeyValue;
+  opm: KeyValue;
+  gender: KeyValue;
+};
+
+export type AddressData = {
+  zipCode: KeyValue;
+  street: KeyValue;
+  neighborhood: KeyValue;
+  number: KeyValue;
+  complement: KeyValue;
+  city_state: KeyValue;
+};
+
+export type KeyValue = {
+  key: string;
+  value: string;
+};

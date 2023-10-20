@@ -8,6 +8,7 @@ import { Header } from '@/components/Header';
 import { LoadingComponent } from '@/components/Loading/loading';
 import { RecordHeader } from '@/components/RecordHeader';
 import { RecordProfileCard } from '@/components/RecordProfileCard';
+import { AddressData, GeneralData, HeaderData, KeyValue } from '@/types/types';
 
 type Attended = {
   headerData: HeaderData;
@@ -15,39 +16,6 @@ type Attended = {
   addressData: AddressData;
   contactsData: KeyValue[];
   familiarBondsData: KeyValue[];
-};
-
-type HeaderData = {
-  avatar: string;
-  fullname: string;
-};
-
-type GeneralData = {
-  birthDate: KeyValue;
-  age: KeyValue;
-  cpf: KeyValue;
-  maritalStatus: KeyValue;
-  rg: KeyValue;
-  nickname: KeyValue;
-  rank: KeyValue;
-  cadre: KeyValue;
-  workStatus: KeyValue;
-  opm: KeyValue;
-  gender: KeyValue;
-};
-
-export type AddressData = {
-  zipCode: KeyValue;
-  street: KeyValue;
-  neighborhood: KeyValue;
-  number: KeyValue;
-  complement: KeyValue;
-  city_state: KeyValue;
-};
-
-type KeyValue = {
-  key: string;
-  value: string;
 };
 
 const initialKeyValue = {
@@ -132,7 +100,9 @@ export default function Profile() {
               avatar={attended.headerData.avatar}
               fullname={attended.headerData.fullname}
               buttonTitle={'Atendimentos'}
-              goToRoute={`/Record/Appointments?cpf=${attended.generalData.cpf.value}`}
+              goToRoute={`/Record/Appointments?cpf=${
+                attended.generalData.cpf.value
+              }&attended=${JSON.stringify(attended)}`}
             />
             <div className={styles.cards}>
               <RecordProfileCard

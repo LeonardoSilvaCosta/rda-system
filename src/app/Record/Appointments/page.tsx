@@ -6,8 +6,10 @@ import styles from './styles.module.scss';
 
 import Loading from '@/app/RegisterClient/loading';
 import { Header } from '@/components/Header';
+import { MyPdf } from '@/components/MyPdf';
 import { RecordAppointmentCard } from '@/components/RecordAppointmentCard';
 import { RecordHeader } from '@/components/RecordHeader';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 
 type Appointment = {
   headerData: HeaderData;
@@ -59,6 +61,8 @@ const appointmentInitialValue = {
 export default function Appointments() {
   const searchParams = useSearchParams();
   const cpf = searchParams.get('cpf');
+  const attended = searchParams.get('attended');
+
   const [appointments, setAppointments] = useState<Appointment>(
     appointmentInitialValue
   );
@@ -110,6 +114,23 @@ export default function Appointments() {
                 numberToSlice={4}
                 maxItems={7}
               />
+            </div>
+            <div>
+              <button>
+                <PDFDownloadLink
+                  document={
+                    <MyPdf
+                      attended={JSON.parse(attended)}
+                      apppointments={appointments.generalData}
+                    />
+                  }
+                  fileName="document.pdf"
+                >
+                  {({ loading }) =>
+                    loading ? 'Loading document...' : 'Download pdf!'
+                  }
+                </PDFDownloadLink>
+              </button>
             </div>
           </main>
         </>
