@@ -1,0 +1,65 @@
+.container {
+  max-width: 1198px;
+  width: calc(100% - 30px);
+  margin: 0 auto;
+  padding: 20px 0 20px 0;
+  display: flex;
+  flex-direction: column;
+
+  background-color: var(--white);
+  border-radius: 16px;
+  padding: 2rem;
+  line-height: 2rem;
+
+  div {
+    width: 100%;
+    display: flex;
+
+    @media(max-width: 599px) {
+      flex-direction: column;
+
+    }
+  }
+  .column {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+  }
+  
+  .progressWrapper {
+    position: relative;
+    border: 1px solid var(--gray-300);
+    margin: 1rem auto;
+    padding: 1rem;
+    text-align: justify;
+
+    span:first-child{
+      position: absolute;
+      font-weight: bold;
+      top: -16px;
+      left: 10px;
+      padding: 0px;
+      background-color: var(--white);
+    }
+  }
+ 
+  button {
+    
+    border: none;
+    border-radius: 8px;
+    background-color: var(--blue-300);
+    color: var(--blue-50);
+    align-self: flex-start;
+    font-size: 1rem;
+
+    padding: 0.7rem;
+
+    @media(max-width: 599px) {
+      width: 100%;
+      align-self: center;
+      margin-top: 1rem;
+    }
+  }
+
+}

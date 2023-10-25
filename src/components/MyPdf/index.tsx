@@ -16,7 +16,7 @@ import {
 
 type PdfProps = {
   attended: Attended;
-  apppointments: Appointment[];
+  apppointments: Appointment;
 };
 
 type Attended = {
@@ -28,25 +28,26 @@ type Attended = {
 };
 
 type Appointment = {
-  date: KeyValue;
-  time: KeyValue;
-  protocol: KeyValue;
-  hasLeaveOfAbsence: KeyValue;
-  recordProgress: KeyValue;
-  access: KeyValue;
-  facility: KeyValue;
-  modality: KeyValue;
-  service: KeyValue;
-  psychologicalAssessment: KeyValue;
-  socialAssessment: KeyValue;
-  generalDemand: KeyValue;
-  procedure: KeyValue;
-  specialist: KeyValue;
-  attendeds: KeyValue;
-  specificDemands: KeyValue;
-  documents: KeyValue;
-  travels: KeyValue;
-  referrals: KeyValue;
+  id: string;
+  date: string;
+  time: string;
+  protocol: string;
+  hasLeaveOfAbsence: string;
+  recordProgress: string;
+  access: string;
+  facility: string;
+  modality: string;
+  service: string;
+  psychologicalAssessment: string;
+  socialAssessment: string;
+  generalDemand: string;
+  procedure: string;
+  specialists: [];
+  attendeds: [];
+  specificDemands: [];
+  documents: [];
+  travels: [];
+  referrals: [];
 };
 
 type KeyValue = {
@@ -56,14 +57,14 @@ type KeyValue = {
 
 Font.register({
   family: 'Roboto',
-  src: 'https://fonts.googleapis.com/css2?family=Roboto&display=swap'
+  src: 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap'
 });
 
 export function MyPdf({ attended, apppointments }: PdfProps) {
   const styles = StyleSheet.create({
     page: {
       flexDirection: 'column',
-      backgroundColor: '#E4E4E4'
+      backgroundColor: '#fff'
     },
     header: {
       display: 'flex',
@@ -102,7 +103,7 @@ export function MyPdf({ attended, apppointments }: PdfProps) {
         <View fixed style={styles.header}>
           <Image
             style={{ width: '2.29cm', height: '1.82cm' }}
-            src="https://i.postimg.cc/XN917h50/brasao-estado.png"
+            src="https://i.postimg.cc/fTLSqFXT/brasao-estado.png"
           />
           <View style={styles.headerTextWrapper}>
             <Text>GOVERNO DO ESTADO DO PARÁ</Text>
@@ -115,24 +116,11 @@ export function MyPdf({ attended, apppointments }: PdfProps) {
           </View>
           <Image
             style={{ width: '2.54cm', height: '2.02cm' }}
-            src="https://i.postimg.cc/cHwgwf7r/brasao-ciap-rm-bg.png"
+            src="https://i.postimg.cc/wB3W6FS6/brasao-ciap-rm-bg.png"
           />
         </View>
         <View style={styles.section}>
-          <PdfProfileData
-            avatar={attended.headerData.avatar}
-            fullname={attended.headerData.fullname}
-            age={attended.generalData.age.value}
-            cpf={attended.generalData.cpf.value}
-            maritalStatus={attended.generalData.maritalStatus.value}
-            gender={attended.generalData.gender.value}
-            rg={attended.generalData.rg.value}
-            nickname={attended.generalData.nickname.value}
-            rank={attended.generalData.rank.value}
-            cadre={attended.generalData.cadre.value}
-            workStatus={attended.generalData.workStatus.value}
-            opm={attended.generalData.opm.value}
-          />
+          <PdfProfileData attended={attended} />
           <PdfRecordData appointments={apppointments} />
         </View>
       </Page>

@@ -28,3 +28,9 @@
 - [] Desenha nova Dashboard
 - [ ] Implementar função de gerar prontuário em pdf
 - [ ] Implementar função de assinatura digital
+- [ ] Adiciona barra de busca na listagem de atendimentos
+- [ ] Adiciona paginação na listagem de atendimentos
+- [ ] Adiciona paginação na listagem de atendidos
+- [ ] Adicionar políticas no banco de dados
+- [ ] Adicionar máscara de data no datapicker
+- [ ] Adicionar melhoria no dropdown (input confundindo usuário)

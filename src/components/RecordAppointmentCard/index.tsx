@@ -1,56 +1,61 @@
-import { useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { BsChevronDown } from 'react-icons/bs';
 
 import styles from './styles.module.scss';
 
 interface RecordAppointmentCardProps {
-  title: string;
-  keyValues: CardValue[];
-  numberToSlice: number;
-  maxItems: number;
+  appointments: Appointment[];
+  handleClick: (selectedCardId: string) => void;
 }
 
-type CardValue = {
-  key: string;
-  value: string;
+type Appointment = {
+  id: string;
+  date: string;
+  time: string;
+  protocol: string;
+  hasLeaveOfAbsence: string;
+  recordProgress: string;
+  access: string;
+  facility: string;
+  modality: string;
+  service: string;
+  psychologicalAssessment: string;
+  socialAssessment: string;
+  generalDemand: string;
+  procedure: string;
+  specialists: [];
+  attendeds: [];
+  specificDemands: [];
+  documents: [];
+  travels: [];
+  referrals: [];
 };
 
 export function RecordAppointmentCard({
-  title,
-  keyValues,
-  numberToSlice,
-  maxItems
+  appointments,
+  handleClick
 }: RecordAppointmentCardProps) {
-  const [isDropDownVisible, setIsDropDownVisible] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  const getColumns = (array: CardValue[], numberToSlice: number) => {
-    const noEmptyArray = array.filter((e) => e.value !== '');
-    if (array.length > numberToSlice) {
-      const firstArray = noEmptyArray.slice(0, numberToSlice);
-      const secondArray = noEmptyArray.slice(numberToSlice, maxItems);
-
-      return [firstArray, secondArray];
-    } else {
-      return [array, []];
-    }
-  };
+  const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
+  const dropdownRefs: Record<string, React.RefObject<HTMLDivElement>> = {};
 
   const closeDropdown = () => {
-    setIsDropDownVisible(false);
+    setOpenDropdownId(null);
   };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        closeDropdown();
+      for (const id in dropdownRefs) {
+        if (
+          dropdownRefs[id].current &&
+          !dropdownRefs[id].current?.contains(event.target as Node)
+        ) {
+          closeDropdown();
+          break;
+        }
       }
     };
 
-    if (isDropDownVisible) {
+    if (openDropdownId) {
       document.addEventListener('mousedown', handleClickOutside);
     } else {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -59,71 +64,69 @@ export function RecordAppointmentCard({
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isDropDownVisible]);
-
-  const [firstColumn, secondColumn] = getColumns(keyValues, numberToSlice);
+  }, [openDropdownId]);
 
   return (
-    <main className={`${styles.container}`}>
-      <header>
-        <span>{title}</span>
-      </header>
-      <div
-        ref={dropdownRef}
-        className={`${styles.columnswrapper} ${
-          isDropDownVisible ? styles.visible : ''
-        }`}
-      >
-        <div className={styles.columns}>
-          <div className={styles.contentColumn}>
-            {firstColumn.map((e) => (
-              <>
-                {e.key !== 'Evolução' && (
-                  <span key={e.key}>
-                    {e.key !== 'Evolução' ? `${e.key}: ${e.value}` : `${e.key}`}
-                  </span>
-                )}
-              </>
-            ))}
-          </div>
-          <div className={`${styles.contentColumn}`}>
-            {secondColumn.map((e) => (
-              <span key={e.key}>
-                {e.key ? `${e.key}: ${e.value}` : e.value}
-              </span>
-            ))}
-          </div>
-        </div>
-        <div className={`${styles.buttonsWrapper}`}>
-          <div
-            onClick={() => {
-              setIsDropDownVisible(!isDropDownVisible);
-            }}
-            className={`${styles.chevronButton} ${
-              isDropDownVisible ? styles.visible : ''
-            }`}
-          >
-            <span>Evolução</span>
-            <BsChevronDown
-              className={`${styles.chevronDown} ${
-                isDropDownVisible ? styles.visible : ''
+    <>
+      {appointments.map((e) => (
+        <>
+          <main key={e.id} className={`${styles.container}`}>
+            <div
+              ref={(ref) => (dropdownRefs[e.id] = ref)}
+              className={`${styles.columnswrapper} ${
+                openDropdownId === e.id ? styles.visible : ''
               }`}
-            />
-          </div>
-          <button>Saber mais</button>
-        </div>
-      </div>
-      {isDropDownVisible && (
-        <div
-          className={`${styles.dropdown} ${
-            isDropDownVisible ? styles.visible : ''
-          }`}
-        >
-          {firstColumn.map((e) => (
-            <span key={e.key}>{e.key === 'Evolução' && `${e.value}`}</span>
-          ))}
-        </div>
-      )}
-    </main>
+            >
+              <div className={styles.columns}>
+                <div className={styles.contentColumn}>
+                  <span>{`Realizado em: ${e.date}`}</span>
+                  <span>{`Realizado por: ${e.specialists}`}</span>
+                  <span>{`Atendido(s): ${e.attendeds}`}</span>
+                  <span>{`Local: ${e.facility}`}</span>
+                </div>
+                <div className={`${styles.contentColumn}`}>
+                  <span>{`Serviço: ${e.service}`}</span>
+                  <span>{`Procedimento: ${e.procedure}`}</span>
+                  <span>{`Protocolo: ${
+                    e.protocol ? e.protocol : 'Sem registro'
+                  }`}</span>
+                </div>
+              </div>
+              <div className={`${styles.buttonsWrapper}`}>
+                <div
+                  onClick={() => {
+                    if (openDropdownId === e.id) {
+                      closeDropdown();
+                    } else {
+                      setOpenDropdownId(e.id);
+                    }
+                  }}
+                  className={`${styles.chevronButton} ${
+                    openDropdownId === e.id ? styles.visible : ''
+                  }`}
+                >
+                  <span>Evolução</span>
+                  <BsChevronDown
+                    className={`${styles.chevronDown} ${
+                      openDropdownId === e.id ? styles.visible : ''
+                    }`}
+                  />
+                </div>
+                <button onClick={() => handleClick(e.id)}>Saber mais</button>
+              </div>
+            </div>
+            {openDropdownId === e.id && (
+              <div
+                className={`${styles.dropdown} ${
+                  openDropdownId === e.id ? styles.visible : ''
+                }`}
+              >
+                <span key={e.id}>{`${e.recordProgress}`}</span>
+              </div>
+            )}
+          </main>
+        </>
+      ))}
+    </>
   );
 }

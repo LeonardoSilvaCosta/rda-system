@@ -35,24 +35,34 @@
   }
 
   button {
-    max-width: 250px;
+    max-width: 200px;
     width: 50%;
     height: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1.25rem 1.25rem;
-    background-color: var(--blue-300);
-    color: var(--blue-50);
+    padding: 1.25rem 0;
+    background-color: var(--blue-50);
+    color: var(--blue-300);
     font-size: 20px;
     font-weight: bold;
-    border: none;
+    border: 1px solid var(--blue-200);
     border-radius: 8px;
 
     position: relative;
 
+    transition: background-color 0.25s, color 0.25s, transform 0.25s;
+
+    &:hover {
+      background-color: var(--blue-300);
+      color: var(--blue-50);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
     @media(max-width: 599px) {
-      width: 100%;
       margin-top: 1rem;
     }
   }

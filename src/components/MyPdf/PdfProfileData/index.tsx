@@ -1,19 +1,17 @@
+import { AddressData, GeneralData, HeaderData, KeyValue } from '@/types/types';
 import { Font, Image, StyleSheet, Text, View } from '@react-pdf/renderer';
 
 interface PdfProfileDataProps {
-  avatar: string;
-  fullname: string;
-  age: string;
-  cpf: string;
-  maritalStatus: string;
-  gender: string;
-  rg: string;
-  nickname: string;
-  rank: string;
-  cadre: string;
-  workStatus: string;
-  opm: string;
+  attended: Attended;
 }
+
+type Attended = {
+  headerData: HeaderData;
+  generalData: GeneralData;
+  addressData: AddressData;
+  contactsData: KeyValue[];
+  familiarBondsData: KeyValue[];
+};
 
 Font.register({
   family: 'Roboto',
@@ -21,18 +19,22 @@ Font.register({
 });
 
 export function PdfProfileData({
-  avatar,
-  fullname,
-  age,
-  cpf,
-  maritalStatus,
-  gender,
-  rg,
-  nickname,
-  rank,
-  cadre,
-  workStatus,
-  opm
+  attended: {
+    headerData: { avatar, fullname },
+    generalData: {
+      birthDate,
+      age,
+      cpf,
+      maritalStatus,
+      gender,
+      rg,
+      nickname,
+      rank,
+      cadre,
+      workStatus,
+      opm
+    }
+  }
 }: PdfProfileDataProps) {
   const styles = StyleSheet.create({
     container: {
@@ -61,24 +63,24 @@ export function PdfProfileData({
       <View style={styles.header}>
         <Image
           style={{ width: 80, height: 80 }}
-          src="https://i.postimg.cc/3w1yr3Zc/new-linkedin-perfil-photo-2.png"
+          src="https://i.postimg.cc/t4BP4bj6/new-linkedin-perfil-photo.png"
         />
         <Text>{fullname}</Text>
       </View>
-      <View>
+      {/* <View>
         <Text style={styles.title}>Dados gerais</Text>
-        <Text>{`Data de nascimento: 20/01/1992`}</Text>
-        <Text>{`Idade: ${age}`}</Text>
-        <Text>{`CPF: ${cpf}`}</Text>
-        <Text>{`Estado civil: ${maritalStatus}`}</Text>
-        <Text>{`Sexo: ${gender}`}</Text>
-        <Text>{`Rg: ${rg}`}</Text>
-        <Text>{`Nome de guerra: ${nickname}`}</Text>
-        <Text>{`Posto/graduação: ${rank}`}</Text>
-        <Text>{`Quadro: ${cadre}`}</Text>
-        <Text>{`Condição funcional: ${workStatus}`}</Text>
-        <Text>{`OPM: ${opm}`}</Text>
-      </View>
+        <Text>{`Data de nascimento: ${birthDate.value}`}</Text>
+        <Text>{`Idade: ${age.value}`}</Text>
+        <Text>{`CPF: ${cpf.value}`}</Text>
+        <Text>{`Estado civil: ${maritalStatus.value}`}</Text>
+        <Text>{`Sexo: ${gender.value}`}</Text>
+        <Text>{`Rg: ${rg.value}`}</Text>
+        <Text>{`Nome de guerra: ${nickname.value}`}</Text>
+        <Text>{`Posto/graduação: ${rank.value}`}</Text>
+        <Text>{`Quadro: ${cadre.value}`}</Text>
+        <Text>{`Condição funcional: ${workStatus.value}`}</Text>
+        <Text>{`OPM: ${opm.value}`}</Text>
+      </View> */}
     </View>
   );
 }

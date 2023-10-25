@@ -24,7 +24,14 @@ type Appointment = {
   tb_procedures: { name: string } | null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   tb_users: any;
-  tb_attendeds: { fullname: string }[];
+  tb_attendeds: {
+    rank_id: { name: string | null };
+    cadre_id: { name: string | null };
+    rg: string | null;
+    nickname: string | null;
+    fullname: string;
+    cpf: string | null;
+  }[];
   tb_specific_demands: { name: string }[];
   tb_documents: { name: string }[];
   tb_travels: { name: string }[];
@@ -60,7 +67,7 @@ export async function GET(req: NextRequest) {
       tb_general_demands ( name ),
       tb_procedures( name ),
       tb_users ( rank_id (name), nickname ),
-      tb_attendeds ( fullname, cpf ),
+      tb_attendeds ( rank_id (name), cadre_id (name), rg, nickname, fullname, cpf  ),
       tb_specific_demands ( name ),
       tb_documents ( name ),
       tb_travels ( name ),
@@ -72,136 +79,58 @@ export async function GET(req: NextRequest) {
       .limit(1)
       .single();
 
-    // console.log(JSON.stringify(attended, null, 2));
-
-    // const { data: appointments } = await supabase
-    //   .from('tb_appointments')
-    //   .select(
-    //     `
-    //   id,
-    //   date,
-    //   time,
-    //   protocol,
-    //   has_leave_of_absence,
-    //   record_progress,
-    //   tb_accesses ( name ),
-    //   tb_opms ( name ),
-    //   tb_modalities ( name ),
-    //   tb_services ( name ),
-    //   tb_psychological_assessments ( name ),
-    //   tb_social_assessments ( name ),
-    //   tb_general_demands ( name ),
-    //   tb_procedures( name ),
-    //   tb_users ( rank_id (name), nickname ),
-    //   tb_attendeds ( fullname, cpf ),
-    //   tb_specific_demands ( name ),
-    //   tb_documents ( name ),
-    //   tb_travels ( name ),
-    //   tb_appointment_referrals (destination (name), type (name)),
-    //   `
-    //   )
-    //   .eq('tb_attendeds:cumulative.attended.cpf', String(cpf))
-    //   .limit(10);
-
-    // console.log(JSON.stringify(appointments, null, 2));
+    const getReferrals = attended?.tb_appointments
+      ? attended?.tb_appointments.flatMap((e) =>
+          e.tb_appointment_referrals.map(
+            (e) =>
+              e.destination &&
+              '(' + e.destination.name + ' - ' + e.type.name + ')'
+          )
+        )
+      : [];
 
     if (!attended) return;
 
-    // appointments.map(e => e.tb_appointment_referrals.map(e => e.))
-
     const formattedData = attended.tb_appointments.map((e: Appointment) => {
       return {
-        date: {
-          key: 'Realizado em',
-          value: `${formatDate(e.date)} às ${formatHour(e.time)}`
-        },
-        specialist: {
-          key: 'Realizado por',
-          value: e.tb_users
-            ? `${e.tb_users.rank_id.name} ${e.tb_users.nickname}`
-            : ''
-        },
-        facility: {
-          key: 'Local',
-          value: e.tb_opms ? e.tb_opms.name : ''
-        },
-        recordProgress: {
-          key: 'Evolução',
-          value: e.record_progress
-        },
-        service: {
-          key: 'Serviço',
-          value: e.tb_services ? e.tb_services.name : ''
-        },
-        procedure: {
-          key: 'Procedimento',
-          value: e.tb_procedures ? e.tb_procedures.name : ''
-        },
-        protocol: {
-          key: 'Protocolo',
-          value: e.protocol ? e.protocol : ''
-        },
-        time: {
-          key: 'Hora',
-          value: e.time ? formatHour(e.time) : ''
-        },
-        hasLeaveOfAbsence: {
-          key: 'Houve afastamento?',
-          value: e.has_leave_of_absence
-        },
-        access: {
-          key: 'Acesso',
-          value: e.tb_accesses ? e.tb_accesses.name : ''
-        },
-        modality: {
-          key: 'Modalidade',
-          value: e.tb_modalities ? e.tb_modalities.name : ''
-        },
-        psychologicalAssessment: {
-          key: 'Tipo de avaliação psicológica',
-          value: e.tb_psychological_assessments
-            ? e.tb_psychological_assessments
-            : ''
-        },
-        socialAssessment: {
-          key: 'Tipo de avaliação social',
-          value: e.tb_social_assessments ? e.tb_social_assessments.name : ''
-        },
-        generalDemand: {
-          key: 'Demanda geral',
-          value: e.tb_general_demands ? e.tb_general_demands.name : ''
-        },
-        attendeds: {
-          key: 'Atendidos',
-          value: e.tb_attendeds
-        },
-        specificDemands: {
-          key: 'Demandas específicas',
-          value: e.tb_specific_demands
-        },
-        documents: {
-          key: 'Documentos produzidos',
-          value: e.tb_documents
-        },
-        travels: {
-          key: 'Deslocamentos',
-          value: e.tb_travels
-        },
-        referrals: {
-          key: 'Encaminhamentos',
-          value: e.tb_appointment_referrals
-        }
+        id: e.id,
+        date: `${formatDate(e.date)} às ${formatHour(e.time)}`,
+        time: e.time ? formatHour(e.time) : '',
+        protocol: e.protocol ? e.protocol : '',
+        hasLeaveOfAbsence: e.has_leave_of_absence,
+        recordProgress: e.record_progress,
+        access: e.tb_accesses ? e.tb_accesses.name : '',
+        facility: e.tb_opms ? e.tb_opms.name : '',
+        modality: e.tb_modalities ? e.tb_modalities.name : '',
+        service: e.tb_services ? e.tb_services.name : '',
+        psychologicalAssessment: e.tb_psychological_assessments
+          ? e.tb_psychological_assessments
+          : '',
+        socialAssessment: e.tb_social_assessments
+          ? e.tb_social_assessments.name
+          : '',
+        generalDemand: e.tb_general_demands ? e.tb_general_demands.name : '',
+        procedure: e.tb_procedures ? e.tb_procedures.name : '',
+        specialists: e.tb_users
+          ? `${e.tb_users.rank_id.name} ${e.tb_users.nickname}`
+          : '',
+        attendeds: e.tb_attendeds
+          ? e.tb_attendeds.map((e) =>
+              e.rg
+                ? `${e.rank_id.name} ${e.cadre_id.name} ${e.rg} ${e.nickname}`
+                : `${e.fullname} - ${e.cpf}`
+            )
+          : [],
+        specificDemands: e.tb_specific_demands
+          ? e.tb_specific_demands.map((e) => e.name)
+          : [],
+        documents: e.tb_documents ? e.tb_documents.map((e) => e.name) : [],
+        travels: e.tb_travels ? e.tb_travels.map((e) => e.name) : [],
+        referrals: getReferrals
       };
     });
 
-    return Response.json({
-      headerData: {
-        id: attended,
-        avatar: attended.avatar,
-        fullname: attended.fullname
-      },
-      generalData: formattedData
-    });
+    return Response.json(formattedData);
   } catch (error) {
     return new NextResponse(`select data error: ${error}`, { status: 400 });
   }

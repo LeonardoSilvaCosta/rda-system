@@ -4,10 +4,11 @@ import { useEffect, useState } from 'react';
 
 import styles from './styles.module.scss';
 
+import { AppointmentsSummary } from '@/components/AppointmentsSummary';
 import { Header } from '@/components/Header';
 import { LoadingComponent } from '@/components/Loading/loading';
+import { Profile } from '@/components/Profile';
 import { RecordHeader } from '@/components/RecordHeader';
-import { RecordProfileCard } from '@/components/RecordProfileCard';
 import { AddressData, GeneralData, HeaderData, KeyValue } from '@/types/types';
 
 type Attended = {
@@ -18,12 +19,35 @@ type Attended = {
   familiarBondsData: KeyValue[];
 };
 
+type Appointment = {
+  id: string;
+  date: string;
+  time: string;
+  protocol: string;
+  hasLeaveOfAbsence: string;
+  recordProgress: string;
+  access: string;
+  facility: string;
+  modality: string;
+  service: string;
+  psychologicalAssessment: string;
+  socialAssessment: string;
+  generalDemand: string;
+  procedure: string;
+  specialists: [];
+  attendeds: [];
+  specificDemands: [];
+  documents: [];
+  travels: [];
+  referrals: [];
+};
+
 const initialKeyValue = {
   key: '',
   value: ''
 };
 
-export default function Profile() {
+export default function Record() {
   const searchParams = useSearchParams();
   const cpf = searchParams.get('cpf');
   const [attended, setAttended] = useState<Attended>({
@@ -52,6 +76,8 @@ export default function Profile() {
     },
     contactsData: []
   });
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [currentScreen, setCurrentScreen] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -72,21 +98,28 @@ export default function Profile() {
     requests();
   }, [cpf]);
 
-  const generalData = attended.generalData
-    ? // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      Object.entries(attended.generalData).map(([key, value]) => ({
-        key: value.key,
-        value: value.value
-      }))
-    : [];
-
-  const addressData = attended.addressData
-    ? // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      Object.entries(attended.addressData).map(([key, value]) => ({
-        key: value.key,
-        value: value.value
-      }))
-    : [];
+  const handleClick = async () => {
+    if (appointments.length == 0) {
+      try {
+        const appointmentsRes = await fetch(
+          `/api/get_attended_appointments?cpf=${cpf}`
+        );
+        const appointmentData = await appointmentsRes.json();
+        setAppointments(appointmentData);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Erro na solicitação:', error);
+      }
+    }
+    switch (currentScreen) {
+      case 1:
+        setCurrentScreen(0);
+        break;
+      default:
+        setCurrentScreen(1);
+        break;
+    }
+  };
 
   return (
     <>
@@ -99,37 +132,21 @@ export default function Profile() {
             <RecordHeader
               avatar={attended.headerData.avatar}
               fullname={attended.headerData.fullname}
-              buttonTitle={'Atendimentos'}
-              goToRoute={`/Record/Appointments?cpf=${
-                attended.generalData.cpf.value
-              }&attended=${JSON.stringify(attended)}`}
+              buttonTitle={
+                currentScreen !== 1 ? 'Atendimentos' : 'Voltar ao perfil'
+              }
+              handleClick={handleClick}
             />
-            <div className={styles.cards}>
-              <RecordProfileCard
-                title={'Dados gerais'}
-                keyValues={generalData}
-                numberToSlice={6}
-                maxItems={12}
+            {currentScreen === 0 ? (
+              <Profile attended={attended} />
+            ) : (
+              <AppointmentsSummary
+                attended={attended}
+                appointments={appointments}
+                currentScreen={currentScreen}
+                setCurrentScreen={setCurrentScreen}
               />
-              <RecordProfileCard
-                title={'Endereço'}
-                keyValues={addressData}
-                numberToSlice={3}
-                maxItems={6}
-              />
-              <RecordProfileCard
-                title={'Contatos'}
-                keyValues={attended.contactsData}
-                numberToSlice={3}
-                maxItems={6}
-              />
-              <RecordProfileCard
-                title={'Vínculos cadastrados'}
-                keyValues={attended.familiarBondsData}
-                numberToSlice={3}
-                maxItems={6}
-              />
-            </div>
+            )}
           </main>
         </>
       )}

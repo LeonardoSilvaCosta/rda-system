@@ -24,7 +24,7 @@ export function ClientCard({
 }: ClientCardProps) {
   const router = useRouter();
   const handleClick = () => {
-    router.push(`/Record/Profile?cpf=${cpf}`);
+    router.push(`/Record?cpf=${cpf}`);
   };
 
   return (
