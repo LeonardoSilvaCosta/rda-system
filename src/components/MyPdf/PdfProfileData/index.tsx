@@ -1,17 +1,9 @@
-import { AddressData, GeneralData, HeaderData, KeyValue } from '@/types/types';
+import { AttendedKeyValue } from '@/types/types';
 import { Font, StyleSheet, Text, View } from '@react-pdf/renderer';
 
 interface PdfProfileDataProps {
-  attended: Attended;
+  attended: AttendedKeyValue;
 }
-
-type Attended = {
-  headerData: HeaderData;
-  generalData: GeneralData;
-  addressData: AddressData;
-  contactsData: KeyValue[];
-  familiarBondsData: KeyValue[];
-};
 
 Font.register({
   family: 'Roboto',

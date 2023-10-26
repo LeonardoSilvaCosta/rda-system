@@ -1,41 +1,19 @@
 import { MyPdf } from '../MyPdf';
 import styles from './styles.module.scss';
 
-import { AttendedKeyValue } from '@/types/types';
+import { Appointment, AttendedKeyValue } from '@/types/types';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 
 interface AppointmentDetailsProps {
   attended: AttendedKeyValue;
-  appointments: Appointment;
+  appointments?: Appointment;
 }
-
-type Appointment = {
-  id: string;
-  date: string;
-  time: string;
-  protocol: string;
-  hasLeaveOfAbsence: string;
-  recordProgress: string;
-  access: string;
-  facility: string;
-  modality: string;
-  service: string;
-  psychologicalAssessment: string;
-  socialAssessment: string;
-  generalDemand: string;
-  procedure: string;
-  specialists: [];
-  attendeds: [];
-  specificDemands: [];
-  documents: [];
-  travels: [];
-  referrals: [];
-};
 
 export function AppointmentDetails({
   attended,
   appointments
 }: AppointmentDetailsProps) {
+  if (!appointments) return;
   const {
     date,
     protocol,

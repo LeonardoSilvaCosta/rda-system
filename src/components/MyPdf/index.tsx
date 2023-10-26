@@ -42,11 +42,6 @@ type Appointment = {
   referrals: [];
 };
 
-type KeyValue = {
-  key: string;
-  value: string;
-};
-
 Font.register({
   family: 'Roboto',
   src: 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap'

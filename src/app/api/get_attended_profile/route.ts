@@ -154,7 +154,7 @@ export async function GET(req: NextRequest) {
         isVolunteer: attended.rg
           ? null
           : {
-              key: 'É voluntário Civil:',
+              key: 'É voluntário Civil',
               value: attended.is_civil_volunteer ? 'Sim' : 'Não'
             },
         rg: attended.rg ? { key: 'RG', value: attended.rg } : null,

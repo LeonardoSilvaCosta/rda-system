@@ -4,7 +4,7 @@ import { AppointmentDetails } from '../AppointmentDetails';
 import styles from './styles.module.scss';
 
 import { RecordAppointmentCard } from '@/components/RecordAppointmentCard';
-import { AttendedKeyValue } from '@/types/types';
+import { Appointment, AttendedKeyValue } from '@/types/types';
 
 interface AppointmentsSummaryProps {
   attended: AttendedKeyValue;
@@ -12,34 +12,6 @@ interface AppointmentsSummaryProps {
   currentScreen: number;
   setCurrentScreen: Dispatch<SetStateAction<number>>;
 }
-
-type Appointment = {
-  id: string;
-  date: string;
-  time: string;
-  protocol: string;
-  hasLeaveOfAbsence: string;
-  recordProgress: string;
-  access: string;
-  facility: string;
-  modality: string;
-  service: string;
-  psychologicalAssessment: string;
-  socialAssessment: string;
-  generalDemand: string;
-  procedure: string;
-  specialists: [];
-  attendeds: [];
-  specificDemands: [];
-  documents: [];
-  travels: [];
-  referrals: [];
-};
-
-type KeyValue = {
-  key: string;
-  value: string;
-};
 
 export function AppointmentsSummary({
   attended,
@@ -49,7 +21,6 @@ export function AppointmentsSummary({
 }: AppointmentsSummaryProps) {
   const [cardSelectedId, setCardSelectedId] = useState('');
   const handleClick = (selectedCardId: string) => {
-    // setIsAppointmentsSummaryPage(!isAppointmentsSummaryPage);
     setCardSelectedId(selectedCardId);
     setCurrentScreen(2);
   };

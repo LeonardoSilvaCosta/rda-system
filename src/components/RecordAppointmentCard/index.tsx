@@ -1,35 +1,14 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BsChevronDown } from 'react-icons/bs';
 
 import styles from './styles.module.scss';
+
+import { Appointment } from '@/types/types';
 
 interface RecordAppointmentCardProps {
   appointments: Appointment[];
   handleClick: (selectedCardId: string) => void;
 }
-
-type Appointment = {
-  id: string;
-  date: string;
-  time: string;
-  protocol: string;
-  hasLeaveOfAbsence: string;
-  recordProgress: string;
-  access: string;
-  facility: string;
-  modality: string;
-  service: string;
-  psychologicalAssessment: string;
-  socialAssessment: string;
-  generalDemand: string;
-  procedure: string;
-  specialists: [];
-  attendeds: [];
-  specificDemands: [];
-  documents: [];
-  travels: [];
-  referrals: [];
-};
 
 export function RecordAppointmentCard({
   appointments,

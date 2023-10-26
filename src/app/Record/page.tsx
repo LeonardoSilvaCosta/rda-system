@@ -9,36 +9,7 @@ import { Header } from '@/components/Header';
 import { LoadingComponent } from '@/components/Loading/loading';
 import { Profile } from '@/components/Profile';
 import { RecordHeader } from '@/components/RecordHeader';
-import {
-  AddressData,
-  AttendedKeyValue,
-  GeneralData,
-  HeaderData,
-  KeyValue
-} from '@/types/types';
-
-type Appointment = {
-  id: string;
-  date: string;
-  time: string;
-  protocol: string;
-  hasLeaveOfAbsence: string;
-  recordProgress: string;
-  access: string;
-  facility: string;
-  modality: string;
-  service: string;
-  psychologicalAssessment: string;
-  socialAssessment: string;
-  generalDemand: string;
-  procedure: string;
-  specialists: [];
-  attendeds: [];
-  specificDemands: [];
-  documents: [];
-  travels: [];
-  referrals: [];
-};
+import { Appointment, AttendedKeyValue } from '@/types/types';
 
 const initialKeyValue = {
   key: '',
@@ -62,7 +33,8 @@ export default function Record() {
       cadre: initialKeyValue,
       workStatus: initialKeyValue,
       opm: initialKeyValue,
-      gender: initialKeyValue
+      gender: initialKeyValue,
+      isCivilVolunteer: initialKeyValue
     },
     addressData: {
       zipCode: initialKeyValue,
@@ -72,7 +44,8 @@ export default function Record() {
       complement: initialKeyValue,
       city_state: initialKeyValue
     },
-    contactsData: []
+    contactsData: [],
+    policyHolder: initialKeyValue
   });
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [currentScreen, setCurrentScreen] = useState(0);
@@ -103,6 +76,7 @@ export default function Record() {
           `/api/get_attended_appointments?cpf=${cpf}`
         );
         const appointmentData = await appointmentsRes.json();
+
         setAppointments(appointmentData);
         setIsLoading(false);
       } catch (error) {

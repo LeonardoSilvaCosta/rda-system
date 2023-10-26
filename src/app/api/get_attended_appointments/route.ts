@@ -59,7 +59,7 @@ type AppointmentSpecialists = {
     cadre_id: { name: string | null };
     rg: string | null;
     nickname: string | null;
-    fullname: string | null;
+    fullname: string;
   };
 };
 

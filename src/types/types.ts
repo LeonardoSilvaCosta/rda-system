@@ -1,5 +1,3 @@
-import { Key } from 'react';
-
 export type ClientFormValues = {
   fullName: string;
   nickName: string;
@@ -140,4 +138,33 @@ export type AttendedKeyValue = {
   contactsData: KeyValue[];
   dependentsData: KeyValue[];
   policyHolder: KeyValue;
+};
+
+export type Appointment = {
+  id: string;
+  date: string;
+  time: string;
+  protocol: string;
+  hasLeaveOfAbsence: boolean;
+  recordProgress: string;
+  access: string;
+  facility: string;
+  modality: string;
+  service: string;
+  psychologicalAssessment: string | null;
+  socialAssessment: string | null;
+  generalDemand: string;
+  procedure: string;
+  specialists: Specialist[] | [];
+  attendeds: [];
+  specificDemands: [];
+  documents: [];
+  travels: [];
+  referrals: [];
+};
+
+type Specialist = {
+  appointment_id: string;
+  fullname: string;
+  identification: string | null;
 };
