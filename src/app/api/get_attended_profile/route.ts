@@ -9,6 +9,42 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 
 export const dynamic = 'force-dynamic';
 
+type Attended = {
+  id: string;
+  fullname: string;
+  nickname: string | null;
+  rg: string | null;
+  cpf: string;
+  birth_date: string;
+  avatar: string | null;
+  is_civil_volunteer: boolean;
+  tb_ranks: { name: string | null };
+  tb_cadres: { name: string | null };
+  tb_opms: { name: string | null };
+  tb_genders: { name: string };
+  tb_marital_status: { name: string };
+  tb_work_status: { name: string | null };
+  tb_addresses: {
+    zip_code: string;
+    number: string;
+    street: string;
+    complement: string | null;
+    neighborhood: string;
+  }[];
+  tb_phones: {
+    phone: string;
+    owner_identification: string;
+    attended_relationship: { name: string | null };
+  }[];
+  policy_holder_id: {
+    rank_id: { name: string | null };
+    cadre_id: { name: string | null };
+    rg: string | null;
+    nickname: string | null;
+  };
+  tb_familiar_bonds: { name: string | null };
+};
+
 type Phone = {
   phone: string;
   owner_identification: string;
@@ -36,6 +72,7 @@ export async function GET(req: NextRequest) {
       cpf,
       birth_date,
       avatar,
+      is_civil_volunteer,
       tb_ranks ( name ),
       tb_cadres ( name ),
       tb_opms ( name ),
@@ -43,16 +80,19 @@ export async function GET(req: NextRequest) {
       tb_marital_status ( name ),
       tb_work_status ( name ),
       tb_addresses ( zip_code, number, street, complement, neighborhood ),
-      tb_phones ( phone, owner_identification, attended_relationship )     
+      tb_phones ( phone, owner_identification, attended_relationship (name) ),
+      policy_holder_id (rank_id (name), cadre_id (name), rg, nickname),
+      tb_familiar_bonds (name)
       `
       )
       .eq('cpf', cpf)
+      .returns<Attended[]>()
       .limit(1)
       .single();
 
     if (!attended) return;
 
-    const { data: familiarBonds } = await supabase
+    const { data: dependents } = await supabase
       .from('tb_attendeds')
       .select(
         `
@@ -65,9 +105,9 @@ export async function GET(req: NextRequest) {
       .eq('policy_holder_id', attended.id)
       .limit(10);
 
-    if (!familiarBonds) return;
+    if (!dependents) return;
 
-    const formattedFamiliarBonds = familiarBonds.map((e) => {
+    const formattedDependents = dependents.map((e) => {
       return {
         key: e.cpf,
         value: `${e.fullname} (${e.tb_familiar_bonds?.name})`
@@ -111,6 +151,12 @@ export async function GET(req: NextRequest) {
         gender: attended.tb_genders
           ? { key: 'Sexo', value: attended.tb_genders.name }
           : null,
+        isVolunteer: attended.rg
+          ? null
+          : {
+              key: 'É voluntário Civil:',
+              value: attended.is_civil_volunteer ? 'Sim' : 'Não'
+            },
         rg: attended.rg ? { key: 'RG', value: attended.rg } : null,
         nickname: attended.nickname
           ? { key: 'Nome de guerra', value: attended.nickname }
@@ -152,7 +198,13 @@ export async function GET(req: NextRequest) {
         }
       },
       contactsData: formattedContacts,
-      familiarBondsData: formattedFamiliarBonds
+      dependentsData: formattedDependents,
+      policyHolder: attended.policy_holder_id
+        ? {
+            key: 'Titular',
+            value: `${attended.policy_holder_id.rank_id.name} ${attended.policy_holder_id.cadre_id.name} ${attended.policy_holder_id.rg} ${attended.policy_holder_id.nickname} (${attended.tb_familiar_bonds?.name}) `
+          }
+        : null
     };
 
     return Response.json(formattedData);

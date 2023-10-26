@@ -67,13 +67,17 @@ export function PdfRecordData({
       display: 'flex',
       flexDirection: 'row',
       lineHeight: 2,
-      paddingBottom: 16
+      paddingBottom: 4
+    },
+    column: {
+      width: '50vw',
+      padding: 4
     },
     progressBox: {
       position: 'relative',
       border: 1,
       borderColor: '#a6a6a6',
-      margin: '4 auto',
+      margin: '0 auto 30 auto',
       padding: '16 8 2 8',
       textAlign: 'justify'
     },
@@ -90,9 +94,7 @@ export function PdfRecordData({
       flexDirection: 'column',
       alignItems: 'center',
       padding: 16,
-      margin: '20 auto',
-      border: '1 solid #a6a6a6',
-      borderRadius: 8
+      margin: '0 auto 10 auto'
     }
   });
 
@@ -101,13 +103,15 @@ export function PdfRecordData({
       <View>
         <Text style={styles.title}>DADOS DO ATENDIMENTO</Text>
         <View style={styles.appointmentWrapper}>
-          <View>
+          <View style={styles.column}>
             <Text>{`Data e hora: ${date}`}</Text>
             <Text>{`Protocolo: ${protocol ? protocol : 'Sem registro'}`}</Text>
             <Text>{`Acesso: ${access}`}</Text>
             <Text>{`Local: ${facility}`}</Text>
             <Text>{`Modalidade: ${modality}`}</Text>
-            <Text>{`Oficial(is): ${specialists}`}</Text>
+            <Text>{`Oficial(is): ${specialists.map(
+              (e) => e.identification
+            )}`}</Text>
             <Text>{`Atendido(s): ${attendeds}`}</Text>
             <Text>{`Serviço: ${service} `}</Text>
             <Text>{`Avaliação psicológica: ${
@@ -116,7 +120,7 @@ export function PdfRecordData({
                 : 'Não se aplica'
             }`}</Text>
           </View>
-          <View>
+          <View style={styles.column}>
             <Text>{`Avaliação social: ${
               socialAssessment ? socialAssessment : 'Não se aplica'
             }`}</Text>
@@ -143,11 +147,13 @@ export function PdfRecordData({
           <Text style={styles.progressLabel}>Evolução</Text>
           <Text>{`${recordProgress}`}</Text>
         </View>
-        <View style={styles.signature}>
-          <Text>{specialists}</Text>
-          <Text>1º TEN QCOPM - RG 40897</Text>
-          <Text>Psicólogo - CRP 10/05495</Text>
-        </View>
+        {specialists.map((e) => (
+          <View key={e.identification} style={styles.signature}>
+            <Text>{e.fullname}</Text>
+            <Text>1º TEN QCOPM - RG 40897</Text>
+            <Text>Psicólogo - CRP 10/05495</Text>
+          </View>
+        ))}
       </View>
     </View>
   );

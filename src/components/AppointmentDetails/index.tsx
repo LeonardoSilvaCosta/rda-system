@@ -1,21 +1,13 @@
 import { MyPdf } from '../MyPdf';
 import styles from './styles.module.scss';
 
-import { AddressData, GeneralData, HeaderData, KeyValue } from '@/types/types';
+import { AttendedKeyValue } from '@/types/types';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 
 interface AppointmentDetailsProps {
-  attended: Attended;
+  attended: AttendedKeyValue;
   appointments: Appointment;
 }
-
-type Attended = {
-  headerData: HeaderData;
-  generalData: GeneralData;
-  addressData: AddressData;
-  contactsData: KeyValue[];
-  familiarBondsData: KeyValue[];
-};
 
 type Appointment = {
   id: string;
@@ -73,7 +65,9 @@ export function AppointmentDetails({
           <span>{`Acesso: ${access}`}</span>
           <span>{`Local: ${facility}`}</span>
           <span>{`Modalidade: ${modality}`}</span>
-          <span>{`Oficial(is): ${specialists}`}</span>
+          <span>{`Oficial(is): ${specialists.map(
+            (e) => e.identification
+          )}`}</span>
           <span>{`Atendido(s): ${attendeds}`}</span>
           <span>{`Serviço: ${service}`}</span>
           <span>{`Avaliação psicológica: ${

@@ -80,7 +80,9 @@ export function RecordAppointmentCard({
               <div className={styles.columns}>
                 <div className={styles.contentColumn}>
                   <span>{`Realizado em: ${e.date}`}</span>
-                  <span>{`Realizado por: ${e.specialists}`}</span>
+                  <span>{`Realizado por: ${e.specialists.map(
+                    (e) => e.identification
+                  )}`}</span>
                   <span>{`Atendido(s): ${e.attendeds}`}</span>
                   <span>{`Local: ${e.facility}`}</span>
                 </div>

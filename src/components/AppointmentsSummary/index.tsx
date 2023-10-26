@@ -4,22 +4,14 @@ import { AppointmentDetails } from '../AppointmentDetails';
 import styles from './styles.module.scss';
 
 import { RecordAppointmentCard } from '@/components/RecordAppointmentCard';
-import { AddressData, GeneralData, HeaderData } from '@/types/types';
+import { AttendedKeyValue } from '@/types/types';
 
 interface AppointmentsSummaryProps {
-  attended: Attended;
+  attended: AttendedKeyValue;
   appointments: Appointment[];
   currentScreen: number;
   setCurrentScreen: Dispatch<SetStateAction<number>>;
 }
-
-type Attended = {
-  headerData: HeaderData;
-  generalData: GeneralData;
-  addressData: AddressData;
-  contactsData: KeyValue[];
-  familiarBondsData: KeyValue[];
-};
 
 type Appointment = {
   id: string;

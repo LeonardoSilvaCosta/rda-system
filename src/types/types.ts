@@ -1,3 +1,5 @@
+import { Key } from 'react';
+
 export type ClientFormValues = {
   fullName: string;
   nickName: string;
@@ -114,6 +116,7 @@ export type GeneralData = {
   workStatus: KeyValue;
   opm: KeyValue;
   gender: KeyValue;
+  isCivilVolunteer: KeyValue;
 };
 
 export type AddressData = {
@@ -128,4 +131,13 @@ export type AddressData = {
 export type KeyValue = {
   key: string;
   value: string;
+};
+
+export type AttendedKeyValue = {
+  headerData: HeaderData;
+  generalData: GeneralData;
+  addressData: AddressData;
+  contactsData: KeyValue[];
+  dependentsData: KeyValue[];
+  policyHolder: KeyValue;
 };

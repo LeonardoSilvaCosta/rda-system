@@ -3,7 +3,7 @@ import React from 'react';
 import { PdfProfileData } from './PdfProfileData';
 import { PdfRecordData } from './PdfRecordData';
 
-import { AddressData, GeneralData, HeaderData } from '@/types/types';
+import { AttendedKeyValue } from '@/types/types';
 import {
   Page,
   Text,
@@ -15,16 +15,8 @@ import {
 } from '@react-pdf/renderer';
 
 type PdfProps = {
-  attended: Attended;
+  attended: AttendedKeyValue;
   apppointments: Appointment;
-};
-
-type Attended = {
-  headerData: HeaderData;
-  generalData: GeneralData;
-  addressData: AddressData;
-  contactsData: KeyValue[];
-  familiarBondsData: KeyValue[];
 };
 
 type Appointment = {
@@ -82,7 +74,6 @@ export function MyPdf({ attended, apppointments }: PdfProps) {
       width: '17cm'
     },
     section: {
-      margin: 10,
       padding: 10,
       flexGrow: 1,
       fontSize: 12
@@ -102,7 +93,7 @@ export function MyPdf({ attended, apppointments }: PdfProps) {
       <Page wrap={true} size="A4" style={styles.page}>
         <View fixed style={styles.header}>
           <Image
-            style={{ width: '2.29cm', height: '1.82cm' }}
+            style={{ width: '1.82cm', height: '2.29cm' }}
             src="https://i.postimg.cc/fTLSqFXT/brasao-estado.png"
           />
           <View style={styles.headerTextWrapper}>
@@ -115,7 +106,7 @@ export function MyPdf({ attended, apppointments }: PdfProps) {
             <Text> CENTRO INTEGRADO DE ATENÇÃO PSICOSSOCIAL</Text>
           </View>
           <Image
-            style={{ width: '2.54cm', height: '2.02cm' }}
+            style={{ width: '2.02cm', height: '2.54cm' }}
             src="https://i.postimg.cc/wB3W6FS6/brasao-ciap-rm-bg.png"
           />
         </View>

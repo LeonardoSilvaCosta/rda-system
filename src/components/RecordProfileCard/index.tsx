@@ -2,17 +2,14 @@ import { useRouter } from 'next/navigation';
 
 import styles from './styles.module.scss';
 
+import { KeyValue } from '@/types/types';
+
 interface ProfileCardProps {
   title: string;
-  keyValues: CardValue[];
+  keyValues: KeyValue[] | KeyValue;
   numberToSlice: number;
   maxItems: number;
 }
-
-type CardValue = {
-  key: string;
-  value: string;
-};
 
 export function RecordProfileCard({
   title,
@@ -24,8 +21,8 @@ export function RecordProfileCard({
   const handleClick = (cpf: string) => {
     router.push(`/Record/Profile?cpf=${cpf}`);
   };
-  const getColumns = (array: CardValue[], numberToSlice: number) => {
-    const noEmptyArray = array.filter((e) => e.value !== '');
+  const getColumns = (array: KeyValue[], numberToSlice: number) => {
+    const noEmptyArray = array.filter((e) => e && e.value !== '');
     if (array.length > numberToSlice) {
       const firstArray = noEmptyArray.slice(0, numberToSlice);
       const secondArray = noEmptyArray.slice(numberToSlice, maxItems);
@@ -36,7 +33,20 @@ export function RecordProfileCard({
     }
   };
 
-  const [firstColumn, secondColumn] = getColumns(keyValues, numberToSlice);
+  const [firstColumn, secondColumn] = Array.isArray(keyValues)
+    ? getColumns(keyValues, numberToSlice)
+    : [[keyValues], []];
+
+  const isLinkTitle = (title: string) => {
+    switch (title) {
+      case 'Vínculos cadastrados':
+        return true;
+      case 'Titular':
+        return true;
+      default:
+        return false;
+    }
+  };
 
   return (
     <main className={styles.container}>
@@ -44,11 +54,9 @@ export function RecordProfileCard({
         <span>{title}</span>
       </header>
       <div
-        className={`${styles.columns} ${
-          title === 'Vínculos cadastrados' ? styles.link : ''
-        }`}
+        className={`${styles.columns} ${isLinkTitle(title) ? styles.link : ''}`}
       >
-        {title !== 'Vínculos cadastrados' ? (
+        {!isLinkTitle(title) ? (
           <>
             <div className={styles.contentColumn}>
               {firstColumn.map((e) => (

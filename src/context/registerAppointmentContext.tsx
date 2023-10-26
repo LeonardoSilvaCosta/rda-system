@@ -230,8 +230,6 @@ export const RegisterAppointmentContextProvider = ({
 
           const appointmentId = appointmentData && appointmentData[0].id;
 
-          alert(appointmentId);
-
           const specialists =
             data.specialists.length > 0
               ? data.specialists.map((specialist) => {

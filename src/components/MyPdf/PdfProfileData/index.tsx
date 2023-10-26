@@ -1,5 +1,5 @@
 import { AddressData, GeneralData, HeaderData, KeyValue } from '@/types/types';
-import { Font, Image, StyleSheet, Text, View } from '@react-pdf/renderer';
+import { Font, StyleSheet, Text, View } from '@react-pdf/renderer';
 
 interface PdfProfileDataProps {
   attended: Attended;
@@ -20,20 +20,8 @@ Font.register({
 
 export function PdfProfileData({
   attended: {
-    headerData: { avatar, fullname },
-    generalData: {
-      birthDate,
-      age,
-      cpf,
-      maritalStatus,
-      gender,
-      rg,
-      nickname,
-      rank,
-      cadre,
-      workStatus,
-      opm
-    }
+    headerData: { fullname },
+    generalData: { cpf, rg, nickname, rank, cadre }
   }
 }: PdfProfileDataProps) {
   const styles = StyleSheet.create({
@@ -48,8 +36,7 @@ export function PdfProfileData({
       justifyContent: 'flex-start',
       alignItems: 'center',
       paddingBottom: 16,
-      fontSize: 16,
-      fontWeight: 'bold',
+      fontSize: 14,
       gap: 16
     },
     title: {
@@ -61,11 +48,11 @@ export function PdfProfileData({
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image
-          style={{ width: 80, height: 80 }}
-          src="https://i.postimg.cc/t4BP4bj6/new-linkedin-perfil-photo.png"
-        />
-        <Text>{fullname}</Text>
+        <Text>{`Identificação do atendido: ${
+          rg
+            ? `${rank.value} ${cadre.value} ${rg.value} ${nickname.value}`
+            : `${fullname} - ${cpf.value}`
+        }`}</Text>
       </View>
       {/* <View>
         <Text style={styles.title}>Dados gerais</Text>

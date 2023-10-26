@@ -7,6 +7,13 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 
 export const dynamic = 'force-dynamic';
 
+type AttendedAppointments = {
+  id: string;
+  fullname: string;
+  avatar: string | null;
+  tb_appointments: Appointment[];
+};
+
 type Appointment = {
   id: string;
   date: string;
@@ -14,16 +21,20 @@ type Appointment = {
   protocol: string | null;
   has_leave_of_absence: boolean;
   record_progress: string;
-  tb_accesses: { name: string } | null;
-  tb_opms: { name: string } | null;
-  tb_modalities: { name: string } | null;
-  tb_services: { name: string } | null;
+  tb_accesses: { name: string };
+  tb_opms: { name: string };
+  tb_modalities: { name: string };
+  tb_services: { name: string };
   tb_psychological_assessments: { name: string } | null;
   tb_social_assessments: { name: string } | null;
-  tb_general_demands: { name: string } | null;
-  tb_procedures: { name: string } | null;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  tb_users: any;
+  tb_general_demands: { name: string };
+  tb_procedures: { name: string };
+  tb_users: {
+    rank: string | null;
+    cadre: string | null;
+    rg: string | null;
+    nickname: string | null;
+  };
   tb_attendeds: {
     rank_id: { name: string | null };
     cadre_id: { name: string | null };
@@ -35,8 +46,21 @@ type Appointment = {
   tb_specific_demands: { name: string }[];
   tb_documents: { name: string }[];
   tb_travels: { name: string }[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  tb_appointment_referrals: { destination: any; type: any }[];
+  tb_appointment_referrals: {
+    destination: { name: string };
+    type: { name: string };
+  }[];
+};
+
+type AppointmentSpecialists = {
+  appointment_id: string;
+  specialist_id: {
+    rank_id: { name: string | null };
+    cadre_id: { name: string | null };
+    rg: string | null;
+    nickname: string | null;
+    fullname: string | null;
+  };
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -76,8 +100,25 @@ export async function GET(req: NextRequest) {
       `
       )
       .eq('cpf', cpf)
+      .returns<AttendedAppointments[]>()
       .limit(1)
       .single();
+
+    if (!attended) return;
+
+    const { data: specialists } = await supabase
+      .from('tb_appointments_specialists')
+      .select(
+        `
+        appointment_id,
+        specialist_id (rank_id (name), cadre_id (name), rg, nickname, fullname)
+      `
+      )
+      .in(
+        'appointment_id',
+        attended.tb_appointments.map((e) => e.id)
+      )
+      .returns<AppointmentSpecialists[]>();
 
     const getReferrals = attended?.tb_appointments
       ? attended?.tb_appointments.flatMap((e) =>
@@ -89,7 +130,17 @@ export async function GET(req: NextRequest) {
         )
       : [];
 
-    if (!attended) return;
+    if (!specialists) return;
+
+    const formattedSpecialists = specialists.map(
+      (e: AppointmentSpecialists) => {
+        return {
+          appointment_id: e.appointment_id,
+          fullname: e.specialist_id.fullname,
+          identification: `${e.specialist_id.rank_id.name} ${e.specialist_id.cadre_id.name} ${e.specialist_id.rg} ${e.specialist_id.nickname}`
+        };
+      }
+    );
 
     const formattedData = attended.tb_appointments.map((e: Appointment) => {
       return {
@@ -111,9 +162,9 @@ export async function GET(req: NextRequest) {
           : '',
         generalDemand: e.tb_general_demands ? e.tb_general_demands.name : '',
         procedure: e.tb_procedures ? e.tb_procedures.name : '',
-        specialists: e.tb_users
-          ? `${e.tb_users.rank_id.name} ${e.tb_users.nickname}`
-          : '',
+        specialists: formattedSpecialists.filter(
+          (item) => item.appointment_id === e.id
+        ),
         attendeds: e.tb_attendeds
           ? e.tb_attendeds.map((e) =>
               e.rg

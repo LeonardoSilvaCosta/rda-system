@@ -1,27 +1,22 @@
 import styles from './styles.module.scss';
 
 import { RecordProfileCard } from '@/components/RecordProfileCard';
-import { AddressData, GeneralData, HeaderData, KeyValue } from '@/types/types';
+import { AttendedKeyValue } from '@/types/types';
 
 interface ProfileProps {
-  attended: Attended;
+  attended: AttendedKeyValue;
 }
-
-type Attended = {
-  headerData: HeaderData;
-  generalData: GeneralData;
-  addressData: AddressData;
-  contactsData: KeyValue[];
-  familiarBondsData: KeyValue[];
-};
 
 export function Profile({ attended }: ProfileProps) {
   const generalData = attended.generalData
-    ? // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      Object.entries(attended.generalData).map(([key, value]) => ({
-        key: value.key,
-        value: value.value
-      }))
+    ? Object.entries(attended.generalData).map(
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        ([key, value]) =>
+          value && {
+            key: value.key,
+            value: value.value
+          }
+      )
     : [];
 
   const addressData = attended.addressData
@@ -54,12 +49,22 @@ export function Profile({ attended }: ProfileProps) {
             numberToSlice={3}
             maxItems={6}
           />
-          <RecordProfileCard
-            title={'Vínculos cadastrados'}
-            keyValues={attended.familiarBondsData}
-            numberToSlice={3}
-            maxItems={6}
-          />
+          {attended.generalData.rg && (
+            <RecordProfileCard
+              title={'Vínculos cadastrados'}
+              keyValues={attended.dependentsData}
+              numberToSlice={3}
+              maxItems={6}
+            />
+          )}
+          {attended.policyHolder && (
+            <RecordProfileCard
+              title={'Titular'}
+              keyValues={attended.policyHolder}
+              numberToSlice={3}
+              maxItems={6}
+            />
+          )}
         </div>
       </main>
     </>

@@ -9,15 +9,13 @@ import { Header } from '@/components/Header';
 import { LoadingComponent } from '@/components/Loading/loading';
 import { Profile } from '@/components/Profile';
 import { RecordHeader } from '@/components/RecordHeader';
-import { AddressData, GeneralData, HeaderData, KeyValue } from '@/types/types';
-
-type Attended = {
-  headerData: HeaderData;
-  generalData: GeneralData;
-  addressData: AddressData;
-  contactsData: KeyValue[];
-  familiarBondsData: KeyValue[];
-};
+import {
+  AddressData,
+  AttendedKeyValue,
+  GeneralData,
+  HeaderData,
+  KeyValue
+} from '@/types/types';
 
 type Appointment = {
   id: string;
@@ -50,8 +48,8 @@ const initialKeyValue = {
 export default function Record() {
   const searchParams = useSearchParams();
   const cpf = searchParams.get('cpf');
-  const [attended, setAttended] = useState<Attended>({
-    familiarBondsData: [],
+  const [attended, setAttended] = useState<AttendedKeyValue>({
+    dependentsData: [],
     headerData: { avatar: '', fullname: '' },
     generalData: {
       birthDate: initialKeyValue,
@@ -86,7 +84,7 @@ export default function Record() {
         const attendedProfileRes = await fetch(
           `/api/get_attended_profile?cpf=${cpf}`
         );
-        const attendedData: Attended = await attendedProfileRes.json();
+        const attendedData: AttendedKeyValue = await attendedProfileRes.json();
         setAttended(attendedData);
 
         setIsLoading(false);
