@@ -1,7 +1,6 @@
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
-import { Database } from '@/types/supabase';
 import { formatDate, formatHour } from '@/utils/formatDateTime';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 
