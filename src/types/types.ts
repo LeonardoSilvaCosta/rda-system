@@ -144,27 +144,36 @@ export type Appointment = {
   id: string;
   date: string;
   time: string;
-  protocol: string;
-  hasLeaveOfAbsence: boolean;
-  recordProgress: string;
+  protocol: string | null;
+  has_leave_of_absence: boolean;
+  record_progress: string;
   access: string;
   facility: string;
   modality: string;
   service: string;
-  psychologicalAssessment: string | null;
-  socialAssessment: string | null;
-  generalDemand: string;
+  psychological_assessment: string | null;
+  social_assessment: string | null;
+  general_demand: string;
   procedure: string;
-  specialists: Specialist[] | [];
-  attendeds: [];
-  specificDemands: [];
-  documents: [];
-  travels: [];
-  referrals: [];
+  specialists: Specialist[];
+  attendeds: {
+    rank: string | null;
+    cadre: string | null;
+    rg: string | null;
+    nickname: string | null;
+    cpf: string;
+    fullname: string;
+  }[];
+  specific_demand: [] | null;
+  documents: [] | null;
+  travels: [] | null;
+  referral_destinations: [] | null;
+  referral_types: [] | null;
 };
 
-type Specialist = {
-  appointment_id: string;
-  fullname: string;
-  identification: string | null;
+export type Specialist = {
+  rank: string | null;
+  cadre: string | null;
+  rg: string | null;
+  nickname: string | null;
 };

@@ -3,7 +3,7 @@ import { BsChevronDown } from 'react-icons/bs';
 
 import styles from './styles.module.scss';
 
-import { Appointment } from '@/types/types';
+import { Appointment, Specialist } from '@/types/types';
 
 interface RecordAppointmentCardProps {
   appointments: Appointment[];
@@ -60,9 +60,12 @@ export function RecordAppointmentCard({
                 <div className={styles.contentColumn}>
                   <span>{`Realizado em: ${e.date}`}</span>
                   <span>{`Realizado por: ${e.specialists.map(
-                    (e) => e.identification
+                    (e: Specialist) =>
+                      `${e.rank} ${e.cadre} ${e.rg} ${e.nickname}`
                   )}`}</span>
-                  <span>{`Atendido(s): ${e.attendeds}`}</span>
+                  <span>{`Atendido(s): ${e.attendeds.map(
+                    (e) => e.fullname
+                  )}`}</span>
                   <span>{`Local: ${e.facility}`}</span>
                 </div>
                 <div className={`${styles.contentColumn}`}>
