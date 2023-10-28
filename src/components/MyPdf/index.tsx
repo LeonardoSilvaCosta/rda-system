@@ -3,7 +3,7 @@ import React from 'react';
 import { PdfProfileData } from './PdfProfileData';
 import { PdfRecordData } from './PdfRecordData';
 
-import { AttendedKeyValue } from '@/types/types';
+import { Appointment, Attended } from '@/types/types';
 import {
   Page,
   Text,
@@ -15,31 +15,8 @@ import {
 } from '@react-pdf/renderer';
 
 type PdfProps = {
-  attended: AttendedKeyValue;
+  attended: Attended;
   apppointments: Appointment;
-};
-
-type Appointment = {
-  id: string;
-  date: string;
-  time: string;
-  protocol: string;
-  hasLeaveOfAbsence: string;
-  recordProgress: string;
-  access: string;
-  facility: string;
-  modality: string;
-  service: string;
-  psychologicalAssessment: string;
-  socialAssessment: string;
-  generalDemand: string;
-  procedure: string;
-  specialists: [];
-  attendeds: [];
-  specificDemands: [];
-  documents: [];
-  travels: [];
-  referrals: [];
 };
 
 Font.register({

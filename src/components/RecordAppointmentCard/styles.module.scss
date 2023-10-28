@@ -19,9 +19,24 @@
 
     .columns {
       display: flex;
+      justify-content: space-between;
+
+      div:first-child {
+        width: 55%;
+      }
+
+      div:last-child {
+        width: 45%;
+      }
 
       @media(max-width: 762px) {
         flex-direction: column;
+
+        div:first-child,
+        div:last-child {
+          width: 100%;
+        }
+        
       }
     }
 

@@ -1,31 +1,9 @@
+import { Appointment } from '@/types/types';
 import { Font, Image, StyleSheet, Text, View } from '@react-pdf/renderer';
 
 interface PdfRecordDataProps {
-  appointments: Apppointment;
+  appointments: Appointment;
 }
-
-type Apppointment = {
-  id: string;
-  date: string;
-  time: string;
-  protocol: string;
-  hasLeaveOfAbsence: string;
-  recordProgress: string;
-  access: string;
-  facility: string;
-  modality: string;
-  service: string;
-  psychologicalAssessment: string;
-  socialAssessment: string;
-  generalDemand: string;
-  procedure: string;
-  specialists: [];
-  attendeds: [];
-  specificDemands: [];
-  documents: [];
-  travels: [];
-  referrals: [];
-};
 
 Font.register({
   family: 'Roboto',
@@ -51,7 +29,8 @@ export function PdfRecordData({
     specificDemands,
     documents,
     travels,
-    referrals
+    referralDestinations,
+    referralTypes
   }
 }: PdfRecordDataProps) {
   const styles = StyleSheet.create({
@@ -74,6 +53,7 @@ export function PdfRecordData({
       padding: 4
     },
     progressBox: {
+      width: '100%',
       position: 'relative',
       border: 1,
       borderColor: '#a6a6a6',
@@ -98,6 +78,12 @@ export function PdfRecordData({
     }
   });
 
+  const referrals = referralDestinations?.map((destination, index) => {
+    return {
+      description: referralTypes && `${destination} - ${referralTypes[index]}`
+    };
+  });
+
   return (
     <View style={styles.container}>
       <View>
@@ -109,10 +95,12 @@ export function PdfRecordData({
             <Text>{`Acesso: ${access}`}</Text>
             <Text>{`Local: ${facility}`}</Text>
             <Text>{`Modalidade: ${modality}`}</Text>
-            <Text>{`Oficial(is): ${specialists.map(
-              (e) => e.identification
-            )}`}</Text>
-            <Text>{`Atendido(s): ${attendeds}`}</Text>
+            <Text>{`Oficial(is): ${specialists
+              .map((e) => `${e.rank} ${e.cadre} ${e.rg} ${e.nickname}`)
+              .join(', ')}`}</Text>
+            <Text>{`Atendido(s): ${attendeds
+              .map((e) => e.fullname)
+              .join(', ')}`}</Text>
             <Text>{`Serviço: ${service} `}</Text>
             <Text>{`Avaliação psicológica: ${
               psychologicalAssessment
@@ -126,17 +114,19 @@ export function PdfRecordData({
             }`}</Text>
             <Text>{`Demanda geral: ${generalDemand}`}</Text>
             <Text>{`Demandas específicas: ${
-              specificDemands.length !== 0 ? specificDemands : 'Sem registro'
+              specificDemands?.length !== 0 ? specificDemands : 'Sem registro'
             }`}</Text>
             <Text>{`Procedimento: ${procedure} `}</Text>
             <Text>{`Documentos: ${
-              documents.length !== 0 ? documents : 'Sem registro'
+              documents?.length !== 0 ? documents : 'Sem registro'
             }`}</Text>
             <Text>{`Deslocamentos: ${
-              travels.length !== 0 ? travels : 'Sem registro'
+              travels?.length !== 0 ? travels : 'Sem registro'
             }`}</Text>
             <Text>{`Encaminhamentos: ${
-              referrals.length !== 0 ? referrals : 'Sem registro'
+              referrals?.length !== 0
+                ? referrals?.map((e) => e.description).join(', ')
+                : 'Sem registro'
             }`}</Text>
             <Text>{`Houve afastamento? ${
               hasLeaveOfAbsence ? 'Sim' : 'Não'
@@ -148,9 +138,9 @@ export function PdfRecordData({
           <Text>{`${recordProgress}`}</Text>
         </View>
         {specialists.map((e) => (
-          <View key={e.identification} style={styles.signature}>
+          <View key={e.cpf} style={styles.signature}>
             <Text>{e.fullname}</Text>
-            <Text>1º TEN QCOPM - RG 40897</Text>
+            <Text>{`${e.rank} ${e.cadre} - RG ${e.rg}`}</Text>
             <Text>Psicólogo - CRP 10/05495</Text>
           </View>
         ))}

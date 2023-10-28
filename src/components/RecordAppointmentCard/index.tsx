@@ -59,13 +59,12 @@ export function RecordAppointmentCard({
               <div className={styles.columns}>
                 <div className={styles.contentColumn}>
                   <span>{`Realizado em: ${e.date}`}</span>
-                  <span>{`Realizado por: ${e.specialists.map(
-                    (e: Specialist) =>
-                      `${e.rank} ${e.cadre} ${e.rg} ${e.nickname}`
-                  )}`}</span>
-                  <span>{`Atendido(s): ${e.attendeds.map(
-                    (e) => e.fullname
-                  )}`}</span>
+                  <span>{`Realizado por: ${e.specialists
+                    .map(
+                      (e: Specialist) =>
+                        `${e.rank} ${e.cadre} ${e.rg} ${e.nickname}`
+                    )
+                    .join(', ')}`}</span>
                   <span>{`Local: ${e.facility}`}</span>
                 </div>
                 <div className={`${styles.contentColumn}`}>

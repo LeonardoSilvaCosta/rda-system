@@ -60,14 +60,14 @@ export function RecordProfileCard({
           <>
             <div className={styles.contentColumn}>
               {firstColumn.map((e) => (
-                <span key={e.key}>
+                <span key={e.value}>
                   {e.key ? `${e.key}: ${e.value}` : e.value}
                 </span>
               ))}
             </div>
             <div className={`${styles.contentColumn}`}>
               {secondColumn.map((e) => (
-                <span key={e.key}>
+                <span key={e.value}>
                   {e.key ? `${e.key}: ${e.value}` : e.value}
                 </span>
               ))}

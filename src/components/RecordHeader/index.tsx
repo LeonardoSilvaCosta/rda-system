@@ -4,7 +4,7 @@ import styles from './styles.module.scss';
 
 interface RecordHeaderProps {
   buttonTitle: string;
-  avatar?: string;
+  avatar: string | null;
   fullname: string;
   handleClick: () => void;
 }

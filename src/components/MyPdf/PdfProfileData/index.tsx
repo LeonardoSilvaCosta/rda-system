@@ -1,8 +1,8 @@
-import { AttendedKeyValue } from '@/types/types';
+import { Attended } from '@/types/types';
 import { Font, StyleSheet, Text, View } from '@react-pdf/renderer';
 
 interface PdfProfileDataProps {
-  attended: AttendedKeyValue;
+  attended: Attended;
 }
 
 Font.register({
@@ -11,10 +11,7 @@ Font.register({
 });
 
 export function PdfProfileData({
-  attended: {
-    headerData: { fullname },
-    generalData: { cpf, rg, nickname, rank, cadre }
-  }
+  attended: { fullname, cpf, rg, nickname, rank, cadre }
 }: PdfProfileDataProps) {
   const styles = StyleSheet.create({
     container: {
@@ -41,9 +38,7 @@ export function PdfProfileData({
     <View style={styles.container}>
       <View style={styles.header}>
         <Text>{`Identificação do atendido: ${
-          rg
-            ? `${rank.value} ${cadre.value} ${rg.value} ${nickname.value}`
-            : `${fullname} - ${cpf.value}`
+          rg ? `${rank} ${cadre} ${rg} ${nickname}` : `${fullname} - ${cpf}`
         }`}</Text>
       </View>
       {/* <View>

@@ -9,7 +9,8 @@ import { Header } from '@/components/Header';
 import { LoadingComponent } from '@/components/Loading/loading';
 import { Profile } from '@/components/Profile';
 import { RecordHeader } from '@/components/RecordHeader';
-import { Appointment, AttendedKeyValue } from '@/types/types';
+import { Appointment, Attended } from '@/types/types';
+import { convertAttendedToKeyValues } from '@/utils/convertAttendedToKeyValue';
 
 const initialKeyValue = {
   key: '',
@@ -19,7 +20,7 @@ const initialKeyValue = {
 export default function Record() {
   const searchParams = useSearchParams();
   const cpf = searchParams.get('cpf');
-  const [attended, setAttended] = useState<AttendedKeyValue>({
+  const [attended, setAttended] = useState<Attended>({
     dependentsData: [],
     headerData: { avatar: '', fullname: '' },
     generalData: {
@@ -57,7 +58,7 @@ export default function Record() {
         const attendedProfileRes = await fetch(
           `/api/get_attended_profile?cpf=${cpf}`
         );
-        const attendedData: AttendedKeyValue = await attendedProfileRes.json();
+        const attendedData: Attended = await attendedProfileRes.json();
         setAttended(attendedData);
 
         setIsLoading(false);
@@ -102,15 +103,15 @@ export default function Record() {
           <Header title="Prontuário" />
           <main className={styles.container}>
             <RecordHeader
-              avatar={attended.headerData.avatar}
-              fullname={attended.headerData.fullname}
+              avatar={attended.avatar}
+              fullname={attended.fullname}
               buttonTitle={
                 currentScreen !== 1 ? 'Atendimentos' : 'Voltar ao perfil'
               }
               handleClick={handleClick}
             />
             {currentScreen === 0 ? (
-              <Profile attended={attended} />
+              <Profile attended={convertAttendedToKeyValues(attended)} />
             ) : (
               <AppointmentsSummary
                 attended={attended}

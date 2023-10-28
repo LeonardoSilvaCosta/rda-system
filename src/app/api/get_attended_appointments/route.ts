@@ -26,6 +26,8 @@ type Appointment = {
     cadre: string | null;
     rg: string | null;
     nickname: string | null;
+    cpf: string;
+    fullname: string;
   }[];
   attendeds: {
     rank: string | null;
@@ -35,7 +37,7 @@ type Appointment = {
     cpf: string;
     fullname: string;
   }[];
-  specific_demand: [] | null;
+  specific_demands: [] | null;
   documents: [] | null;
   travels: [] | null;
   referral_destinations: [] | null;
@@ -72,7 +74,7 @@ export async function GET(req: NextRequest) {
         procedure: e.procedure ? e.procedure : '',
         specialists: e.specialists ? e.specialists : [],
         attendeds: e.attendeds ? e.attendeds : [],
-        specificDemands: e.specific_demand ? e.specific_demand : [],
+        specificDemands: e.specific_demands ? e.specific_demands : [],
         documents: e.documents ? e.documents : [],
         travels: e.travels ? e.travels : [],
         referralDestinations: e.referral_destinations
@@ -87,13 +89,13 @@ export async function GET(req: NextRequest) {
 
   try {
     if (q) {
-      const { data: attendedAppointments } = await supabase.rpc(
-        'get_attended_appointments_by_query',
-        {
+      const { data: attendedAppointments } = await supabase
+        .rpc('get_attended_appointments_by_query', {
           cpf_input: cpf,
           q_input: q
-        }
-      );
+        })
+        .returns<Appointment[]>()
+        .limit(10);
 
       if (!attendedAppointments) return;
       const formattedData = await prepareDataToSend(attendedAppointments);
@@ -104,7 +106,8 @@ export async function GET(req: NextRequest) {
         .rpc('get_attended_appointments', {
           cpf_input: cpf
         })
-        .returns<Appointment[]>();
+        .returns<Appointment[]>()
+        .limit(10);
 
       if (!attendedAppointments) return;
       const formattedData = await prepareDataToSend(attendedAppointments);

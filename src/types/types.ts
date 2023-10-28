@@ -140,40 +140,76 @@ export type AttendedKeyValue = {
   policyHolder: KeyValue;
 };
 
+export type Attended = {
+  id: string;
+  fullname: string;
+  nickname: string | null;
+  rg: string | null;
+  cpf: string;
+  birthDate: string;
+  avatar: string | null;
+  isCivilVolunteer: boolean;
+  rank: string | null;
+  cadre: string | null;
+  opm: string | null;
+  gender: string;
+  maritalStatus: string;
+  workStatus: string | null;
+  address: {
+    zipCode: string;
+    number: string;
+    street: string;
+    complement: string | null;
+    neighborhood: string;
+  };
+  phones: {
+    phone: string;
+    ownerIdentification: string;
+    attendedRelationship: string | null;
+  }[];
+  policyHolder: {
+    rank: string | null;
+    cadre: string | null;
+    rg: string | null;
+    nickname: string | null;
+  };
+  dependents: {
+    id: string | null;
+    cpf: string | null;
+    fullname: string | null;
+    familiarBond: string | null;
+  }[];
+};
+
 export type Appointment = {
   id: string;
   date: string;
   time: string;
   protocol: string | null;
-  has_leave_of_absence: boolean;
-  record_progress: string;
+  hasLeaveOfAbsence: boolean;
+  recordProgress: string;
   access: string;
   facility: string;
   modality: string;
   service: string;
-  psychological_assessment: string | null;
-  social_assessment: string | null;
-  general_demand: string;
+  psychologicalAssessment: string | null;
+  socialAssessment: string | null;
+  generalDemand: string;
   procedure: string;
-  specialists: Specialist[];
-  attendeds: {
-    rank: string | null;
-    cadre: string | null;
-    rg: string | null;
-    nickname: string | null;
-    cpf: string;
-    fullname: string;
-  }[];
-  specific_demand: [] | null;
+  specialists: Identification[];
+  attendeds: Identification[];
+  specificDemands: [] | null;
   documents: [] | null;
   travels: [] | null;
-  referral_destinations: [] | null;
-  referral_types: [] | null;
+  referralDestinations: [] | null;
+  referralTypes: [] | null;
 };
 
-export type Specialist = {
+export type Identification = {
   rank: string | null;
   cadre: string | null;
   rg: string | null;
   nickname: string | null;
+  cpf: string;
+  fullname: string;
 };

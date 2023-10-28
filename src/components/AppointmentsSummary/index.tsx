@@ -5,10 +5,10 @@ import { AppointmentDetails } from '../AppointmentDetails';
 import styles from './styles.module.scss';
 
 import { RecordAppointmentCard } from '@/components/RecordAppointmentCard';
-import { Appointment, AttendedKeyValue } from '@/types/types';
+import { Appointment, Attended } from '@/types/types';
 
 interface AppointmentsSummaryProps {
-  attended: AttendedKeyValue;
+  attended: Attended;
   appointments: Appointment[];
   currentScreen: number;
   setCurrentScreen: Dispatch<SetStateAction<number>>;
@@ -35,7 +35,7 @@ export function AppointmentsSummary({
 
     if (q !== '') {
       const res = await fetch(
-        `/api/get_attended_appointments?cpf=${attended.generalData.cpf.value}&q=${qToLower}`
+        `/api/get_attended_appointments?cpf=${attended.cpf}&q=${qToLower}`
       );
       const data = await res.json();
       if (!data) return;

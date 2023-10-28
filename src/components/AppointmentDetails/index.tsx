@@ -1,11 +1,11 @@
 import { MyPdf } from '../MyPdf';
 import styles from './styles.module.scss';
 
-import { Appointment, AttendedKeyValue } from '@/types/types';
+import { Appointment, Attended } from '@/types/types';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 
 interface AppointmentDetailsProps {
-  attended: AttendedKeyValue;
+  attended: Attended;
   appointments?: Appointment;
 }
 
@@ -32,8 +32,14 @@ export function AppointmentDetails({
     specificDemands,
     documents,
     travels,
-    referrals
+    referralDestinations,
+    referralTypes
   } = appointments;
+  const referrals = referralDestinations?.map((destination, index) => {
+    return {
+      description: referralTypes && `${destination} - ${referralTypes[index]}`
+    };
+  });
   return (
     <main className={styles.container}>
       <div>
@@ -43,10 +49,12 @@ export function AppointmentDetails({
           <span>{`Acesso: ${access}`}</span>
           <span>{`Local: ${facility}`}</span>
           <span>{`Modalidade: ${modality}`}</span>
-          <span>{`Oficial(is): ${specialists.map(
-            (e) => e.identification
-          )}`}</span>
-          <span>{`Atendido(s): ${attendeds}`}</span>
+          <span>{`Oficial(is): ${specialists
+            .map((e) => `${e.rank} ${e.cadre} ${e.rg} ${e.nickname}`)
+            .join(', ')}`}</span>
+          <span>{`Atendido(s): ${attendeds
+            .map((e) => e.fullname)
+            .join(', ')}`}</span>
           <span>{`Serviço: ${service}`}</span>
           <span>{`Avaliação psicológica: ${
             psychologicalAssessment ? psychologicalAssessment : 'Não se aplica'
@@ -58,17 +66,21 @@ export function AppointmentDetails({
           }`}</span>
           <span>{`Demanda geral: ${generalDemand}`}</span>
           <span>{`Demandas específicas: ${
-            specificDemands.length !== 0 ? specificDemands : 'Sem registro'
+            specificDemands?.length !== 0
+              ? specificDemands?.join(', ')
+              : 'Sem registro'
           }`}</span>
           <span>{`Procedimento: ${procedure}`}</span>
           <span>{`Documentos: ${
-            documents.length !== 0 ? documents : 'Sem registro'
+            documents?.length !== 0 ? documents?.join(', ') : 'Sem registro'
           }`}</span>
           <span>{`Deslocamentos: ${
-            travels.length !== 0 ? travels : 'Sem registro'
+            travels?.length !== 0 ? travels?.join(', ') : 'Sem registro'
           }`}</span>
           <span>{`Encaminhamentos: ${
-            referrals.length !== 0 ? referrals : 'Sem registro'
+            referrals?.length !== 0
+              ? referrals?.map((e) => e.description).join(', ')
+              : 'Sem registro'
           }`}</span>
           <span>{`Houve afastamento? ${
             hasLeaveOfAbsence ? 'Sim' : 'Não'

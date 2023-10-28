@@ -57,7 +57,7 @@ export function Profile({ attended }: ProfileProps) {
               maxItems={6}
             />
           )}
-          {attended.policyHolder && (
+          {attended.policyHolder.value && (
             <RecordProfileCard
               title={'Titular'}
               keyValues={attended.policyHolder}
