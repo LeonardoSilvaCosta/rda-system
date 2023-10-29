@@ -22,7 +22,7 @@ export function RecordProfileCard({
   maxItems
 }: ProfileCardProps) {
   const router = useRouter();
-  const handleClick = (cpf: string) => {
+  const handleClick = (cpf: string | undefined | null) => {
     router.push(`/Record?cpf=${cpf}`);
   };
   const getColumns = (array: KeyValue[], numberToSlice: number) => {
