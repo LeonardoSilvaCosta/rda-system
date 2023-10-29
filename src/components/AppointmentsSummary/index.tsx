@@ -74,7 +74,7 @@ export function AppointmentsSummary({
               <div className={styles.noContent}>
                 <ImFileEmpty className={styles.emptyPaperIcon} />
                 <p>
-                  {`Ainda não há registros no prontuário de ${attended.fullname}`}
+                  {`Ainda não há registros de atendimento no prontuário de ${attended.fullname}`}
                 </p>
               </div>
             )}
