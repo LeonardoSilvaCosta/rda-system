@@ -20,6 +20,7 @@ type Attended = {
   gender: string;
   marital_status: string;
   work_status: string | null;
+  familiar_bond: string | null;
   address: {
     zip_code: string;
     number: string;
@@ -37,6 +38,7 @@ type Attended = {
     cadre: string | null;
     rg: string | null;
     nickname: string | null;
+    cpf: string | null;
   };
   dependents: {
     id: string | null;
@@ -81,6 +83,7 @@ export async function GET(req: NextRequest) {
       gender: attended.gender,
       maritalStatus: attended.marital_status,
       workStatus: attended.work_status,
+      familiarBond: attended.familiar_bond,
       address: {
         zipCode: attended.address.zip_code,
         number: attended.address.number,

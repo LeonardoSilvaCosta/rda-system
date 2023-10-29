@@ -92,10 +92,10 @@ export const convertAttendedToKeyValues = (attended: Attended) => {
             };
           })
         : [],
-    policyHolder: attended.policyHolder
+    policyHolder: attended.policyHolder.rg
       ? {
           key: 'Titular',
-          value: ''
+          value: `${attended.policyHolder.rank} ${attended.policyHolder.cadre} ${attended.policyHolder.rg} ${attended.policyHolder.nickname}`
         }
       : emptyValue
   };

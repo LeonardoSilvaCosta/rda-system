@@ -155,6 +155,7 @@ export type Attended = {
   gender: string;
   maritalStatus: string;
   workStatus: string | null;
+  familiarBond: string | null;
   address: {
     zipCode: string;
     number: string;
@@ -167,18 +168,23 @@ export type Attended = {
     ownerIdentification: string;
     attendedRelationship: string | null;
   }[];
-  policyHolder: {
-    rank: string | null;
-    cadre: string | null;
-    rg: string | null;
-    nickname: string | null;
-  };
-  dependents: {
-    id: string | null;
-    cpf: string | null;
-    fullname: string | null;
-    familiarBond: string | null;
-  }[];
+  policyHolder: PolicyHolder;
+  dependents: Dependent[];
+};
+
+export type PolicyHolder = {
+  rank: string | null;
+  cadre: string | null;
+  rg: string | null;
+  nickname: string | null;
+  cpf: string | null;
+};
+
+export type Dependent = {
+  id: string | null;
+  cpf: string | null;
+  fullname: string | null;
+  familiarBond: string | null;
 };
 
 export type Appointment = {

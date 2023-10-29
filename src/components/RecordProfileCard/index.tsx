@@ -2,11 +2,13 @@ import { useRouter } from 'next/navigation';
 
 import styles from './styles.module.scss';
 
-import { KeyValue } from '@/types/types';
+import { Dependent, KeyValue, PolicyHolder } from '@/types/types';
 
 interface ProfileCardProps {
   title: string;
-  keyValues: KeyValue[] | KeyValue;
+  keyValues: KeyValue | KeyValue[];
+  policyHolder?: PolicyHolder | null;
+  dependents?: Dependent[] | null;
   numberToSlice: number;
   maxItems: number;
 }
@@ -14,12 +16,14 @@ interface ProfileCardProps {
 export function RecordProfileCard({
   title,
   keyValues,
+  policyHolder,
+  dependents,
   numberToSlice,
   maxItems
 }: ProfileCardProps) {
   const router = useRouter();
   const handleClick = (cpf: string) => {
-    router.push(`/Record/Profile?cpf=${cpf}`);
+    router.push(`/Record?cpf=${cpf}`);
   };
   const getColumns = (array: KeyValue[], numberToSlice: number) => {
     const noEmptyArray = array.filter((e) => e && e.value !== '');
@@ -48,6 +52,56 @@ export function RecordProfileCard({
     }
   };
 
+  const generateColumns = (
+    title: string,
+    firstColumn: KeyValue[],
+    secondColumn: KeyValue[],
+    handleClick: (cpf: string | undefined | null) => void
+  ) => {
+    const getCpfOnHandleClick = (element: KeyValue) => {
+      if (element.key === 'Titular' && policyHolder?.cpf) {
+        return handleClick(policyHolder.cpf);
+      } else if (element.key === 'Dependentes' && dependents) {
+        return handleClick(
+          dependents.length > 0
+            ? dependents.find((e) => e.cpf && element.value.includes(e.cpf))
+                ?.cpf
+            : undefined
+        );
+      } else {
+        return undefined;
+      }
+    };
+    return (
+      <>
+        <div className={styles.contentColumn}>
+          {firstColumn.map((e) =>
+            title === 'Vínculos cadastrados' || title === 'Titular' ? (
+              <span
+                key={e.value}
+                onClick={() => getCpfOnHandleClick(e)}
+              >{`${e.value}`}</span>
+            ) : (
+              <span key={e.value}>{`${e.key}: ${e.value}`}</span>
+            )
+          )}
+        </div>
+        <div className={`${styles.contentColumn}`}>
+          {secondColumn.map((e) =>
+            title === 'Vínculos cadastrados' || title === 'Titular' ? (
+              <span
+                key={e.value}
+                onClick={() => getCpfOnHandleClick(e)}
+              >{`${e.value}`}</span>
+            ) : (
+              <span key={e.value}>{`${e.key}: ${e.value}`}</span>
+            )
+          )}
+        </div>
+      </>
+    );
+  };
+
   return (
     <main className={styles.container}>
       <header>
@@ -56,43 +110,7 @@ export function RecordProfileCard({
       <div
         className={`${styles.columns} ${isLinkTitle(title) ? styles.link : ''}`}
       >
-        {!isLinkTitle(title) ? (
-          <>
-            <div className={styles.contentColumn}>
-              {firstColumn.map((e) => (
-                <span key={e.value}>
-                  {e.key ? `${e.key}: ${e.value}` : e.value}
-                </span>
-              ))}
-            </div>
-            <div className={`${styles.contentColumn}`}>
-              {secondColumn.map((e) => (
-                <span key={e.value}>
-                  {e.key ? `${e.key}: ${e.value}` : e.value}
-                </span>
-              ))}
-            </div>
-          </>
-        ) : (
-          <>
-            <div
-              className={styles.contentColumn}
-              onClick={() => handleClick(keyValues[0].key)}
-            >
-              {firstColumn.map((e) => (
-                <span key={e.key}>{e.value}</span>
-              ))}
-            </div>
-            <div
-              className={`${styles.contentColumn}`}
-              onClick={() => handleClick(keyValues[0].key)}
-            >
-              {secondColumn.map((e) => (
-                <span key={e.key}>{e.value}</span>
-              ))}
-            </div>
-          </>
-        )}
+        {generateColumns(title, firstColumn, secondColumn, handleClick)}
       </div>
     </main>
   );

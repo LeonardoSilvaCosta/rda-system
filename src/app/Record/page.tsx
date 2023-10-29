@@ -111,7 +111,7 @@ export default function Record() {
               handleClick={handleClick}
             />
             {currentScreen === 0 ? (
-              <Profile attended={convertAttendedToKeyValues(attended)} />
+              <Profile attended={attended} />
             ) : (
               <AppointmentsSummary
                 attended={attended}

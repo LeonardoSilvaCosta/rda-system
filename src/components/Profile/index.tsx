@@ -1,15 +1,17 @@
 import styles from './styles.module.scss';
 
 import { RecordProfileCard } from '@/components/RecordProfileCard';
-import { AttendedKeyValue } from '@/types/types';
+import { Attended } from '@/types/types';
+import { convertAttendedToKeyValues } from '@/utils/convertAttendedToKeyValue';
 
 interface ProfileProps {
-  attended: AttendedKeyValue;
+  attended: Attended;
 }
 
 export function Profile({ attended }: ProfileProps) {
-  const generalData = attended.generalData
-    ? Object.entries(attended.generalData).map(
+  const attendedKeyValues = convertAttendedToKeyValues(attended);
+  const generalData = attendedKeyValues.generalData
+    ? Object.entries(attendedKeyValues.generalData).map(
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         ([key, value]) =>
           value && {
@@ -19,9 +21,9 @@ export function Profile({ attended }: ProfileProps) {
       )
     : [];
 
-  const addressData = attended.addressData
+  const addressData = attendedKeyValues.addressData
     ? // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      Object.entries(attended.addressData).map(([key, value]) => ({
+      Object.entries(attendedKeyValues.addressData).map(([key, value]) => ({
         key: value.key,
         value: value.value
       }))
@@ -45,22 +47,28 @@ export function Profile({ attended }: ProfileProps) {
           />
           <RecordProfileCard
             title={'Contatos'}
-            keyValues={attended.contactsData}
+            keyValues={attendedKeyValues.contactsData}
             numberToSlice={3}
             maxItems={6}
           />
-          {attended.generalData.rg && (
+          {attended.rg && (
             <RecordProfileCard
               title={'Vínculos cadastrados'}
-              keyValues={attended.dependentsData}
+              keyValues={attendedKeyValues.dependentsData}
+              dependents={
+                attended.dependents.length > 0 ? attended.dependents : null
+              }
               numberToSlice={3}
               maxItems={6}
             />
           )}
-          {attended.policyHolder.value && (
+          {attended.policyHolder.rg && (
             <RecordProfileCard
               title={'Titular'}
-              keyValues={attended.policyHolder}
+              keyValues={attendedKeyValues.policyHolder}
+              policyHolder={
+                attended.policyHolder.rg ? attended.policyHolder : null
+              }
               numberToSlice={3}
               maxItems={6}
             />

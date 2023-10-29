@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import { BsSearch } from 'react-icons/bs';
+import { ImFileEmpty } from 'react-icons/im';
 
 import { AppointmentDetails } from '../AppointmentDetails';
 import styles from './styles.module.scss';
@@ -62,12 +63,21 @@ export function AppointmentsSummary({
               />
               <BsSearch className={styles.icon} />
             </div>
-            <div className={styles.cards}>
-              <RecordAppointmentCard
-                appointments={filteredData}
-                handleClick={handleClick}
-              />
-            </div>
+            {appointments.length > 0 ? (
+              <div className={styles.cards}>
+                <RecordAppointmentCard
+                  appointments={filteredData}
+                  handleClick={handleClick}
+                />
+              </div>
+            ) : (
+              <div className={styles.noContent}>
+                <ImFileEmpty className={styles.emptyPaperIcon} />
+                <p>
+                  {`Ainda não há registros no prontuário de ${attended.fullname}`}
+                </p>
+              </div>
+            )}
           </>
         ) : (
           <AppointmentDetails
