@@ -1,19 +1,25 @@
+import { useState } from 'react';
+
 import { MyPdf } from '../MyPdf';
 import styles from './styles.module.scss';
 
 import { Appointment, Attended } from '@/types/types';
 import { PDFDownloadLink } from '@react-pdf/renderer';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 interface AppointmentDetailsProps {
   attended: Attended;
-  appointments?: Appointment;
+  appointment?: Appointment;
 }
 
 export function AppointmentDetails({
   attended,
-  appointments
+  appointment
 }: AppointmentDetailsProps) {
-  if (!appointments) return;
+  const supabase = createClientComponentClient();
+  const [isUploading, setIsUploading] = useState(false);
+
+  if (!appointment) return;
   const {
     date,
     protocol,
@@ -34,12 +40,32 @@ export function AppointmentDetails({
     travels,
     referralDestinations,
     referralTypes
-  } = appointments;
+  } = appointment;
   const referrals = referralDestinations?.map((destination, index) => {
     return {
       description: referralTypes && `${destination} - ${referralTypes[index]}`
     };
   });
+
+  const uploadPdf = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    appointmentId: string
+  ) => {
+    setIsUploading(true);
+    const pdfFile = e.target.files && e.target.files[0];
+    if (!pdfFile) return;
+    try {
+      const { data: pdf, error } = await supabase.storage
+        .from('records')
+        .upload(`${attended.cpf}/record-${appointmentId}.pdf`, pdfFile);
+
+      if (!error) alert('Upload realizado com sucesso!');
+      setIsUploading(false);
+    } catch (error) {
+      console.log(error);
+      setIsUploading(false);
+    }
+  };
   return (
     <main className={styles.container}>
       <div>
@@ -91,16 +117,28 @@ export function AppointmentDetails({
         <span>Evolução</span>
         <span>{`${recordProgress}`}</span>
       </div>
-      <button>
-        <PDFDownloadLink
-          document={<MyPdf attended={attended} apppointments={appointments} />}
-          fileName="document.pdf"
-        >
-          {({ loading }) =>
-            loading ? 'Carregando documento...' : 'Baixar pdf!'
-          }
-        </PDFDownloadLink>
-      </button>
+      <footer className={styles.footer}>
+        <button>
+          <PDFDownloadLink
+            document={<MyPdf attended={attended} apppointment={appointment} />}
+            fileName="document.pdf"
+          >
+            {({ loading }) =>
+              loading ? 'Carregando documento...' : 'Baixar pdf!'
+            }
+          </PDFDownloadLink>
+        </button>
+        <form>
+          <label htmlFor="file">
+            {isUploading ? 'Carregando documento...' : 'Enviar pdf assinado!'}
+          </label>
+          <input
+            id="file"
+            type="file"
+            onChange={(e) => uploadPdf(e, appointment.id)}
+          />
+        </form>
+      </footer>
     </main>
   );
 }

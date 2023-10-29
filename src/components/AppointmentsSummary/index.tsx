@@ -82,7 +82,7 @@ export function AppointmentsSummary({
         ) : (
           <AppointmentDetails
             attended={attended}
-            appointments={appointments.find((e) => e.id === cardSelectedId)}
+            appointment={appointments.find((e) => e.id === cardSelectedId)}
           />
         )}
       </main>
