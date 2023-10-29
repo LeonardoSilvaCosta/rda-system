@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { RefObject, createRef, useEffect, useState } from 'react';
 import { BsChevronDown } from 'react-icons/bs';
 
 import styles from './styles.module.scss';
@@ -51,7 +51,13 @@ export function RecordAppointmentCard({
         <>
           <main key={e.id} className={`${styles.container}`}>
             <div
-              ref={(ref) => (dropdownRefs[e.id] = ref)}
+              ref={(ref) => {
+                if (ref) {
+                  const refObject = { current: ref };
+                  dropdownRefs[e.id] =
+                    refObject as React.RefObject<HTMLDivElement>;
+                }
+              }}
               className={`${styles.columnswrapper} ${
                 openDropdownId === e.id ? styles.visible : ''
               }`}
