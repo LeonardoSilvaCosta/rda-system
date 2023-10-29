@@ -10,7 +10,6 @@ import { LoadingComponent } from '@/components/Loading/loading';
 import { Profile } from '@/components/Profile';
 import { RecordHeader } from '@/components/RecordHeader';
 import { Appointment, Attended } from '@/types/types';
-import { convertAttendedToKeyValues } from '@/utils/convertAttendedToKeyValue';
 
 const initialKeyValue = {
   key: '',

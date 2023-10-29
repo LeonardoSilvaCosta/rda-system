@@ -1,5 +1,5 @@
 import { Appointment } from '@/types/types';
-import { Font, Image, StyleSheet, Text, View } from '@react-pdf/renderer';
+import { Font, StyleSheet, Text, View } from '@react-pdf/renderer';
 
 interface PdfRecordDataProps {
   appointments: Appointment;
