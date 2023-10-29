@@ -1,4 +1,4 @@
-import { RefObject, createRef, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BsChevronDown } from 'react-icons/bs';
 
 import styles from './styles.module.scss';
