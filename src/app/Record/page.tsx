@@ -11,41 +11,41 @@ import { Profile } from '@/components/Profile';
 import { RecordHeader } from '@/components/RecordHeader';
 import { Appointment, Attended } from '@/types/types';
 
-const initialKeyValue = {
-  key: '',
-  value: ''
-};
-
 export default function Record() {
   const searchParams = useSearchParams();
   const cpf = searchParams.get('cpf');
   const [attended, setAttended] = useState<Attended>({
-    dependentsData: [],
-    headerData: { avatar: '', fullname: '' },
-    generalData: {
-      birthDate: initialKeyValue,
-      age: initialKeyValue,
-      cpf: initialKeyValue,
-      maritalStatus: initialKeyValue,
-      rg: initialKeyValue,
-      nickname: initialKeyValue,
-      rank: initialKeyValue,
-      cadre: initialKeyValue,
-      workStatus: initialKeyValue,
-      opm: initialKeyValue,
-      gender: initialKeyValue,
-      isCivilVolunteer: initialKeyValue
+    id: '',
+    fullname: '',
+    nickname: '',
+    rg: '',
+    cpf: '',
+    birthDate: '',
+    avatar: '',
+    isCivilVolunteer: false,
+    rank: '',
+    cadre: '',
+    opm: '',
+    gender: '',
+    maritalStatus: '',
+    workStatus: '',
+    familiarBond: '',
+    address: {
+      zipCode: '',
+      number: '',
+      street: '',
+      complement: '',
+      neighborhood: ''
     },
-    addressData: {
-      zipCode: initialKeyValue,
-      street: initialKeyValue,
-      neighborhood: initialKeyValue,
-      number: initialKeyValue,
-      complement: initialKeyValue,
-      city_state: initialKeyValue
+    phones: [],
+    policyHolder: {
+      rank: '',
+      cadre: '',
+      rg: '',
+      nickname: '',
+      cpf: ''
     },
-    contactsData: [],
-    policyHolder: initialKeyValue
+    dependents: []
   });
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [currentScreen, setCurrentScreen] = useState(0);
