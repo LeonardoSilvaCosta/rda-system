@@ -1,11 +1,11 @@
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 
 import { MyPdf } from '../MyPdf';
 import styles from './styles.module.scss';
 
 import { Appointment, Attended } from '@/types/types';
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 interface AppointmentDetailsProps {
   attended: Attended;
@@ -16,7 +16,6 @@ export function AppointmentDetails({
   attended,
   appointment
 }: AppointmentDetailsProps) {
-  const supabase = createClientComponentClient();
   const [isUploading, setIsUploading] = useState(false);
 
   if (!appointment) return;
@@ -54,12 +53,21 @@ export function AppointmentDetails({
     setIsUploading(true);
     const pdfFile = e.target.files && e.target.files[0];
     if (!pdfFile) return;
-    try {
-      const { data: pdf, error } = await supabase.storage
-        .from('records')
-        .upload(`${attended.cpf}/record-${appointmentId}.pdf`, pdfFile);
+    const formData = new FormData();
 
-      if (!error) alert('Upload realizado com sucesso!');
+    formData.append('pdfFile', pdfFile);
+
+    try {
+      const resPdf = await fetch(
+        `api/upload_pdf?cpf=${attended.cpf}&appointmentId=${appointmentId}`,
+        {
+          method: 'POST',
+          body: formData
+        }
+      );
+
+      const pdfData = await resPdf.json();
+      toast.success(pdfData);
       setIsUploading(false);
     } catch (error) {
       console.log(error);
@@ -120,7 +128,7 @@ export function AppointmentDetails({
       <footer className={styles.footer}>
         <button>
           <PDFDownloadLink
-            document={<MyPdf attended={attended} apppointment={appointment} />}
+            document={<MyPdf attended={attended} appointment={appointment} />}
             fileName="document.pdf"
           >
             {({ loading }) =>

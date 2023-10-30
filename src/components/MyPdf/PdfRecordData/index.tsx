@@ -2,7 +2,7 @@ import { Appointment } from '@/types/types';
 import { Font, StyleSheet, Text, View } from '@react-pdf/renderer';
 
 interface PdfRecordDataProps {
-  appointments: Appointment;
+  appointment: Appointment;
 }
 
 Font.register({
@@ -11,7 +11,7 @@ Font.register({
 });
 
 export function PdfRecordData({
-  appointments: {
+  appointment: {
     date,
     protocol,
     hasLeaveOfAbsence,

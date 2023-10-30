@@ -16,7 +16,7 @@ import {
 
 type PdfProps = {
   attended: Attended;
-  apppointment: Appointment;
+  appointment: Appointment;
 };
 
 Font.register({
@@ -24,7 +24,7 @@ Font.register({
   src: 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap'
 });
 
-export function MyPdf({ attended, apppointment }: PdfProps) {
+export function MyPdf({ attended, appointment }: PdfProps) {
   const styles = StyleSheet.create({
     page: {
       flexDirection: 'column',
@@ -84,7 +84,7 @@ export function MyPdf({ attended, apppointment }: PdfProps) {
         </View>
         <View style={styles.section}>
           <PdfProfileData attended={attended} />
-          <PdfRecordData appointments={apppointment} />
+          <PdfRecordData appointment={appointment} />
         </View>
       </Page>
     </Document>
