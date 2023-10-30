@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 
@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
     if (q) {
       const { data: psychological_assessments } = await supabase
         .from('tb_psychological_assessments')
-        .select()
+        .select('id, name')
         .ilike('name', `%${q}%`)
         .limit(10);
       return Response.json(psychological_assessments);
@@ -26,6 +26,6 @@ export async function GET(req: NextRequest) {
       return Response.json(psychological_assessments);
     }
   } catch (error) {
-    return new NextResponse(`select data error: ${error}`, { status: 400 });
+    return Response.json(`select data error: ${error}`, { status: 400 });
   }
 }

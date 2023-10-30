@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 
@@ -14,18 +14,18 @@ export async function GET(req: NextRequest) {
     if (q) {
       const { data: services } = await supabase
         .from('tb_services')
-        .select()
+        .select('id, name')
         .ilike('name', `%${q}%`)
         .limit(10);
       return Response.json(services);
     } else {
       const { data: services } = await supabase
         .from('tb_services')
-        .select()
+        .select('id, name')
         .limit(10);
       return Response.json(services);
     }
   } catch (error) {
-    return new NextResponse(`select data error: ${error}`, { status: 400 });
+    return Response.json(`select data error: ${error}`, { status: 400 });
   }
 }

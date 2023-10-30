@@ -23,12 +23,16 @@
 - [ ] Criar formulário para cadastro de usuário
 - [x] Criar estrutura de prontuário do atendido
 - [x] Refatorar Header para responsividade
-- [ ] Refatorar tela de Login para responsividade (versão web)
+- [x] Refatorar tela de Login para responsividade (versão web)
 - [x] Refatorar Dashboard para responsividade
-- [] Desenha nova Dashboard
-- [ ] Implementar função de gerar prontuário em pdf
+- [] Desenhar nova Dashboard
+- [x] Implementar função de gerar prontuário em pdf
+- [x] Adicionar função upload pdf assinado
+- [ ] Criar funções para transação de cadastro de cliente
+- [ ] Criar funções para transação de cadastro de atendimento
+- [ ] Implementar melhoria no carregamento dos formulários
 - [ ] Implementar função de assinatura digital
-- [ ] Adiciona barra de busca na listagem de atendimentos
+- [x] Adiciona barra de busca na listagem de atendimentos
 - [ ] Adiciona paginação na listagem de atendimentos
 - [ ] Adiciona paginação na listagem de atendidos
 - [ ] Adicionar políticas no banco de dados
