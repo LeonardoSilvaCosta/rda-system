@@ -91,6 +91,11 @@
         &:hover {
           background-color: rgba(118, 121, 213, 0.9)
         }
+
+        &.disabled {
+          background-color: var(--gray-300);
+          cursor: not-allowed;
+        }
       }
 
       input[type="file"] {

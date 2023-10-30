@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
+import { LoadingComponent } from '../Loading/loading';
 import { MyPdf } from '../MyPdf';
 import styles from './styles.module.scss';
 
@@ -17,8 +18,26 @@ export function AppointmentDetails({
   appointment
 }: AppointmentDetailsProps) {
   const [isUploading, setIsUploading] = useState(false);
+  const [hasSignedPdf, setHasSignedPdf] = useState(false);
+
+  useEffect(() => {
+    async function downloadExists(attendedCpf: string, appointmentId: string) {
+      try {
+        const req = await fetch(
+          `/api/get_download_exists?cpf=${attendedCpf}&appointmentId=${appointmentId}`
+        );
+        const response = await req.json();
+        setHasSignedPdf(response);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    appointment && downloadExists(attended.cpf, appointment.id);
+  }, [appointment, appointment?.id, attended.cpf, isUploading]);
 
   if (!appointment) return;
+
   const {
     date,
     protocol,
@@ -59,7 +78,7 @@ export function AppointmentDetails({
 
     try {
       const resPdf = await fetch(
-        `api/upload_pdf?cpf=${attended.cpf}&appointmentId=${appointmentId}`,
+        `/api/upload_pdf?cpf=${attended.cpf}&appointmentId=${appointmentId}`,
         {
           method: 'POST',
           body: formData
@@ -67,13 +86,40 @@ export function AppointmentDetails({
       );
 
       const pdfData = await resPdf.json();
-      toast.success(pdfData);
-      setIsUploading(false);
+      resPdf.status === 200 ? toast.success(pdfData) : toast.error(pdfData);
     } catch (error) {
       console.log(error);
+    } finally {
       setIsUploading(false);
     }
   };
+
+  const downloadPdf = async (cpf: string, appointmentId: string) => {
+    try {
+      const req = await fetch(
+        `/api/download_pdf?cpf=${cpf}&appointmentId=${appointmentId}`
+      );
+
+      if (req.status === 200) {
+        const blob = await req.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `record-${appointmentId}.pdf`;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } else {
+        const response = await req.json();
+        toast.error(response);
+      }
+    } catch (error) {
+      console.error('Erro ao baixar o PDF:', error);
+    }
+  };
+
   return (
     <main className={styles.container}>
       <div>
@@ -126,26 +172,35 @@ export function AppointmentDetails({
         <span>{`${recordProgress}`}</span>
       </div>
       <footer className={styles.footer}>
-        <button>
-          <PDFDownloadLink
-            document={<MyPdf attended={attended} appointment={appointment} />}
-            fileName="document.pdf"
-          >
-            {({ loading }) =>
-              loading ? 'Carregando documento...' : 'Baixar pdf!'
-            }
-          </PDFDownloadLink>
-        </button>
         <form>
-          <label htmlFor="file">
+          <label
+            className={`${hasSignedPdf ? styles.disabled : ''}`}
+            htmlFor="file"
+          >
             {isUploading ? 'Carregando documento...' : 'Enviar pdf assinado!'}
           </label>
           <input
             id="file"
             type="file"
+            disabled={hasSignedPdf}
             onChange={(e) => uploadPdf(e, appointment.id)}
           />
         </form>
+        {hasSignedPdf && (
+          <button onClick={() => downloadPdf(attended.cpf, appointment.id)}>
+            {`Baixar pdf`}
+          </button>
+        )}
+        {!hasSignedPdf && (
+          <button>
+            <PDFDownloadLink
+              document={<MyPdf attended={attended} appointment={appointment} />}
+              fileName="document.pdf"
+            >
+              {({ loading }) => (loading ? 'Carregando...' : 'Baixar pdf!')}
+            </PDFDownloadLink>
+          </button>
+        )}
       </footer>
     </main>
   );
