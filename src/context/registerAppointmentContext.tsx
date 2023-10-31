@@ -29,7 +29,7 @@ import { useGlobalContext } from './globalContext';
 
 import { FirstAppointmentForm } from '@/components/RegisterAppointmentForm/FirstAppointmentForm';
 import { SecondAppointmentForm } from '@/components/RegisterAppointmentForm/SecondAppointmentForm';
-import { AppointmentFormValues } from '@/types/types';
+import { AppointmentFormValues, PopulateFormData } from '@/types/types';
 import {
   firstAppointmentStepValidation,
   secondAppointmentStepValidation
@@ -39,10 +39,12 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import * as yup from 'yup';
 
 interface RegisterAppointmentContextProps {
+  appointmentFormData: PopulateFormData[];
   clearErrors: UseFormClearErrors<any>;
   control: Control<any, any>;
   errors: FieldErrors<AppointmentFormValues>;
   getValues: UseFormGetValues<any>;
+  formDataRequest: () => Promise<PopulateFormData[]>;
   currentComponent: JSX.Element;
   goToNextStep: () => void;
   goToPreviousStep: () => void;
@@ -70,6 +72,10 @@ export const RegisterAppointmentContextProvider = ({
 }) => {
   const { returnToDashboard } = useGlobalContext();
   const supabase = createClientComponentClient();
+  const [appointmentFormData, setAppointmentFormData] = useState<
+    PopulateFormData[]
+  >([]);
+
   const router = useRouter();
   const [validationSchema, setValidationSchema] = useState<
     yup.ObjectSchema<object>
@@ -124,6 +130,14 @@ export const RegisterAppointmentContextProvider = ({
       top: 0,
       behavior: 'smooth'
     });
+  };
+
+  const formDataRequest = async () => {
+    const req = await fetch('/api/get_appointment_form_data');
+    const res = await req.json();
+
+    setAppointmentFormData(res);
+    return res;
   };
 
   const formComponents = [
@@ -328,10 +342,12 @@ export const RegisterAppointmentContextProvider = ({
   return (
     <RegisterAppointmentContext.Provider
       value={{
+        appointmentFormData,
         clearErrors,
         control,
         currentComponent: formComponents[currentStep],
         errors,
+        formDataRequest,
         getValues,
         goToNextStep,
         goToPreviousStep,

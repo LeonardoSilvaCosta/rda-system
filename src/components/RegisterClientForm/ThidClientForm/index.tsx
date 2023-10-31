@@ -15,7 +15,7 @@ import { LoadingComponent } from '@/components/Loading/loading';
 import { MaskedInput } from '@/components/MaskedInput';
 import { MyCustomDropdown } from '@/components/MyCustomDropdown';
 import { useRegisterClientContext } from '@/context/registerClientContext';
-import { ClientFormValues, Option } from '@/types/types';
+import { ClientFormValues } from '@/types/types';
 
 interface ThirdClientFormProps {
   control: Control<ClientFormValues>;
@@ -30,29 +30,24 @@ const contactDefaultValues = {
 };
 
 export function ThirdClientForm({ control, register }: ThirdClientFormProps) {
-  const { clearErrors, errors, getValues, goToPreviousStep } =
+  const { clearErrors, errors, getValues, goToPreviousStep, clientFormData } =
     useRegisterClientContext();
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'contacts'
   });
   const [isLoading, setIsLoading] = useState(true);
-  const [familiarBonds, setFamiliarBonds] = useState<Option[]>([]);
+  const familiarBonds = clientFormData
+    .filter((e) => e.source === 'Familiar bond')
+    .map((familiarBond) => {
+      return {
+        id: familiarBond.id,
+        name: familiarBond.name
+      };
+    });
 
   useEffect(() => {
-    const getLists = async () => {
-      try {
-        const resFamiliarBonds = await fetch('/api/get_familiar_bonds');
-        const familiarBonds = await resFamiliarBonds.json();
-        setFamiliarBonds(familiarBonds);
-
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getLists();
+    setIsLoading(false);
   }, []);
 
   const contactBoxElements = () => {

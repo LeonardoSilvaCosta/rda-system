@@ -1,5 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { BsPersonCheck } from 'react-icons/bs';
 import { GiPoliceOfficerHead } from 'react-icons/gi';
 import { GoPerson } from 'react-icons/go';
@@ -12,6 +13,8 @@ import { Header } from '@/components/Header';
 
 export default function Options() {
   const router = useRouter();
+
+  useEffect(() => {}, []);
 
   const handleClick = () => {
     router.push('/');

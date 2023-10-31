@@ -35,15 +35,16 @@ export function FirstClientForm({
     isCPFValid,
     isCPFUnique,
     setIsCPFValid,
-    setIsCPFUnique
+    setIsCPFUnique,
+    formDataRequest
   } = useRegisterClientContext();
   const [isLoading, setIsLoading] = useState(true);
+  const [militaryAttendeds, setMilitaryAttendeds] = useState<Option[]>([]);
   const [ranks, setRanks] = useState<Option[]>([]);
   const [cadres, setCadres] = useState<Option[]>([]);
   const [genders, setGenders] = useState<Option[]>([]);
   const [maritalStatus, setMaritalStatus] = useState<Option[]>([]);
   const [opms, setOpms] = useState<Option[]>([]);
-  const [militaryAttendeds, setMilitaryAttendeds] = useState<Option[]>([]);
   const [workStatus, setWorkStatus] = useState<Option[]>([]);
   const [familiarBonds, setFamiliarBonds] = useState<Option[]>([]);
 
@@ -59,52 +60,92 @@ export function FirstClientForm({
   useEffect(() => {
     const getLists = async () => {
       try {
-        const resGenders = await fetch('/api/get_genders');
-        const resMaritalStatus = await fetch('/api/get_marital_status');
-        const genders = await resGenders.json();
-        const maritalStatus = await resMaritalStatus.json();
+        const response = await formDataRequest();
 
-        setMaritalStatus(maritalStatus);
-        setGenders(genders);
-
-        if (isMilitary) {
-          const resRanks = await fetch('/api/get_ranks');
-          const resCadres = await fetch('/api/get_cadres');
-          const resOpms = await fetch('/api/get_opms');
-          const resWorkStatus = await fetch('/api/get_work_status');
-
-          const ranks = await resRanks.json();
-          const cadres = await resCadres.json();
-          const opms = await resOpms.json();
-          const workStatus = await resWorkStatus.json();
-
-          setRanks(ranks);
-          setCadres(cadres);
-          setOpms(opms);
-          setWorkStatus(workStatus);
-        }
-
-        if (isDependent) {
-          const resMilitaryAttendeds = await fetch(
-            '/api/get_military_attendeds'
-          );
-          const resFamiliarBonds = await fetch('/api/get_familiar_bonds');
-
-          const militaryAttendeds = await resMilitaryAttendeds.json();
-          const familiarBonds = await resFamiliarBonds.json();
-
-          setFamiliarBonds(familiarBonds);
-          const formatedMilitaryAttendeds = await militaryAttendeds.map(
-            (e: Military) => {
+        setMaritalStatus(
+          response
+            .filter((e) => e.source === 'Marital status')
+            .map((maritalStatus) => {
               return {
-                id: e.id,
-                name: `${e.rank} ${e.cadre} RG ${e.rg} ${e.nickname}`
+                id: maritalStatus.id,
+                name: maritalStatus.name
               };
-            }
-          );
+            })
+        );
+        setGenders(
+          response
+            .filter((e) => e.source === 'Gender')
+            .map((gender) => {
+              return {
+                id: gender.id,
+                name: gender.name
+              };
+            })
+        );
 
-          setMilitaryAttendeds(formatedMilitaryAttendeds);
-        }
+        setRanks(
+          response
+            .filter((e) => e.source === 'Rank')
+            .map((rank) => {
+              return {
+                id: rank.id,
+                name: rank.name
+              };
+            })
+        );
+        setCadres(
+          response
+            .filter((e) => e.source === 'Cadre')
+            .map((cadre) => {
+              return {
+                id: cadre.id,
+                name: cadre.name
+              };
+            })
+        );
+        setOpms(
+          response
+            .filter((e) => e.source === 'OPM')
+            .map((opm) => {
+              return {
+                id: opm.id,
+                name: opm.name
+              };
+            })
+        );
+        setWorkStatus(
+          response
+            .filter((e) => e.source === 'Work status')
+            .map((workStatus) => {
+              return {
+                id: workStatus.id,
+                name: workStatus.name
+              };
+            })
+        );
+
+        setFamiliarBonds(
+          response
+            .filter((e) => e.source === 'Familiar bond')
+            .map((familiarBond) => {
+              return { id: familiarBond.id, name: familiarBond.name };
+            })
+        );
+
+        const resMilitaryAttendeds = await fetch('/api/get_military_attendeds');
+
+        const militaryAttendeds = await resMilitaryAttendeds.json();
+
+        const formatedMilitaryAttendeds = await militaryAttendeds.map(
+          (e: Military) => {
+            return {
+              id: e.id,
+              name: `${e.rank} ${e.cadre} RG ${e.rg} ${e.nickname}`
+            };
+          }
+        );
+
+        setMilitaryAttendeds(formatedMilitaryAttendeds);
 
         setIsLoading(false);
       } catch (error) {
@@ -113,7 +154,7 @@ export function FirstClientForm({
     };
 
     getLists();
-  }, [isMilitary, isDependent]);
+  }, [formDataRequest]);
 
   const analyseCPF = async (
     e: React.ChangeEvent<HTMLInputElement>

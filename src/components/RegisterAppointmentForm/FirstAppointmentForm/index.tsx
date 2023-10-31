@@ -13,8 +13,15 @@ import { useRegisterAppointmentContext } from '@/context/registerAppointmentCont
 import { Military, Option } from '@/types/types';
 
 export function FirstAppointmentForm() {
-  const { control, errors, getValues, goToPreviousStep, register, watch } =
-    useRegisterAppointmentContext();
+  const {
+    formDataRequest,
+    control,
+    errors,
+    getValues,
+    goToPreviousStep,
+    register,
+    watch
+  } = useRegisterAppointmentContext();
   const [isLoading, setIsLoading] = useState(true);
   const [specialists, setSpecialists] = useState<Option[]>([]);
   const [attendeds, setAttendeds] = useState<Option[]>([]);
@@ -30,17 +37,12 @@ export function FirstAppointmentForm() {
   useEffect(() => {
     const getLists = async () => {
       try {
+        const response = await formDataRequest();
         const resEspecialists = await fetch('/api/get_specialists');
         const resAttendeds = await fetch('/api/get_attendeds');
-        const resAccesses = await fetch('/api/get_accesses');
-        const resFacilities = await fetch('/api/get_opms');
-        const resModalities = await fetch('/api/get_modalities');
 
         const specialists = await resEspecialists.json();
         const attendeds = await resAttendeds.json();
-        const accesses = await resAccesses.json();
-        const facilities = await resFacilities.json();
-        const modalities = await resModalities.json();
 
         const formattedEspecialists = await specialists.map((e: Military) => {
           return {
@@ -61,9 +63,36 @@ export function FirstAppointmentForm() {
 
         setSpecialists(formattedEspecialists);
         setAttendeds(formatedAttendeds);
-        setAccesses(accesses);
-        setFacilities(facilities);
-        setModalities(modalities);
+        setAccesses(
+          response
+            .filter((e) => e.source === 'Access')
+            .map((access) => {
+              return {
+                id: access.id,
+                name: access.name
+              };
+            })
+        );
+        setFacilities(
+          response
+            .filter((e) => e.source === 'Facility')
+            .map((facility) => {
+              return {
+                id: facility.id,
+                name: facility.name
+              };
+            })
+        );
+        setModalities(
+          response
+            .filter((e) => e.source === 'Modality')
+            .map((modality) => {
+              return {
+                id: modality.id,
+                name: modality.name
+              };
+            })
+        );
 
         setIsLoading(false);
       } catch (error) {

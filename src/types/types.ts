@@ -219,3 +219,10 @@ export type Identification = {
   cpf: string;
   fullname: string;
 };
+
+export type PopulateFormData = {
+  id: string;
+  ordenation: number;
+  name: string;
+  source: string;
+};

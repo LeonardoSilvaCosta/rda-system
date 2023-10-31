@@ -11,10 +11,10 @@ import { MyCustomMultiSelectDropdown } from '@/components/MyCustomMultiselectDro
 import { RadioGroup } from '@/components/RadioGroup';
 import { TextArea } from '@/components/TextArea';
 import { useRegisterAppointmentContext } from '@/context/registerAppointmentContext';
-import { Option } from '@/types/types';
 
 export function SecondAppointmentForm() {
   const {
+    appointmentFormData,
     control,
     errors,
     getValues,
@@ -25,20 +25,86 @@ export function SecondAppointmentForm() {
     watch
   } = useRegisterAppointmentContext();
   const [isLoading, setIsLoading] = useState(true);
-  const [services, setServices] = useState<Option[]>([]);
-  const [psychologicalAssessments, setPsychologicalAssessments] = useState<
-    Option[]
-  >([]);
-  const [socialAssessments, setSocialAssessments] = useState<Option[]>([]);
-  const [generalDemands, setGeneralDemands] = useState<Option[]>([]);
-  const [specificDemands, setSpecificsDemands] = useState<Option[]>([]);
-  const [procedures, setProcedures] = useState<Option[]>([]);
-  const [referralDestinations, setReferralDestinations] = useState<Option[]>(
-    []
-  );
-  const [referralTypes, setReferralTypes] = useState<Option[]>([]);
-  const [documents, setDocuments] = useState<Option[]>([]);
-  const [travels, setTravels] = useState<Option[]>([]);
+  const services = appointmentFormData
+    .filter((e) => e.source === 'Service')
+    .map((service) => {
+      return {
+        id: service.id,
+        name: service.name
+      };
+    });
+  const psychologicalAssessments = appointmentFormData
+    .filter((e) => e.source === 'Psychological assessment')
+    .map((psychologicalAssessment) => {
+      return {
+        id: psychologicalAssessment.id,
+        name: psychologicalAssessment.name
+      };
+    });
+  const socialAssessments = appointmentFormData
+    .filter((e) => e.source === 'Social assessment')
+    .map((socialAssessment) => {
+      return {
+        id: socialAssessment.id,
+        name: socialAssessment.name
+      };
+    });
+  const generalDemands = appointmentFormData
+    .filter((e) => e.source === 'General demand')
+    .map((generalDemand) => {
+      return {
+        id: generalDemand.id,
+        name: generalDemand.name
+      };
+    });
+  const specificDemands = appointmentFormData
+    .filter((e) => e.source === 'Specific demand')
+    .map((specificDemand) => {
+      return {
+        id: specificDemand.id,
+        name: specificDemand.name
+      };
+    });
+  const procedures = appointmentFormData
+    .filter((e) => e.source === 'Procedure')
+    .map((procedure) => {
+      return {
+        id: procedure.id,
+        name: procedure.name
+      };
+    });
+  const referralDestinations = appointmentFormData
+    .filter((e) => e.source === 'Referral destination')
+    .map((referralDestination) => {
+      return {
+        id: referralDestination.id,
+        name: referralDestination.name
+      };
+    });
+  const referralTypes = appointmentFormData
+    .filter((e) => e.source === 'Referral type')
+    .map((referralType) => {
+      return {
+        id: referralType.id,
+        name: referralType.name
+      };
+    });
+  const documents = appointmentFormData
+    .filter((e) => e.source === 'Document')
+    .map((document) => {
+      return {
+        id: document.id,
+        name: document.name
+      };
+    });
+  const travels = appointmentFormData
+    .filter((e) => e.source === 'Travel')
+    .map((travel) => {
+      return {
+        id: travel.id,
+        name: travel.name
+      };
+    });
   const leaveOfAbsenceOptions = [
     { id: 'Sim', name: 'Sim' },
     { id: 'Não', name: 'Não' }
@@ -56,44 +122,6 @@ export function SecondAppointmentForm() {
   useEffect(() => {
     const getLists = async () => {
       try {
-        const resServices = await fetch('/api/get_services');
-        const resPsychologicalAssessments = await fetch(
-          '/api/get_psychological_assessments'
-        );
-        const resSocialAssessments = await fetch('/api/get_social_assessments');
-        const resGeneralDemands = await fetch('/api/get_general_demands');
-        const resSpecificDemands = await fetch('/api/get_specific_demands');
-        const resProcedures = await fetch('/api/get_procedures');
-        const resReferralDestinations = await fetch(
-          '/api/get_referral_destinations'
-        );
-        const resReferralTypes = await fetch('/api/get_referral_types');
-        const resDocuments = await fetch('/api/get_documents');
-        const resTravels = await fetch('/api/get_travels');
-
-        const services = await resServices.json();
-        const psychologicalAssessments =
-          await resPsychologicalAssessments.json();
-        const socialAssessments = await resSocialAssessments.json();
-        const generalDemands = await resGeneralDemands.json();
-        const specificDemands = await resSpecificDemands.json();
-        const procedures = await resProcedures.json();
-        const referralDestinations = await resReferralDestinations.json();
-        const referralTypes = await resReferralTypes.json();
-        const documents = await resDocuments.json();
-        const travels = await resTravels.json();
-
-        setServices(services);
-        setPsychologicalAssessments(psychologicalAssessments);
-        setSocialAssessments(socialAssessments);
-        setGeneralDemands(generalDemands);
-        setSpecificsDemands(specificDemands);
-        setProcedures(procedures);
-        setReferralDestinations(referralDestinations);
-        setReferralTypes(referralTypes);
-        setDocuments(documents);
-        setTravels(travels);
-
         setIsLoading(false);
       } catch (error) {
         console.log(error);

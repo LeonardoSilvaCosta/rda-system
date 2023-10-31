@@ -6,6 +6,16 @@ const errorMessages = {
   pdfDownloadFailed: {
     status: 400,
     message: 'Erro ao tentar baixar pdf: O arquivo não foi encontrado!'
+  },
+  clientFormDataFailed: {
+    status: 400,
+    message:
+      'Erro ao tentar recuperar os dados para popular os dados do formulário de cadastro de cliente.'
+  },
+  appointmentClientDataFailed: {
+    status: 400,
+    message:
+      'Erro ao tentar recuperar os dados para popular os dados do formulário de cadastro de atendimento.'
   }
 };
 

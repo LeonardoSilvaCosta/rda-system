@@ -28,7 +28,7 @@ import toast from 'react-hot-toast';
 import { FirstClientForm } from '@/components/RegisterClientForm/FirstClientForm';
 import { SecondClientForm } from '@/components/RegisterClientForm/SecondClientForm';
 import { ThirdClientForm } from '@/components/RegisterClientForm/ThidClientForm';
-import { ClientFormValues } from '@/types/types';
+import { ClientFormValues, PopulateFormData } from '@/types/types';
 import {
   addressFormValidation,
   contactFormValidation,
@@ -45,6 +45,8 @@ interface RegisteClientContextProps {
   currentFormType: keyof typeof firstClientFormValidations;
   errors: FieldErrors<ClientFormValues>;
   formType: string;
+  clientFormData: PopulateFormData[];
+  formDataRequest: () => Promise<PopulateFormData[]>;
   getValues: UseFormGetValues<any>;
   currentComponent: JSX.Element;
   goToNextStep: () => void;
@@ -62,6 +64,7 @@ interface RegisteClientContextProps {
     SetStateAction<'militar' | 'dependente' | 'civil-sem-vínculo'>
   >;
   setCurrentStep: Dispatch<SetStateAction<number>>;
+  setClientFormData: Dispatch<SetStateAction<PopulateFormData[]>>;
   setIsCPFValid: Dispatch<SetStateAction<boolean>>;
   setIsCPFUnique: Dispatch<SetStateAction<boolean>>;
   setValue: UseFormSetValue<any>;
@@ -78,6 +81,7 @@ export const RegisterClientContextProvider = ({
   children: React.ReactNode;
 }) => {
   const supabase = createClientComponentClient();
+  const [clientFormData, setClientFormData] = useState<PopulateFormData[]>([]);
   const router = useRouter();
   const [validationSchema, setValidationSchema] = useState<
     yup.ObjectSchema<object>
@@ -118,6 +122,14 @@ export const RegisterClientContextProvider = ({
       top: 0,
       behavior: 'smooth'
     });
+  };
+
+  const formDataRequest = async () => {
+    const req = await fetch('/api/get_attended_form_data');
+    const res = await req.json();
+
+    setClientFormData(res);
+    return res;
   };
 
   const formComponents = [
@@ -292,7 +304,10 @@ export const RegisterClientContextProvider = ({
         currentComponent: formComponents[currentStep],
         currentFormType,
         errors,
+        clientFormData,
         formType: 'clientRegister',
+        setClientFormData,
+        formDataRequest,
         getValues,
         goToNextStep,
         goToPreviousStep,
