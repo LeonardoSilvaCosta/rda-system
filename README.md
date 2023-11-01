@@ -25,16 +25,16 @@
 - [x] Refatorar Header para responsividade
 - [x] Refatorar tela de Login para responsividade (versão web)
 - [x] Refatorar Dashboard para responsividade
-- [] Desenhar nova Dashboard
 - [x] Implementar função de gerar prontuário em pdf
 - [x] Adicionar função upload pdf assinado
-- [ ] Criar funções para transação de cadastro de cliente
-- [ ] Criar funções para transação de cadastro de atendimento
-- [ ] Implementar melhoria no carregamento dos formulários
-- [ ] Implementar função de assinatura digital
+- [x] Implementar melhoria no carregamento dos formulários
 - [x] Adiciona barra de busca na listagem de atendimentos
+- [x] Adicionar políticas no banco de dados
+- [x] Criar função para transação de cadastro de cliente
+- [ ] Criar funções para transação de cadastro de atendimento
+- [ ] Implementar função de assinatura digital
 - [ ] Adiciona paginação na listagem de atendimentos
 - [ ] Adiciona paginação na listagem de atendidos
-- [ ] Adicionar políticas no banco de dados
 - [ ] Adicionar máscara de data no datapicker
 - [ ] Adicionar melhoria no dropdown (input confundindo usuário)
+- [] Desenhar nova Dashboard

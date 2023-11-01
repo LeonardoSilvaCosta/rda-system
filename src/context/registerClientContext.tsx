@@ -102,14 +102,37 @@ export const RegisterClientContextProvider = ({
   } = useForm<ClientFormValues | any>({
     resolver: yupResolver(validationSchema),
     defaultValues: {
+      fullName: '',
+      nickName: null,
+      rg: null,
+      rank: null,
+      cadre: null,
+      gender: '',
+      cpf: '',
+      birthDate: null,
+      maritalStatus: null,
       contacts: [
         {
           phone: '',
           ownerIdentification: '',
-          attendedRelationship: '',
+          attendedRelationship: null,
           attended_id: ''
         }
-      ]
+      ],
+      address: {
+        zipCode: '',
+        number: '',
+        street: '',
+        neighborhood: '',
+        complement: null,
+        city_id: '',
+        attended_id: ''
+      },
+      opm: null,
+      policyHolder: null,
+      isCivilVolunteer: '',
+      familiarBond: null,
+      workStatus: null
     }
   });
 
@@ -218,80 +241,65 @@ export const RegisterClientContextProvider = ({
       const cleanedCPF = data.cpf.replace(/[^\d]/g, '');
       const cleanedZipCode = data.address.zipCode.replace(/[^\d]/g, '');
 
-      try {
-        const saveRegister = async () => {
-          const { data: attendedData, error: attendedError } = await supabase
-            .from('tb_attendeds')
-            .insert({
-              fullname: data.fullName,
-              nickname: data.nickName,
-              rg: data.rg,
-              rank_id: data.rank,
-              cadre_id: data.cadre,
-              opm_id: data.opm,
-              gender_id: data.gender,
-              cpf: cleanedCPF,
-              birth_date: formattedDate,
-              marital_status_id: data.maritalStatus,
-              policy_holder_id: data.policyHolder,
-              is_civil_volunteer: isCivilVolunteer,
-              familiar_bond_id: data.familiarBond,
-              work_status_id: data.workStatus,
-              registered_by: await userData.id
-            })
-            .select();
-
-          if (attendedError) {
-            toast.error('Erro na transação, usuário não cadastrado');
-            return;
-          }
-
-          const attendedId = attendedData && attendedData[0].id;
-
-          const { error: addressError } = await supabase
-            .from('tb_addresses')
-            .insert({
-              zip_code: cleanedZipCode,
-              number: data.address.number,
-              street: data.address.street,
-              neighborhood: data.address.neighborhood,
-              complement: data.address.complement,
-              city_id: data.address.city,
-              attended_id: attendedId
-            });
-
-          if (addressError) {
-            toast.error('Erro na transaão, usuário não cadastrado');
-            return;
-          }
-
-          const phones = data.contacts.map((e) => {
-            return {
-              phone: e.phone.replace(/[^\d]/g, ''),
-              owner_identification: e.ownerIdentification,
-              attended_relationship: e.attendedRelationship
-                ? e.attendedRelationship
-                : null,
-              attended_id: attendedId
-            };
-          });
-
-          await supabase.from('tb_phones').insert(phones);
+      const phones = data.contacts.map((e) => {
+        return {
+          phone: e.phone.replace(/[^\d]/g, ''),
+          owner_identification: e.ownerIdentification,
+          attended_relationship: null
         };
+      });
 
-        saveRegister();
+      try {
+        const { error } = await supabase.rpc('create_new_attended', {
+          fullname_input: data.fullName,
+          nickname_input: data.nickName,
+          rg_input: data.rg,
+          rank_id_input: data.rank,
+          cadre_id_input: data.cadre,
+          opm_id_input: data.opm,
+          gender_id_input: data.gender,
+          cpf_input: cleanedCPF,
+          birth_date_input: formattedDate,
+          marital_status_id_input: data.maritalStatus,
+          policy_holder_id_input: data.policyHolder,
+          is_civil_volunteer_input: isCivilVolunteer,
+          familiar_bond_id_input: data.familiarBond,
+          work_status_id_input: data.workStatus,
+          registered_by_input: await userData.id,
+          zip_code_input: cleanedZipCode,
+          number_input: data.address.number,
+          street_input: data.address.street,
+          neighborhood_input: data.address.neighborhood,
+          city_id_input: data.address.city,
+          phones_input: phones
+        });
 
-        toast.success('Você cadastrou um novo usuário com sucesso.');
-
+        if (!error) {
+          toast.success('Você cadastrou um novo atendido com sucesso.');
+        } else {
+          toast.error(
+            `Error ao cadastrar novo atendido! Tente novamente mais tarde.`
+          );
+          console.log(
+            `Erro no cadastro de formulário. ${JSON.stringify(error, null, 2)}.`
+          );
+        }
+      } catch (error) {
+        toast.error(
+          `Houve algum problema no cadastro de seu formulário, tente novamente.`
+        );
+        console.log(
+          `Problema no cadastro de seu formulário. Erro ${JSON.stringify(
+            error,
+            null,
+            2
+          )}.`
+        );
+      } finally {
         reset();
-
         setCurrentStep(0);
         selectFormValidation(0);
         router.push('/RegisterClient/Options');
-      } catch (error) {
-        toast.error(
-          `Houve algum problema no cadastro de seu formulário. Erro ${error}. Tente novamente.`
-        );
       }
     }
   };

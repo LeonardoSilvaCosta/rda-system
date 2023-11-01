@@ -8,8 +8,8 @@ export const militaryFormValidation = yup.object({
   cadre: yup.string().required("O campo 'Quadro' é obrigatório."),
   gender: yup.string().required("O campo 'Gênero' é obrigatório."),
   cpf: yup.string().required("O campo 'CPF' é obrigatório."),
-  birthDate: yup.date(),
-  maritalStatus: yup.string(),
+  birthDate: yup.date().required("O campo 'Data de nascimento' é obrigatório."),
+  maritalStatus: yup.string().required("O campo 'Estado civil' é obrigatório."),
   opm: yup.string().required("O campo 'OPM' é obrigatório."),
   workStatus: yup
     .string()
@@ -22,17 +22,19 @@ export const dependentFormValidation = yup.object({
   familiarBond: yup.string().required("O campo 'vínculo é obrigatório.'"),
   gender: yup.string().required("O campo 'Gênero' é obrigatório."),
   cpf: yup.string().required("O campo 'CPF' é obrigatório."),
-  birthDate: yup.date(),
-  maritalStatus: yup.string(),
-  isCivilVolunteer: yup.string().required('O campo é voluntário é obrigatório.')
+  birthDate: yup.date().required("O campo 'Data de nascimento' é obrigatório."),
+  maritalStatus: yup.string().required("O campo 'Estado civil' é obrigatório."),
+  isCivilVolunteer: yup
+    .string()
+    .required("O campo 'É voluntário civil' é obrigatório.")
 });
 
 export const citizenFormValidation = yup.object({
   fullName: yup.string().required("O campo 'Nome completo' é obrigatório."),
   gender: yup.string().required("O campo 'Sexo' é obrigatório."),
   cpf: yup.string().required("O campo 'CPF' é obrigatório."),
-  birthDate: yup.date(),
-  maritalStatus: yup.string(),
+  birthDate: yup.date().required("O campo 'Data de nascimento' é obrigatório."),
+  maritalStatus: yup.string().required("O campo 'Estado civil' é obrigatório."),
   isCivilVolunteer: yup.string().required('O campo é voluntário é obrigatório.')
 });
 
@@ -47,6 +49,7 @@ const address = yup.object({
   street: yup.string().required("O campo 'Logradouro' é obrigatório"),
   neighborhood: yup.string().required("O campo 'Bairro' é obrigatório"),
   number: yup.string().required("O campo 'Número' é obrigatório."),
+  complement: yup.string().nullable(),
   stateAcronym: yup.string().required("O campo 'UF' é obrigatório"),
   city: yup.string().required("O campo 'Cidade' é obrigatório.")
 });
