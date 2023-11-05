@@ -228,33 +228,6 @@ export const RegisterAppointmentContextProvider = ({
               })
             : [];
 
-        const test = {
-          access_id_input: data.access,
-          attendeds_id_input: data.attendeds,
-          date_input: formattedDate,
-          documents_id_input: data.documents,
-          facility_id_input: data.facility,
-          general_demand_id_input: data.generalDemand,
-          has_leave_of_absence_input: hasLeaveOfAbsence,
-          modality_id_input: data.modality,
-          procedure_id_input: data.procedure,
-          protocol_input: formattedProtocol,
-          psychological_assessment_id_input: data.psychologicalAssessment,
-          record_progress_input: data.recordProgress,
-          referrals_input: referrals,
-          registered_by_input: await userData.id,
-          service_id_input: data.service,
-          social_assessment_id_input: data.socialAssessment,
-          specialists_id_input: data.specialists,
-          specific_demands_id_input: data.specificDemands,
-          time_input: formattedHour,
-          travels_id_input: data.travels
-        };
-
-        console.log(test);
-
-        console.log('dados', data);
-
         const { error } = await supabase.rpc('create_new_appointment', {
           access_id_input: data.access,
           attendeds_id_input: data.attendeds,
@@ -277,11 +250,6 @@ export const RegisterAppointmentContextProvider = ({
           time_input: formattedHour,
           travels_id_input: data.travels
         });
-
-        if (error) console.error(error);
-        else console.log(data);
-
-        // saveRegister();
 
         if (!error) {
           toast.success('Você registrou um novo atendimento com sucesso!');
