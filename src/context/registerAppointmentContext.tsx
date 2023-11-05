@@ -7,6 +7,7 @@ import {
   SetStateAction,
   createContext,
   useContext,
+  useEffect,
   useState
 } from 'react';
 import {
@@ -95,33 +96,33 @@ export const RegisterAppointmentContextProvider = ({
   } = useForm<AppointmentFormValues | any>({
     resolver: yupResolver(validationSchema),
     defaultValues: {
-      contacts: [
-        {
-          date: null,
-          time: '',
-          specialists: [],
-          attendeds: [],
-          access: '',
-          facility: '',
-          modality: '',
-          hasProtocol: '',
-          protocol: '',
-          typeOfService: '',
-          typeOfPsychologicalAssessment: '',
-          typeOfSocialAssessment: '',
-          generalDemand: '',
-          specificDemands: [],
-          procedure: '',
-          hasFirstOptionWithoutSecondOption: false,
-          referrals: [],
-          documents: [],
-          travels: [],
-          hasLeaveOfAbsence: '',
-          recordProgress: ''
-        }
-      ]
+      date: null,
+      time: null,
+      specialists: [],
+      attendeds: [],
+      access: '',
+      facility: '',
+      modality: '',
+      hasProtocol: '',
+      protocolo: null,
+      service: '',
+      psychologicalAssessment: null,
+      socialAssessment: null,
+      generalDemand: '',
+      specificDemands: [],
+      procedure: '',
+      hasFirstOptionWithoutSecondOption: false,
+      referrals: [],
+      documents: [],
+      travels: [],
+      hasLeaveOfAbsence: '',
+      recordProgress: ''
     }
   });
+
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
 
   const [currentStep, setCurrentStep] = useState<number>(0);
 
@@ -214,127 +215,104 @@ export const RegisterAppointmentContextProvider = ({
           hour12: false
         });
 
-        const saveRegister = async () => {
-          const { data: appointmentData, error: appointmentError } =
-            await supabase
-              .from('tb_appointments')
-              .insert({
-                date: formattedDate,
-                time: formattedHour,
-                access_id: data.access,
-                facility_id: data.facility,
-                modality_id: data.modality,
-                protocol: data.protocol,
-                type_of_service_id: data.typeOfService,
-                type_of_psychological_assessment_id:
-                  data.typeOfPsychologicalAssessment,
-                type_of_social_assessment_id: data.typeOfSocialAssessment,
-                general_demand_id: data.generalDemand,
-                procedure_id: data.procedure,
-                has_leave_of_absence: hasLeaveOfAbsence,
-                record_progress: data.recordProgress,
-                registered_by: await userData.id
+        const formattedProtocol =
+          typeof data.protocol === 'undefined' ? null : data.protocol;
+
+        const referrals =
+          data.referrals.length > 0
+            ? data.referrals.map((e) => {
+                return {
+                  destination: e.firstOptionId,
+                  type: e.secondOptionId
+                };
               })
-              .select();
+            : [];
 
-          if (appointmentError) {
-            toast.error('Erro na transação, atendimento não cadastrado');
-            return;
-          }
-
-          const appointmentId = appointmentData && appointmentData[0].id;
-
-          const specialists =
-            data.specialists.length > 0
-              ? data.specialists.map((specialist) => {
-                  return {
-                    appointment_id: appointmentId,
-                    specialist_id: specialist
-                  };
-                })
-              : [];
-
-          await supabase
-            .from('tb_appointments_specialists')
-            .insert(specialists);
-
-          const attendeds =
-            data.attendeds.length > 0
-              ? data.attendeds.map((attended) => {
-                  return {
-                    appointment_id: appointmentId,
-                    attended_id: attended
-                  };
-                })
-              : [];
-
-          await supabase.from('tb_appointments_attendeds').insert(attendeds);
-
-          const specificDemands =
-            data.specificDemands.length > 0
-              ? data.specificDemands.map((specificDemand) => {
-                  return {
-                    appointment_id: appointmentId,
-                    specific_demand_id: specificDemand
-                  };
-                })
-              : [];
-
-          await supabase
-            .from('tb_appointments_specific_demands')
-            .insert(specificDemands);
-
-          const documents =
-            data.documents.length > 0
-              ? data.documents.map((document) => {
-                  return {
-                    appointment_id: appointmentId,
-                    document_id: document
-                  };
-                })
-              : [];
-
-          await supabase.from('tb_appointments_documents').insert(documents);
-
-          const travels =
-            data.travels.length > 0
-              ? data.travels.map((travel) => {
-                  return {
-                    appointment_id: appointmentId,
-                    travel_id: travel
-                  };
-                })
-              : [];
-
-          await supabase.from('tb_appointments_travels').insert(travels);
-
-          const referrals =
-            data.referrals.length > 0
-              ? data.referrals.map((e) => {
-                  return {
-                    destination: e.firstOptionId,
-                    type: e.secondOptionId,
-                    appointment_id: appointmentId
-                  };
-                })
-              : [];
-
-          await supabase.from('tb_appointment_referrals').insert(referrals);
+        const test = {
+          access_id_input: data.access,
+          attendeds_id_input: data.attendeds,
+          date_input: formattedDate,
+          documents_id_input: data.documents,
+          facility_id_input: data.facility,
+          general_demand_id_input: data.generalDemand,
+          has_leave_of_absence_input: hasLeaveOfAbsence,
+          modality_id_input: data.modality,
+          procedure_id_input: data.procedure,
+          protocol_input: formattedProtocol,
+          psychological_assessment_id_input: data.psychologicalAssessment,
+          record_progress_input: data.recordProgress,
+          referrals_input: referrals,
+          registered_by_input: await userData.id,
+          service_id_input: data.service,
+          social_assessment_id_input: data.socialAssessment,
+          specialists_id_input: data.specialists,
+          specific_demands_id_input: data.specificDemands,
+          time_input: formattedHour,
+          travels_id_input: data.travels
         };
 
-        saveRegister();
+        console.log(test);
 
-        toast.success('Você registrou um novo atendimento com sucesso.');
+        console.log('dados', data);
 
+        const { error } = await supabase.rpc('create_new_appointment', {
+          access_id_input: data.access,
+          attendeds_id_input: data.attendeds,
+          date_input: formattedDate,
+          documents_id_input: data.documents,
+          facility_id_input: data.facility,
+          general_demand_id_input: data.generalDemand,
+          has_leave_of_absence_input: hasLeaveOfAbsence,
+          modality_id_input: data.modality,
+          procedure_id_input: data.procedure,
+          protocol_input: formattedProtocol,
+          psychological_assessment_id_input: data.psychologicalAssessment,
+          record_progress_input: data.recordProgress,
+          referrals_input: referrals,
+          registered_by_input: await userData.id,
+          service_id_input: data.service,
+          social_assessment_id_input: data.socialAssessment,
+          specialists_id_input: data.specialists,
+          specific_demands_id_input: data.specificDemands,
+          time_input: formattedHour,
+          travels_id_input: data.travels
+        });
+
+        if (error) console.error(error);
+        else console.log(data);
+
+        // saveRegister();
+
+        if (!error) {
+          toast.success('Você registrou um novo atendimento com sucesso!');
+        } else {
+          toast.error(
+            `Error ao registrar novo atendimento! Tente novamente mais tarde.`
+          );
+          console.log(
+            `Erro ao registrar novo atendimento. ${JSON.stringify(
+              error,
+              null,
+              2
+            )}.`
+          );
+        }
+      } catch (error) {
+        toast.error(
+          `Error no cadastro de seu formulário. Tente novamente mais tarde.`
+        );
+        console.log(
+          `Problema no cadastro de seu formulário. Erro ${JSON.stringify(
+            error,
+            null,
+            2
+          )}.`
+        );
+      } finally {
         reset();
-
         setCurrentStep(0);
         selectFormValidation(0);
         router.push('/');
-      } catch (error) {
-        toast.error(
-          `Houve algum problema no cadastro de seu formulário. Erro ${error}. Tente novamente.`
-        );
       }
     }
   };

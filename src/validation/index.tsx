@@ -107,10 +107,10 @@ export const firstAppointmentStepValidation = yup.object({
     .string()
     .when('hasProtocol', {
       is: 'Sim',
-      then: () => yup.string().required("O campo 'Protocolo' é obrigatório."),
+      then: () => yup.string().required("O campo 'Protocolo' é obrgatório."),
       otherwise: () => yup.string().nullable()
     })
-    .default('')
+    .default(null)
 });
 
 const Referral = yup.object({
@@ -119,12 +119,10 @@ const Referral = yup.object({
 });
 
 export const secondAppointmentStepValidation = yup.object({
-  typeOfService: yup
+  service: yup.string().required("O campo 'Tipo de serviço' é obrigatório."),
+  psychologicalAssessment: yup
     .string()
-    .required("O campo 'Tipo de serviço' é obrigatório."),
-  typeOfPsychologicalAssessment: yup
-    .string()
-    .when('typeOfService', {
+    .when('service', {
       is: psychologicalId,
       then: () =>
         yup
@@ -132,10 +130,10 @@ export const secondAppointmentStepValidation = yup.object({
           .required("O campo 'Tipo de avaliação psicológica' é obrigatório"),
       otherwise: () => yup.string().nullable()
     })
-    .default(''),
-  typeOfSocialAssessment: yup
+    .default(null),
+  socialAssessment: yup
     .string()
-    .when('typeOfService', {
+    .when('service', {
       is: socialId,
       then: () =>
         yup
@@ -143,7 +141,7 @@ export const secondAppointmentStepValidation = yup.object({
           .required("O campo 'Tipo de avaliação social' é obrigatório"),
       otherwise: () => yup.string().nullable()
     })
-    .default(''),
+    .default(null),
   generalDemand: yup.string().required("O campo 'Demanda Geral' é obrigatório"),
   specificDemands: yup.array(yup.string()).default([]),
   procedure: yup.string().required("O campo 'Procedimento' é obrigatório"),

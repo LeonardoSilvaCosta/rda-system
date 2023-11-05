@@ -115,9 +115,8 @@ export function SecondAppointmentForm() {
   const watchTypeOfService = watch('typeOfService');
 
   String(watchTypeOfService) !== psychologicalId &&
-    setValue('typeOfPsychologicalAssessment', null);
-  String(watchTypeOfService) !== socialId &&
-    setValue('typeOfSocialAssessment', null);
+    setValue('psychologicalAssessment', null);
+  String(watchTypeOfService) !== socialId && setValue('socialAssessment', null);
 
   useEffect(() => {
     const getLists = async () => {
@@ -139,7 +138,7 @@ export function SecondAppointmentForm() {
         <>
           <MyCustomDropdown
             title="Tipo de serviço*"
-            fieldName="typeOfService"
+            fieldName="service"
             options={services}
             errors={errors}
             control={control}
@@ -149,7 +148,7 @@ export function SecondAppointmentForm() {
           {String(watchTypeOfService) === psychologicalId ? (
             <MyCustomDropdown
               title="Tipo de avaliação psicológica*"
-              fieldName="typeOfPsychologicalAssessment"
+              fieldName="psychologicalAssessment"
               options={psychologicalAssessments}
               errors={errors}
               control={control}
@@ -162,7 +161,7 @@ export function SecondAppointmentForm() {
           {String(watchTypeOfService) === socialId ? (
             <MyCustomDropdown
               title="Tipo de avaliação social*"
-              fieldName="typeOfSocialAssessment"
+              fieldName="socialAssessment"
               options={socialAssessments}
               errors={errors}
               control={control}

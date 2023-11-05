@@ -281,7 +281,11 @@ export const RegisterClientContextProvider = ({
             `Error ao cadastrar novo atendido! Tente novamente mais tarde.`
           );
           console.log(
-            `Erro no cadastro de formulário. ${JSON.stringify(error, null, 2)}.`
+            `Erro no cadastro de novo atendido. ${JSON.stringify(
+              error,
+              null,
+              2
+            )}.`
           );
         }
       } catch (error) {

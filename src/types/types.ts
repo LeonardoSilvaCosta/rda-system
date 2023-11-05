@@ -75,10 +75,10 @@ export type AppointmentFormValues = {
   facility: string;
   modality: string;
   hasProtocol: string;
-  protocol: string;
-  typeOfService: string;
-  typeOfPsychologicalAssessment: string;
-  typeOfSocialAssessment: string;
+  protocol: string | null;
+  service: string;
+  psychologicalAssessment: string | null;
+  socialAssessment: string | null;
   generalDemand: string;
   specificDemands: string[];
   procedure: string;

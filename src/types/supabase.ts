@@ -159,9 +159,9 @@ export interface Database {
           record_progress: string;
           registered_by: string | null;
           time: string;
-          type_of_psychological_assessment_id: string | null;
-          type_of_service_id: string;
-          type_of_social_assessment_id: string | null;
+          psychological_assessment_id: string | null;
+          service_id: string;
+          social_assessment_id: string | null;
         };
         Insert: {
           access_id: string;
@@ -177,9 +177,9 @@ export interface Database {
           record_progress: string;
           registered_by?: string | null;
           time: string;
-          type_of_psychological_assessment_id?: string | null;
-          type_of_service_id: string;
-          type_of_social_assessment_id?: string | null;
+          psychological_assessment_id?: string | null;
+          service_id: string;
+          social_assessment_id?: string | null;
         };
         Update: {
           access_id?: string;
@@ -195,9 +195,9 @@ export interface Database {
           record_progress?: string;
           registered_by?: string | null;
           time?: string;
-          type_of_psychological_assessment_id?: string | null;
-          type_of_service_id?: string;
-          type_of_social_assessment_id?: string | null;
+          psychological_assessment_id?: string | null;
+          service_id?: string;
+          social_assessment_id?: string | null;
         };
         Relationships: [
           {
