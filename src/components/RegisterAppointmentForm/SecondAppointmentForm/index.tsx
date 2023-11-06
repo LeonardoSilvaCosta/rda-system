@@ -112,7 +112,7 @@ export function SecondAppointmentForm() {
 
   const psychologicalId = '8f911cb1-9a72-4765-bf84-1c273eab0139';
   const socialId = '736eb33d-b012-46e2-9443-29858b965337';
-  const watchTypeOfService = watch('typeOfService');
+  const watchTypeOfService = watch('service');
 
   String(watchTypeOfService) !== psychologicalId &&
     setValue('psychologicalAssessment', null);

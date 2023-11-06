@@ -15,6 +15,7 @@ import {
   FieldError
 } from 'react-hook-form';
 import { AiOutlineCalendar } from 'react-icons/ai';
+import InputMask from 'react-input-mask';
 
 import styles from './styles.module.scss';
 
@@ -60,6 +61,9 @@ export function MyDatePicker<T extends FieldValues>({
             onBlur={() => setIsDatapickerVisible(false)}
             onFocus={() => setIsDatapickerVisible(true)}
             onChange={(date) => field.onChange(date)}
+            customInput={
+              <InputMask mask="99/99/9999" placeholder="dd/MM/yyyy" />
+            }
           />
           <AiOutlineCalendar
             className={classnames(styles.icon, {

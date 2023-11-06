@@ -35,6 +35,6 @@
 - [ ] Implementar função de assinatura digital
 - [ ] Adiciona paginação na listagem de atendimentos
 - [ ] Adiciona paginação na listagem de atendidos
-- [ ] Adicionar máscara de data no datapicker
+- [x] Adicionar máscara de data no datapicker
 - [ ] Adicionar melhoria no dropdown (input confundindo usuário)
 - [] Desenhar nova Dashboard

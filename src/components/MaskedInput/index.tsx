@@ -54,7 +54,6 @@ export function MaskedInput<T extends FieldValues>({
       <label htmlFor={name}>{title}</label>
       <InputMask
         mask={mask}
-        maskChar={''}
         type={type}
         defaultValue={getValues(name) ? getValues(name) : ''}
         placeholder={hint}
