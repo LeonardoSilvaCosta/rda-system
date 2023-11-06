@@ -321,7 +321,9 @@ export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({
                         }}
                       >
                         <span className={styles.checkbox}>
-                          {selectedOptions.includes(item) && (
+                          {selectedOptions
+                            .map((e) => e.name)
+                            .includes(item.name) && (
                             <i className={styles.checkIcon}>
                               <BsCheckLg />
                             </i>

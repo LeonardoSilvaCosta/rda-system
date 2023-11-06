@@ -19,11 +19,7 @@ export async function GET(req: NextRequest) {
         .limit(10);
       return Response.json(psychological_assessments);
     } else {
-      const { data: psychological_assessments } = await supabase
-        .from('tb_psychological_assessments')
-        .select()
-        .limit(10);
-      return Response.json(psychological_assessments);
+      return Response.json([]);
     }
   } catch (error) {
     return Response.json(`select data error: ${error}`, { status: 400 });

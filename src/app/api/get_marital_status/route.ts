@@ -19,11 +19,7 @@ export async function GET(req: NextRequest) {
         .limit(10);
       return Response.json(maritalStatus);
     } else {
-      const { data: maritalStatus } = await supabase
-        .from('tb_marital_status')
-        .select('id, name')
-        .limit(10);
-      return Response.json(maritalStatus);
+      return Response.json([]);
     }
   } catch (error) {
     return Response.json(`select data error: ${error}`, { status: 400 });

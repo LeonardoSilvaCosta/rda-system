@@ -154,7 +154,7 @@ export function FirstClientForm({
     };
 
     getLists();
-  }, [formDataRequest]);
+  }, []);
 
   const analyseCPF = async (
     e: React.ChangeEvent<HTMLInputElement>

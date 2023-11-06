@@ -19,11 +19,7 @@ export async function GET(req: NextRequest) {
         .limit(10);
       return Response.json(procedures);
     } else {
-      const { data: procedures } = await supabase
-        .from('tb_procedures')
-        .select()
-        .limit(10);
-      return Response.json(procedures);
+      return Response.json([]);
     }
   } catch (error) {
     return Response.json(`select data error: ${error}`, { status: 400 });

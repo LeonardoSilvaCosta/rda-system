@@ -20,7 +20,6 @@
 
 ----Nova fase Autenticação e prontuário
 - [x] Criar lógica e sistema de autenticação com provider ou email
-- [ ] Criar formulário para cadastro de usuário
 - [x] Criar estrutura de prontuário do atendido
 - [x] Refatorar Header para responsividade
 - [x] Refatorar tela de Login para responsividade (versão web)
@@ -31,10 +30,11 @@
 - [x] Adiciona barra de busca na listagem de atendimentos
 - [x] Adicionar políticas no banco de dados
 - [x] Criar função para transação de cadastro de cliente
-- [ ] Criar funções para transação de cadastro de atendimento
-- [ ] Implementar função de assinatura digital
-- [ ] Adiciona paginação na listagem de atendimentos
-- [ ] Adiciona paginação na listagem de atendidos
+- [x] Criar funções para transação de cadastro de atendimento
 - [x] Adicionar máscara de data no datapicker
 - [ ] Adicionar melhoria no dropdown (input confundindo usuário)
-- [] Desenhar nova Dashboard
+- [ ] Adiciona paginação na listagem de atendidos
+- [ ] Adiciona paginação na listagem de atendimentos
+- [ ] Desenhar nova Dashboard
+- [ ] Criar formulário para cadastro de usuário
+- [ ] Implementar função de assinatura digital
