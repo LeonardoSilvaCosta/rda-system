@@ -5,8 +5,8 @@ import styles from './styles.module.scss';
 
 import { Button } from '@/components/Button';
 import { LoadingComponent } from '@/components/Loading/loading';
+import { MyCustomDoubleMultiSelectDropdown } from '@/components/MyCustomDoubleMultiselectDropdown';
 import { MyCustomDropdown } from '@/components/MyCustomDropdown';
-import { MyCustomMultiSelectAndRadioDropdown } from '@/components/MyCustomMultiselectAndRadioDropdown';
 import { MyCustomMultiSelectDropdown } from '@/components/MyCustomMultiselectDropdown';
 import { RadioGroup } from '@/components/RadioGroup';
 import { TextArea } from '@/components/TextArea';
@@ -216,7 +216,7 @@ export function SecondAppointmentForm() {
             control={control}
             routeToSearch={'/api/get_travels'}
           />
-          <MyCustomMultiSelectAndRadioDropdown
+          <MyCustomDoubleMultiSelectDropdown
             title="Encaminhamentos"
             fieldname="referrals"
             getValues={getValues}

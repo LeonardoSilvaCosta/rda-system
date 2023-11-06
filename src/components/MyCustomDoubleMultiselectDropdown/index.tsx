@@ -18,7 +18,7 @@ import styles from './styles.module.scss';
 import { Option, QueryObject } from '@/types/types';
 import classnames from 'classnames';
 
-interface MyCustomMultiselectAndRadioDropdownProps<T extends FieldValues> {
+interface MyCustomDoubleMultiselectDropdownProps<T extends FieldValues> {
   title: string;
   fieldname: FieldPath<T>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -35,7 +35,7 @@ interface MyCustomMultiselectAndRadioDropdownProps<T extends FieldValues> {
   routeToSearch: string;
 }
 
-export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({
+export function MyCustomDoubleMultiSelectDropdown<T extends FieldValues>({
   title,
   fieldname,
   getValues,
@@ -47,7 +47,7 @@ export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({
   fieldErrorName,
   setError,
   routeToSearch
-}: MyCustomMultiselectAndRadioDropdownProps<T>) {
+}: MyCustomDoubleMultiselectDropdownProps<T>) {
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
   const [
