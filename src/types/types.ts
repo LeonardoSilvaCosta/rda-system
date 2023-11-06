@@ -1,3 +1,5 @@
+import { PiExportDuotone } from 'react-icons/pi';
+
 export type ClientFormValues = {
   fullName: string;
   nickName: string;
@@ -225,4 +227,15 @@ export type PopulateFormData = {
   ordenation: number;
   name: string;
   source: string;
+};
+
+export type QueryObject = {
+  id: string;
+  name: string;
+  nickname: string;
+  fullname: string;
+  cpf: string;
+  rg: string;
+  cadre: string;
+  rank: string;
 };

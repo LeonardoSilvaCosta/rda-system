@@ -12,14 +12,16 @@ interface SearchBarProps {
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   variation?: 'home';
+  handleChangeInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export function SearchBar({ variation, search, setSearch }: SearchBarProps) {
+export function SearchBar({
+  variation,
+  search,
+  setSearch,
+  handleChangeInput
+}: SearchBarProps) {
   const [isFocused, setIsFocused] = useState(false);
-
-  const handleChange = (value: string) => {
-    setSearch(value);
-  };
 
   const handleClick = () => {
     setSearch('');
@@ -38,9 +40,11 @@ export function SearchBar({ variation, search, setSearch }: SearchBarProps) {
     >
       <BsSearch className={styles.searchIcon} onClick={handleClick} />
       <input
+        type="text"
         value={search}
-        onChange={(e) => handleChange(e.target.value)}
+        onChange={(e) => handleChangeInput(e)}
         onFocus={handleFocus}
+        autoComplete="off"
       />
     </div>
   );

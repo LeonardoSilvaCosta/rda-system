@@ -13,7 +13,7 @@ import { BsChevronDown, BsCheckLg } from 'react-icons/bs';
 import { SearchBar } from '../SearchBar';
 import styles from './styles.module.scss';
 
-import { Option } from '@/types/types';
+import { QueryObject, Option } from '@/types/types';
 import classnames from 'classnames';
 
 interface MyCustomMultiselectDropdownProps<T extends FieldValues> {
@@ -24,6 +24,7 @@ interface MyCustomMultiselectDropdownProps<T extends FieldValues> {
   options: Option[];
   control: Control<T>;
   errors: FieldErrors<T>;
+  routeToSearch: string;
 }
 
 export function MyCustomMultiSelectDropdown<T extends FieldValues>({
@@ -32,12 +33,15 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({
   getValues,
   options,
   control,
-  errors
+  errors,
+  routeToSearch
 }: MyCustomMultiselectDropdownProps<T>) {
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [search, setSearch] = useState('');
+  const [filteredData, setFilteredData] = useState<Option[]>(options);
+
+  const [query, setQuery] = useState('');
 
   const errorKey = fieldName as string;
 
@@ -45,12 +49,6 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({
 
   const nestedFields = isNested ? fieldName.split('.') : [];
   const topLevelField = isNested ? nestedFields[0] : fieldName;
-
-  const lowerSearch = search.toLocaleLowerCase();
-
-  const filteredList = options.filter((item) =>
-    item.name.toLocaleLowerCase().includes(lowerSearch)
-  );
 
   const closeDropdown = () => {
     setIsDropDownVisible(false);
@@ -125,6 +123,39 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({
     };
   }, [isDropDownVisible]);
 
+  const handleChangeInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const q = e.target.value;
+    const qToLower = q.toLowerCase();
+    setQuery(q);
+
+    if (q !== '') {
+      const res = await fetch(`${routeToSearch}?q=${qToLower}`);
+      const data = await res.json();
+      if (!data) return;
+      const filteredData = data.map((e: QueryObject) => {
+        if (e.rg) {
+          return {
+            id: e.id,
+            name: `${e.rank} ${e.cadre} RG ${e.rg} ${e.nickname}`
+          };
+        } else if (e.fullname) {
+          return {
+            id: e.id,
+            name: `${e.fullname} - ${e.cpf}`
+          };
+        } else {
+          return {
+            id: e.id,
+            name: e.name
+          };
+        }
+      });
+      setFilteredData(filteredData);
+    } else {
+      setFilteredData(options);
+    }
+  };
+
   return (
     <div className={styles.dropdownContainer}>
       <label htmlFor={title}>{title}</label>
@@ -179,10 +210,11 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({
             <ul className={styles.options}>
               <SearchBar
                 list={options.map((e) => e.name)}
-                search={search}
-                setSearch={setSearch}
+                search={query}
+                setSearch={setQuery}
+                handleChangeInput={handleChangeInput}
               />
-              {filteredList.map((item) => (
+              {filteredData.map((item) => (
                 <Controller
                   key={item.name}
                   control={control}

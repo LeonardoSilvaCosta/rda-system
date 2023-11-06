@@ -187,6 +187,7 @@ export function SecondAppointmentForm() {
             options={specificDemands}
             errors={errors}
             control={control}
+            routeToSearch={'/api/get_specific_demands'}
           />
           <MyCustomDropdown
             title="Procedimento*"
@@ -204,6 +205,7 @@ export function SecondAppointmentForm() {
             options={documents}
             errors={errors}
             control={control}
+            routeToSearch={'/api/get_documents'}
           />
           <MyCustomMultiSelectDropdown
             title="Deslocamentos"
@@ -212,6 +214,7 @@ export function SecondAppointmentForm() {
             options={travels}
             errors={errors}
             control={control}
+            routeToSearch={'/api/get_travels'}
           />
           <MyCustomMultiSelectAndRadioDropdown
             title="Encaminhamentos"
@@ -224,6 +227,7 @@ export function SecondAppointmentForm() {
             errors={errors}
             setError={setError}
             control={control}
+            routeToSearch={'/api/get_referral_destinations'}
           />
           <RadioGroup
             title="Houve afastamento?*"

@@ -19,7 +19,7 @@ import { BsChevronDown } from 'react-icons/bs';
 
 import styles from './styles.module.scss';
 
-import { Option } from '@/types/types';
+import { Option, QueryObject } from '@/types/types';
 import classnames from 'classnames';
 
 interface MyCustomDropdownProps<T extends FieldValues> {
@@ -127,13 +127,23 @@ export function MyCustomDropdown<T extends FieldValues>({
       const res = await fetch(`${routeToSearch}?q=${qToLower}`);
       const data = await res.json();
       if (!data) return;
-      const filteredData = data.map((e: Attended) => {
-        return {
-          id: e.id,
-          name: e.name
-            ? e.name
-            : `${e.rank} ${e.cadre} RG ${e.rg} ${e.nickname}`
-        };
+      const filteredData = data.map((e: QueryObject) => {
+        if (e.rg) {
+          return {
+            id: e.id,
+            name: `${e.rank} ${e.cadre} RG ${e.rg} ${e.nickname}`
+          };
+        } else if (e.fullname) {
+          return {
+            id: e.id,
+            name: `${e.fullname} - ${e.cpf}`
+          };
+        } else {
+          return {
+            id: e.id,
+            name: e.name
+          };
+        }
       });
       setFilteredData(filteredData);
     } else {

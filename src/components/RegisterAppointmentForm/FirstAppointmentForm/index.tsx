@@ -130,6 +130,7 @@ export function FirstAppointmentForm() {
             options={specialists}
             errors={errors}
             control={control}
+            routeToSearch={'/api/get_specialists'}
           />
           <MyCustomMultiSelectDropdown
             title="Atendidos*"
@@ -138,6 +139,7 @@ export function FirstAppointmentForm() {
             options={attendeds}
             errors={errors}
             control={control}
+            routeToSearch={'/api/get_attendeds'}
           />
           <MyCustomDropdown
             title="Acesso ao atendimento*"

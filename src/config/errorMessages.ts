@@ -16,6 +16,14 @@ const errorMessages = {
     status: 400,
     message:
       'Erro ao tentar recuperar os dados para popular os dados do formulário de cadastro de atendimento.'
+  },
+  specialistQueryFailed: {
+    status: 400,
+    message: 'Erro ao tentar pesquisar especialistas.'
+  },
+  attendedsQueryFailed: {
+    status: 400,
+    message: 'Erro ao tentar pesquisar atendidos.'
   }
 };
 

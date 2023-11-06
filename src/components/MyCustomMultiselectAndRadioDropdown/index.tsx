@@ -15,7 +15,7 @@ import { BsChevronDown, BsCheckLg } from 'react-icons/bs';
 import { SearchBar } from '../SearchBar';
 import styles from './styles.module.scss';
 
-import { Option } from '@/types/types';
+import { Attended, Option, QueryObject } from '@/types/types';
 import classnames from 'classnames';
 
 interface MyCustomMultiselectAndRadioDropdownProps<T extends FieldValues> {
@@ -32,6 +32,7 @@ interface MyCustomMultiselectAndRadioDropdownProps<T extends FieldValues> {
   errors: FieldErrors<T>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setError: UseFormSetError<any>;
+  routeToSearch: string;
 }
 
 export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({
@@ -44,7 +45,8 @@ export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({
   control,
   errors,
   fieldErrorName,
-  setError
+  setError,
+  routeToSearch
 }: MyCustomMultiselectAndRadioDropdownProps<T>) {
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
@@ -53,7 +55,8 @@ export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({
     setSelectedSecondOptionsForFirstOption
   ] = useState<Record<string, Option[]>>({});
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [search, setSearch] = useState('');
+  const [query, setQuery] = useState('');
+  const [filteredData, setFilteredData] = useState<Option[]>(firstOptions);
 
   const errorKey = fieldname as string;
 
@@ -61,12 +64,6 @@ export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({
 
   const nestedFields = isNested ? fieldname.split('.') : [];
   const topLevelField = isNested ? nestedFields[0] : fieldname;
-
-  const lowerSearch = search.toLocaleLowerCase();
-
-  const filteredList = firstOptions.filter((item) =>
-    item.name.toLocaleLowerCase().includes(lowerSearch)
-  );
 
   const closeDropdown = () => {
     setIsDropDownVisible(false);
@@ -250,6 +247,39 @@ export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({
     };
   }, [isDropDownVisible]);
 
+  const handleChangeInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const q = e.target.value;
+    const qToLower = q.toLowerCase();
+    setQuery(q);
+
+    if (q !== '') {
+      const res = await fetch(`${routeToSearch}?q=${qToLower}`);
+      const data = await res.json();
+      if (!data) return;
+      const filteredData = data.map((e: QueryObject) => {
+        if (e.rg) {
+          return {
+            id: e.id,
+            name: `${e.rank} ${e.cadre} RG ${e.rg} ${e.nickname}`
+          };
+        } else if (e.fullname) {
+          return {
+            id: e.id,
+            name: `${e.fullname} - ${e.cpf}`
+          };
+        } else {
+          return {
+            id: e.id,
+            name: e.name
+          };
+        }
+      });
+      setFilteredData(filteredData);
+    } else {
+      setFilteredData(firstOptions);
+    }
+  };
+
   return (
     <div className={styles.dropdownContainer}>
       <label htmlFor={title}>{title}</label>
@@ -305,10 +335,11 @@ export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({
             <ul className={styles.options}>
               <SearchBar
                 list={firstOptions.map((e) => e.name)}
-                search={search}
-                setSearch={setSearch}
+                search={query}
+                setSearch={setQuery}
+                handleChangeInput={handleChangeInput}
               />
-              {filteredList.map((item) => (
+              {filteredData.map((item) => (
                 <div key={item.name}>
                   <div className={styles.inputContainer}>
                     <li className={classnames(styles.option, {})}>
