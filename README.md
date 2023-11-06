@@ -38,3 +38,4 @@
 - [ ] Desenhar nova Dashboard
 - [ ] Criar formulário para cadastro de usuário
 - [ ] Implementar função de assinatura digital
+- [ ] Popular banco de dados com dados oficiais

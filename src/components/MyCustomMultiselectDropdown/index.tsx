@@ -214,36 +214,55 @@ export function MyCustomMultiSelectDropdown<T extends FieldValues>({
                 setSearch={setQuery}
                 handleChangeInput={handleChangeInput}
               />
-              {filteredData.map((item) => (
-                <Controller
-                  key={item.name}
-                  control={control}
-                  name={fieldName}
-                  render={({ field }) => (
-                    <div className={styles.inputContainer}>
-                      <li
-                        className={classnames(styles.option, {
-                          checked: selectedOptions.includes(item)
-                        })}
-                        onClick={() => {
-                          toggleOption(item);
-                          field.onChange(insertItens(item));
-                        }}
-                      >
-                        <span className={styles.checkbox}>
-                          {selectedOptions.includes(item) && (
-                            <i className={styles.checkIcon}>
-                              <BsCheckLg />
-                            </i>
-                          )}
-                        </span>
-                        <i className={styles.optionIcon} />
-                        <span className={styles.optionText}>{item.name}</span>
-                      </li>
-                    </div>
-                  )}
-                />
-              ))}
+              {filteredData.length > 0 ? (
+                <>
+                  {filteredData.map((item) => (
+                    <Controller
+                      key={item.name}
+                      control={control}
+                      name={fieldName}
+                      render={({ field }) => (
+                        <div className={styles.inputContainer}>
+                          <li
+                            className={classnames(styles.option, {
+                              checked: selectedOptions.includes(item)
+                            })}
+                            onClick={() => {
+                              toggleOption(item);
+                              field.onChange(insertItens(item));
+                            }}
+                          >
+                            <span className={styles.checkbox}>
+                              {selectedOptions.includes(item) && (
+                                <i className={styles.checkIcon}>
+                                  <BsCheckLg />
+                                </i>
+                              )}
+                            </span>
+                            <i className={styles.optionIcon} />
+                            <span className={styles.optionText}>
+                              {item.name}
+                            </span>
+                          </li>
+                        </div>
+                      )}
+                    />
+                  ))}
+                </>
+              ) : (
+                <li
+                  className={styles.option}
+                  onClick={() => {
+                    setIsDropDownVisible(false);
+                    setQuery('');
+                    setFilteredData(options);
+                  }}
+                >
+                  <span className={styles.optionText}>
+                    Não há resultados para essa busca.
+                  </span>
+                </li>
+              )}
             </ul>
           </>
         )}

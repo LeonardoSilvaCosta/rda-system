@@ -15,7 +15,7 @@ import { BsChevronDown, BsCheckLg } from 'react-icons/bs';
 import { SearchBar } from '../SearchBar';
 import styles from './styles.module.scss';
 
-import { Attended, Option, QueryObject } from '@/types/types';
+import { Option, QueryObject } from '@/types/types';
 import classnames from 'classnames';
 
 interface MyCustomMultiselectAndRadioDropdownProps<T extends FieldValues> {
@@ -339,85 +339,106 @@ export function MyCustomMultiSelectAndRadioDropdown<T extends FieldValues>({
                 setSearch={setQuery}
                 handleChangeInput={handleChangeInput}
               />
-              {filteredData.map((item) => (
-                <div key={item.name}>
-                  <div className={styles.inputContainer}>
-                    <li className={classnames(styles.option, {})}>
-                      <div
-                        className={classnames(styles.firstOptions, {
-                          checked: selectedOptions.includes(item)
-                        })}
-                        onClick={() => {
-                          toggleFirstOption(item);
-                        }}
-                      >
-                        <span className={styles.checkbox}>
-                          {selectedOptions
-                            .map((e) => e.name)
-                            .includes(item.name) && (
-                            <i className={styles.checkIcon}>
-                              <BsCheckLg />
-                            </i>
-                          )}
-                        </span>
-                        <i className={styles.optionIcon} />
-                        <span className={styles.optionText}>{item.name}</span>
-                      </div>
-                      <Controller
-                        key={item.name}
-                        control={control}
-                        name={fieldname}
-                        render={({ field }) => (
-                          <div className={classnames(styles.secondOptions)}>
-                            {secondOptions.map((e) => (
-                              <div
-                                key={e.id}
-                                className={classnames(
-                                  styles.secondCheckboxesWrapper,
-                                  {
-                                    checked:
-                                      selectedSecondOptionsForFirstOption[
+              {filteredData.length > 0 ? (
+                <>
+                  {filteredData.map((item) => (
+                    <div key={item.name}>
+                      <div className={styles.inputContainer}>
+                        <li className={classnames(styles.option, {})}>
+                          <div
+                            className={classnames(styles.firstOptions, {
+                              checked: selectedOptions.includes(item)
+                            })}
+                            onClick={() => {
+                              toggleFirstOption(item);
+                            }}
+                          >
+                            <span className={styles.checkbox}>
+                              {selectedOptions
+                                .map((e) => e.name)
+                                .includes(item.name) && (
+                                <i className={styles.checkIcon}>
+                                  <BsCheckLg />
+                                </i>
+                              )}
+                            </span>
+                            <i className={styles.optionIcon} />
+                            <span className={styles.optionText}>
+                              {item.name}
+                            </span>
+                          </div>
+                          <Controller
+                            key={item.name}
+                            control={control}
+                            name={fieldname}
+                            render={({ field }) => (
+                              <div className={classnames(styles.secondOptions)}>
+                                {secondOptions.map((e) => (
+                                  <div
+                                    key={e.id}
+                                    className={classnames(
+                                      styles.secondCheckboxesWrapper,
+                                      {
+                                        checked:
+                                          selectedSecondOptionsForFirstOption[
+                                            item.id
+                                          ]
+                                            ?.map((e) => e.name)
+                                            .includes(e.name)
+                                      }
+                                    )}
+                                    onClick={() => {
+                                      if (
+                                        selectedOptions.some(
+                                          (selectedItem) =>
+                                            selectedItem.id === item.id
+                                        )
+                                      ) {
+                                        toggleSecondOption(e, item.id);
+                                        field.onChange(
+                                          insertSecondOptionsItens(e, item.id)
+                                        );
+                                      }
+                                    }}
+                                  >
+                                    <span className={styles.checkbox}>
+                                      {selectedSecondOptionsForFirstOption[
                                         item.id
                                       ]
                                         ?.map((e) => e.name)
-                                        .includes(e.name)
-                                  }
-                                )}
-                                onClick={() => {
-                                  if (
-                                    selectedOptions.some(
-                                      (selectedItem) =>
-                                        selectedItem.id === item.id
-                                    )
-                                  ) {
-                                    toggleSecondOption(e, item.id);
-                                    field.onChange(
-                                      insertSecondOptionsItens(e, item.id)
-                                    );
-                                  }
-                                }}
-                              >
-                                <span className={styles.checkbox}>
-                                  {selectedSecondOptionsForFirstOption[item.id]
-                                    ?.map((e) => e.name)
-                                    .includes(e.name) && (
-                                    <i className={styles.checkIcon}>
-                                      <BsCheckLg />
-                                    </i>
-                                  )}
-                                </span>
-                                <span className={styles.optionText}>
-                                  {e.name}
-                                </span>
+                                        .includes(e.name) && (
+                                        <i className={styles.checkIcon}>
+                                          <BsCheckLg />
+                                        </i>
+                                      )}
+                                    </span>
+                                    <span className={styles.optionText}>
+                                      {e.name}
+                                    </span>
+                                  </div>
+                                ))}
                               </div>
-                            ))}
-                          </div>
-                        )}
-                      />
-                    </li>
-                  </div>
-                </div>
-              ))}
+                            )}
+                          />
+                        </li>
+                      </div>
+                    </div>
+                  ))}
+                </>
+              ) : (
+                <li
+                  className={styles.option}
+                  onClick={() => {
+                    setIsDropDownVisible(false);
+                    setQuery('');
+                    setFilteredData(firstOptions);
+                  }}
+                >
+                  <span className={styles.optionText}>
+                    Não há resultados para essa busca.
+                  </span>
+                </li>
+              )}
             </ul>
           </>
         )}

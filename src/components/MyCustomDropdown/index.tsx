@@ -35,15 +35,6 @@ interface MyCustomDropdownProps<T extends FieldValues> {
   routeToSearch: string;
 }
 
-type Attended = {
-  id: string;
-  name: string;
-  nickname: string;
-  rg: string;
-  cadre: string;
-  rank: string;
-};
-
 export function MyCustomDropdown<T extends FieldValues>({
   title,
   fieldName,
@@ -91,7 +82,7 @@ export function MyCustomDropdown<T extends FieldValues>({
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isDropDownVisible]);
+  }, [isDropDownVisible, options]);
 
   useEffect(() => {
     setFilteredData(options);
@@ -159,9 +150,6 @@ export function MyCustomDropdown<T extends FieldValues>({
         className={classnames(styles.selectMenu, {
           [styles.visible]: isDropDownVisible
         })}
-        onClick={() => {
-          setIsDropDownVisible(!isDropDownVisible);
-        }}
       >
         <div>
           <input
@@ -174,8 +162,14 @@ export function MyCustomDropdown<T extends FieldValues>({
             value={query}
             placeholder={'Selecione uma opção'}
             onChange={(e) => handleChangeInput(e)}
+            onClick={() => {
+              setIsDropDownVisible(true);
+            }}
           />
           <BsChevronDown
+            onClick={() => {
+              setIsDropDownVisible(!isDropDownVisible);
+            }}
             className={classnames(styles.chevronDown, {
               [styles.visible]: isDropDownVisible
             })}
@@ -183,30 +177,47 @@ export function MyCustomDropdown<T extends FieldValues>({
         </div>
         {isDropDownVisible && (
           <ul className={styles.options}>
-            {filteredData.map((item) => (
-              <Controller
-                key={item.id}
-                control={control}
-                name={fieldName}
-                render={({ field }) => (
-                  <div className={styles.inputContainer}>
-                    <li
-                      className={styles.option}
-                      onClick={() => {
-                        setSelectedState && setSelectedState(item.id);
-                        setSelectedItemId(item.id);
-                        setIsDropDownVisible(false);
-                        field.onChange(item.id);
-                        setQuery(item.name);
-                      }}
-                    >
-                      <i className={styles.optionIcon} />
-                      <span className={styles.optionText}>{item.name}</span>
-                    </li>
-                  </div>
-                )}
-              />
-            ))}
+            {filteredData.length > 0 ? (
+              <>
+                {filteredData.map((item) => (
+                  <Controller
+                    key={item.id}
+                    control={control}
+                    name={fieldName}
+                    render={({ field }) => (
+                      <div className={styles.inputContainer}>
+                        <li
+                          className={styles.option}
+                          onClick={() => {
+                            setSelectedState && setSelectedState(item.id);
+                            setSelectedItemId(item.id);
+                            setIsDropDownVisible(false);
+                            field.onChange(item.id);
+                            setQuery(item.name);
+                          }}
+                        >
+                          <i className={styles.optionIcon} />
+                          <span className={styles.optionText}>{item.name}</span>
+                        </li>
+                      </div>
+                    )}
+                  />
+                ))}
+              </>
+            ) : (
+              <li
+                className={styles.option}
+                onClick={() => {
+                  setIsDropDownVisible(false);
+                  setQuery('');
+                  setFilteredData(options);
+                }}
+              >
+                <span className={styles.optionText}>
+                  Não há resultados para essa busca.
+                </span>
+              </li>
+            )}
           </ul>
         )}
         {errors[errorKey] && (
