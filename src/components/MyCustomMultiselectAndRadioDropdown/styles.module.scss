@@ -45,6 +45,7 @@
       position: relative;
       padding: 1.25rem;
       display: flex;
+      flex-wrap: wrap;
       margin-top: 0.625rem;
       border-radius: 8px;
       background-color: var(--white);
@@ -52,8 +53,12 @@
       border: 0.5px solid var(--blue-500);
       gap: 0.5rem;
 
+      @media(max-width: 599px) {
+        font-size: 13px;
+        flex-direction: column;
+      }
+
       .selectedItem {
-        display: inline;
         background-color: var(--blue-50);
         color: var(--blue-400);
         padding: 0.4rem;

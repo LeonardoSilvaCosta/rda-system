@@ -32,7 +32,7 @@
 - [x] Criar função para transação de cadastro de cliente
 - [x] Criar funções para transação de cadastro de atendimento
 - [x] Adicionar máscara de data no datapicker
-- [ ] Adicionar melhoria no dropdown (input confundindo usuário)
+- [x] Adicionar melhoria no dropdown (input confundindo usuário)
 - [ ] Adiciona paginação na listagem de atendidos
 - [ ] Adiciona paginação na listagem de atendimentos
 - [ ] Desenhar nova Dashboard
