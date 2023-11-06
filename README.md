@@ -33,9 +33,11 @@
 - [x] Criar funções para transação de cadastro de atendimento
 - [x] Adicionar máscara de data no datapicker
 - [x] Adicionar melhoria no dropdown (input confundindo usuário)
+- [ ] Implementar header responsivo
+- [ ] Desenhar nova Dashboard
 - [ ] Adiciona paginação na listagem de atendidos
 - [ ] Adiciona paginação na listagem de atendimentos
-- [ ] Desenhar nova Dashboard
 - [ ] Criar formulário para cadastro de usuário
 - [ ] Implementar função de assinatura digital
 - [ ] Popular banco de dados com dados oficiais
+- [ ] Observar se pode haver alguma confusão do usuário com a seleção do customDropdown, pois ele mantém o item selecionado, mesmo o usuário apagando o seu nome da barra de busca. Não é um erro, mas pode confundir o usuário. Segue para teste.

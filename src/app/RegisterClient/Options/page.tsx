@@ -9,7 +9,7 @@ import styles from './styles.module.scss';
 
 import { Button } from '@/components/Button';
 import { DashboardButton } from '@/components/DashboardButton';
-import { Header } from '@/components/Header';
+import { Navbar } from '@/components/Navbar';
 
 export default function Options() {
   const router = useRouter();
@@ -22,7 +22,7 @@ export default function Options() {
 
   return (
     <>
-      <Header title="Cadastrar atendido" />
+      <Navbar title="Cadastrar atendido" />
       <div className={styles.container}>
         <div className={styles.dashboardButtonContainer}>
           <DashboardButton icon={GiPoliceOfficerHead} name={'Militar'} />

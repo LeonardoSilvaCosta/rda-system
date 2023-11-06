@@ -3,7 +3,7 @@ import { useSearchParams } from 'next/navigation';
 
 import styles from './styles.module.scss';
 
-import { Header } from '@/components/Header';
+import { Navbar } from '@/components/Navbar';
 import { useRegisterClientContext } from '@/context/registerClientContext';
 
 export default function Form() {
@@ -19,7 +19,7 @@ export default function Form() {
 
   return (
     <>
-      <Header title="Cadastrar atendido" />
+      <Navbar title="Cadastrar atendido" />
       <div className={styles.container}>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           {currentComponent}
