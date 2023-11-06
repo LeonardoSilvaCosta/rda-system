@@ -7,7 +7,7 @@ import styles from './styles.module.scss';
 
 import { ClientCard } from '@/components/ClientCard';
 import { DashboardButton } from '@/components/DashboardButton';
-import { Navbar } from '@/components/Navbar';
+import { Header } from '@/components/Header';
 import { SearchBar } from '@/components/SearchBar';
 import { ClientCardType } from '@/types/types';
 
@@ -38,7 +38,7 @@ export default function Home() {
 
   return (
     <>
-      <Navbar title="Home" />
+      <Header title="Home" />
       <div className={styles.container}>
         <div className={styles.searchbarBox}>
           <SearchBar

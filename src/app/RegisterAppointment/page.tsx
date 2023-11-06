@@ -2,7 +2,7 @@
 
 import styles from './styles.module.scss';
 
-import { Navbar } from '@/components/Navbar';
+import { Header } from '@/components/Header';
 import { useRegisterAppointmentContext } from '@/context/registerAppointmentContext';
 
 export default function Form() {
@@ -11,7 +11,7 @@ export default function Form() {
 
   return (
     <>
-      <Navbar title="Registrar atendimento" />
+      <Header title="Registrar atendimento" />
       <div className={styles.container}>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           {currentComponent}

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import styles from './styles.module.scss';
 
 import { AppointmentsSummary } from '@/components/AppointmentsSummary';
-import { Navbar } from '@/components/Navbar';
+import { Header } from '@/components/Header';
 import { LoadingComponent } from '@/components/Loading/loading';
 import { Profile } from '@/components/Profile';
 import { RecordHeader } from '@/components/RecordHeader';
@@ -99,7 +99,7 @@ export default function Record() {
         <LoadingComponent />
       ) : (
         <>
-          <Navbar title="Prontuário" />
+          <Header title="Prontuário" />
           <main className={styles.container}>
             <RecordHeader
               avatar={attended.avatar}

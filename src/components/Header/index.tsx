@@ -9,11 +9,11 @@ import { useGlobalContext } from '@/context/globalContext';
 import { useRegisterAppointmentContext } from '@/context/registerAppointmentContext';
 import { useRegisterClientContext } from '@/context/registerClientContext';
 
-interface NavbarProps {
+interface HeaderProps {
   title: string;
 }
 
-export function Navbar({ title }: NavbarProps) {
+export function Header({ title }: HeaderProps) {
   const { returnToDashboard } = useGlobalContext();
   const { goToPreviousStep: previousRegisterClientStep } =
     useRegisterClientContext();
