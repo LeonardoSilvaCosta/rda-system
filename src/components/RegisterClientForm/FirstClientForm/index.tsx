@@ -11,7 +11,7 @@ import { MyCustomDropdown } from '@/components/MyCustomDropdown';
 import { MyDatePicker } from '@/components/MyDatePicker';
 import { RadioGroup } from '@/components/RadioGroup';
 import { useRegisterClientContext } from '@/context/registerClientContext';
-import { ClientFormValues, Military, Option } from '@/types/types';
+import { ClientFormValues, GenericAttended, Option } from '@/types/types';
 import { validateCPF } from '@/validation/validateCPF';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
@@ -137,7 +137,7 @@ export function FirstClientForm({
         const militaryAttendeds = await resMilitaryAttendeds.json();
 
         const formatedMilitaryAttendeds = await militaryAttendeds.map(
-          (e: Military) => {
+          (e: GenericAttended) => {
             return {
               id: e.id,
               name: `${e.rank} ${e.cadre} RG ${e.rg} ${e.nickname}`

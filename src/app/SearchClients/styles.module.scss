@@ -1,0 +1,56 @@
+.wrapper {
+  display: flex;
+
+  .main {
+    width: 100%;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  
+    display: flex;
+    flex-direction: column;
+    padding: 2.88rem 2.88rem;
+  
+    @media(max-width: 1440px) {
+      width: calc(100vw - 60px);
+    }
+  
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      height: 696px;
+  
+      .searchBox {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  
+    .cards {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+  
+    .noContent {
+      position: relative;
+      height: 40vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid var(--gray-100);
+      color: var(--gray-500);
+      text-align: center;
+  
+      .emptyPaperIcon {
+        position: absolute;
+        width: 150px;
+        height: 150px;
+        color: rgba(166, 166, 166, 0.2);
+      }
+    }
+  }
+}

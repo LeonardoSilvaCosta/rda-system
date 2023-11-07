@@ -1,41 +1,180 @@
-.container {
-  max-width: 1380px;
-  margin: 0 auto;
+ .wrapper {
+   display: flex;
 
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
+   @media(max-width: 599px) {
+     &> :first-child {
+       display: none;
+     }
+   }
 
-  @media(max-width: 1440px) {
-    width: calc(100vw - 60px);
-  }
+   .main {
+     width: 100%;
+   }
 
-  h2 {
-    font-size: 1.8rem;
-    padding: 3.32rem 0;
-    display: flex;
-    justify-content: center;
-    color: var(--blue-400);
-  }
+   .container {
+     max-width: 1200px;
+     margin: 0 auto;
 
-  .clientCardContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-  }
+     display: flex;
+     flex-direction: column;
 
-  .searchbarBox {
-    margin-top: 2.5rem;
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-  }
+     padding: 2.88rem 2.88rem;
 
-  .dashboardButtonContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    gap: 2rem;
-  }
-}
+     gap: 1.25rem;
+
+     @media(max-width: 1440px) {
+       width: calc(100vw - 60px);
+     }
+
+     @media(max-width: 599px) {
+       padding: 0;
+       gap: 4rem;
+     }
+
+     .firstRow {
+       display: flex;
+
+
+       @media(max-width: 599px) {
+         flex-direction: column;
+         gap: 4rem;
+       }
+
+
+       .emphasisBoxes {
+         display: flex;
+         justify-content: space-evenly;
+         align-items: center;
+         max-width: 50rem;
+         width: 100%;
+
+         @media(max-width: 599px) {
+           flex-direction: column;
+           gap: 1.6rem;
+         }
+
+         .emphasisBox {
+           width: 13.875rem;
+           height: 12.0625rem;
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+           justify-content: space-around;
+           color: var(--blue-50);
+           border-radius: 1.875rem;
+           background: linear-gradient(127deg, #3639B0 2.43%, rgba(101, 31, 249, 0.65) 97.67%);
+
+           @media(max-width: 599px) {
+             margin-top: 2rem;
+             width: 100%;
+             height: 18rem;
+           }
+
+           span {
+             width: 160px;
+             text-align: center;
+           }
+
+           .iconBox {
+             width: 2.5rem;
+             height: 2.5rem;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             border-radius: 50%;
+             background-color: rgba(196, 198, 237, 0.2);
+
+             .icon {
+               color: var(--blue-500);
+               width: 2.5rem;
+               height: 1.5rem;
+             }
+           }
+         }
+       }
+
+
+       .frequentDemands {
+         display: flex;
+         flex-direction: column;
+         max-width: 297px;
+         width: 100%;
+         gap: 1rem;
+         color: var(--blue-400);
+         font-weight: bold;
+         font-size: 1.5rem;
+
+         .header {
+           width: 100%;
+         }
+
+         ul {
+           display: flex;
+           flex-direction: column;
+           gap: 0.8rem;
+
+           li {
+             width: 100%;
+             height: 74px;
+             border-radius: 8px;
+             display: flex;
+             padding: 20px 10px;
+             align-items: center;
+             color: var(--blue-50);
+             font-size: 1.5rem;
+
+             gap: 1rem;
+
+             &:first-child {
+               background-color: var(--blue-300);
+             }
+
+             &:nth-child(2) {
+               background-color: var(--blue-400);
+             }
+
+             &:last-child {
+               background-color: var(--blue-500);
+             }
+
+             span:first-child {
+               display: flex;
+               border-radius: 50%;
+               background-color: var(--blue-50);
+               color: black;
+               align-items: center;
+               justify-content: center;
+               width: 50px;
+               height: 50px;
+             }
+           }
+         }
+       }
+     }
+
+     .secondRow {
+       flex-direction: column;
+       border: 0.5px solid var(--blue-100);
+       width: 100%;
+       padding: 30px;
+
+       @media(max-width: 599px) {
+         padding: 0;
+         border: none;
+       }
+
+       .recentsAppointments {
+         display: flex;
+         flex-direction: column;
+         gap: 1rem;
+
+
+         span {
+           font-size: 24px;
+           color: var(--blue-400);
+           font-weight: bold;
+         }
+       }
+     }
+   }
+ }

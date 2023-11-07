@@ -58,8 +58,9 @@ export type City = {
   state_id: string;
 };
 
-export type Military = {
+export type GenericAttended = {
   id: string;
+  avatar?: string;
   fullname: string;
   nickname: string;
   rg: string;

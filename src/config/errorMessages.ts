@@ -20,10 +20,6 @@ const errorMessages = {
   specialistQueryFailed: {
     status: 400,
     message: 'Erro ao tentar pesquisar especialistas.'
-  },
-  attendedsQueryFailed: {
-    status: 400,
-    message: 'Erro ao tentar pesquisar atendidos.'
   }
 };
 

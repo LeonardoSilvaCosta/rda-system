@@ -22,8 +22,7 @@ export async function GET(req: NextRequest) {
       if (!error) {
         return Response.json(attendeds, { status: 200 });
       } else {
-        const { message, status } = errorMessages.attendedsQueryFailed;
-        return Response.json(message, { status });
+        return Response.json([]);
       }
     } else {
       const { data: attendeds } = await supabase
@@ -31,6 +30,7 @@ export async function GET(req: NextRequest) {
         .select(
           `
       id, 
+      avatar,
       fullname,
       nickname,
       rg,
@@ -48,6 +48,7 @@ export async function GET(req: NextRequest) {
         formattedData = attendeds.map((e: any) => {
           return {
             id: e.id,
+            avatar: e.avatar,
             fullname: e.fullname,
             nickname: e.nickname ? e.nickname : null,
             rg: e.rg ? e.rg : null,
