@@ -1,5 +1,8 @@
 // import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { BsChevronDown } from 'react-icons/bs';
+import { FcMenu } from 'react-icons/fc';
 import { ImExit } from 'react-icons/im';
 import { MdOutlineArrowBackIosNew } from 'react-icons/md';
 
@@ -14,6 +17,7 @@ interface HeaderProps {
 }
 
 export function Header({ title }: HeaderProps) {
+  const { showNav, setShowNav } = useGlobalContext();
   const { returnToDashboard } = useGlobalContext();
   const { goToPreviousStep: previousRegisterClientStep } =
     useRegisterClientContext();
@@ -56,8 +60,22 @@ export function Header({ title }: HeaderProps) {
               }`}
               onClick={handleClick}
             />
+            <FcMenu
+              onClick={() => setShowNav(!showNav)}
+              className={styles.menuIcon}
+            />
             <span>{title}</span>
           </div>
+        </div>
+        <div className={styles.rightColumn}>
+          <Image
+            src="/profile.png"
+            alt="profile-photo"
+            width={40}
+            height={40}
+          />
+          <span>Leonardo Costa</span>
+          <BsChevronDown />
         </div>
         <ImExit
           onClick={returnToDashboard}

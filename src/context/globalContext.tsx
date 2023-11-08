@@ -1,10 +1,18 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useContext, createContext } from 'react';
+import {
+  useContext,
+  createContext,
+  useState,
+  Dispatch,
+  SetStateAction
+} from 'react';
 
 interface GlobalContextProps {
   returnToDashboard: () => void;
+  showNav: boolean;
+  setShowNav: Dispatch<SetStateAction<boolean>>;
 }
 
 const GlobalContext = createContext<GlobalContextProps | undefined>(undefined);
@@ -15,12 +23,13 @@ export const GlobalContextProvider = ({
   children: React.ReactNode;
 }) => {
   const router = useRouter();
+  const [showNav, setShowNav] = useState(false);
   const returnToDashboard = () => {
     router.push('/');
   };
 
   return (
-    <GlobalContext.Provider value={{ returnToDashboard }}>
+    <GlobalContext.Provider value={{ returnToDashboard, showNav, setShowNav }}>
       {children}
     </GlobalContext.Provider>
   );

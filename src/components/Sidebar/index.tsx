@@ -1,13 +1,14 @@
 import Image from 'next/image';
-import { useState } from 'react';
 import { AiOutlineHome, AiOutlineSearch } from 'react-icons/ai';
 import { BiLeftArrowAlt, BiUserPlus } from 'react-icons/bi';
 import { PiNotePencilDuotone } from 'react-icons/pi';
 import { RxGear } from 'react-icons/rx';
 
 import styles from './styles.module.scss';
+
+import { useGlobalContext } from '@/context/globalContext';
 export function Sidebar() {
-  const [showNav, setShowNav] = useState(true);
+  const { showNav, setShowNav } = useGlobalContext();
 
   return (
     <>

@@ -8,8 +8,29 @@
   transition: max-width 0.5s;
   z-index: 100;
 
+  @media(max-width: 1024px) {
+    position: fixed;
+    top: 4.5rem;
+    max-width: 40%;
+    background: rgba(79, 83, 201, 0.97)
+  }
+
+  @media(max-width: 799px) {
+    max-width: 50%;
+  }
+
+  @media(max-width: 483px) {
+    max-width: 70%;
+  }
+
   &.collapsed {
     max-width: 105px;
+
+    @media(max-width: 1024px) {
+      padding: 1.06rem 0;
+
+      max-width: 0px;
+    }
 
     header {
       justify-content: flex-start;
@@ -52,6 +73,10 @@
       border-radius: 50%;
       width: 40px;
       height: 40px;
+
+      @media(max-width: 1024px) {
+        display: none;
+      }
 
       .icon {
         font-size: 1.6rem;

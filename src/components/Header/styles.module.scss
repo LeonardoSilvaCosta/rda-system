@@ -14,7 +14,7 @@
 
   z-index: 100;
 
-  @media(max-width: 599px) {
+  @media(max-width: 1024px) {
     position: sticky;
     top: 0;
 
@@ -31,14 +31,36 @@
     margin: 0 auto;
 
     .leftColumn {
+      max-width: 100px;
+      width: 100%;
+      display: flex;
+      align-items: center;
       .leftContent {
         display: flex;
         font-size: 1.25rem;
         align-items: center;
+        gap: 0.5rem;
+
+        .menuIcon {
+          display: none;
+          width: 24px;
+          height: 24px;
+          cursor: pointer;
+
+          @media(max-width: 1024px) {
+            display: block;
+          }
+
+          g {
+            fill: var(--blue-50) !important;
+          }
+        }
+        
 
         .topArrow {
           display: none;
           cursor: pointer;
+
 
           @media(max-width: 599px) {
             display: block;
@@ -49,6 +71,20 @@
             }
           }
         }
+      }
+    }
+
+    .rightColumn {
+      max-width: 300px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      font-weight: bold;
+
+      & > svg {
+        cursor: pointer;
+        stroke-width: 1;
       }
     }
     

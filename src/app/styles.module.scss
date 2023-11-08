@@ -1,10 +1,10 @@
  .wrapper {
    display: flex;
 
-   @media(max-width: 599px) {
-     &> :first-child {
-       display: none;
-     }
+   &.noScroll {
+     position: fixed;
+     width: 100%;
+     overflow: hidden;
    }
 
    .main {
@@ -18,7 +18,7 @@
      display: flex;
      flex-direction: column;
 
-     padding: 2.88rem 2.88rem;
+     padding: 4rem 2.88rem;
 
      gap: 1.25rem;
 
@@ -26,20 +26,43 @@
        width: calc(100vw - 60px);
      }
 
-     @media(max-width: 599px) {
-       padding: 0;
+     @media(max-width: 1024px) {
+       .overlay {
+         position: fixed;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         background-color: rgba(0, 0, 0, 0.7);
+         z-index: 10;
+         display: none;
+         transition: opacity 0.3s ease;
+       }
+
+       .overlay.active {
+         display: block;
+         opacity: 1;
+       }
+     }
+
+     @media(max-width: 799px) {
+       padding: 4rem 0;
        gap: 4rem;
      }
+
+     @media(max-width: 599px) {
+      padding: 0;
+      gap: 2rem;
+    }
 
      .firstRow {
        display: flex;
 
-
-       @media(max-width: 599px) {
+       @media(max-width: 1024px) {
+         align-items: center;
          flex-direction: column;
          gap: 4rem;
        }
-
 
        .emphasisBoxes {
          display: flex;
@@ -58,6 +81,7 @@
            height: 12.0625rem;
            display: flex;
            flex-direction: column;
+           font-size: 24px;
            align-items: center;
            justify-content: space-around;
            color: var(--blue-50);
@@ -103,6 +127,10 @@
          color: var(--blue-400);
          font-weight: bold;
          font-size: 1.5rem;
+
+         @media(max-width: 1024px) {
+           max-width: 100%;
+         }
 
          .header {
            width: 100%;
@@ -170,7 +198,7 @@
 
 
          span {
-           font-size: 24px;
+           font-size: 1.5rem;
            color: var(--blue-400);
            font-weight: bold;
          }

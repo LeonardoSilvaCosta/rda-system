@@ -6,22 +6,23 @@ import styles from './styles.module.scss';
 import { ClientCard } from '@/components/ClientCard';
 import { Header } from '@/components/Header';
 import { Sidebar } from '@/components/Sidebar';
+import { useGlobalContext } from '@/context/globalContext';
 
 const emphasisBoxData = [
   {
     icon: <AiOutlineCheck className={styles.icon} />,
-    description: 'Seus atendimentos no mês',
+    description: 'Atendimentos no mês',
     number: 100
   },
   {
     icon: <AiOutlineCheck className={styles.icon} />,
-    description: 'Seus atendidos no mês',
+    description: 'Atendidos no mês',
     number: 20
   },
   {
     icon: <AiOutlineCheck className={styles.icon} />,
     description: 'Palestras ministradas',
-    number: 5
+    number: 'Em breve'
   }
 ];
 
@@ -71,12 +72,17 @@ const recentAppoitments = [
 ];
 
 export default function Home() {
+  const { showNav, setShowNav } = useGlobalContext();
   return (
-    <main className={styles.wrapper}>
+    <main className={`${styles.wrapper} ${showNav ? styles.noScroll : ''}`}>
       <Sidebar />
       <div className={styles.main}>
         <Header title="Home" />
         <div className={styles.container}>
+          <div
+            className={`${styles.overlay} ${showNav ? styles.active : ''}`}
+            onClick={() => setShowNav(!showNav)}
+          ></div>
           <div className={styles.firstRow}>
             <div className={styles.emphasisBoxes}>
               {emphasisBoxData.map((e) => (
@@ -90,7 +96,7 @@ export default function Home() {
               ))}
             </div>
             <div className={styles.frequentDemands}>
-              <span className={styles.header}>DEMANDAS MAIS FREQUENTES</span>
+              <span className={styles.header}>Demandas frequentes</span>
               <ul>
                 {frequentDemandsData.map((e) => (
                   <li key={e.name}>
