@@ -1,7 +1,6 @@
 import { cookies } from 'next/headers';
 import { NextRequest } from 'next/server';
 
-import errorMessages from '@/config/errorMessages';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 
 export const dynamic = 'force-dynamic';

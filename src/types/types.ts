@@ -1,5 +1,3 @@
-import { PiExportDuotone } from 'react-icons/pi';
-
 export type ClientFormValues = {
   fullName: string;
   nickName: string;

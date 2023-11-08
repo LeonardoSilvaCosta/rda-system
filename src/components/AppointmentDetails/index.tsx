@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
-import { LoadingComponent } from '../Loading/loading';
 import { MyPdf } from '../MyPdf';
 import styles from './styles.module.scss';
 
