@@ -1,5 +1,5 @@
-// import { usePathname } from 'next/navigation';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { BsChevronDown } from 'react-icons/bs';
 import { FcMenu } from 'react-icons/fc';
@@ -11,13 +11,17 @@ import styles from './styles.module.scss';
 import { useGlobalContext } from '@/context/globalContext';
 import { useRegisterAppointmentContext } from '@/context/registerAppointmentContext';
 import { useRegisterClientContext } from '@/context/registerClientContext';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 interface HeaderProps {
   title: string;
 }
 
 export function Header({ title }: HeaderProps) {
+  const supabase = createClientComponentClient();
+  const router = useRouter();
   const { showNav, setShowNav } = useGlobalContext();
+  const [showDropDownMenu, setShowDropDownMenu] = useState(false);
   const { returnToDashboard } = useGlobalContext();
   const { goToPreviousStep: previousRegisterClientStep } =
     useRegisterClientContext();
@@ -47,6 +51,11 @@ export function Header({ title }: HeaderProps) {
     }
   };
 
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    router.refresh();
+  };
+
   return (
     <main
       className={`${styles.wrapper} ${title === 'Home' ? styles.home : ''}`}
@@ -74,8 +83,25 @@ export function Header({ title }: HeaderProps) {
             width={40}
             height={40}
           />
-          <span>Leonardo Costa</span>
-          <BsChevronDown />
+          <span>1º TEN QCOPM LEONARDO</span>
+          <div className={styles.dropdownContainer}>
+            <BsChevronDown
+              className={styles.dropdownIcon}
+              onClick={() => {
+                setShowDropDownMenu(!showDropDownMenu);
+              }}
+            />
+            {showDropDownMenu ? (
+              <div className={styles.dropdown}>
+                <ul>
+                  <li>Atualizar perfil</li>
+                  <li onClick={handleSignOut}>Sair</li>
+                </ul>
+              </div>
+            ) : (
+              <></>
+            )}
+          </div>
         </div>
         <ImExit
           onClick={returnToDashboard}

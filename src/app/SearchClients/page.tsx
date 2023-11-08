@@ -6,10 +6,12 @@ import styles from './styles.module.scss';
 
 import { ClientCard } from '@/components/ClientCard';
 import { Header } from '@/components/Header';
+import { LoadingComponent } from '@/components/Loading/loading';
 import { SearchBar } from '@/components/SearchBar';
 import { Sidebar } from '@/components/Sidebar';
 import { GenericAttended } from '@/types/types';
 export default function SearchClients() {
+  const [isLoading, setIsLoading] = useState(true);
   const [attendeds, setAttendeds] = useState<GenericAttended[]>([
     {
       id: '',
@@ -22,7 +24,6 @@ export default function SearchClients() {
       cpf: ''
     }
   ]);
-  const [cardSelectedId, setCardSelectedId] = useState('');
   const [filteredData, setFilteredData] =
     useState<GenericAttended[]>(attendeds);
 
@@ -33,6 +34,8 @@ export default function SearchClients() {
       const data = await fetch('/api/get_attendeds');
       const attendeds = await data.json();
       setAttendeds(attendeds);
+
+      setIsLoading(false);
     }
 
     getAttedends();
@@ -45,11 +48,6 @@ export default function SearchClients() {
   useEffect(() => {
     if (query === '') setFilteredData(attendeds);
   }, [query, attendeds]);
-
-  const handleClick = (selectedCardId: string) => {
-    setCardSelectedId(selectedCardId);
-    setCurrentScreen(2);
-  };
 
   const handleChangeInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const q = e.target.value;
@@ -69,41 +67,45 @@ export default function SearchClients() {
       <Sidebar />
       <div className={styles.main}>
         <Header title="Home" />
-        <div className={styles.container}>
-          <div className={styles.wrapper}>
-            <div className={styles.searchBox}>
-              <SearchBar
-                list={attendeds}
-                search={query}
-                setSearch={setQuery}
-                handleChangeInput={handleChangeInput}
-              />
+        {isLoading ? (
+          <LoadingComponent />
+        ) : (
+          <div className={styles.container}>
+            <div className={styles.wrapper}>
+              <div className={styles.searchBox}>
+                <SearchBar
+                  list={attendeds}
+                  search={query}
+                  setSearch={setQuery}
+                  handleChangeInput={handleChangeInput}
+                />
+              </div>
+              {filteredData.length > 0 ? (
+                <div className={styles.cards}>
+                  {filteredData.map((e) => (
+                    <>
+                      <ClientCard
+                        key={e.id}
+                        avatar={'/default-user.svg'}
+                        fullname={e.fullname}
+                        rank={e.rank}
+                        cadre={e.cadre}
+                        rg={e.rg}
+                        nickname={e.nickname}
+                        cpf={e.cpf}
+                      />
+                    </>
+                  ))}
+                </div>
+              ) : (
+                <div className={styles.noContent}>
+                  <BiUserX className={styles.emptyPaperIcon} />
+                  <p>{`Nenhum atendido encontrado para esta busca.`}</p>
+                </div>
+              )}
             </div>
-            {filteredData.length > 0 ? (
-              <div className={styles.cards}>
-                {filteredData.map((e) => (
-                  <>
-                    <ClientCard
-                      key={e.id}
-                      avatar={'/default-user.svg'}
-                      fullname={e.fullname}
-                      rank={e.rank}
-                      cadre={e.cadre}
-                      rg={e.rg}
-                      nickname={e.nickname}
-                      cpf={e.cpf}
-                    />
-                  </>
-                ))}
-              </div>
-            ) : (
-              <div className={styles.noContent}>
-                <BiUserX className={styles.emptyPaperIcon} />
-                <p>{`Nenhum atendido encontrado para esta busca.`}</p>
-              </div>
-            )}
           </div>
-        </div>
+        )}
       </div>
     </main>
   );

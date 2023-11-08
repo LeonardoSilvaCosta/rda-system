@@ -4,7 +4,6 @@ import { Inter } from 'next/font/google';
 import '../styles/global.scss';
 import { Toaster } from 'react-hot-toast';
 
-import { Sidebar } from '@/components/Sidebar';
 import { GlobalContextProvider } from '@/context/globalContext';
 import { LoginContextProvider } from '@/context/loginContext';
 import { RegisterAppointmentContextProvider } from '@/context/registerAppointmentContext';

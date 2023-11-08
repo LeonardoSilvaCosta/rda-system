@@ -44,12 +44,14 @@ export function FirstAppointmentForm() {
         const specialists = await resEspecialists.json();
         const attendeds = await resAttendeds.json();
 
-        const formattedEspecialists = await specialists.map((e: GenericAttended) => {
-          return {
-            id: e.id,
-            name: `${e.rank} ${e.cadre} RG ${e.rg} ${e.nickname}`
-          };
-        });
+        const formattedEspecialists = await specialists.map(
+          (e: GenericAttended) => {
+            return {
+              id: e.id,
+              name: `${e.rank} ${e.cadre} RG ${e.rg} ${e.nickname}`
+            };
+          }
+        );
 
         const formatedAttendeds = await attendeds.map((e: GenericAttended) => {
           return {

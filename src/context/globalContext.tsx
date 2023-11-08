@@ -23,7 +23,7 @@ export const GlobalContextProvider = ({
   children: React.ReactNode;
 }) => {
   const router = useRouter();
-  const [showNav, setShowNav] = useState(false);
+  const [showNav, setShowNav] = useState(true);
   const returnToDashboard = () => {
     router.push('/');
   };
