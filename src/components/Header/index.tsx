@@ -1,9 +1,8 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { BsChevronDown } from 'react-icons/bs';
 import { FcMenu } from 'react-icons/fc';
-import { ImExit } from 'react-icons/im';
 import { MdOutlineArrowBackIosNew } from 'react-icons/md';
 
 import styles from './styles.module.scss';
