@@ -39,7 +39,7 @@
         display: flex;
         font-size: 1.25rem;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.3rem;
 
         .menuIcon {
           display: none;
@@ -56,11 +56,13 @@
           }
         }
 
+        svg {
+         width: 1.4em;
+        }
 
         .topArrow {
           display: none;
           cursor: pointer;
-
 
           @media(max-width: 599px) {
             display: block;
@@ -75,6 +77,7 @@
     }
 
     .rightColumn {
+      position: relative;
       width: 100%;
       display: flex;
       align-items: center;
@@ -82,8 +85,8 @@
       gap: 1.5rem;
       font-weight: bold;
 
-      @media(max-width: 1024px) {
-        & > span {
+      @media(max-width: 599px) {
+        &>span {
           display: none;
         }
       }
@@ -98,47 +101,26 @@
       }
     }
 
-    .dropdownContainer {
+    .dropdown {
+      position: absolute;
+      top: 3rem;
       max-width: 220px;
       width: 100%;
-      position: relative;
+      background: linear-gradient(45deg, #3639B0 15%, rgba(101, 31, 249, 0.65) 97.67%);
+      color: var(--white);
+      border-radius: 4px;
+      font-weight: normal;
 
-      .dropdown {
-        position: absolute;
-        top: 1.8rem;
-        width: 100%;
-        background: linear-gradient(45deg, #3639B0 15%, rgba(101, 31, 249, 0.65) 97.67%);
-        color: var(--white);
-        border-radius: 4px;
-        font-weight: normal;
+      z-index: 100;
 
-        z-index: 100;
-
-        li {
-          padding: 0.7rem 1.4rem;
-          border-top: 1px solid rgba(18, 19, 58, 0.2);
-          cursor: pointer;
-        }
-
-        li:first-child {
-          border-top: none;
-        }
+      li {
+        padding: 0.7rem 1.4rem;
+        border-top: 1px solid rgba(18, 19, 58, 0.2);
+        cursor: pointer;
       }
-    }
 
-    .exitIcon {
-      display: none;
-      width: 1.6rem;
-      height: 1.6rem;
-      color: var(--blue-50);
-      cursor: pointer;
-
-      &.show {
-        display: block;
-
-        @media(max-width: 599px) {
-          display: none;
-        }
+      li:first-child {
+        border-top: none;
       }
     }
   }

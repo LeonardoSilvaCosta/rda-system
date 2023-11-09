@@ -66,7 +66,7 @@ export default function SearchClients() {
     <main className={styles.wrapper}>
       <Sidebar />
       <div className={styles.main}>
-        <Header title="Home" />
+        <Header title={isLoading ? 'Carregando...' : 'Pesquisar'} />
         {isLoading ? (
           <LoadingComponent />
         ) : (

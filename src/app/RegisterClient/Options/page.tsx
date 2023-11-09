@@ -22,7 +22,7 @@ export default function Options() {
     <main className={styles.wrapper}>
       <Sidebar />
       <div className={styles.main}>
-        <Header title="Cadastrar atendido" />
+        <Header title={isLoading ? 'Carregando...' : ''} />
         {isLoading ? (
           <LoadingComponent />
         ) : (

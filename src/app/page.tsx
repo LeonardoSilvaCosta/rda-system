@@ -22,7 +22,7 @@ export default function Home() {
     <main className={`${styles.wrapper} ${showNav ? styles.noScroll : ''}`}>
       <Sidebar />
       <div className={styles.main}>
-        <Header title="Home" />
+        <Header title={isLoading ? 'Carregando...' : 'Home'} />
         {isLoading ? <LoadingComponent /> : <Dashboard />}
       </div>
     </main>

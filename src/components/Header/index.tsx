@@ -14,10 +14,10 @@ import { useRegisterClientContext } from '@/context/registerClientContext';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 interface HeaderProps {
-  title: string;
+  title?: string;
 }
 
-export function Header({ title }: HeaderProps) {
+export function Header({ title = '' }: HeaderProps) {
   const supabase = createClientComponentClient();
   const router = useRouter();
   const { showNav, setShowNav } = useGlobalContext();
@@ -27,15 +27,9 @@ export function Header({ title }: HeaderProps) {
     useRegisterClientContext();
   const { goToPreviousStep: previousRegisterAppointmentStep } =
     useRegisterAppointmentContext();
-  const [showExitButton, setShowExitButton] = useState(false);
 
-  useEffect(() => {
-    if (title === 'Prontuário') {
-      setShowExitButton(true);
-    } else {
-      setShowExitButton(false);
-    }
-  }, [title]);
+  const hasTopArrow =
+    title === 'Cadastrar atendido' || title === 'Registrar atendimento';
 
   const handleClick = () => {
     switch (title) {
@@ -65,14 +59,16 @@ export function Header({ title }: HeaderProps) {
           <div className={`${styles.leftContent}`}>
             <MdOutlineArrowBackIosNew
               className={`${styles.topArrow} ${
-                title === 'Home' ? styles.home : ''
+                !hasTopArrow ? styles.home : ''
               }`}
               onClick={handleClick}
             />
-            <FcMenu
-              onClick={() => setShowNav(!showNav)}
-              className={styles.menuIcon}
-            />
+            {!hasTopArrow && (
+              <FcMenu
+                onClick={() => setShowNav(!showNav)}
+                className={`${styles.menuIcon}`}
+              />
+            )}
             <span>{title}</span>
           </div>
         </div>
@@ -84,29 +80,23 @@ export function Header({ title }: HeaderProps) {
             height={40}
           />
           <span>1º TEN QCOPM LEONARDO</span>
-          <div className={styles.dropdownContainer}>
-            <BsChevronDown
-              className={styles.dropdownIcon}
-              onClick={() => {
-                setShowDropDownMenu(!showDropDownMenu);
-              }}
-            />
-            {showDropDownMenu ? (
-              <div className={styles.dropdown}>
-                <ul>
-                  <li>Atualizar perfil</li>
-                  <li onClick={handleSignOut}>Sair</li>
-                </ul>
-              </div>
-            ) : (
-              <></>
-            )}
-          </div>
+          <BsChevronDown
+            className={styles.dropdownIcon}
+            onClick={() => {
+              setShowDropDownMenu(!showDropDownMenu);
+            }}
+          />
+          {showDropDownMenu ? (
+            <div className={styles.dropdown}>
+              <ul>
+                <li>Atualizar perfil</li>
+                <li onClick={handleSignOut}>Sair</li>
+              </ul>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
-        <ImExit
-          onClick={returnToDashboard}
-          className={`${styles.exitIcon} ${showExitButton ? styles.show : ''}`}
-        />
       </header>
     </main>
   );

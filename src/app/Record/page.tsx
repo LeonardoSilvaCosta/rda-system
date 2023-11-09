@@ -9,6 +9,7 @@ import { Header } from '@/components/Header';
 import { LoadingComponent } from '@/components/Loading/loading';
 import { Profile } from '@/components/Profile';
 import { RecordHeader } from '@/components/RecordHeader';
+import { Sidebar } from '@/components/Sidebar';
 import { Appointment, Attended } from '@/types/types';
 
 export default function Record() {
@@ -94,13 +95,14 @@ export default function Record() {
   };
 
   return (
-    <>
-      {isLoading ? (
-        <LoadingComponent />
-      ) : (
-        <>
-          <Header title="Prontuário" />
-          <main className={styles.container}>
+    <main className={styles.wrapper}>
+      <Sidebar />
+      <div className={styles.main}>
+        <Header title={isLoading ? 'Carregando' : 'Prontuário'} />
+        {isLoading ? (
+          <LoadingComponent />
+        ) : (
+          <div className={styles.container}>
             <RecordHeader
               avatar={attended.avatar}
               fullname={attended.fullname}
@@ -119,9 +121,9 @@ export default function Record() {
                 setCurrentScreen={setCurrentScreen}
               />
             )}
-          </main>
-        </>
-      )}
-    </>
+          </div>
+        )}
+      </div>
+    </main>
   );
 }
