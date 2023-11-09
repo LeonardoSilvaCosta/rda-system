@@ -89,7 +89,7 @@ export function Header({ title = '' }: HeaderProps) {
           {showDropDownMenu ? (
             <div className={styles.dropdown}>
               <ul>
-                <li>Atualizar perfil</li>
+                <li>Editar perfil</li>
                 <li onClick={handleSignOut}>Sair</li>
               </ul>
             </div>

@@ -27,6 +27,7 @@ export default function Options() {
           <LoadingComponent />
         ) : (
           <div className={styles.container}>
+            <h2>Tipo de atendido a ser cadastrado</h2>
             <div className={styles.dashboardButtonContainer}>
               <DashboardButton icon={GiPoliceOfficerHead} name={'Militar'} />
               <DashboardButton icon={BsPersonCheck} name={'Dependente'} />

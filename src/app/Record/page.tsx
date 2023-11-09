@@ -98,7 +98,7 @@ export default function Record() {
     <main className={styles.wrapper}>
       <Sidebar />
       <div className={styles.main}>
-        <Header title={isLoading ? 'Carregando' : 'Prontuário'} />
+        <Header title={isLoading ? 'Carregando...' : 'Prontuário'} />
         {isLoading ? (
           <LoadingComponent />
         ) : (

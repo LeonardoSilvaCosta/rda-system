@@ -11,10 +11,19 @@
   
     display: flex;
     justify-content: center;
-
-    padding: 4.88rem 2.88rem;
-
+    flex-direction: column;
+    
+    padding: 4.88rem 0rem;
   
+    color: var(--blue-300);
+    gap: 3rem;
+
+    h2 {
+      text-transform: uppercase;
+      line-height: 2rem;
+      text-align: center;
+    }
+
     @media(max-width: 1440px) {
       width: calc(100vw - 60px);
     }

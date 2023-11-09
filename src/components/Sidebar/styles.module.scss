@@ -3,10 +3,11 @@
   min-height: 100vh;
   max-width: 300px;
   width: 100%;
-  color: var(--blue-50);
   background: linear-gradient(270deg, #1E2062 0%, rgba(14, 19, 170, 0.80) 49.48%, rgba(19, 14, 227, 0.70) 90.62%);
   transition: max-width 0.5s;
   z-index: 100;
+
+  color: var(--white);
 
   @media(max-width: 1024px) {
     position: fixed;
@@ -95,6 +96,11 @@
     ul {
       padding-top: 1rem;
       font-weight: bold;
+      color: rgba(255, 255, 255, 0.6);
+
+      li.active {
+        color: var(--white);
+      }
     }
 
     a {
