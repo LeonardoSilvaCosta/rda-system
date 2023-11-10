@@ -1,0 +1,109 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 0 2rem;
+  gap: 3rem;
+  align-items: center;
+  height: 500px;
+
+  h2 {
+    margin-left: 1rem;
+    font-size: 1.6rem;
+    font-weight: bold;
+    display: flex;
+    color: var(--blue-300);
+  }
+
+
+  .uploadBox {
+    max-width: 400px;
+    width: 100%;
+    border-radius: 8px;
+    background-color: var(--blue-200);
+    margin: 0 auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 2rem;
+
+    img {
+      width: 200px;
+      height: auto;
+      border-radius: 8px;
+    }
+    
+    .noImage {
+      width: 100%;
+      padding: 5rem 0;
+      color: var(--blue-50);
+      border-radius: 8px;
+      background-color: var(--blue-200);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  
+      & svg {
+        width: 80px;
+        height: 80px;
+      }
+    }
+  }
+
+
+  .inputContainer {
+    display: flex;
+    justify-content: center;
+    label {
+      border-radius: 8px;
+      background-color: var(--blue-300);
+      color: var(--blue-50);
+      padding: 0.4rem 2rem;
+      cursor: pointer;
+      text-align: center;
+      font-size: 1.05rem;
+
+
+      @media(max-width: 599px) {
+        width: 100%;
+        align-self: center;
+      }
+
+      &:hover {
+        background-color: rgba(118, 121, 213, 0.9)
+      }
+
+      &.disabled {
+        background-color: var(--gray-300);
+        cursor: not-allowed;
+      }
+    }
+
+    input[type="file"] {
+      width: 100%;
+      display: none;
+    }
+  }
+}
+
+.buttonsBox {
+  max-width: 996px;
+  width: 100%;
+  margin: 2rem auto 0 auto;
+
+  display: flex;
+  justify-content: space-between;
+
+  @media(max-width: 1192px) {
+    width: calc(100% - 80px);
+  }
+
+  @media(max-width: 762px) {
+    justify-content: center;
+
+    button:first-child {
+      display: none;
+    }
+  }
+}

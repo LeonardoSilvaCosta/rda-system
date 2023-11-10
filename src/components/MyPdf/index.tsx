@@ -66,7 +66,7 @@ export function MyPdf({ attended, appointment }: PdfProps) {
         <View fixed style={styles.header}>
           <Image
             style={{ width: '1.82cm', height: '2.29cm' }}
-            src="https://i.postimg.cc/fTLSqFXT/brasao-estado.png"
+            src="https://jfzcpicztjnxtltzxbkc.supabase.co/storage/v1/object/public/assets/brasao-estado.png"
           />
           <View style={styles.headerTextWrapper}>
             <Text>GOVERNO DO ESTADO DO PARÁ</Text>
@@ -79,7 +79,7 @@ export function MyPdf({ attended, appointment }: PdfProps) {
           </View>
           <Image
             style={{ width: '2.02cm', height: '2.54cm' }}
-            src="https://i.postimg.cc/wB3W6FS6/brasao-ciap-rm-bg.png"
+            src="https://jfzcpicztjnxtltzxbkc.supabase.co/storage/v1/object/public/assets/brasao_ciap_rm_bg.png"
           />
         </View>
         <View style={styles.section}>

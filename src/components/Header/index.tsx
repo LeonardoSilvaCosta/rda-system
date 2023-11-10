@@ -19,7 +19,7 @@ interface HeaderProps {
 export function Header({ title = '' }: HeaderProps) {
   const supabase = createClientComponentClient();
   const router = useRouter();
-  const { showNav, setShowNav } = useGlobalContext();
+  const { currentUser, showNav, setShowNav } = useGlobalContext();
   const [showDropDownMenu, setShowDropDownMenu] = useState(false);
   const { returnToDashboard } = useGlobalContext();
   const { goToPreviousStep: previousRegisterClientStep } =
@@ -28,7 +28,9 @@ export function Header({ title = '' }: HeaderProps) {
     useRegisterAppointmentContext();
 
   const hasTopArrow =
-    title === 'Cadastrar atendido' || title === 'Registrar atendimento';
+    title === 'Cadastrar atendido' ||
+    title === 'Registrar atendimento' ||
+    title === 'Cadastrar usuário';
 
   const handleClick = () => {
     switch (title) {
@@ -73,12 +75,12 @@ export function Header({ title = '' }: HeaderProps) {
         </div>
         <div className={styles.rightColumn}>
           <Image
-            src="/profile.png"
+            src={currentUser.avatar ? currentUser.avatar : '/default-user.svg'}
             alt="profile-photo"
             width={40}
             height={40}
           />
-          <span>1º TEN QCOPM LEONARDO</span>
+          <span>{`${currentUser.rank} ${currentUser.cadre} ${currentUser.nickname}`}</span>
           <BsChevronDown
             className={styles.dropdownIcon}
             onClick={() => {

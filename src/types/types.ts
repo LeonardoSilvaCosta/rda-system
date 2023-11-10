@@ -56,7 +56,7 @@ export type City = {
   state_id: string;
 };
 
-export type GenericAttended = {
+export type GenericPerson = {
   id: string;
   avatar?: string;
   fullname: string;
@@ -94,6 +94,24 @@ export type AppointmentFormValues = {
 export type LoginFormValues = {
   email: string;
   password: string;
+};
+
+export type UserFormValues = {
+  avatar: FileList;
+  fullName: string;
+  nickName: string;
+  rg: string;
+  rank: string;
+  cadre: string;
+  gender: string;
+  cpf: string;
+  birthDate: string;
+  maritalStatus: string;
+  contacts: Contact[];
+  address: Address;
+  opm: string;
+  isMilitary: string;
+  workStatus: string;
 };
 
 export type Referral = { firstOptionId: string; secondOptionId: string };

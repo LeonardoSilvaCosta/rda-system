@@ -6,10 +6,16 @@ import {
   createContext,
   useState,
   Dispatch,
-  SetStateAction
+  SetStateAction,
+  useEffect
 } from 'react';
 
+import { GenericPerson } from '@/types/types';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+
 interface GlobalContextProps {
+  currentUser: GenericPerson;
+  isLoading: boolean;
   returnToDashboard: () => void;
   showNav: boolean;
   setShowNav: Dispatch<SetStateAction<boolean>>;
@@ -28,8 +34,37 @@ export const GlobalContextProvider = ({
     router.push('/');
   };
 
+  const supabase = createClientComponentClient();
+  const [currentUser, setCurrentUser] = useState<GenericPerson>({
+    id: '',
+    avatar: '',
+    fullname: '',
+    nickname: '',
+    rg: '',
+    rank: '',
+    cadre: '',
+    cpf: ''
+  });
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function getCurrentUser() {
+      const { data: logedUserData } = await supabase.auth.getUser();
+      const userEmail = logedUserData.user?.email;
+      const data = await fetch(`/api/get_current_user?email=${userEmail}`);
+      const userData = await data.json();
+
+      setCurrentUser(userData);
+      setIsLoading(false);
+    }
+
+    getCurrentUser();
+  }, []);
+
   return (
-    <GlobalContext.Provider value={{ returnToDashboard, showNav, setShowNav }}>
+    <GlobalContext.Provider
+      value={{ currentUser, isLoading, returnToDashboard, showNav, setShowNav }}
+    >
       {children}
     </GlobalContext.Provider>
   );

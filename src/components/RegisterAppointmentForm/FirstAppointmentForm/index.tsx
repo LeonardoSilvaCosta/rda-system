@@ -10,7 +10,7 @@ import { MyCustomMultiSelectDropdown } from '@/components/MyCustomMultiselectDro
 import { MyDatePicker } from '@/components/MyDatePicker';
 import { RadioGroup } from '@/components/RadioGroup';
 import { useRegisterAppointmentContext } from '@/context/registerAppointmentContext';
-import { GenericAttended, Option } from '@/types/types';
+import { GenericPerson, Option } from '@/types/types';
 
 export function FirstAppointmentForm() {
   const {
@@ -45,7 +45,7 @@ export function FirstAppointmentForm() {
         const attendeds = await resAttendeds.json();
 
         const formattedEspecialists = await specialists.map(
-          (e: GenericAttended) => {
+          (e: GenericPerson) => {
             return {
               id: e.id,
               name: `${e.rank} ${e.cadre} RG ${e.rg} ${e.nickname}`
@@ -53,7 +53,7 @@ export function FirstAppointmentForm() {
           }
         );
 
-        const formatedAttendeds = await attendeds.map((e: GenericAttended) => {
+        const formatedAttendeds = await attendeds.map((e: GenericPerson) => {
           return {
             id: e.id,
             name:

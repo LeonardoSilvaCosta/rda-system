@@ -1,0 +1,84 @@
+.container {
+  display: flex;
+  flex-direction: column;
+
+  h2 {
+    margin-left: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.6rem;
+    font-weight: bold;
+    display: flex;
+    color: var(--gray-500);
+  }
+
+  .contactBox {
+    width: calc(100% - 20px);
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    border: 0.5px solid var(--gray-300);
+    padding: 1rem;
+
+    label {
+      margin-top: 1rem;
+    }
+
+    &.withMarginTop {
+      margin-top: 1rem;
+    }
+
+    .boxHeader {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 0 1rem 0;
+
+      button {
+        width: 5rem;
+        height: 2rem;
+        background-color: var(--alert);
+        font-size: 12px;
+      }
+    }
+  }
+
+  .moreButtonBox {
+    width: calc(100% - 20px);
+    display: flex;
+    justify-content: flex-end;
+    margin: 0 auto;
+
+    button {
+      margin: 1rem 0;
+      background-color: var(--blue-200);
+      color: var(--blue-50);
+      height: 2.2rem;
+      width: 7.5rem;
+
+      &:hover {
+        background-color: rgba(157, 159, 225, 0.9);
+      }
+    }
+
+  }
+}
+
+.buttonsBox {
+  max-width: 996px;
+  width: 100%;
+  margin: 2rem auto 0 auto;
+
+  display: flex;
+  justify-content: space-between;
+
+  @media(max-width: 1192px) {
+    width: calc(100% - 80px);
+  }
+
+  @media(max-width: 762px) {
+    justify-content: center;
+
+    button:first-child {
+      display: none;
+    }
+  }
+}

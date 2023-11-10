@@ -92,9 +92,9 @@ export function Sidebar() {
               </Link>
             </li>
             <li className={`${pathname === '/Settings' ? styles.active : ''}`}>
-              <Link href="/Settings">
+              <Link href="/RegisterUser">
                 <LiaUserCogSolid className={styles.navIcon} />
-                <span>Gerenciar usuários</span>
+                <span>Cadasrar usuário</span>
               </Link>
             </li>
           </ul>

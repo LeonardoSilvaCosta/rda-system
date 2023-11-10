@@ -164,3 +164,40 @@ export const loginValidation = yup.object({
     .required("O campo 'email' é obrigatório"),
   password: yup.string().required("O campo 'senha' é obrigatório.")
 });
+
+export const firstUserFormValidation = yup.object({
+  isMilitary: yup.string().required('Este campo é obrigatório.')
+});
+
+export const secondUserFormValidation = yup.object({
+  fullName: yup.string().required("O campo 'Nome completo' é obrigatório."),
+  nickName: yup.string().required("O campo 'Nome de guerra' é obrigatório."),
+  rg: yup
+    .string()
+    .required()
+    .when('isMilitary', {
+      is: 'Sim',
+      then: () => yup.string().required("O campo 'RG' é obrigatório."),
+      otherwise: () => yup.string().nullable()
+    })
+    .default(null),
+  rank: yup
+    .string()
+    .required()
+    .when('isMilitary', {
+      is: 'Sim',
+      then: () =>
+        yup.string().required("O campo 'Posto/graduação' é obrigatório."),
+      otherwise: () => yup.string().nullable()
+    })
+    .default(null),
+  cadre: yup.string().required("O campo 'Quadro' é obrigatório."),
+  gender: yup.string().required("O campo 'Gênero' é obrigatório."),
+  cpf: yup.string().required("O campo 'CPF' é obrigatório."),
+  birthDate: yup.date().required("O campo 'Data de nascimento' é obrigatório."),
+  maritalStatus: yup.string().required("O campo 'Estado civil' é obrigatório."),
+  opm: yup.string().required("O campo 'OPM' é obrigatório."),
+  workStatus: yup
+    .string()
+    .required("O campo 'Situação funcional' é obrigatório.")
+});

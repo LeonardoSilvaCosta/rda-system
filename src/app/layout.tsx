@@ -8,6 +8,7 @@ import { GlobalContextProvider } from '@/context/globalContext';
 import { LoginContextProvider } from '@/context/loginContext';
 import { RegisterAppointmentContextProvider } from '@/context/registerAppointmentContext';
 import { RegisterClientContextProvider } from '@/context/registerClientContext';
+import { RegisterUserContextProvider } from '@/context/registerUserContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -29,8 +30,10 @@ export default function RootLayout({
           <LoginContextProvider>
             <RegisterClientContextProvider>
               <RegisterAppointmentContextProvider>
-                {children}
-                <Toaster />
+                <RegisterUserContextProvider>
+                  {children}
+                  <Toaster />
+                </RegisterUserContextProvider>
               </RegisterAppointmentContextProvider>
             </RegisterClientContextProvider>
           </LoginContextProvider>

@@ -4,6 +4,7 @@ import { ClientCard } from '../ClientCard';
 import styles from './styles.module.scss';
 
 import { useGlobalContext } from '@/context/globalContext';
+
 export function Dashboard() {
   const emphasisBoxData = [
     {

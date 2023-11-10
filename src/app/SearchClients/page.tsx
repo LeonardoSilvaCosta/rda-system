@@ -9,10 +9,10 @@ import { Header } from '@/components/Header';
 import { LoadingComponent } from '@/components/Loading/loading';
 import { SearchBar } from '@/components/SearchBar';
 import { Sidebar } from '@/components/Sidebar';
-import { GenericAttended } from '@/types/types';
+import { GenericPerson } from '@/types/types';
 export default function SearchClients() {
   const [isLoading, setIsLoading] = useState(true);
-  const [attendeds, setAttendeds] = useState<GenericAttended[]>([
+  const [attendeds, setAttendeds] = useState<GenericPerson[]>([
     {
       id: '',
       avatar: '',
@@ -25,7 +25,7 @@ export default function SearchClients() {
     }
   ]);
   const [filteredData, setFilteredData] =
-    useState<GenericAttended[]>(attendeds);
+    useState<GenericPerson[]>(attendeds);
 
   const [query, setQuery] = useState('');
 
