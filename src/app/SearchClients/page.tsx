@@ -24,8 +24,7 @@ export default function SearchClients() {
       cpf: ''
     }
   ]);
-  const [filteredData, setFilteredData] =
-    useState<GenericPerson[]>(attendeds);
+  const [filteredData, setFilteredData] = useState<GenericPerson[]>(attendeds);
 
   const [query, setQuery] = useState('');
 
