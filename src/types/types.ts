@@ -104,6 +104,7 @@ export type UserFormValues = {
   rank: string;
   cadre: string;
   gender: string;
+  email: string;
   cpf: string;
   birthDate: string;
   maritalStatus: string;

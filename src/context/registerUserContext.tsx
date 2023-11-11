@@ -266,7 +266,7 @@ export const RegisterUserContextProvider = ({
         const { error } = await supabase.rpc('create_new_user', {
           avatar_input: avatarData,
           fullname_input: data.fullName,
-          email_input: 'maria@gmail.com',
+          email_input: data.email,
           nickname_input: data.nickName,
           rg_input: data.rg,
           rank_id_input: data.rank,

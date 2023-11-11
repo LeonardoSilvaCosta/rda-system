@@ -193,6 +193,7 @@ export const secondUserFormValidation = yup.object({
     .default(null),
   cadre: yup.string().required("O campo 'Quadro' é obrigatório."),
   gender: yup.string().required("O campo 'Gênero' é obrigatório."),
+  email: yup.string().required("O campo 'Email' é obrigatório."),
   cpf: yup.string().required("O campo 'CPF' é obrigatório."),
   birthDate: yup.date().required("O campo 'Data de nascimento' é obrigatório."),
   maritalStatus: yup.string().required("O campo 'Estado civil' é obrigatório."),

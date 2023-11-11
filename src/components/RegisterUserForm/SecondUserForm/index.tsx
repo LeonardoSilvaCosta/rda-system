@@ -198,6 +198,14 @@ export function SecondUserForm({ control, register }: SecondUserFormProps) {
             errors={errors}
             register={register}
           />
+          <Input
+            title="Email*"
+            name="email"
+            type="email"
+            hint="leonardopmpa@gmail.com"
+            errors={errors}
+            register={register}
+          />
           <MaskedInput
             title="CPF*"
             name="cpf"
