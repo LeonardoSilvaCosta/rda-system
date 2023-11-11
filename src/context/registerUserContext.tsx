@@ -40,7 +40,6 @@ import {
 } from '@/validation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { v4 as uuidv4 } from 'uuid';
 import * as yup from 'yup';
 
 interface RegisteUserContextProps {
@@ -219,73 +218,75 @@ export const RegisterUserContextProvider = ({
     goToNextStep();
 
     if (isLastStep) {
-      // console.log(data);
-      // const { data: logedUserData } = await supabase.auth.getUser();
-      // const userEmail = logedUserData.user?.email;
-      // const { data: userData } = await supabase
-      //   .from('tb_users')
-      //   .select()
-      //   .eq('email', userEmail)
-      //   .single();
+      console.log(data);
+      const { data: logedUserData } = await supabase.auth.getUser();
+      const userEmail = logedUserData.user?.email;
+      const { data: userData } = await supabase
+        .from('tb_users')
+        .select()
+        .eq('email', userEmail)
+        .single();
 
-      // const birthDate = new Date(data.birthDate);
+      const birthDate = new Date(data.birthDate);
 
-      // const year = birthDate.getFullYear();
-      // const month = birthDate.getMonth() + 1;
-      // const day = birthDate.getDate();
+      const year = birthDate.getFullYear();
+      const month = birthDate.getMonth() + 1;
+      const day = birthDate.getDate();
 
-      // const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day
-      //   .toString()
-      //   .padStart(2, '0')}`;
+      const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day
+        .toString()
+        .padStart(2, '0')}`;
       const cleanedCPF = data.cpf.replace(/[^\d]/g, '');
-      // const cleanedZipCode = data.address.zipCode.replace(/[^\d]/g, '');
+      const cleanedZipCode = data.address.zipCode.replace(/[^\d]/g, '');
 
-      // const phones = data.contacts.map((e) => {
-      //   return {
-      //     phone: e.phone.replace(/[^\d]/g, ''),
-      //     owner_identification: e.ownerIdentification,
-      //     attended_relationship: null
-      //   };
-      // });
+      const phones = data.contacts.map((e) => {
+        return {
+          phone: e.phone.replace(/[^\d]/g, ''),
+          owner_identification: e.ownerIdentification,
+          attended_relationship: null
+        };
+      });
 
       try {
+        const formData = new FormData();
         const file = data.avatar[0];
-        const fileExt = file.name.split('.').pop();
-        const uuid = uuidv4();
-        const filePath = `${uuid}.${fileExt}`;
-        const avatarUri = `avatars/${cleanedCPF}`;
-        const avatarPath = `${process.env.NEXT_PUBLIC_STORAGE_BASE_URL}/${avatarUri}/${filePath}.${fileExt}`;
+        formData.append('avatar', file);
+        const filename = file.name;
 
-        const { error: uploadError } = await supabase.storage
-          .from('users')
-          .upload(`avatars/avatar1.png`, file);
+        const resAvatar = await fetch(
+          `/api/upload_user_avatar?cpf=${cleanedCPF}&filename=${filename}`,
+          {
+            method: 'POST',
+            body: formData
+          }
+        );
+        const avatarData = await resAvatar.json();
+        resAvatar.status !== 200 && console.log(avatarData);
 
-        console.log(avatarPath);
+        const { error } = await supabase.rpc('create_new_user', {
+          avatar_input: avatarData,
+          fullname_input: data.fullName,
+          email_input: 'maria@gmail.com',
+          nickname_input: data.nickName,
+          rg_input: data.rg,
+          rank_id_input: data.rank,
+          cadre_id_input: data.cadre,
+          opm_id_input: data.opm,
+          gender_id_input: data.gender,
+          cpf_input: cleanedCPF,
+          birth_date_input: formattedDate,
+          marital_status_id_input: data.maritalStatus,
+          work_status_id_input: data.workStatus,
+          registered_by_input: await userData.id,
+          zip_code_input: cleanedZipCode,
+          number_input: data.address.number,
+          street_input: data.address.street,
+          neighborhood_input: data.address.neighborhood,
+          city_id_input: data.address.city,
+          phones_input: phones
+        });
 
-        // const { error } = await supabase.rpc('create_new_user', {
-        //   avatar_input: avatarPath,
-        //   fullname_input: data.fullName,
-        //   email_input: 'maria@gmail.com',
-        //   nickname_input: data.nickName,
-        //   rg_input: data.rg,
-        //   rank_id_input: data.rank,
-        //   cadre_id_input: data.cadre,
-        //   opm_id_input: data.opm,
-        //   gender_id_input: data.gender,
-        //   cpf_input: cleanedCPF,
-        //   birth_date_input: formattedDate,
-        //   marital_status_id_input: data.maritalStatus,
-        //   work_status_id_input: data.workStatus,
-        //   registered_by_input: await userData.id,
-        //   zip_code_input: cleanedZipCode,
-        //   number_input: data.address.number,
-        //   street_input: data.address.street,
-        //   neighborhood_input: data.address.neighborhood,
-        //   city_id_input: data.address.city,
-        //   phones_input: phones
-        // });
-
-        if (!uploadError) {
+        if (!error) {
           toast.success('Você cadastrou um novo usuário com sucesso.');
         } else {
           toast.error(
@@ -293,19 +294,19 @@ export const RegisterUserContextProvider = ({
           );
           console.log(
             `Erro no cadastro de novo usuário. ${JSON.stringify(
-              uploadError,
+              error,
               null,
               2
             )}.`
           );
         }
-      } catch (uploadError) {
+      } catch (error) {
         toast.error(
-          `Houve algum problema no cadastro de seu formulário, tente novamente.`
+          `Houve algum problema no cadastro de seu formulário, tente novamente. ${error}`
         );
         console.log(
           `Problema no cadastro de seu formulário. Erro ${JSON.stringify(
-            uploadError,
+            error,
             null,
             2
           )}.`

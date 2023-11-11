@@ -9,7 +9,7 @@ import { LoadingComponent } from '@/components/Loading/loading';
 import { useRegisterUserContext } from '@/context/registerUserContext';
 
 export function FifthUserForm() {
-  const { goToPreviousStep, register } = useRegisterUserContext();
+  const { goToPreviousStep, setValue } = useRegisterUserContext();
   const [avatarUrl, setAvatarUrl] = useState('');
 
   const [isLoading, setIsLoading] = useState(true);
@@ -25,10 +25,11 @@ export function FifthUserForm() {
     if (!event.target.files || event.target.files.length === 0) {
       throw new Error('You must select an image to upload.');
     }
-    const file = event.target.files[0];
+    const files = event.target.files;
 
-    const imageUrl = URL.createObjectURL(file);
+    const imageUrl = URL.createObjectURL(files[0]);
     setAvatarUrl(imageUrl);
+    setValue('avatar', files);
     setIsUploading(false);
   };
 
@@ -61,7 +62,6 @@ export function FifthUserForm() {
                 <input
                   type="file"
                   id="avatar"
-                  {...register('avatar')}
                   accept="image/*"
                   onChange={uploadAvatar}
                   disabled={isUploading}

@@ -20,6 +20,10 @@ const errorMessages = {
   specialistQueryFailed: {
     status: 400,
     message: 'Erro ao tentar pesquisar especialistas.'
+  },
+  avatarUploadFailed: {
+    status: 400,
+    message: 'O upload falhou: já há um avatar para esse usuário.'
   }
 };
 
