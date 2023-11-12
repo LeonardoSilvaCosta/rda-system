@@ -20,6 +20,7 @@ interface InputProps<T extends FieldValues>
   icon?: string;
   errors: FieldErrors<T>;
   register: UseFormRegister<T>;
+  isSubmitted?: boolean;
 }
 
 export function Input<T extends FieldValues>({

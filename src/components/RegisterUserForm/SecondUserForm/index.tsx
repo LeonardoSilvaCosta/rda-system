@@ -21,7 +21,11 @@ interface SecondUserFormProps {
   watch: UseFormWatch<UserFormValues>;
 }
 
-export function SecondUserForm({ control, register }: SecondUserFormProps) {
+export function SecondUserForm({
+  control,
+  register,
+  watch
+}: SecondUserFormProps) {
   const supabase = createClientComponentClient();
   const {
     errors,
@@ -34,6 +38,8 @@ export function SecondUserForm({ control, register }: SecondUserFormProps) {
     userFormData
   } = useRegisterUserContext();
   const isMilitary = getValues('isMilitary') === 'Sim' ? true : false;
+  const watchCadre = watch('cadre');
+  const QCOPMId = 'df4281a9-d27f-42b8-baf9-fcf9d58d055e';
 
   const [isLoading, setIsLoading] = useState(true);
   const ranks = userFormData
@@ -216,6 +222,16 @@ export function SecondUserForm({ control, register }: SecondUserFormProps) {
             mask={'999.999.999-99'}
             onBlur={(e) => analyseCPF(e)}
           />
+          {watchCadre === QCOPMId && (
+            <Input
+              title="Registro profissional*"
+              name="professionalRegistration"
+              type="text"
+              hint="10/05495"
+              errors={errors}
+              register={register}
+            />
+          )}
           <MyDatePicker
             title="Data de nascimento"
             name="birthDate"

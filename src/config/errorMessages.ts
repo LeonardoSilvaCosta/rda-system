@@ -24,6 +24,10 @@ const errorMessages = {
   avatarUploadFailed: {
     status: 400,
     message: 'O upload falhou: já há um avatar para esse usuário.'
+  },
+  createUserFailed: {
+    status: 400,
+    message: 'O cadastro do usuário falhou.'
   }
 };
 

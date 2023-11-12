@@ -59,7 +59,7 @@ const contacts = yup.object({
   ownerIdentification: yup
     .string()
     .required("O campo 'Identificação do dono do celular' é obrigatório"),
-  attendedRelationship: yup.string().nullable(),
+  bond: yup.string().nullable(),
   attendedId: yup.string().nonNullable()
 });
 
@@ -169,6 +169,8 @@ export const firstUserFormValidation = yup.object({
   isMilitary: yup.string().required('Este campo é obrigatório.')
 });
 
+const QCOPMId = 'df4281a9-d27f-42b8-baf9-fcf9d58d055e';
+
 export const secondUserFormValidation = yup.object({
   fullName: yup.string().required("O campo 'Nome completo' é obrigatório."),
   nickName: yup.string().required("O campo 'Nome de guerra' é obrigatório."),
@@ -195,6 +197,18 @@ export const secondUserFormValidation = yup.object({
   gender: yup.string().required("O campo 'Gênero' é obrigatório."),
   email: yup.string().required("O campo 'Email' é obrigatório."),
   cpf: yup.string().required("O campo 'CPF' é obrigatório."),
+  professionalRegistration: yup.string().when('cadre', {
+    is: QCOPMId,
+    then: () =>
+      yup
+        .string()
+        .required("O campo 'Registro' é obrigatório")
+        .matches(
+          /^(10|1)\/\d+$/,
+          "Deve começar com '10/' ou '1/' e conter números após a barra"
+        ),
+    otherwise: () => yup.string().nullable()
+  }),
   birthDate: yup.date().required("O campo 'Data de nascimento' é obrigatório."),
   maritalStatus: yup.string().required("O campo 'Estado civil' é obrigatório."),
   opm: yup.string().required("O campo 'OPM' é obrigatório."),

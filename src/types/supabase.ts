@@ -728,7 +728,7 @@ export interface Database {
       tb_phones: {
         Row: {
           attended_id: string;
-          attended_relationship: string | null;
+          bond: string | null;
           created_at: string;
           id: string;
           owner_identification: string;
@@ -736,7 +736,7 @@ export interface Database {
         };
         Insert: {
           attended_id: string;
-          attended_relationship?: string | null;
+          bond?: string | null;
           created_at?: string;
           id?: string;
           owner_identification: string;
@@ -744,7 +744,7 @@ export interface Database {
         };
         Update: {
           attended_id?: string;
-          attended_relationship?: string | null;
+          bond?: string | null;
           created_at?: string;
           id?: string;
           owner_identification?: string;
@@ -758,8 +758,8 @@ export interface Database {
             referencedColumns: ['id'];
           },
           {
-            foreignKeyName: 'tb_phones_attended_relationship_fkey';
-            columns: ['attended_relationship'];
+            foreignKeyName: 'tb_phones_bond_fkey';
+            columns: ['bond'];
             referencedRelation: 'tb_familiar_bonds';
             referencedColumns: ['id'];
           }

@@ -115,7 +115,7 @@ export const RegisterClientContextProvider = ({
         {
           phone: '',
           ownerIdentification: '',
-          attendedRelationship: null,
+          bond: null,
           attended_id: ''
         }
       ],
@@ -245,7 +245,7 @@ export const RegisterClientContextProvider = ({
         return {
           phone: e.phone.replace(/[^\d]/g, ''),
           owner_identification: e.ownerIdentification,
-          attended_relationship: null
+          bond: null
         };
       });
 

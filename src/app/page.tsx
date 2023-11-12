@@ -12,10 +12,9 @@ import { useGlobalContext } from '@/context/globalContext';
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
-  const { showNav, getCurrentUser } = useGlobalContext();
+  const { showNav } = useGlobalContext();
 
   useEffect(() => {
-    getCurrentUser();
     setIsLoading(false);
   }, []);
 

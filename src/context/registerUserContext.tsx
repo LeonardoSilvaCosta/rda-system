@@ -31,6 +31,8 @@ import { FourthUserForm } from '@/components/RegisterUserForm/FourthUserForm';
 import { SecondUserForm } from '@/components/RegisterUserForm/SecondUserForm';
 import { ThirdUserForm } from '@/components/RegisterUserForm/ThirdUserForm';
 import { PopulateFormData, UserFormValues } from '@/types/types';
+import { generateRandomPassword } from '@/utils/generateRandomPassword';
+import { hashPassword } from '@/utils/hashPassword';
 import {
   addressFormValidation,
   contactFormValidation,
@@ -57,6 +59,7 @@ interface RegisteUserContextProps {
   isCPFUnique: boolean;
   isFirstStep: boolean;
   isLastStep: boolean;
+  isSubmitted: boolean;
   onSubmit: SubmitHandler<UserFormValues>;
   register: UseFormRegister<any>;
   reset: UseFormReset<any>;
@@ -90,7 +93,7 @@ export const RegisterUserContextProvider = ({
   const {
     clearErrors,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitted },
     getValues,
     handleSubmit,
     register,
@@ -106,7 +109,9 @@ export const RegisterUserContextProvider = ({
       rank: null,
       cadre: null,
       gender: '',
+      email: '',
       cpf: '',
+      professionalRegistration: '',
       birthDate: null,
       maritalStatus: null,
       contacts: [
@@ -129,7 +134,8 @@ export const RegisterUserContextProvider = ({
       opm: null,
       isMilitary: '',
       workStatus: null
-    }
+    },
+    delayError: 3000
   });
 
   const [currentStep, setCurrentStep] = useState<number>(0);
@@ -243,7 +249,7 @@ export const RegisterUserContextProvider = ({
         return {
           phone: e.phone.replace(/[^\d]/g, ''),
           owner_identification: e.ownerIdentification,
-          attended_relationship: null
+          bond: null
         };
       });
 
@@ -263,17 +269,29 @@ export const RegisterUserContextProvider = ({
         const avatarData = await resAvatar.json();
         resAvatar.status !== 200 && console.log(avatarData);
 
+        const signedUpRes = await fetch('/api/create_supabase_user', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email: data.email })
+        });
+
+        const signedUpData = await signedUpRes.json();
+
         const { error } = await supabase.rpc('create_new_user', {
+          user_id_input: signedUpData.user.id,
           avatar_input: avatarData,
           fullname_input: data.fullName,
-          email_input: data.email,
           nickname_input: data.nickName,
           rg_input: data.rg,
           rank_id_input: data.rank,
           cadre_id_input: data.cadre,
           opm_id_input: data.opm,
           gender_id_input: data.gender,
+          email_input: data.email,
           cpf_input: cleanedCPF,
+          professional_registration_input: data.professionalRegistration,
           birth_date_input: formattedDate,
           marital_status_id_input: data.maritalStatus,
           work_status_id_input: data.workStatus,
@@ -299,18 +317,20 @@ export const RegisterUserContextProvider = ({
               2
             )}.`
           );
+          if (signedUpData.user) {
+            await fetch(
+              `/api/delete_supabase_user?use_id=${signedUpData.user.id}`,
+              {
+                method: 'DELETE'
+              }
+            );
+          }
         }
       } catch (error) {
         toast.error(
           `Houve algum problema no cadastro de seu formulário, tente novamente. ${error}`
         );
-        console.log(
-          `Problema no cadastro de seu formulário. Erro ${JSON.stringify(
-            error,
-            null,
-            2
-          )}.`
-        );
+        console.log(`Problema no cadastro de seu formulário. ${error}`);
       } finally {
         reset();
         setCurrentStep(0);
@@ -337,6 +357,7 @@ export const RegisterUserContextProvider = ({
         isCPFUnique,
         isFirstStep,
         isLastStep,
+        isSubmitted,
         onSubmit,
         register,
         reset,

@@ -30,7 +30,7 @@ export type Address = {
 export type Contact = {
   phone: string;
   ownerIdentification: string;
-  attendedRelationship: string;
+  bond: string;
   attended_id: string;
 };
 
@@ -106,6 +106,7 @@ export type UserFormValues = {
   gender: string;
   email: string;
   cpf: string;
+  professionalRegistration: string;
   birthDate: string;
   maritalStatus: string;
   contacts: Contact[];
@@ -186,7 +187,7 @@ export type Attended = {
   phones: {
     phone: string;
     ownerIdentification: string;
-    attendedRelationship: string | null;
+    bond: string | null;
   }[];
   policyHolder: PolicyHolder;
   dependents: Dependent[];

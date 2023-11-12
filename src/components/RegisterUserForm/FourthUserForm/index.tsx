@@ -25,7 +25,7 @@ interface FourthUserFormProps {
 const contactDefaultValues = {
   phone: '',
   ownerIdentification: '',
-  attendedRelationship: '',
+  bond: '',
   attended_id: ''
 };
 
@@ -57,8 +57,7 @@ export function FourthUserForm({ control, register }: FourthUserFormProps) {
           const phone = `contacts.${index}.phone` as Path<UserFormValues>;
           const ownerIdentification =
             `contacts.${index}.ownerIdentification` as Path<UserFormValues>;
-          const attendedRelationship =
-            `contacts.${index}.attendedRelationship` as FieldPath<UserFormValues>;
+          const bond = `contacts.${index}.bond` as FieldPath<UserFormValues>;
 
           const isSecondOrLater = index >= 1;
 
@@ -106,7 +105,7 @@ export function FourthUserForm({ control, register }: FourthUserFormProps) {
                 </span>
                 <MyCustomDropdown
                   title="Vínculo do dono do contato com o usuário"
-                  fieldName={attendedRelationship}
+                  fieldName={bond}
                   options={familiarBonds}
                   getValues={getValues}
                   errors={errors}

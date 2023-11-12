@@ -31,7 +31,7 @@ type Attended = {
   phones: {
     phone: string;
     owner_identification: string;
-    attended_relationship: string | null;
+    bond: string | null;
   }[];
   policy_holder: {
     rank: string | null;
@@ -95,7 +95,7 @@ export async function GET(req: NextRequest) {
         return {
           phone: e.phone,
           ownerIdentification: e.owner_identification,
-          attendedRelationship: e.attended_relationship
+          bond: e.bond
         };
       }),
       policyHolder: attended.policy_holder,

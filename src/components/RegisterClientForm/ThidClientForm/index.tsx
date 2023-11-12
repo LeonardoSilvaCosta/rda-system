@@ -25,7 +25,7 @@ interface ThirdClientFormProps {
 const contactDefaultValues = {
   phone: '',
   ownerIdentification: '',
-  attendedRelationship: '',
+  bond: '',
   attended_id: ''
 };
 
@@ -57,8 +57,7 @@ export function ThirdClientForm({ control, register }: ThirdClientFormProps) {
           const phone = `contacts.${index}.phone` as Path<ClientFormValues>;
           const ownerIdentification =
             `contacts.${index}.ownerIdentification` as Path<ClientFormValues>;
-          const attendedRelationship =
-            `contacts.${index}.attendedRelationship` as FieldPath<ClientFormValues>;
+          const bond = `contacts.${index}.bond` as FieldPath<ClientFormValues>;
 
           const isSecondOrLater = index >= 1;
 
@@ -106,7 +105,7 @@ export function ThirdClientForm({ control, register }: ThirdClientFormProps) {
                 </span>
                 <MyCustomDropdown
                   title="Vínculo do dono do contato com o atendido"
-                  fieldName={attendedRelationship}
+                  fieldName={bond}
                   options={familiarBonds}
                   getValues={getValues}
                   errors={errors}
