@@ -85,6 +85,10 @@
       gap: 1.5rem;
       font-weight: bold;
 
+      img {
+        border-radius: 50%;
+      }
+
       @media(max-width: 599px) {
         &>span {
           display: none;

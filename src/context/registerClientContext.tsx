@@ -251,8 +251,8 @@ export const RegisterClientContextProvider = ({
 
       try {
         const { error } = await supabase.rpc('create_new_attended', {
-          fullname_input: data.fullName,
-          nickname_input: data.nickName,
+          fullname_input: data.fullName.toUpperCase(),
+          nickname_input: data.nickName.toUpperCase(),
           rg_input: data.rg,
           rank_id_input: data.rank,
           cadre_id_input: data.cadre,
