@@ -46,7 +46,7 @@ export default function Login() {
               </span>
             )}
             <Button type={'submit'} name={'Entrar'} />
-            <a>
+            <a href="/forgotPassword">
               <span>Esqueci a senha</span>
             </a>
           </form>
