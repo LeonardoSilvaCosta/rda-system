@@ -77,8 +77,8 @@ export const convertAttendedToKeyValues = (attended: Attended) => {
       ? attended.phones.map((e) => {
           return {
             key: 'Telefone',
-            value: e.attendedRelationship
-              ? `${e.phone} - ${e.ownerIdentification} (${e.attendedRelationship})`
+            value: e.bond
+              ? `${e.phone} - ${e.ownerIdentification} (${e.bond})`
               : `${e.phone} (${e.ownerIdentification})`
           };
         })
