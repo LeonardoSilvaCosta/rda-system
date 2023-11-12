@@ -39,6 +39,7 @@
 - [x] Criar email e senha (aleatória) para usuário e enviar para email do usuário recém cadastrado
 - [x] Associar tabela de email e senha com tabela de usuário pelo id
 - [x] Enviar email para com password aleatório para usuário recém-criado
+- [ ] Implementar recuperação de senha de usuário
 - [ ] Desenhar nova Dashboard
 - [ ] Adiciona paginação na listagem de atendidos
 - [ ] Adiciona paginação na listagem de atendimentos

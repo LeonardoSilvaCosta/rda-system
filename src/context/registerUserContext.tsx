@@ -31,8 +31,6 @@ import { FourthUserForm } from '@/components/RegisterUserForm/FourthUserForm';
 import { SecondUserForm } from '@/components/RegisterUserForm/SecondUserForm';
 import { ThirdUserForm } from '@/components/RegisterUserForm/ThirdUserForm';
 import { PopulateFormData, UserFormValues } from '@/types/types';
-import { generateRandomPassword } from '@/utils/generateRandomPassword';
-import { hashPassword } from '@/utils/hashPassword';
 import {
   addressFormValidation,
   contactFormValidation,

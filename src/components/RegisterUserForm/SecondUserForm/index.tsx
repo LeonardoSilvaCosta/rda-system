@@ -222,7 +222,7 @@ export function SecondUserForm({
             mask={'999.999.999-99'}
             onBlur={(e) => analyseCPF(e)}
           />
-          {watchCadre === QCOPMId && (
+          {watchCadre === QCOPMId && isMilitary && (
             <Input
               title="Registro profissional*"
               name="professionalRegistration"
