@@ -28,6 +28,7 @@ type Appointment = {
     nickname: string | null;
     cpf: string;
     fullname: string;
+    professional_registration: string;
   }[];
   attendeds: {
     rank: string | null;
@@ -72,7 +73,19 @@ export async function GET(req: NextRequest) {
         socialAssessment: e.social_assessment ? e.social_assessment : '',
         generalDemand: e.general_demand ? e.general_demand : '',
         procedure: e.procedure ? e.procedure : '',
-        specialists: e.specialists ? e.specialists : [],
+        specialists: e.specialists
+          ? e.specialists.map((e) => {
+              return {
+                rank: e.rank,
+                cadre: e.cadre,
+                rg: e.rg,
+                nickname: e.nickname,
+                cpf: e.cpf,
+                fullname: e.fullname,
+                professionalRegistration: e.professional_registration
+              };
+            })
+          : [],
         attendeds: e.attendeds ? e.attendeds : [],
         specificDemands: e.specific_demands ? e.specific_demands : [],
         documents: e.documents ? e.documents : [],

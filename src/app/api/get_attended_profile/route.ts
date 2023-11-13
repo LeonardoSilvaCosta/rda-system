@@ -48,8 +48,6 @@ type Attended = {
   }[];
 };
 
-//CRIAR versão dessa mesma consulta para função com query
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function GET(req: NextRequest) {
   const supabase = createRouteHandlerClient({ cookies });

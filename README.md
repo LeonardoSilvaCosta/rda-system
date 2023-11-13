@@ -39,7 +39,16 @@
 - [x] Criar email e senha (aleatória) para usuário e enviar para email do usuário recém cadastrado
 - [x] Associar tabela de email e senha com tabela de usuário pelo id
 - [x] Enviar email para com password aleatório para usuário recém-criado
-- [ ] Implementar recuperação de senha de usuário
+- [x] Implementar recuperação de senha de usuário
+- [ ] Implementar gestão de dados de atendido (atualizar e deletar) usuários
+- [ ] Implementar controle de alterações no perfil do usuário
+- [ ] Implementar atualização de perfil de usuário
+- [ ] Implementar gestão de usuários (listagem, delete e update via admin)
+- [ ] Recuperar as listas na ordenação desejada
+- [ ] Implementar roles
+- [ ] Impmlementar download de prontuário completo em pdf
+- [ ] Implementar backup diário automático do banco de dados
+- [ ] Implementar política de autorização adequada para os usuários com base nas roles
 - [ ] Desenhar nova Dashboard
 - [ ] Adiciona paginação na listagem de atendidos
 - [ ] Adiciona paginação na listagem de atendimentos

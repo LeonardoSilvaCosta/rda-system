@@ -141,7 +141,11 @@ export function PdfRecordData({
           <View key={e.cpf} style={styles.signature}>
             <Text>{e.fullname}</Text>
             <Text>{`${e.rank} ${e.cadre} - RG ${e.rg}`}</Text>
-            <Text>Psicólogo - CRP 10/05495</Text>
+            <Text>{`${
+              e.professionalRegistration?.split('/')[0] === '10'
+                ? 'PSICÓLOGO(A)- CRP'
+                : 'ASSISTENTE SOCIAL - CRESS'
+            } ${e.professionalRegistration}`}</Text>
           </View>
         ))}
       </View>

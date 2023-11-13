@@ -39,16 +39,19 @@ export interface Database {
           created_at: string;
           id: string;
           name: string;
+          ordenation: number;
         };
         Insert: {
           created_at?: string;
           id?: string;
           name: string;
+          ordenation: number;
         };
         Update: {
           created_at?: string;
           id?: string;
           name?: string;
+          ordenation?: number;
         };
         Relationships: [];
       };
@@ -90,12 +93,14 @@ export interface Database {
           {
             foreignKeyName: 'tb_addresses_attended_id_fkey';
             columns: ['attended_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_attendeds';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'tb_addresses_city_id_fkey';
             columns: ['city_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_cities';
             referencedColumns: ['id'];
           }
@@ -127,18 +132,21 @@ export interface Database {
           {
             foreignKeyName: 'tb_appointment_referrals_appointment_id_fkey';
             columns: ['appointment_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_appointments';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'tb_appointment_referrals_destination_fkey';
             columns: ['destination'];
+            isOneToOne: false;
             referencedRelation: 'tb_referral_destinations';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'tb_appointment_referrals_type_fkey';
             columns: ['type'];
+            isOneToOne: false;
             referencedRelation: 'tb_referral_types';
             referencedColumns: ['id'];
           }
@@ -156,12 +164,12 @@ export interface Database {
           modality_id: string;
           procedure_id: string;
           protocol: string | null;
+          psychological_assessment_id: string | null;
           record_progress: string;
           registered_by: string | null;
-          time: string;
-          psychological_assessment_id: string | null;
           service_id: string;
           social_assessment_id: string | null;
+          time: string;
         };
         Insert: {
           access_id: string;
@@ -174,12 +182,12 @@ export interface Database {
           modality_id: string;
           procedure_id: string;
           protocol?: string | null;
+          psychological_assessment_id?: string | null;
           record_progress: string;
           registered_by?: string | null;
-          time: string;
-          psychological_assessment_id?: string | null;
           service_id: string;
           social_assessment_id?: string | null;
+          time: string;
         };
         Update: {
           access_id?: string;
@@ -192,65 +200,74 @@ export interface Database {
           modality_id?: string;
           procedure_id?: string;
           protocol?: string | null;
+          psychological_assessment_id?: string | null;
           record_progress?: string;
           registered_by?: string | null;
-          time?: string;
-          psychological_assessment_id?: string | null;
           service_id?: string;
           social_assessment_id?: string | null;
+          time?: string;
         };
         Relationships: [
           {
             foreignKeyName: 'tb_appointments_access_id_fkey';
             columns: ['access_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_accesses';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'tb_appointments_facility_id_fkey';
             columns: ['facility_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_opms';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'tb_appointments_general_demand_id_fkey';
             columns: ['general_demand_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_general_demands';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'tb_appointments_modality_id_fkey';
             columns: ['modality_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_modalities';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'tb_appointments_procedure_id_fkey';
             columns: ['procedure_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_procedures';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'tb_appointments_psychological_assessment_id_fkey';
+            columns: ['psychological_assessment_id'];
+            isOneToOne: false;
+            referencedRelation: 'tb_psychological_assessments';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'tb_appointments_registered_by_fkey';
             columns: ['registered_by'];
+            isOneToOne: false;
             referencedRelation: 'tb_users';
             referencedColumns: ['id'];
           },
           {
-            foreignKeyName: 'tb_appointments_type_of_psychological_assessment_id_fkey';
-            columns: ['type_of_psychological_assessment_id'];
-            referencedRelation: 'tb_psychological_assessments';
-            referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'tb_appointments_type_of_service_id_fkey';
-            columns: ['type_of_service_id'];
+            foreignKeyName: 'tb_appointments_service_id_fkey';
+            columns: ['service_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_services';
             referencedColumns: ['id'];
           },
           {
-            foreignKeyName: 'tb_appointments_type_of_social_assessment_id_fkey';
-            columns: ['type_of_social_assessment_id'];
+            foreignKeyName: 'tb_appointments_social_assessment_id_fkey';
+            columns: ['social_assessment_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_social_assessments';
             referencedColumns: ['id'];
           }
@@ -276,12 +293,14 @@ export interface Database {
           {
             foreignKeyName: 'tb_appointments_attendeds_appointment_id_fkey';
             columns: ['appointment_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_appointments';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'tb_appointments_attendeds_attended_id_fkey';
             columns: ['attended_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_attendeds';
             referencedColumns: ['id'];
           }
@@ -307,12 +326,14 @@ export interface Database {
           {
             foreignKeyName: 'tb_appointments_documents_appointment_id_fkey';
             columns: ['appointment_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_appointments';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'tb_appointments_documents_document_id_fkey';
             columns: ['document_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_documents';
             referencedColumns: ['id'];
           }
@@ -338,12 +359,14 @@ export interface Database {
           {
             foreignKeyName: 'tb_appointments_specialists_appointment_id_fkey';
             columns: ['appointment_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_appointments';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'tb_appointments_specialists_specialist_id_fkey';
             columns: ['specialist_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_users';
             referencedColumns: ['id'];
           }
@@ -369,12 +392,14 @@ export interface Database {
           {
             foreignKeyName: 'tb_appointments_specific_demands_appointment_id_fkey';
             columns: ['appointment_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_appointments';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'tb_appointments_specific_demands_specific_demand_id_fkey';
             columns: ['specific_demand_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_specific_demands';
             referencedColumns: ['id'];
           }
@@ -400,12 +425,14 @@ export interface Database {
           {
             foreignKeyName: 'tb_appointments_travels_appointment_id_fkey';
             columns: ['appointment_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_appointments';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'tb_appointments_travels_travel_id_fkey';
             columns: ['travel_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_travels';
             referencedColumns: ['id'];
           }
@@ -476,48 +503,56 @@ export interface Database {
           {
             foreignKeyName: 'tb_attendeds_cadre_id_fkey';
             columns: ['cadre_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_cadres';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'tb_attendeds_familiar_bond_id_fkey';
             columns: ['familiar_bond_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_familiar_bonds';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'tb_attendeds_gender_id_fkey';
             columns: ['gender_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_genders';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'tb_attendeds_marital_status_id_fkey';
             columns: ['marital_status_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_marital_status';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'tb_attendeds_opm_id_fkey';
             columns: ['opm_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_opms';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'tb_attendeds_policy_holder_id_fkey';
             columns: ['policy_holder_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_attendeds';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'tb_attendeds_rank_id_fkey';
             columns: ['rank_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_ranks';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'tb_attendeds_work_status_id_fkey';
             columns: ['work_status_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_work_status';
             referencedColumns: ['id'];
           }
@@ -528,16 +563,19 @@ export interface Database {
           created_at: string;
           id: string;
           name: string;
+          ordenation: number;
         };
         Insert: {
           created_at?: string;
           id?: string;
           name: string;
+          ordenation: number;
         };
         Update: {
           created_at?: string;
           id?: string;
           name?: string;
+          ordenation?: number;
         };
         Relationships: [];
       };
@@ -564,6 +602,7 @@ export interface Database {
           {
             foreignKeyName: 'tb_cities_state_id_fkey';
             columns: ['state_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_states';
             referencedColumns: ['id'];
           }
@@ -592,19 +631,19 @@ export interface Database {
           created_at: string;
           id: string;
           name: string;
-          order: number;
+          ordenation: number;
         };
         Insert: {
           created_at?: string;
           id?: string;
           name: string;
-          order: number;
+          ordenation: number;
         };
         Update: {
           created_at?: string;
           id?: string;
           name?: string;
-          order?: number;
+          ordenation?: number;
         };
         Relationships: [];
       };
@@ -613,16 +652,19 @@ export interface Database {
           created_at: string;
           id: string;
           name: string;
+          ordenation: number | null;
         };
         Insert: {
           created_at?: string;
           id?: string;
           name: string;
+          ordenation?: number | null;
         };
         Update: {
           created_at?: string;
           id?: string;
           name?: string;
+          ordenation?: number | null;
         };
         Relationships: [];
       };
@@ -631,16 +673,19 @@ export interface Database {
           created_at: string;
           id: string;
           name: string;
+          ordenation: number;
         };
         Insert: {
           created_at?: string;
           id?: string;
           name: string;
+          ordenation: number;
         };
         Update: {
           created_at?: string;
           id?: string;
           name?: string;
+          ordenation?: number;
         };
         Relationships: [];
       };
@@ -649,19 +694,19 @@ export interface Database {
           created_at: string;
           id: string;
           name: string;
-          order: number;
+          ordenation: number;
         };
         Insert: {
           created_at?: string;
           id?: string;
           name: string;
-          order: number;
+          ordenation: number;
         };
         Update: {
           created_at?: string;
           id?: string;
           name?: string;
-          order?: number;
+          ordenation?: number;
         };
         Relationships: [];
       };
@@ -670,16 +715,19 @@ export interface Database {
           created_at: string;
           id: string;
           name: string;
+          ordenation: number;
         };
         Insert: {
           created_at?: string;
           id?: string;
           name: string;
+          ordenation: number;
         };
         Update: {
           created_at?: string;
           id?: string;
           name?: string;
+          ordenation?: number;
         };
         Relationships: [];
       };
@@ -688,19 +736,19 @@ export interface Database {
           created_at: string;
           id: string;
           name: string;
-          order: number;
+          ordenation: number;
         };
         Insert: {
           created_at?: string;
           id?: string;
           name: string;
-          order: number;
+          ordenation: number;
         };
         Update: {
           created_at?: string;
           id?: string;
           name?: string;
-          order?: number;
+          ordenation?: number;
         };
         Relationships: [];
       };
@@ -710,18 +758,21 @@ export interface Database {
           created_at: string;
           id: string;
           name: string;
+          ordenation: number;
         };
         Insert: {
           cdm_id: string;
           created_at?: string;
           id?: string;
           name: string;
+          ordenation: number;
         };
         Update: {
           cdm_id?: string;
           created_at?: string;
           id?: string;
           name?: string;
+          ordenation?: number;
         };
         Relationships: [];
       };
@@ -754,12 +805,14 @@ export interface Database {
           {
             foreignKeyName: 'tb_phones_attended_id_fkey';
             columns: ['attended_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_attendeds';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'tb_phones_bond_fkey';
             columns: ['bond'];
+            isOneToOne: false;
             referencedRelation: 'tb_familiar_bonds';
             referencedColumns: ['id'];
           }
@@ -770,19 +823,19 @@ export interface Database {
           created_at: string;
           id: string;
           name: string;
-          order: number;
+          ordenation: number;
         };
         Insert: {
           created_at?: string;
           id?: string;
           name: string;
-          order: number;
+          ordenation: number;
         };
         Update: {
           created_at?: string;
           id?: string;
           name?: string;
-          order?: number;
+          ordenation?: number;
         };
         Relationships: [];
       };
@@ -791,19 +844,19 @@ export interface Database {
           created_at: string;
           id: string;
           name: string;
-          order: number;
+          ordenation: number;
         };
         Insert: {
           created_at?: string;
           id?: string;
           name: string;
-          order: number;
+          ordenation: number;
         };
         Update: {
           created_at?: string;
           id?: string;
           name?: string;
-          order?: number;
+          ordenation?: number;
         };
         Relationships: [];
       };
@@ -812,19 +865,19 @@ export interface Database {
           created_at: string;
           id: string;
           name: string;
-          order: number;
+          ordenation: number;
         };
         Insert: {
           created_at?: string;
           id?: string;
           name: string;
-          order: number;
+          ordenation: number;
         };
         Update: {
           created_at?: string;
           id?: string;
           name?: string;
-          order?: number;
+          ordenation?: number;
         };
         Relationships: [];
       };
@@ -833,19 +886,19 @@ export interface Database {
           created_at: string;
           id: string;
           name: string;
-          order: number;
+          ordenation: number;
         };
         Insert: {
           created_at?: string;
           id?: string;
           name: string;
-          order: number;
+          ordenation: number;
         };
         Update: {
           created_at?: string;
           id?: string;
           name?: string;
-          order?: number;
+          ordenation?: number;
         };
         Relationships: [];
       };
@@ -854,19 +907,19 @@ export interface Database {
           created_at: string;
           id: string;
           name: string;
-          order: number;
+          ordenation: number;
         };
         Insert: {
           created_at?: string;
           id?: string;
           name: string;
-          order: number;
+          ordenation: number;
         };
         Update: {
           created_at?: string;
           id?: string;
           name?: string;
-          order?: number;
+          ordenation?: number;
         };
         Relationships: [];
       };
@@ -875,19 +928,19 @@ export interface Database {
           created_at: string;
           id: string;
           name: string;
-          order: number;
+          ordenation: number;
         };
         Insert: {
           created_at?: string;
           id?: string;
           name: string;
-          order: number;
+          ordenation: number;
         };
         Update: {
           created_at?: string;
           id?: string;
           name?: string;
-          order?: number;
+          ordenation?: number;
         };
         Relationships: [];
       };
@@ -896,19 +949,19 @@ export interface Database {
           created_at: string;
           id: string;
           name: string;
-          order: number;
+          ordenation: number;
         };
         Insert: {
           created_at?: string;
           id?: string;
           name: string;
-          order: number;
+          ordenation: number;
         };
         Update: {
           created_at?: string;
           id?: string;
           name?: string;
-          order?: number;
+          ordenation?: number;
         };
         Relationships: [];
       };
@@ -917,19 +970,19 @@ export interface Database {
           created_at: string;
           id: string;
           name: string;
-          order: number;
+          ordenation: number;
         };
         Insert: {
           created_at?: string;
           id?: string;
           name: string;
-          order: number;
+          ordenation: number;
         };
         Update: {
           created_at?: string;
           id?: string;
           name?: string;
-          order?: number;
+          ordenation?: number;
         };
         Relationships: [];
       };
@@ -959,19 +1012,19 @@ export interface Database {
           created_at: string;
           id: string;
           name: string;
-          order: number;
+          ordenation: number;
         };
         Insert: {
           created_at?: string;
           id?: string;
           name: string;
-          order: number;
+          ordenation: number;
         };
         Update: {
           created_at?: string;
           id?: string;
           name?: string;
-          order?: number;
+          ordenation?: number;
         };
         Relationships: [];
       };
@@ -989,11 +1042,11 @@ export interface Database {
           marital_status_id: string;
           nickname: string | null;
           opm_id: string | null;
-          password: string | null;
+          professional_registration: string | null;
           rank_id: string | null;
           registered_by: string | null;
           rg: string | null;
-          work_status: string | null;
+          work_status_id: string | null;
         };
         Insert: {
           avatar?: string | null;
@@ -1008,11 +1061,11 @@ export interface Database {
           marital_status_id: string;
           nickname?: string | null;
           opm_id?: string | null;
-          password?: string | null;
+          professional_registration?: string | null;
           rank_id?: string | null;
           registered_by?: string | null;
           rg?: string | null;
-          work_status?: string | null;
+          work_status_id?: string | null;
         };
         Update: {
           avatar?: string | null;
@@ -1027,47 +1080,146 @@ export interface Database {
           marital_status_id?: string;
           nickname?: string | null;
           opm_id?: string | null;
-          password?: string | null;
+          professional_registration?: string | null;
           rank_id?: string | null;
           registered_by?: string | null;
           rg?: string | null;
-          work_status?: string | null;
+          work_status_id?: string | null;
         };
         Relationships: [
           {
             foreignKeyName: 'tb_users_cadre_id_fkey';
             columns: ['cadre_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_cadres';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'tb_users_gender_id_fkey';
             columns: ['gender_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_genders';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'tb_users_marital_status_id_fkey';
             columns: ['marital_status_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_marital_status';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'tb_users_opm_id_fkey';
             columns: ['opm_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_opms';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'tb_users_rank_id_fkey';
             columns: ['rank_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_ranks';
             referencedColumns: ['id'];
           },
           {
-            foreignKeyName: 'tb_users_work_status_fkey';
-            columns: ['work_status'];
+            foreignKeyName: 'tb_users_work_status_id_fkey';
+            columns: ['work_status_id'];
+            isOneToOne: false;
             referencedRelation: 'tb_work_status';
+            referencedColumns: ['id'];
+          }
+        ];
+      };
+      tb_users_addresses: {
+        Row: {
+          city_id: string;
+          complement: string | null;
+          created_at: string;
+          id: string;
+          neighborhood: string;
+          number: string;
+          street: string;
+          user_id: string;
+          zip_code: string;
+        };
+        Insert: {
+          city_id: string;
+          complement?: string | null;
+          created_at?: string;
+          id?: string;
+          neighborhood: string;
+          number: string;
+          street: string;
+          user_id: string;
+          zip_code: string;
+        };
+        Update: {
+          city_id?: string;
+          complement?: string | null;
+          created_at?: string;
+          id?: string;
+          neighborhood?: string;
+          number?: string;
+          street?: string;
+          user_id?: string;
+          zip_code?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'tb_users_addresses_city_id_fkey';
+            columns: ['city_id'];
+            isOneToOne: false;
+            referencedRelation: 'tb_cities';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'tb_users_addresses_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'tb_users';
+            referencedColumns: ['id'];
+          }
+        ];
+      };
+      tb_users_phones: {
+        Row: {
+          bond: string | null;
+          created_at: string;
+          id: string;
+          owner_identification: string;
+          phone: string;
+          user_id: string;
+        };
+        Insert: {
+          bond?: string | null;
+          created_at?: string;
+          id?: string;
+          owner_identification: string;
+          phone: string;
+          user_id: string;
+        };
+        Update: {
+          bond?: string | null;
+          created_at?: string;
+          id?: string;
+          owner_identification?: string;
+          phone?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'tb_users_phones_bond_fkey';
+            columns: ['bond'];
+            isOneToOne: false;
+            referencedRelation: 'tb_familiar_bonds';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'tb_users_phones_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'tb_users';
             referencedColumns: ['id'];
           }
         ];
@@ -1077,31 +1229,322 @@ export interface Database {
           created_at: string;
           id: string;
           name: string;
+          ordenation: number | null;
         };
         Insert: {
           created_at?: string;
           id?: string;
           name: string;
+          ordenation?: number | null;
         };
         Update: {
           created_at?: string;
           id?: string;
           name?: string;
+          ordenation?: number | null;
         };
         Relationships: [];
       };
     };
     Views: {
-      [_ in never]: never;
+      appointmentformdata: {
+        Row: {
+          id: string | null;
+          name: string | null;
+          ordenation: number | null;
+          source: string | null;
+        };
+        Relationships: [];
+      };
+      clientformdata: {
+        Row: {
+          id: string | null;
+          name: string | null;
+          ordenation: number | null;
+          source: string | null;
+        };
+        Relationships: [];
+      };
     };
     Functions: {
-      [_ in never]: never;
+      create_new_appointment: {
+        Args: {
+          date_input: string;
+          time_input: string;
+          access_id_input: string;
+          facility_id_input: string;
+          modality_id_input: string;
+          protocol_input: string;
+          service_id_input: string;
+          psychological_assessment_id_input: string;
+          social_assessment_id_input: string;
+          general_demand_id_input: string;
+          procedure_id_input: string;
+          has_leave_of_absence_input: boolean;
+          record_progress_input: string;
+          registered_by_input: string;
+          specialists_id_input: string[];
+          attendeds_id_input: string[];
+          specific_demands_id_input: string[];
+          documents_id_input: string[];
+          travels_id_input: string[];
+          referrals_input: Json[];
+        };
+        Returns: undefined;
+      };
+      create_new_attended: {
+        Args: {
+          fullname_input: string;
+          nickname_input: string;
+          rg_input: string;
+          rank_id_input: string;
+          cadre_id_input: string;
+          opm_id_input: string;
+          gender_id_input: string;
+          cpf_input: string;
+          birth_date_input: string;
+          marital_status_id_input: string;
+          policy_holder_id_input: string;
+          is_civil_volunteer_input: boolean;
+          familiar_bond_id_input: string;
+          work_status_id_input: string;
+          registered_by_input: string;
+          zip_code_input: string;
+          number_input: string;
+          street_input: string;
+          neighborhood_input: string;
+          city_id_input: string;
+          phones_input: Json[];
+        };
+        Returns: undefined;
+      };
+      create_new_user:
+        | {
+            Args: {
+              avatar_input: string;
+              fullname_input: string;
+              email_input: string;
+              nickname_input: string;
+              rg_input: string;
+              rank_id_input: string;
+              cadre_id_input: string;
+              opm_id_input: string;
+              gender_id_input: string;
+              cpf_input: string;
+              birth_date_input: string;
+              marital_status_id_input: string;
+              work_status_id_input: string;
+              registered_by_input: string;
+              zip_code_input: string;
+              number_input: string;
+              street_input: string;
+              neighborhood_input: string;
+              city_id_input: string;
+              phones_input: Json[];
+            };
+            Returns: undefined;
+          }
+        | {
+            Args: {
+              avatar_input: string;
+              fullname_input: string;
+              nickname_input: string;
+              rg_input: string;
+              rank_id_input: string;
+              cadre_id_input: string;
+              opm_id_input: string;
+              gender_id_input: string;
+              cpf_input: string;
+              birth_date_input: string;
+              marital_status_id_input: string;
+              work_status_id_input: string;
+              registered_by_input: string;
+              zip_code_input: string;
+              number_input: string;
+              street_input: string;
+              neighborhood_input: string;
+              city_id_input: string;
+              phones_input: Json[];
+            };
+            Returns: undefined;
+          }
+        | {
+            Args: {
+              avatar_input: string;
+              fullname_input: string;
+              nickname_input: string;
+              rg_input: string;
+              rank_id_input: string;
+              cadre_id_input: string;
+              opm_id_input: string;
+              gender_id_input: string;
+              email_input: string;
+              cpf_input: string;
+              professional_registration_input: string;
+              birth_date_input: string;
+              marital_status_id_input: string;
+              work_status_id_input: string;
+              registered_by_input: string;
+              zip_code_input: string;
+              number_input: string;
+              street_input: string;
+              neighborhood_input: string;
+              city_id_input: string;
+              phones_input: Json[];
+            };
+            Returns: undefined;
+          }
+        | {
+            Args: {
+              avatar_input: string;
+              fullname_input: string;
+              nickname_input: string;
+              rg_input: string;
+              rank_id_input: string;
+              cadre_id_input: string;
+              opm_id_input: string;
+              gender_id_input: string;
+              email_input: string;
+              password_input: string;
+              cpf_input: string;
+              professional_registration_input: string;
+              birth_date_input: string;
+              marital_status_id_input: string;
+              work_status_id_input: string;
+              registered_by_input: string;
+              zip_code_input: string;
+              number_input: string;
+              street_input: string;
+              neighborhood_input: string;
+              city_id_input: string;
+              phones_input: Json[];
+            };
+            Returns: undefined;
+          }
+        | {
+            Args: {
+              user_id_input: string;
+              avatar_input: string;
+              fullname_input: string;
+              nickname_input: string;
+              rg_input: string;
+              rank_id_input: string;
+              cadre_id_input: string;
+              opm_id_input: string;
+              gender_id_input: string;
+              email_input: string;
+              cpf_input: string;
+              professional_registration_input: string;
+              birth_date_input: string;
+              marital_status_id_input: string;
+              work_status_id_input: string;
+              registered_by_input: string;
+              zip_code_input: string;
+              number_input: string;
+              street_input: string;
+              neighborhood_input: string;
+              city_id_input: string;
+              phones_input: Json[];
+            };
+            Returns: undefined;
+          };
+      get_attended_appointments:
+        | {
+            Args: {
+              cpf_input: string;
+            };
+            Returns: Database['public']['CompositeTypes']['attended_appointments_result_type'][];
+          }
+        | {
+            Args: {
+              cpf_input: string;
+              q_input: string;
+            };
+            Returns: Database['public']['CompositeTypes']['attended_appointments_result_type'][];
+          };
+      get_attended_appointments_by_query: {
+        Args: {
+          cpf_input: string;
+          q_input: string;
+        };
+        Returns: Database['public']['CompositeTypes']['attended_appointments_result_type'][];
+      };
+      get_attended_profile: {
+        Args: {
+          cpf_input: string;
+        };
+        Returns: Database['public']['CompositeTypes']['attended_profile_result_type'][];
+      };
+      get_attendeds_by_query: {
+        Args: {
+          q_input: string;
+        };
+        Returns: Database['public']['CompositeTypes']['person_generic_result_type'][];
+      };
+      get_specialists_by_query: {
+        Args: {
+          q_input: string;
+        };
+        Returns: Database['public']['CompositeTypes']['person_generic_result_type'][];
+      };
     };
     Enums: {
       [_ in never]: never;
     };
     CompositeTypes: {
-      [_ in never]: never;
+      attended_appointments_result_type: {
+        id: string;
+        date: string;
+        time: string;
+        protocol: string;
+        has_leave_of_absence: boolean;
+        record_progress: string;
+        access: string;
+        facility: string;
+        modality: string;
+        service: string;
+        psychological_assessment: string;
+        social_assessment: string;
+        general_demand: string;
+        procedure: string;
+        specialists: unknown;
+        attendeds: unknown;
+        specific_demands: unknown;
+        documents: unknown;
+        travels: unknown;
+        referral_destinations: unknown;
+        referral_types: unknown;
+      };
+      attended_profile_result_type: {
+        id: string;
+        fullname: string;
+        nickname: string;
+        birth_date: string;
+        avatar: string;
+        is_civil_volunteer: boolean;
+        rank: string;
+        cadre: string;
+        rg: string;
+        cpf: string;
+        opm: string;
+        gender: string;
+        marital_status: string;
+        work_status: string;
+        familiar_bond: string;
+        address: Json;
+        phones: unknown;
+        policy_holder: Json;
+        dependents: unknown;
+      };
+      person_generic_result_type: {
+        id: string;
+        fullname: string;
+        nickname: string;
+        rg: string;
+        cpf: string;
+        rank: string;
+        cadre: string;
+      };
     };
   };
   storage: {
@@ -1115,6 +1558,7 @@ export interface Database {
           id: string;
           name: string;
           owner: string | null;
+          owner_id: string | null;
           public: boolean | null;
           updated_at: string | null;
         };
@@ -1126,6 +1570,7 @@ export interface Database {
           id: string;
           name: string;
           owner?: string | null;
+          owner_id?: string | null;
           public?: boolean | null;
           updated_at?: string | null;
         };
@@ -1137,17 +1582,11 @@ export interface Database {
           id?: string;
           name?: string;
           owner?: string | null;
+          owner_id?: string | null;
           public?: boolean | null;
           updated_at?: string | null;
         };
-        Relationships: [
-          {
-            foreignKeyName: 'buckets_owner_fkey';
-            columns: ['owner'];
-            referencedRelation: 'users';
-            referencedColumns: ['id'];
-          }
-        ];
+        Relationships: [];
       };
       migrations: {
         Row: {
@@ -1179,6 +1618,7 @@ export interface Database {
           metadata: Json | null;
           name: string | null;
           owner: string | null;
+          owner_id: string | null;
           path_tokens: string[] | null;
           updated_at: string | null;
           version: string | null;
@@ -1191,6 +1631,7 @@ export interface Database {
           metadata?: Json | null;
           name?: string | null;
           owner?: string | null;
+          owner_id?: string | null;
           path_tokens?: string[] | null;
           updated_at?: string | null;
           version?: string | null;
@@ -1203,6 +1644,7 @@ export interface Database {
           metadata?: Json | null;
           name?: string | null;
           owner?: string | null;
+          owner_id?: string | null;
           path_tokens?: string[] | null;
           updated_at?: string | null;
           version?: string | null;
@@ -1211,13 +1653,8 @@ export interface Database {
           {
             foreignKeyName: 'objects_bucketId_fkey';
             columns: ['bucket_id'];
+            isOneToOne: false;
             referencedRelation: 'buckets';
-            referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'objects_owner_fkey';
-            columns: ['owner'];
-            referencedRelation: 'users';
             referencedColumns: ['id'];
           }
         ];

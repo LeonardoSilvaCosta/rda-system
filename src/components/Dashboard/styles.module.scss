@@ -45,7 +45,7 @@
   .firstRow {
     display: flex;
 
-    @media(max-width: 1024px) {
+    @media(max-width: 1161px) {
       flex-direction: column;
       gap: 4rem;
     }
@@ -58,7 +58,7 @@
       width: 100%;
     
 
-      @media(max-width: 1024px) {
+      @media(max-width: 1161px) {
         max-width: 100%;
         justify-content: space-evenly;
       }

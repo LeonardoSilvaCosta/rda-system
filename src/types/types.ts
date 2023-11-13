@@ -223,8 +223,8 @@ export type Appointment = {
   socialAssessment: string | null;
   generalDemand: string;
   procedure: string;
-  specialists: Identification[];
-  attendeds: Identification[];
+  specialists: ProfessionalIdentification[];
+  attendeds: AttendedIdentification[];
   specificDemands: [] | null;
   documents: [] | null;
   travels: [] | null;
@@ -232,13 +232,23 @@ export type Appointment = {
   referralTypes: [] | null;
 };
 
-export type Identification = {
+export type AttendedIdentification = {
   rank: string | null;
   cadre: string | null;
   rg: string | null;
   nickname: string | null;
   cpf: string;
   fullname: string;
+};
+
+export type ProfessionalIdentification = {
+  rank: string | null;
+  cadre: string | null;
+  rg: string | null;
+  nickname: string | null;
+  cpf: string;
+  fullname: string;
+  professionalRegistration: string | null;
 };
 
 export type PopulateFormData = {
