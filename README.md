@@ -40,16 +40,20 @@
 - [x] Associar tabela de email e senha com tabela de usuário pelo id
 - [x] Enviar email para com password aleatório para usuário recém-criado
 - [x] Implementar recuperação de senha de usuário
+- [ ] Implementar anexos para cada atendimento
+- [ ] Reduzir número de itens exibidos em cada dropdown para 5 ou 10 itens
+- [ ] Formatar página de atendimento em pdf
+- [ ] Implementar download de prontuário completo em pdf
 - [ ] Implementar gestão de dados de atendido (atualizar e deletar) usuários
 - [ ] Implementar controle de alterações no perfil do usuário
 - [ ] Implementar atualização de perfil de usuário
 - [ ] Implementar gestão de usuários (listagem, delete e update via admin)
 - [ ] Recuperar as listas na ordenação desejada
 - [ ] Implementar roles
-- [ ] Impmlementar download de prontuário completo em pdf
 - [ ] Implementar backup diário automático do banco de dados
 - [ ] Implementar política de autorização adequada para os usuários com base nas roles
 - [ ] Desenhar nova Dashboard
+- [ ] Melhorar UI nos loadings de avatar
 - [ ] Adiciona paginação na listagem de atendidos
 - [ ] Adiciona paginação na listagem de atendimentos
 - [ ] Implementar função de assinatura digital

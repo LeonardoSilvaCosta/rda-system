@@ -63,22 +63,22 @@ export function Sidebar() {
             </li>
             <li
               className={`${
-                pathname === '/RegisterClient/Options' ? styles.active : ''
-              }`}
-            >
-              <Link href="/RegisterClient/Options">
-                <BiUserPlus className={styles.navIcon} />
-                <span>Cadastrar atendido</span>
-              </Link>
-            </li>
-            <li
-              className={`${
                 pathname === '/SearchClients' ? styles.active : ''
               }`}
             >
               <Link href="/SearchClients">
                 <AiOutlineSearch className={styles.navIcon} />
                 <span>Pesquisar atendidos</span>
+              </Link>
+            </li>
+            <li
+              className={`${
+                pathname === '/RegisterClient/Options' ? styles.active : ''
+              }`}
+            >
+              <Link href="/RegisterClient/Options">
+                <BiUserPlus className={styles.navIcon} />
+                <span>Cadastrar atendido</span>
               </Link>
             </li>
             <li

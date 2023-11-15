@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
-import { MyPdf } from '../MyPdf';
+import { PdfRecordData } from '../Pdfs/PdfRecordData';
+import { SingleRecord } from '../Pdfs/SingleRecord';
 import styles from './styles.module.scss';
 
 import { Appointment, Attended } from '@/types/types';
@@ -193,7 +194,9 @@ export function AppointmentDetails({
         {!hasSignedPdf && (
           <button>
             <PDFDownloadLink
-              document={<MyPdf attended={attended} appointment={appointment} />}
+              document={
+                <PdfRecordData attended={attended} appointment={appointment} />
+              }
               fileName="document.pdf"
             >
               {({ loading }) => (loading ? 'Carregando...' : 'Baixar pdf!')}
