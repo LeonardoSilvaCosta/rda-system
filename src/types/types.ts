@@ -273,9 +273,9 @@ export type FileData = {
   id: string;
   filename: string;
   originalName: string;
-  attendedId: string;
+  attended: GenericPerson;
   appointmentId: string;
-  registeredBy: string;
+  user: GenericPerson;
   url: string;
   type: string;
   path: string;

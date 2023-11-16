@@ -128,7 +128,7 @@ export function Attachment({ attendedId, cpf }: AttachmentProps) {
             <tr key={e.id}>
               <td>{e.originalName}</td>
               <td>{e.type}</td>
-              <td>{e.registeredBy}</td>
+              <td>{`${e.user.rank} ${e.user.cadre} ${e.user.rg} ${e.user.nickname}`}</td>
               <td>{formatDateFromOriginal(e.createdAt)}</td>
               <td>
                 <a href={e.url} target="_blank" rel="noreferrer">

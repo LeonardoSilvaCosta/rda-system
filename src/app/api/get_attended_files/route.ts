@@ -1,33 +1,78 @@
 import { cookies } from 'next/headers';
 import { NextRequest } from 'next/server';
 
-import { Database } from '@/types/supabase';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 
 export const dynamic = 'force-dynamic';
 
+type Response = {
+  id: string;
+  filename: string;
+  original_name: string;
+  appointment_id: string;
+  url: string;
+  type: string;
+  path: string;
+  bucket_name: string;
+  attended_data: {
+    id: string;
+    fullname: string;
+    rank: string;
+    cadre: string;
+    rg: string;
+    nickname: string;
+    cpf: string;
+  };
+  user_data: {
+    id: string;
+    rank: string;
+    cadre: string;
+    rg: string;
+    nickname: string;
+    cpf: string;
+  };
+  created_at: string;
+};
+
 export async function GET(req: NextRequest) {
-  const supabase = createRouteHandlerClient<Database>({ cookies });
+  const supabase = createRouteHandlerClient({ cookies });
   const { searchParams } = new URL(req.url);
   const attendedId = searchParams.get('attendedId');
 
   try {
     if (attendedId) {
-      const { data: attendedFiles } = await supabase
-        .from('tb_attended_files')
-        .select(
-          'id, filename, original_name, attended_id, appointment_id, registered_by, url, type, path, bucket_name, created_at'
-        )
-        .eq('attended_id', attendedId)
-        .limit(10);
-      const formattedData = attendedFiles?.map((e) => {
+      const { data: attendedFiles, error } = await supabase.rpc(
+        'get_attended_files',
+        {
+          attended_id_input: attendedId
+        }
+      );
+
+      if (error) console.error(error);
+
+      const formattedData = attendedFiles?.map((e: Response) => {
         return {
           id: e.id,
           filename: e.filename,
           originalName: e.original_name,
-          attendedId: e.attended_id,
           appointmentId: e.appointment_id,
-          registeredBy: e.registered_by,
+          attended: {
+            id: e.attended_data.id,
+            fullname: e.attended_data.fullname,
+            rank: e.attended_data.rank,
+            cadre: e.attended_data.cadre,
+            rg: e.attended_data.rank,
+            nickname: e.attended_data.nickname,
+            cpf: e.attended_data.cpf
+          },
+          user: {
+            id: e.user_data.id,
+            rank: e.user_data.rank,
+            cadre: e.user_data.cadre,
+            rg: e.user_data.rank,
+            nickname: e.user_data.nickname,
+            cpf: e.user_data.cpf
+          },
           url: e.url,
           type: e.type,
           path: e.path,
