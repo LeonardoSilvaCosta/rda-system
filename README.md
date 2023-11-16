@@ -40,10 +40,11 @@
 - [x] Associar tabela de email e senha com tabela de usuário pelo id
 - [x] Enviar email para com password aleatório para usuário recém-criado
 - [x] Implementar recuperação de senha de usuário
+- [x] Implementar download de prontuário completo em pdf
+- [ ] Criar capa para prontuário
 - [ ] Implementar anexos para cada atendimento
 - [ ] Reduzir número de itens exibidos em cada dropdown para 5 ou 10 itens
 - [ ] Formatar página de atendimento em pdf
-- [ ] Implementar download de prontuário completo em pdf
 - [ ] Implementar gestão de dados de atendido (atualizar e deletar) usuários
 - [ ] Implementar controle de alterações no perfil do usuário
 - [ ] Implementar atualização de perfil de usuário

@@ -10,6 +10,15 @@ export function formatDate(date: string) {
   }
 }
 
+export function formatDateFromOriginal(originalDate: string) {
+  const date = new Date(originalDate);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Lembre-se que os meses são indexados de 0 a 11
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+}
+
 export function formatHour(hour: string) {
   const parts = hour.split(':');
   if (parts.length === 3) {

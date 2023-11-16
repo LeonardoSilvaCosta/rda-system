@@ -268,3 +268,17 @@ export type QueryObject = {
   cadre: string;
   rank: string;
 };
+
+export type FileData = {
+  id: string;
+  filename: string;
+  originalName: string;
+  attendedId: string;
+  appointmentId: string;
+  registeredBy: string;
+  url: string;
+  type: string;
+  path: string;
+  bucketName: string;
+  createdAt: string;
+};

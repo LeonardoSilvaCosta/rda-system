@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { PdfRecordData } from '../Pdfs/PdfRecordData';
-import { SingleRecord } from '../Pdfs/SingleRecord';
 import styles from './styles.module.scss';
 
 import { Appointment, Attended } from '@/types/types';
@@ -78,7 +77,7 @@ export function AppointmentDetails({
 
     try {
       const resPdf = await fetch(
-        `/api/upload_pdf?cpf=${attended.cpf}&appointmentId=${appointmentId}`,
+        `/api/upload_pdf?appointmentId=${appointmentId}&attendedId=${attended.id}&filename=${pdfFile.name}`,
         {
           method: 'POST',
           body: formData

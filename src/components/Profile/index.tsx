@@ -1,5 +1,6 @@
 import toast from 'react-hot-toast';
 
+import { Attachment } from '../AttachmentComponent';
 import { PdfProfile } from '../Pdfs/PdfProfile';
 import styles from './styles.module.scss';
 
@@ -109,6 +110,7 @@ export function Profile({ attended }: ProfileProps) {
             />
           )}
         </div>
+        <Attachment attendedId={attended.id} cpf={attended.cpf} />
         <div className={styles.downloadButtonBox}>
           <button onClick={() => downloadFullRecord(attended.cpf)}>
             Baixar prontuário completo!
