@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BiUserX } from 'react-icons/bi';
 
 import styles from './styles.module.scss';
@@ -82,9 +82,8 @@ export default function SearchClients() {
               {filteredData.length > 0 ? (
                 <div className={styles.cards}>
                   {filteredData.map((e) => (
-                    <>
+                    <React.Fragment key={e.id}>
                       <ClientCard
-                        key={e.id}
                         avatar={'/default-user.svg'}
                         fullname={e.fullname}
                         rank={e.rank}
@@ -93,7 +92,7 @@ export default function SearchClients() {
                         nickname={e.nickname}
                         cpf={e.cpf}
                       />
-                    </>
+                    </React.Fragment>
                   ))}
                 </div>
               ) : (

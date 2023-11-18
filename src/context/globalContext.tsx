@@ -60,7 +60,8 @@ export const GlobalContextProvider = ({
     }
 
     getCurrentUser();
-  }, [currentUser, supabase]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentUser]);
 
   return (
     <GlobalContext.Provider

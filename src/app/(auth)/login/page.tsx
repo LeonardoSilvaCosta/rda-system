@@ -18,6 +18,7 @@ export default function Login() {
             alt="Brasão do CIAP"
             width={300}
             height={349.47}
+            priority
           />
           <span>CENTRO INTEGRADO DE ATENÇÃO PSICOSSOCIAL</span>
         </header>
@@ -28,6 +29,7 @@ export default function Login() {
             <input
               type={'email'}
               placeholder={'Seu email'}
+              autoComplete="username"
               {...register('email')}
             />
             {errors['email'] && (
@@ -38,6 +40,7 @@ export default function Login() {
             <input
               type={'password'}
               placeholder={'Sua senha'}
+              autoComplete="current-password"
               {...register('password')}
             />
             {errors['password'] && (
