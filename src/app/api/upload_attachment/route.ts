@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
     const filePath = `${attendedId}/attachments/${filenameForBucket}`;
     const url = `${process.env.NEXT_PUBLIC_STORAGE_BASE_URL}/${bucketName}/${filePath}`;
     const { error } = await supabase.storage
-      .from('attendeds')
+      .from(bucketName)
       .upload(`${filePath}`, file);
 
     const attendedFile = {

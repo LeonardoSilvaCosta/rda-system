@@ -3,6 +3,7 @@ import { NextRequest } from 'next/server';
 
 import { getCurrentUser } from '@/utils/getCurrentUser';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { error } from 'console';
 import { v4 as uuidv4 } from 'uuid';
 
 export async function POST(req: NextRequest) {
@@ -15,6 +16,8 @@ export async function POST(req: NextRequest) {
   const formData = await req.formData();
   const pdfFile = formData.get('pdfFile');
 
+  const recordProgressSpecie = 'cedb92d7-63c4-4c88-a29d-53aa17a26a87';
+
   if (!pdfFile)
     return Response.json('Nenhum arquivo encontrado para upload!', {
       status: 400
@@ -24,12 +27,12 @@ export async function POST(req: NextRequest) {
 
     const uuid = uuidv4();
 
-    const bucketName = 'records';
+    const bucketName = 'attendeds';
     const filenameForBucket = `${uuid}.pdf`;
-    const filePath = `${attendedId}/${filenameForBucket}`;
+    const filePath = `${attendedId}/progress-records/${filenameForBucket}`;
     const url = `${process.env.NEXT_PUBLIC_STORAGE_BASE_URL}/${bucketName}/${filePath}`;
     const { error: storageError } = await supabase.storage
-      .from('records')
+      .from(bucketName)
       .upload(`${filePath}`, pdfFile, {
         contentType: 'application/pdf'
       });
@@ -41,7 +44,7 @@ export async function POST(req: NextRequest) {
       attended_id: String(attendedId),
       appointment_id: appointmentId,
       url,
-      type: 'Evolução',
+      specie_id: recordProgressSpecie,
       path: filePath,
       registered_by: await currentUser.id
     };
@@ -50,6 +53,8 @@ export async function POST(req: NextRequest) {
       .from('tb_attended_files')
       .insert(attendedFile)
       .select();
+
+    console.log(fileInfoError?.message);
 
     if (!storageError && !fileInfoError) {
       return Response.json('Upload realizado com sucesso!', { status: 200 });

@@ -8,7 +8,7 @@ export async function DELETE(req: NextRequest) {
 
   if (!filepath)
     return Response.json(
-      'Você precisa informar o caminho do arquivo que será deletado do sistema!',
+      'Você precisa informar o caminho do arquivo que será excluído do sistema!',
       {
         status: 400
       }
@@ -26,7 +26,7 @@ export async function DELETE(req: NextRequest) {
       .remove([filepath]);
 
     if (!bucket_error) {
-      return Response.json('Arquivo deletado com sucesso!', { status: 200 });
+      return Response.json('Arquivo excluído com sucesso!', { status: 200 });
     } else {
       return Response.json(
         `Não foi possível deletar o arquivo: ${bucket_error.message}`,
@@ -36,7 +36,7 @@ export async function DELETE(req: NextRequest) {
       );
     }
   } catch (error) {
-    return Response.json(`Erro ao delete usuário do sistema: ${error}`, {
+    return Response.json(`Erro ao excluir arquivo do sistema: ${error}`, {
       status: 400
     });
   }

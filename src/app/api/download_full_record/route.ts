@@ -1,7 +1,6 @@
 import { cookies } from 'next/headers';
 import { NextRequest } from 'next/server';
 
-import errorMessages from '@/config/errorMessages';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { PDFDocument } from 'pdf-lib';
 
@@ -22,54 +21,79 @@ export async function POST(req: NextRequest) {
     );
 
   try {
-    const { data: filesList, error } = await supabase.storage
-      .from('records')
-      .list(attendedId);
+    const recordProgressPath = `${attendedId}/progress-records`;
+    const attachmentsPath = `${attendedId}/attachments`;
 
-    if (!error) {
-      const files = await Promise.all(
-        filesList.map(async (e) => {
-          const { data } = await supabase.storage
-            .from('records')
-            .download(`${attendedId}/${e.name}`);
-          return data
-            ? new Uint8Array(await data.arrayBuffer())
-            : new Uint8Array();
-        })
+    const { data: recordsProgressList, error: recordProgressListError } =
+      await supabase.storage.from('attendeds').list(recordProgressPath);
+
+    const { data: attachmentsList, error: attachmentsListError } =
+      await supabase.storage.from('attendeds').list(attachmentsPath);
+
+    if (recordProgressListError) {
+      throw new Error(
+        `Houve um erro ao resgatar as evoluções: ${recordProgressListError}`
       );
-
-      const pdfDoc = await PDFDocument.create();
-      const pdfUint8Array = new Uint8Array(await profilePdfBlob.arrayBuffer());
-      const filesWithCover = [pdfUint8Array, ...files];
-
-      for (const file of filesWithCover) {
-        if (file) {
-          const externalPdf = await PDFDocument.load(file);
-          const copiedPages = await pdfDoc.copyPages(
-            externalPdf,
-            externalPdf.getPageIndices()
-          );
-          copiedPages.forEach((page) => pdfDoc.addPage(page));
-        }
-      }
-
-      const pdfBytes = await pdfDoc.save();
-
-      const blob = new Blob([pdfBytes]);
-
-      const headers = {
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename=record-full.pdf`
-      };
-
-      return new Response(blob, {
-        headers,
-        status: 200
-      });
-    } else {
-      const { message, status } = errorMessages.pdfDownloadFailed;
-      return Response.json(message, { status });
     }
+
+    const recordProgress = await Promise.all(
+      recordsProgressList.map(async (file) => {
+        const { data } = await supabase.storage
+          .from('attendeds')
+          .download(`${recordProgressPath}/${file.name}`);
+        return data
+          ? new Uint8Array(await data.arrayBuffer())
+          : new Uint8Array();
+      })
+    );
+
+    if (attachmentsListError) {
+      throw new Error(
+        `Houve um erro ao resgatar os anexos: ${attachmentsListError}`
+      );
+    }
+
+    const attachments = await Promise.all(
+      attachmentsList.map(async (file) => {
+        const { data } = await supabase.storage
+          .from('attendeds')
+          .download(`${attachmentsPath}/${file.name}`);
+        return data
+          ? new Uint8Array(await data.arrayBuffer())
+          : new Uint8Array();
+      })
+    );
+
+    const progressAndAttachments = recordProgress.concat(attachments);
+
+    const pdfDoc = await PDFDocument.create();
+    const pdfUint8Array = new Uint8Array(await profilePdfBlob.arrayBuffer());
+    const filesWithCover = [pdfUint8Array, ...progressAndAttachments];
+
+    for (const file of filesWithCover) {
+      if (file) {
+        const externalPdf = await PDFDocument.load(file);
+        const copiedPages = await pdfDoc.copyPages(
+          externalPdf,
+          externalPdf.getPageIndices()
+        );
+        copiedPages.forEach((page) => pdfDoc.addPage(page));
+      }
+    }
+
+    const pdfBytes = await pdfDoc.save();
+
+    const blob = new Blob([pdfBytes]);
+
+    const headers = {
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `attachment; filename=record-full.pdf`
+    };
+
+    return new Response(blob, {
+      headers,
+      status: 200
+    });
   } catch (error) {
     Response.json(`Download error ${error}`, { status: 400 });
   }
