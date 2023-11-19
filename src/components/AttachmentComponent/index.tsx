@@ -153,47 +153,51 @@ export function Attachment({ attendedId }: AttachmentProps) {
           />
         </div>
       </form>
-      <table>
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Espécie</th>
-            <th>Usuário</th>
-            <th>Data</th>
-            <th>Visualizar</th>
-            <th>Excluir</th>
-          </tr>
-        </thead>
-        <tbody>
-          {fileList.map((e) => (
-            <tr key={e.id}>
-              <td>{e.originalName}</td>
-              <td>{e.specie}</td>
-              <td>{`${e.user.rank} ${e.user.cadre} ${e.user.rg} ${e.user.nickname}`}</td>
-              <td>{formatDateFromOriginal(e.createdAt)}</td>
-              <td>
-                <a href={e.url} target="_blank" rel="noreferrer">
-                  Link
-                </a>
-              </td>
-              <td className={styles.deleteIcon}>
-                {deletingPath === e.path ? (
-                  <PulseLoader
-                    color={'#EF1924'}
-                    loading={deletingPath === e.path}
-                    cssOverride={override}
-                    size={10}
-                    aria-label="Loading Spinner"
-                    data-testid="loader"
-                  />
-                ) : (
-                  <BsFillTrash3Fill onClick={() => deleteAttachment(e.path)} />
-                )}
-              </td>
+      <div className={styles.tableContainer}>
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Espécie</th>
+              <th>Usuário</th>
+              <th>Data</th>
+              <th>Visualizar</th>
+              <th>Excluir</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {fileList.map((e) => (
+              <tr key={e.id}>
+                <td>{e.originalName}</td>
+                <td>{e.specie}</td>
+                <td>{`${e.user.rank} ${e.user.cadre} ${e.user.rg} ${e.user.nickname}`}</td>
+                <td>{formatDateFromOriginal(e.createdAt)}</td>
+                <td>
+                  <a href={e.url} target="_blank" rel="noreferrer">
+                    Link
+                  </a>
+                </td>
+                <td className={styles.deleteIcon}>
+                  {deletingPath === e.path ? (
+                    <PulseLoader
+                      color={'#EF1924'}
+                      loading={deletingPath === e.path}
+                      cssOverride={override}
+                      size={10}
+                      aria-label="Loading Spinner"
+                      data-testid="loader"
+                    />
+                  ) : (
+                    <BsFillTrash3Fill
+                      onClick={() => deleteAttachment(e.path)}
+                    />
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </main>
   );
 }

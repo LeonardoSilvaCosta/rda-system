@@ -11,6 +11,10 @@
     color: var(--gray-700);
   }
 
+  .tableContainer {
+    overflow-x: auto;
+  }
+
 
   table {
     width: 100%;
@@ -27,7 +31,7 @@
     td:nth-child(5) {
       text-align: center;
     }
-    
+
 
     th {
       background-color: #f2f2f2;
@@ -48,23 +52,6 @@
       color: #e74c3c;
       cursor: pointer;
       text-align: center;
-    }
-
-    @media only screen and (max-width: 600px) {
-
-      th,
-      td {
-        display: block;
-        width: 100%;
-      }
-
-      td {
-        text-align: center;
-      }
-
-      .delete-icon {
-        margin-top: 10px;
-      }
     }
   }
 
