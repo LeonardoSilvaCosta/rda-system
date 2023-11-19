@@ -11,7 +11,7 @@ type Response = {
   original_name: string;
   appointment_id: string;
   url: string;
-  type: string;
+  specie: string;
   path: string;
   bucket_name: string;
   attended_data: {
@@ -74,7 +74,7 @@ export async function GET(req: NextRequest) {
             cpf: e.user_data.cpf
           },
           url: e.url,
-          type: e.type,
+          specie: e.specie,
           path: e.path,
           bucketName: e.bucket_name,
           createdAt: e.created_at

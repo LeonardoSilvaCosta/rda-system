@@ -34,16 +34,19 @@ export function Profile({ attended }: ProfileProps) {
       }))
     : [];
 
-  async function downloadFullRecord(cpf: string) {
-    const blobPdf = await pdf(<PdfProfile attended={attended} />).toBlob();
+  async function downloadFullRecord(attendedId: string) {
+    const profileBlob = await pdf(<PdfProfile attended={attended} />).toBlob();
 
     try {
       const formData = new FormData();
-      formData.append('pdfFile', blobPdf, 'profile.pdf');
-      const res = await fetch(`/api/download_full_record?cpf=${cpf}`, {
-        method: 'POST',
-        body: formData
-      });
+      formData.append('pdfFile', profileBlob, 'profile.pdf');
+      const res = await fetch(
+        `/api/download_full_record?attendedId=${attendedId}`,
+        {
+          method: 'POST',
+          body: formData
+        }
+      );
 
       if (res.status === 200) {
         const blob = await res.blob();
@@ -110,9 +113,9 @@ export function Profile({ attended }: ProfileProps) {
             />
           )}
         </div>
-        <Attachment attendedId={attended.id} cpf={attended.cpf} />
+        <Attachment attendedId={attended.id} />
         <div className={styles.downloadButtonBox}>
-          <button onClick={() => downloadFullRecord(attended.cpf)}>
+          <button onClick={() => downloadFullRecord(attended.id)}>
             Baixar prontuário completo!
           </button>
         </div>

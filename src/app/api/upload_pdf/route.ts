@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
     const url = `${process.env.NEXT_PUBLIC_STORAGE_BASE_URL}/${bucketName}/${filePath}`;
     const { error: storageError } = await supabase.storage
       .from('records')
-      .upload(`${attendedId}/${filenameForBucket}`, pdfFile, {
+      .upload(`${filePath}`, pdfFile, {
         contentType: 'application/pdf'
       });
 

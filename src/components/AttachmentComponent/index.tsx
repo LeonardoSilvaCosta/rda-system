@@ -1,60 +1,61 @@
-import { useEffect, useState } from 'react';
+import { CSSProperties, useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { BsFillTrash3Fill } from 'react-icons/bs';
+import PulseLoader from 'react-spinners/PulseLoader';
 
 import { MyCustomDropdown } from '../MyCustomDropdown';
 import styles from './styles.module.scss';
 
-import { FileData } from '@/types/types';
+import { FileData, Option } from '@/types/types';
 import { formatDateFromOriginal } from '@/utils/formatDateTime';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 interface FormValues extends FieldValues {
   specie: string;
-  file: File;
 }
 
 interface AttachmentProps {
   attendedId: string;
-  cpf: string;
 }
 
-const options = [
-  {
-    id: '1',
-    name: 'Documentação'
-  },
-  {
-    id: '2',
-    name: 'RG'
-  },
-  {
-    id: '3',
-    name: 'Atestado psicológico'
-  },
-  {
-    id: '4',
-    name: 'Declaração'
-  },
-  {
-    id: '5',
-    name: 'Relatório psicossocial'
-  },
-  {
-    id: '6',
-    name: 'Relatório social'
-  }
-];
+const override: CSSProperties = {
+  display: 'block',
+  margin: '0 auto',
+  borderColor: 'red'
+};
 
-export function Attachment({ attendedId, cpf }: AttachmentProps) {
+export function Attachment({ attendedId }: AttachmentProps) {
+  const validation = yup.object({
+    specie: yup.string().required('É necessário informar a espécie do anexo.')
+  });
   const {
     formState: { errors },
+    watch,
     getValues,
     control
-  } = useForm<FormValues>();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } = useForm<FormValues | any>({
+    resolver: yupResolver(validation),
+    defaultValues: { specie: '' }
+  });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [documentSpecies, setDocumentSpecies] = useState<Option[]>([]);
   const [fileList, setFileList] = useState<FileData[]>([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [deletingPath, setDeletingPath] = useState('');
+  const specieIsEmpty = watch('specie') === '';
+
+  useEffect(() => {
+    async function getDocumentSpecies() {
+      const resSpeciesList = await fetch(`/api/get_document_species`);
+      const data = await resSpeciesList.json();
+
+      setDocumentSpecies(data);
+    }
+    getDocumentSpecies();
+  }, []);
 
   useEffect(() => {
     async function getFileList() {
@@ -67,21 +68,28 @@ export function Attachment({ attendedId, cpf }: AttachmentProps) {
     }
 
     getFileList();
-  }, []);
+  }, [fileList]);
 
   const uploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsUploading(true);
+    const documentSpecie = getValues('specie');
     const file = e.target.files && e.target.files[0];
+    const filename = file?.name;
     if (!file) return;
     const formData = new FormData();
 
     formData.append('file', file);
+    filename && formData.append('filename', filename);
+    formData.append('documentSpecie', documentSpecie);
 
     try {
-      const uploadRes = await fetch(`/api/upload_attachment?cpf=${cpf}`, {
-        method: 'POST',
-        body: formData
-      });
+      const uploadRes = await fetch(
+        `/api/upload_attachment?attendedId=${attendedId}`,
+        {
+          method: 'POST',
+          body: formData
+        }
+      );
 
       const pdfData = await uploadRes.json();
       uploadRes.status === 200 ? toast.success(pdfData) : toast.error(pdfData);
@@ -89,6 +97,29 @@ export function Attachment({ attendedId, cpf }: AttachmentProps) {
       console.log(error);
     } finally {
       setIsUploading(false);
+    }
+  };
+
+  const deleteAttachment = async (filepath: string) => {
+    setDeletingPath(filepath);
+    try {
+      const deleteRes = await fetch(
+        `/api/delete_attachment?filepath=${filepath}`,
+        {
+          method: 'DELETE'
+        }
+      );
+
+      const response = await deleteRes.json();
+
+      toast.success(response);
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        'Não foi possível deletar o arquivo, tente novamente depois.'
+      );
+    } finally {
+      setDeletingPath('');
     }
   };
 
@@ -103,13 +134,23 @@ export function Attachment({ attendedId, cpf }: AttachmentProps) {
             getValues={getValues}
             errors={errors}
             control={control}
-            options={options}
+            options={documentSpecies}
             routeToSearch={'/api/get_document_species'}
           />
         </div>
         <div>
-          <label htmlFor="file">Anexar novo arquivo</label>
-          <input onChange={(e) => uploadFile(e)} type={'file'} id={'file'} />
+          <label
+            className={`${specieIsEmpty ? styles.disabled : ''}`}
+            htmlFor="file"
+          >
+            {isUploading ? 'Enviando arquivo...' : 'Anexar novo arquivo'}
+          </label>
+          <input
+            disabled={specieIsEmpty}
+            onChange={(e) => uploadFile(e)}
+            type={'file'}
+            id={'file'}
+          />
         </div>
       </form>
       <table>
@@ -127,7 +168,7 @@ export function Attachment({ attendedId, cpf }: AttachmentProps) {
           {fileList.map((e) => (
             <tr key={e.id}>
               <td>{e.originalName}</td>
-              <td>{e.type}</td>
+              <td>{e.specie}</td>
               <td>{`${e.user.rank} ${e.user.cadre} ${e.user.rg} ${e.user.nickname}`}</td>
               <td>{formatDateFromOriginal(e.createdAt)}</td>
               <td>
@@ -136,7 +177,18 @@ export function Attachment({ attendedId, cpf }: AttachmentProps) {
                 </a>
               </td>
               <td className={styles.deleteIcon}>
-                <BsFillTrash3Fill />
+                {deletingPath === e.path ? (
+                  <PulseLoader
+                    color={'#EF1924'}
+                    loading={deletingPath === e.path}
+                    cssOverride={override}
+                    size={10}
+                    aria-label="Loading Spinner"
+                    data-testid="loader"
+                  />
+                ) : (
+                  <BsFillTrash3Fill onClick={() => deleteAttachment(e.path)} />
+                )}
               </td>
             </tr>
           ))}

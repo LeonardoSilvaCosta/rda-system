@@ -277,7 +277,7 @@ export type FileData = {
   appointmentId: string;
   user: GenericPerson;
   url: string;
-  type: string;
+  specie: string;
   path: string;
   bucketName: string;
   createdAt: string;

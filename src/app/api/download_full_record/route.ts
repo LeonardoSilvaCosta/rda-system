@@ -8,30 +8,30 @@ import { PDFDocument } from 'pdf-lib';
 export async function POST(req: NextRequest) {
   const supabase = createRouteHandlerClient({ cookies });
   const { searchParams } = new URL(req.url);
-  const cpf = searchParams.get('cpf');
+  const attendedId = searchParams.get('attendedId');
   const formData = await req.formData();
   const pdfFile = formData.get('pdfFile');
   const profilePdfBlob = pdfFile
     ? new Blob([pdfFile], { type: 'application/pdf' })
     : new Blob([]);
 
-  if (!cpf)
+  if (!attendedId)
     return Response.json(
-      'É necessário informar o pdf do atendido para baixar o prontuário.',
+      'É necessário informar o id do atendido para baixar o prontuário.',
       { status: 400 }
     );
 
   try {
     const { data: filesList, error } = await supabase.storage
       .from('records')
-      .list(cpf);
+      .list(attendedId);
 
     if (!error) {
       const files = await Promise.all(
         filesList.map(async (e) => {
           const { data } = await supabase.storage
             .from('records')
-            .download(`${cpf}/${e.name}`);
+            .download(`${attendedId}/${e.name}`);
           return data
             ? new Uint8Array(await data.arrayBuffer())
             : new Uint8Array();
