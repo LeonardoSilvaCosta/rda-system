@@ -1,4 +1,6 @@
+import { CSSProperties, useState } from 'react';
 import toast from 'react-hot-toast';
+import PulseLoader from 'react-spinners/PulseLoader';
 
 import { Attachment } from '../AttachmentComponent';
 import { PdfProfile } from '../Pdfs/PdfProfile';
@@ -13,7 +15,13 @@ interface ProfileProps {
   attended: Attended;
 }
 
+const override: CSSProperties = {
+  display: 'block',
+  margin: '0 auto'
+};
+
 export function Profile({ attended }: ProfileProps) {
+  const [isDownloading, setIsDownloading] = useState(false);
   const attendedKeyValues = convertAttendedToKeyValues(attended);
   const generalData = attendedKeyValues.generalData
     ? Object.entries(attendedKeyValues.generalData).map(
@@ -35,6 +43,7 @@ export function Profile({ attended }: ProfileProps) {
     : [];
 
   async function downloadFullRecord(attendedId: string) {
+    setIsDownloading(true);
     const profileBlob = await pdf(<PdfProfile attended={attended} />).toBlob();
 
     try {
@@ -65,6 +74,8 @@ export function Profile({ attended }: ProfileProps) {
       }
     } catch (error) {
       console.error('Erro ao executar o teste:', error);
+    } finally {
+      setIsDownloading(false);
     }
   }
 
@@ -116,7 +127,18 @@ export function Profile({ attended }: ProfileProps) {
         <Attachment attendedId={attended.id} />
         <div className={styles.downloadButtonBox}>
           <button onClick={() => downloadFullRecord(attended.id)}>
-            Baixar prontuário completo!
+            {isDownloading ? (
+              <PulseLoader
+                color={'#EBECF9'}
+                loading={isDownloading}
+                cssOverride={override}
+                size={10}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              />
+            ) : (
+              'Baixar prontuário completo!'
+            )}
           </button>
         </div>
       </main>

@@ -71,6 +71,8 @@
         text-align: center;
         font-size: 1.05rem;
 
+        transition: background-color 0.5s;
+
         &.disabled {
           background-color: var(--gray-300);
         }
