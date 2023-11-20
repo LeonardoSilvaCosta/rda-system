@@ -26,6 +26,7 @@
     "react-hot-toast": "^2.4.1",
     "react-icons": "^4.11.0",
     "react-input-mask": "^2.0.4",
+    "react-loading-skeleton": "^3.3.1",
     "react-spinners": "^0.13.8",
     "typescript": "5.2.2",
     "use-local-storage": "^3.0.0",

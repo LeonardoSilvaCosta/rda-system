@@ -52,6 +52,11 @@
       color: #e74c3c;
       cursor: pointer;
       text-align: center;
+
+      .trash.disabled {
+        color: var(--gray-300);
+        cursor: not-allowed;
+      }
     }
   }
 

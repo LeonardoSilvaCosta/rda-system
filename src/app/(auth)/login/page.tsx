@@ -7,7 +7,8 @@ import { Button } from '@/components/Button';
 import { useLoginClientContext } from '@/context/loginContext';
 
 export default function Login() {
-  const { errors, register, handleSubmit, onSubmit } = useLoginClientContext();
+  const { errors, register, handleSubmit, isSubmitting, onSubmit } =
+    useLoginClientContext();
 
   return (
     <main className={styles.container}>
@@ -48,7 +49,12 @@ export default function Login() {
                 {String(errors['password']?.message)}
               </span>
             )}
-            <Button type={'submit'} name={'Entrar'} />
+            <Button
+              disabled={isSubmitting}
+              isSubmitting={isSubmitting}
+              type={'submit'}
+              name={'Entrar'}
+            />
             <a href="/forgotPassword">
               <span>Esqueci a senha</span>
             </a>

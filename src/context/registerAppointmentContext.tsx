@@ -71,7 +71,6 @@ export const RegisterAppointmentContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const { returnToDashboard } = useGlobalContext();
   const supabase = createClientComponentClient();
   const [appointmentFormData, setAppointmentFormData] = useState<
     PopulateFormData[]
@@ -119,6 +118,11 @@ export const RegisterAppointmentContextProvider = ({
       recordProgress: ''
     }
   });
+
+  const returnToDashboard = () => {
+    reset();
+    router.push('/');
+  };
 
   useEffect(() => {
     console.log(errors);
@@ -277,10 +281,10 @@ export const RegisterAppointmentContextProvider = ({
           )}.`
         );
       } finally {
+        router.push('/');
         reset();
         setCurrentStep(0);
         selectFormValidation(0);
-        router.push('/');
       }
     }
   };

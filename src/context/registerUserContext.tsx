@@ -57,7 +57,7 @@ interface RegisteUserContextProps {
   isCPFUnique: boolean;
   isFirstStep: boolean;
   isLastStep: boolean;
-  isSubmitted: boolean;
+  isSubmitting: boolean;
   onSubmit: SubmitHandler<UserFormValues>;
   register: UseFormRegister<any>;
   reset: UseFormReset<any>;
@@ -91,7 +91,7 @@ export const RegisterUserContextProvider = ({
   const {
     clearErrors,
     control,
-    formState: { errors, isSubmitted },
+    formState: { errors, isSubmitting },
     getValues,
     handleSubmit,
     register,
@@ -167,7 +167,8 @@ export const RegisterUserContextProvider = ({
     <FifthUserForm key="fifth" />
   ];
 
-  const returnToOptions = () => {
+  const returnToDashboard = () => {
+    reset();
     router.push('/');
   };
 
@@ -191,7 +192,7 @@ export const RegisterUserContextProvider = ({
 
   const goToPreviousStep = () => {
     if (currentStep - 1 < 0) {
-      returnToOptions();
+      returnToDashboard();
       return;
     }
 
@@ -224,12 +225,10 @@ export const RegisterUserContextProvider = ({
     if (isLastStep) {
       console.log(data);
       const { data: logedUserData } = await supabase.auth.getUser();
-      const userEmail = logedUserData.user?.email;
-      const { data: userData } = await supabase
-        .from('tb_users')
-        .select()
-        .eq('email', userEmail)
-        .single();
+
+      if (!logedUserData.user) {
+        throw new Error('Não há um usuário logado no sistema.');
+      }
 
       const birthDate = new Date(data.birthDate);
 
@@ -252,21 +251,6 @@ export const RegisterUserContextProvider = ({
       });
 
       try {
-        const formData = new FormData();
-        const file = data.avatar[0];
-        formData.append('avatar', file);
-        const filename = file.name;
-
-        const resAvatar = await fetch(
-          `/api/upload_user_avatar?cpf=${cleanedCPF}&filename=${filename}`,
-          {
-            method: 'POST',
-            body: formData
-          }
-        );
-        const avatarData = await resAvatar.json();
-        resAvatar.status !== 200 && console.log(avatarData);
-
         const signedUpRes = await fetch('/api/create_supabase_user', {
           method: 'POST',
           headers: {
@@ -276,6 +260,24 @@ export const RegisterUserContextProvider = ({
         });
 
         const signedUpData = await signedUpRes.json();
+
+        const formData = new FormData();
+        const file = data.avatar[0];
+        const filename = file.name;
+        formData.append('avatar', file);
+        formData.append('filename', filename);
+        formData.append('registeredBy', logedUserData.user.id);
+
+        const resAvatar = await fetch(
+          `/api/upload_user_avatar?userId=${signedUpData.user.id}`,
+          {
+            method: 'POST',
+            body: formData
+          }
+        );
+
+        const avatarData = await resAvatar.json();
+        resAvatar.status !== 200 && console.log(avatarData);
 
         const { error } = await supabase.rpc('create_new_user', {
           user_id_input: signedUpData.user.id,
@@ -293,7 +295,7 @@ export const RegisterUserContextProvider = ({
           birth_date_input: formattedDate,
           marital_status_id_input: data.maritalStatus,
           work_status_id_input: data.workStatus,
-          registered_by_input: await userData.id,
+          registered_by_input: logedUserData.user.id,
           zip_code_input: cleanedZipCode,
           number_input: data.address.number,
           street_input: data.address.street,
@@ -355,7 +357,7 @@ export const RegisterUserContextProvider = ({
         isCPFUnique,
         isFirstStep,
         isLastStep,
-        isSubmitted,
+        isSubmitting,
         onSubmit,
         register,
         reset,

@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
     clientSecret: process.env.GMAIL_SECRET_KEY,
     refreshToken: process.env.GMAIL_REFRESH_TOKEN,
     accessToken: process.env.GMAIL_ACCESS_TOKEN,
-    expires: 1484314697598
+    expires: 3599
   }
 });
 

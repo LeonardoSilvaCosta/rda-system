@@ -18,6 +18,8 @@ import {
 } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
+import { useGlobalContext } from './globalContext';
+
 import { LoginFormValues } from '@/types/types';
 import { loginValidation } from '@/validation';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -29,6 +31,7 @@ interface LoginContextProps {
   errors: FieldErrors<LoginFormValues>;
   getValues: UseFormGetValues<any>;
   handleSubmit: UseFormHandleSubmit<any, undefined>;
+  isSubmitting: boolean;
   onSubmit: SubmitHandler<LoginFormValues>;
   register: UseFormRegister<any>;
   reset: UseFormReset<any>;
@@ -49,7 +52,7 @@ export const LoginContextProvider = ({
   const {
     clearErrors,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     getValues,
     handleSubmit,
     register,
@@ -61,6 +64,14 @@ export const LoginContextProvider = ({
     defaultValues: { email: '', password: '' }
   });
 
+  const { setCurrentUser } = useGlobalContext();
+
+  async function getCurrentUser(userEmail: string) {
+    const data = await fetch(`/api/get_current_user?email=${userEmail}`);
+    const userData = await data.json();
+    setCurrentUser(userData);
+  }
+
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     try {
       const res = await supabase.auth.signInWithPassword({
@@ -70,6 +81,7 @@ export const LoginContextProvider = ({
 
       if (res.data.user) {
         toast.success('Autenticado com sucesso!');
+        getCurrentUser(String(res.data.user.email));
         router.refresh();
       } else {
         toast.error('Login ou senha inválidos.');
@@ -89,6 +101,7 @@ export const LoginContextProvider = ({
         errors,
         getValues,
         handleSubmit,
+        isSubmitting,
         onSubmit,
         register,
         reset,

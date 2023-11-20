@@ -9,7 +9,7 @@ import { LoadingComponent } from '@/components/Loading/loading';
 import { useRegisterUserContext } from '@/context/registerUserContext';
 
 export function FifthUserForm() {
-  const { goToPreviousStep, setValue } = useRegisterUserContext();
+  const { goToPreviousStep, setValue, isSubmitting } = useRegisterUserContext();
   const [avatarUrl, setAvatarUrl] = useState('');
 
   const [isLoading, setIsLoading] = useState(true);
@@ -71,7 +71,12 @@ export function FifthUserForm() {
           </div>
           <div className={styles.buttonsBox}>
             <Button type="button" name="Voltar" onClick={goToPreviousStep} />
-            <Button type="submit" name="Enviar" />
+            <Button
+              disabled={isSubmitting}
+              isSubmitting={isSubmitting}
+              type="submit"
+              name="Enviar"
+            />
           </div>
         </>
       )}

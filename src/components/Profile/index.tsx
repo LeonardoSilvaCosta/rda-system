@@ -73,7 +73,9 @@ export function Profile({ attended }: ProfileProps) {
         toast.error(response);
       }
     } catch (error) {
-      console.error('Erro ao executar o teste:', error);
+      throw new Error(
+        `Erro ao tentar fazer upload completo do prontuário. ${error}`
+      );
     } finally {
       setIsDownloading(false);
     }

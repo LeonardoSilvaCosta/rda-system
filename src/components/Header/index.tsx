@@ -1,9 +1,11 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { CSSProperties, useState } from 'react';
 import { BsChevronDown } from 'react-icons/bs';
 import { FcMenu } from 'react-icons/fc';
 import { MdOutlineArrowBackIosNew } from 'react-icons/md';
+import ClipLoader from 'react-spinners/ClipLoader';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 import styles from './styles.module.scss';
 
@@ -16,10 +18,18 @@ interface HeaderProps {
   title?: string;
 }
 
+const override: CSSProperties = {
+  display: 'flex',
+  margin: '0 auto',
+  alignItems: 'center',
+  justifyContent: 'center'
+};
+
 export function Header({ title = '' }: HeaderProps) {
   const supabase = createClientComponentClient();
   const router = useRouter();
-  const { currentUser, showNav, setShowNav } = useGlobalContext();
+  const { currentUser, showNav, setShowNav, isLoading } = useGlobalContext();
+  const [isExiting, setIsExiting] = useState(false);
   const [showDropDownMenu, setShowDropDownMenu] = useState(false);
   const { returnToDashboard } = useGlobalContext();
   const { goToPreviousStep: previousRegisterClientStep } =
@@ -47,7 +57,9 @@ export function Header({ title = '' }: HeaderProps) {
   };
 
   const handleSignOut = async () => {
+    setIsExiting(true);
     await supabase.auth.signOut();
+    setIsExiting(false);
     router.refresh();
   };
 
@@ -74,23 +86,50 @@ export function Header({ title = '' }: HeaderProps) {
           </div>
         </div>
         <div className={styles.rightColumn}>
-          <Image
-            src={currentUser.avatar ? currentUser.avatar : '/default-user.svg'}
-            alt="profile-photo"
-            width={40}
-            height={40}
-          />
-          <span>{`${currentUser.rank} ${currentUser.cadre} ${currentUser.nickname}`}</span>
-          <BsChevronDown
-            className={styles.dropdownIcon}
-            onClick={() => {
-              setShowDropDownMenu(!showDropDownMenu);
-            }}
-          />
+          {isLoading ? (
+            <></>
+          ) : (
+            <>
+              {currentUser.rank && (
+                <>
+                  <Image
+                    src={
+                      currentUser.avatar
+                        ? currentUser.avatar
+                        : '/default-user.svg'
+                    }
+                    alt="profile-photo"
+                    width={40}
+                    height={40}
+                  />
+                  <span>{`${currentUser.rank} ${currentUser.cadre} ${currentUser.nickname}`}</span>
+                  <BsChevronDown
+                    className={styles.dropdownIcon}
+                    onClick={() => {
+                      setShowDropDownMenu(!showDropDownMenu);
+                    }}
+                  />
+                </>
+              )}
+            </>
+          )}
           {showDropDownMenu ? (
             <div className={styles.dropdown}>
               <ul>
-                <li onClick={handleSignOut}>Sair</li>
+                <li onClick={handleSignOut}>
+                  {isExiting ? (
+                    <ClipLoader
+                      color={'#EBECF9'}
+                      loading={isExiting}
+                      cssOverride={override}
+                      size={20}
+                      aria-label="Loading Spinner"
+                      data-testid="loader"
+                    />
+                  ) : (
+                    'Sair'
+                  )}
+                </li>
               </ul>
             </div>
           ) : (

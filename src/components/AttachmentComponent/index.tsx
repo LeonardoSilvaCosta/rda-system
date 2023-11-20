@@ -100,7 +100,8 @@ export function Attachment({ attendedId }: AttachmentProps) {
     }
   };
 
-  const deleteAttachment = async (filepath: string) => {
+  const deleteAttachment = async (filepath: string, specie: string) => {
+    if (specie === 'Evolução') return;
     setDeletingPath(filepath);
     try {
       const deleteRes = await fetch(
@@ -189,7 +190,10 @@ export function Attachment({ attendedId }: AttachmentProps) {
                     />
                   ) : (
                     <BsFillTrash3Fill
-                      onClick={() => deleteAttachment(e.path)}
+                      className={`${styles.trash} ${
+                        e.specie === 'Evolução' ? styles.disabled : ''
+                      }`}
+                      onClick={() => deleteAttachment(e.path, e.specie)}
                     />
                   )}
                 </td>

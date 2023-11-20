@@ -41,9 +41,9 @@ export async function POST(req: NextRequest) {
         const { data } = await supabase.storage
           .from('attendeds')
           .download(`${recordProgressPath}/${file.name}`);
-        return data
+        return data && data?.size > 0
           ? new Uint8Array(await data.arrayBuffer())
-          : new Uint8Array();
+          : null;
       })
     );
 
@@ -58,19 +58,39 @@ export async function POST(req: NextRequest) {
         const { data } = await supabase.storage
           .from('attendeds')
           .download(`${attachmentsPath}/${file.name}`);
-        return data
+        return data && data?.size > 0
           ? new Uint8Array(await data.arrayBuffer())
-          : new Uint8Array();
+          : null;
       })
     );
 
-    const progressAndAttachments = recordProgress.concat(attachments);
-
     const pdfDoc = await PDFDocument.create();
-    const pdfUint8Array = new Uint8Array(await profilePdfBlob.arrayBuffer());
-    const filesWithCover = [pdfUint8Array, ...progressAndAttachments];
+    const profileUint8Array = new Uint8Array(
+      await profilePdfBlob.arrayBuffer()
+    );
 
-    for (const file of filesWithCover) {
+    let fullFile = [profileUint8Array, ...recordProgress];
+
+    if (attachments.length > 1) {
+      const attachmentsCover = await PDFDocument.create();
+      const text = 'ANEXOS';
+      const fontSize = 50;
+
+      const page = attachmentsCover.addPage();
+      const { width, height } = page.getSize();
+      page.drawText(text, {
+        x: width / 2 - 100,
+        y: height / 2,
+        size: fontSize
+      });
+
+      const coverBytes = await attachmentsCover.save();
+      const attachmentsWithCover = [coverBytes, ...attachments];
+
+      fullFile = fullFile.concat(attachmentsWithCover);
+    }
+
+    for (const file of fullFile) {
       if (file) {
         const externalPdf = await PDFDocument.load(file);
         const copiedPages = await pdfDoc.copyPages(
@@ -81,14 +101,14 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const pdfBytes = await pdfDoc.save();
-
-    const blob = new Blob([pdfBytes]);
-
     const headers = {
       'Content-Type': 'application/pdf',
       'Content-Disposition': `attachment; filename=record-full.pdf`
     };
+
+    const pdfBytes = await pdfDoc.save();
+
+    const blob = new Blob([pdfBytes]);
 
     return new Response(blob, {
       headers,

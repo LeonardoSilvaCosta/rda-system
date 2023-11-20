@@ -15,6 +15,7 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 interface GlobalContextProps {
   currentUser: GenericPerson;
+  setCurrentUser: Dispatch<SetStateAction<GenericPerson>>;
   isLoading: boolean;
   returnToDashboard: () => void;
   showNav: boolean;
@@ -67,6 +68,7 @@ export const GlobalContextProvider = ({
     <GlobalContext.Provider
       value={{
         currentUser,
+        setCurrentUser,
         isLoading,
         returnToDashboard,
         showNav,

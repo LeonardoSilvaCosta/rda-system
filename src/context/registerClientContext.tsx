@@ -168,6 +168,7 @@ export const RegisterClientContextProvider = ({
   ];
 
   const returnToOptions = () => {
+    reset();
     router.push('/RegisterClient/Options');
   };
 

@@ -3,7 +3,6 @@ import { NextRequest } from 'next/server';
 
 import { getCurrentUser } from '@/utils/getCurrentUser';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { error } from 'console';
 import { v4 as uuidv4 } from 'uuid';
 
 export async function POST(req: NextRequest) {
@@ -53,8 +52,6 @@ export async function POST(req: NextRequest) {
       .from('tb_attended_files')
       .insert(attendedFile)
       .select();
-
-    console.log(fileInfoError?.message);
 
     if (!storageError && !fileInfoError) {
       return Response.json('Upload realizado com sucesso!', { status: 200 });

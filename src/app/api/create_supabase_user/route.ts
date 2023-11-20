@@ -19,13 +19,16 @@ export async function POST(req: NextRequest) {
       password: randomPassword,
       email_confirm: true
     });
+
     if (!error) {
-      await sendMail(email, randomPassword).catch((error) => alert(error));
+      await sendMail(email, randomPassword).catch((error) =>
+        console.log(error)
+      );
 
       return Response.json(data, { status: 200 });
     } else {
       const { message, status } = errorMessages.createUserFailed;
-      return Response.json(`${message} ${error}`, { status });
+      return Response.json(`${message} ${error.message}`, { status });
     }
   } catch (error) {
     return Response.json(`Erro ao cadastrar usuário: ${error}`, {
