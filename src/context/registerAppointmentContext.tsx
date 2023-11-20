@@ -26,8 +26,6 @@ import {
 } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
-import { useGlobalContext } from './globalContext';
-
 import { FirstAppointmentForm } from '@/components/RegisterAppointmentForm/FirstAppointmentForm';
 import { SecondAppointmentForm } from '@/components/RegisterAppointmentForm/SecondAppointmentForm';
 import { AppointmentFormValues, PopulateFormData } from '@/types/types';
