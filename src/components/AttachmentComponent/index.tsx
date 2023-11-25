@@ -60,7 +60,7 @@ export function Attachment({ attendedId }: AttachmentProps) {
   useEffect(() => {
     async function getFileList() {
       const resFileList = await fetch(
-        `/api/get_attended_files?attendedId=${attendedId}`
+        `/api/get_attended_attachments?attendedId=${attendedId}`
       );
       const data = await resFileList.json();
 

@@ -42,12 +42,11 @@ export async function GET(req: NextRequest) {
   try {
     if (attendedId) {
       const { data: attendedFiles, error } = await supabase.rpc(
-        'get_attended_files',
+        'get_attended_attachments',
         {
           attended_id_input: attendedId
         }
       );
-
       if (error) console.error(error);
 
       const formattedData = attendedFiles?.map((e: Response) => {
