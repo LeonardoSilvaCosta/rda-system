@@ -1,0 +1,19 @@
+.link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+
+  &.active {
+    color: var(--white);
+  }
+
+  .navIcon {
+    font-size: 2rem;
+  }
+  
+  span {
+    transition: all 0.5s;
+  }
+
+}

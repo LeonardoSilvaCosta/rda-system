@@ -1,5 +1,7 @@
 'use client';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useState } from 'react';
 
 import styles from './styles.module.scss';
 
@@ -9,6 +11,12 @@ import { useLoginClientContext } from '@/context/loginContext';
 export default function Login() {
   const { errors, register, handleSubmit, isSubmitting, onSubmit } =
     useLoginClientContext();
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const startLoading = () => {
+    setIsLoading(true);
+  };
 
   return (
     <main className={styles.container}>
@@ -55,9 +63,13 @@ export default function Login() {
               type={'submit'}
               name={'Entrar'}
             />
-            <a href="/forgotPassword">
+            <Link
+              href="/forgotPassword"
+              onClick={startLoading}
+              className={`${isLoading ? styles.loading : ''}`}
+            >
               <span>Esqueci a senha</span>
-            </a>
+            </Link>
           </form>
         </div>
       </div>

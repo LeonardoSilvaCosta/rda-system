@@ -1,5 +1,7 @@
 'use client';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
@@ -15,8 +17,14 @@ interface FormValues extends FieldValues {
 export default function ForgotPassword() {
   const supabase = createClientComponentClient();
 
+  const [isLoading, setIsLoading] = useState(false);
+
+  const startLoading = () => {
+    setIsLoading(true);
+  };
+
   const {
-    formState: { errors },
+    formState: { errors, isSubmitting },
     handleSubmit,
     register,
     reset
@@ -72,7 +80,19 @@ export default function ForgotPassword() {
                 {String(errors['email']?.message)}
               </span>
             )}
-            <Button type={'submit'} name={'Entrar'} />
+            <Button
+              disabled={isSubmitting}
+              isSubmitting={isSubmitting}
+              type={'submit'}
+              name={'Enviar'}
+            />
+            <Link
+              href="/"
+              onClick={startLoading}
+              className={`${isLoading ? styles.loading : ''}`}
+            >
+              Voltar ao login
+            </Link>
           </form>
         </div>
       </div>

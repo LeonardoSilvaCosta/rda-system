@@ -32,6 +32,7 @@ interface LoginContextProps {
   getValues: UseFormGetValues<any>;
   handleSubmit: UseFormHandleSubmit<any, undefined>;
   isSubmitting: boolean;
+  isLoading: boolean;
   onSubmit: SubmitHandler<LoginFormValues>;
   register: UseFormRegister<any>;
   reset: UseFormReset<any>;
@@ -52,7 +53,7 @@ export const LoginContextProvider = ({
   const {
     clearErrors,
     control,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isLoading },
     getValues,
     handleSubmit,
     register,
@@ -102,6 +103,7 @@ export const LoginContextProvider = ({
         getValues,
         handleSubmit,
         isSubmitting,
+        isLoading,
         onSubmit,
         register,
         reset,

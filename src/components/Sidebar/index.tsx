@@ -1,19 +1,17 @@
 import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { AiOutlineHome, AiOutlineSearch } from 'react-icons/ai';
 import { BiLeftArrowAlt, BiUserPlus } from 'react-icons/bi';
 import { LiaUserCogSolid } from 'react-icons/lia';
 import { PiNotePencilDuotone } from 'react-icons/pi';
 
+import { SidebarLink } from '../SidebarLink';
 import styles from './styles.module.scss';
 
 import { useGlobalContext } from '@/context/globalContext';
 export function Sidebar() {
   const { showNav, setShowNav } = useGlobalContext();
   const [isDesktop, setIsDesktop] = useState(true);
-  const pathname = usePathname();
 
   useEffect(() => {
     const handleResize = () => {
@@ -55,48 +53,24 @@ export function Sidebar() {
         </header>
         <nav>
           <ul onClick={isDesktop ? undefined : () => setShowNav(false)}>
-            <li className={`${pathname === '/' ? styles.active : ''}`}>
-              <Link href="/">
-                <AiOutlineHome className={styles.navIcon} />
-                <span>Home</span>
-              </Link>
-            </li>
-            <li
-              className={`${
-                pathname === '/SearchClients' ? styles.active : ''
-              }`}
+            <SidebarLink icon={AiOutlineHome} href="/">
+              <span>Home</span>
+            </SidebarLink>
+            <SidebarLink icon={AiOutlineSearch} href="/SearchClients">
+              <span>Pesquisar atendidos</span>
+            </SidebarLink>
+            <SidebarLink icon={BiUserPlus} href="/RegisterClient/Options">
+              <span>Cadastrar atendido</span>
+            </SidebarLink>
+            <SidebarLink
+              icon={PiNotePencilDuotone}
+              href="/RegisterClient/Options"
             >
-              <Link href="/SearchClients">
-                <AiOutlineSearch className={styles.navIcon} />
-                <span>Pesquisar atendidos</span>
-              </Link>
-            </li>
-            <li
-              className={`${
-                pathname === '/RegisterClient/Options' ? styles.active : ''
-              }`}
-            >
-              <Link href="/RegisterClient/Options">
-                <BiUserPlus className={styles.navIcon} />
-                <span>Cadastrar atendido</span>
-              </Link>
-            </li>
-            <li
-              className={`${
-                pathname === '/RegisterAppointment' ? styles.active : ''
-              }`}
-            >
-              <Link href="/RegisterAppointment">
-                <PiNotePencilDuotone className={styles.navIcon} />
-                <span>Registrar atendimento</span>
-              </Link>
-            </li>
-            <li className={`${pathname === '/Settings' ? styles.active : ''}`}>
-              <Link href="/RegisterUser">
-                <LiaUserCogSolid className={styles.navIcon} />
-                <span>Cadasrar usuário</span>
-              </Link>
-            </li>
+              <span>Registrar atendimento</span>
+            </SidebarLink>
+            <SidebarLink icon={LiaUserCogSolid} href="/RegisterClient/Options">
+              <span>Cadastrar usuário</span>
+            </SidebarLink>
           </ul>
         </nav>
       </div>

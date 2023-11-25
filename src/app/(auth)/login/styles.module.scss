@@ -114,6 +114,10 @@
       display: flex;
       justify-content: flex-end;
       color: var(--blue-400);
+
+      &.loading {
+        cursor: wait;
+      }
     }
 
     @media(max-width: 1200px) {
