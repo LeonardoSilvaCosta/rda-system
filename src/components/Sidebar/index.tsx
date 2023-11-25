@@ -62,13 +62,10 @@ export function Sidebar() {
             <SidebarLink icon={BiUserPlus} href="/RegisterClient/Options">
               <span>Cadastrar atendido</span>
             </SidebarLink>
-            <SidebarLink
-              icon={PiNotePencilDuotone}
-              href="/RegisterClient/Options"
-            >
+            <SidebarLink icon={PiNotePencilDuotone} href="/RegisterAppointment">
               <span>Registrar atendimento</span>
             </SidebarLink>
-            <SidebarLink icon={LiaUserCogSolid} href="/RegisterClient/Options">
+            <SidebarLink icon={LiaUserCogSolid} href="/RegisterUser">
               <span>Cadastrar usuário</span>
             </SidebarLink>
           </ul>

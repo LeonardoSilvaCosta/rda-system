@@ -12,6 +12,7 @@ import styles from './styles.module.scss';
 import { useGlobalContext } from '@/context/globalContext';
 import { useRegisterAppointmentContext } from '@/context/registerAppointmentContext';
 import { useRegisterClientContext } from '@/context/registerClientContext';
+import { useRegisterUserContext } from '@/context/registerUserContext';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 interface HeaderProps {
@@ -36,6 +37,8 @@ export function Header({ title = '' }: HeaderProps) {
     useRegisterClientContext();
   const { goToPreviousStep: previousRegisterAppointmentStep } =
     useRegisterAppointmentContext();
+  const { goToPreviousStep: previousRegisterUserStep } =
+    useRegisterUserContext();
 
   const hasTopArrow =
     title === 'Cadastrar atendido' ||
@@ -53,14 +56,22 @@ export function Header({ title = '' }: HeaderProps) {
       case 'Registrar atendimento':
         previousRegisterAppointmentStep();
         break;
+      case 'Cadastrar usuário':
+        previousRegisterUserStep();
+        break;
     }
   };
 
   const handleSignOut = async () => {
     setIsExiting(true);
-    await supabase.auth.signOut();
-    setIsExiting(false);
-    router.refresh();
+    try {
+      await supabase.auth.signOut();
+      router.refresh();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsExiting(false);
+    }
   };
 
   return (
