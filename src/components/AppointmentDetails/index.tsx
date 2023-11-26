@@ -120,6 +120,7 @@ export function AppointmentDetails({
         listFilesUrl={`/api/get_attended_record_progress_files?attendedId=${attended.id}`}
         uploadFileUrl={`/api/upload_record_progress?attendedId=${attended.id}&appointmentId=${appointment.id}`}
         deleteFileUrl={`/api/delete_file`}
+        getDocumentSpeciesUrl={`/api/get_document_species_for_record_progress`}
       />
     </div>
   );

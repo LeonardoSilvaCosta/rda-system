@@ -132,6 +132,7 @@ export function Profile({ attended }: ProfileProps) {
           listFilesUrl={`/api/get_attended_attachments?attendedId=${attended.id}`}
           uploadFileUrl={`/api/upload_attachment?attendedId=${attended.id}`}
           deleteFileUrl={`/api/delete_file`}
+          getDocumentSpeciesUrl={`api/get_document_species_for_attachments`}
         />
         <div className={styles.downloadButtonBox}>
           <button onClick={() => downloadFullRecord(attended.id)}>

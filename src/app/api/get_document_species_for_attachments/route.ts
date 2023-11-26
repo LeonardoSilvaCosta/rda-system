@@ -16,6 +16,7 @@ export async function GET(req: NextRequest) {
       const { data: document_species } = await supabase
         .from('tb_document_species')
         .select('id, name')
+        .not('name', 'in', '(Evolução,Termo de anulação,Avatar)')
         .ilike('name', `%${q}%`)
         .limit(10);
       return Response.json(document_species);
@@ -23,6 +24,7 @@ export async function GET(req: NextRequest) {
       const { data: document_species } = await supabase
         .from('tb_document_species')
         .select('id, name')
+        .not('name', 'in', '(Evolução,Termo de anulação,Avatar)')
         .limit(10);
       return Response.json(document_species);
     }

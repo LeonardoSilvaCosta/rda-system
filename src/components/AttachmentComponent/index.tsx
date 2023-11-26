@@ -22,6 +22,7 @@ interface AttachmentComponentProps {
   listFilesUrl: string;
   uploadFileUrl: string;
   deleteFileUrl?: string;
+  getDocumentSpeciesUrl: string;
 }
 
 const override: CSSProperties = {
@@ -34,7 +35,8 @@ export function AttachmentComponent({
   title,
   listFilesUrl,
   uploadFileUrl,
-  deleteFileUrl
+  deleteFileUrl,
+  getDocumentSpeciesUrl
 }: AttachmentComponentProps) {
   const validation = yup.object({
     specie: yup.string().required('É necessário informar a espécie do anexo.')
@@ -58,7 +60,7 @@ export function AttachmentComponent({
 
   useEffect(() => {
     async function getDocumentSpecies() {
-      const resSpeciesList = await fetch(`/api/get_document_species`);
+      const resSpeciesList = await fetch(getDocumentSpeciesUrl);
       const data = await resSpeciesList.json();
 
       setDocumentSpecies(data);
