@@ -10,14 +10,13 @@ export async function POST(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const attendedId = searchParams.get('attendedId');
   const appointmentId = searchParams.get('appointmentId');
-  const filename = searchParams.get('filename');
 
   const formData = await req.formData();
-  const pdfFile = formData.get('pdfFile');
+  const file = formData.get('file');
+  const filename = formData.get('filename');
+  const documentSpecie = formData.get('documentSpecie');
 
-  const recordProgressSpecie = 'cedb92d7-63c4-4c88-a29d-53aa17a26a87';
-
-  if (!pdfFile)
+  if (!file)
     return Response.json('Nenhum arquivo encontrado para upload!', {
       status: 400
     });
@@ -27,14 +26,19 @@ export async function POST(req: NextRequest) {
     const uuid = uuidv4();
 
     const bucketName = 'attendeds';
-    const filenameForBucket = `${uuid}.pdf`;
-    const filePath = `${attendedId}/progress-records/${filenameForBucket}`;
+    const fileExt = String(filename).split('.').pop();
+    const filenameForBucket = `${uuid}.${fileExt}`;
+    const filePath = `${attendedId}/record-progress/${filenameForBucket}`;
     const url = `${process.env.NEXT_PUBLIC_STORAGE_BASE_URL}/${bucketName}/${filePath}`;
-    const { error: storageError } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from(bucketName)
-      .upload(`${filePath}`, pdfFile, {
-        contentType: 'application/pdf'
-      });
+      .upload(`${filePath}`, file);
+
+    if (uploadError) {
+      throw new Error(
+        `Erro ao fazer upload para o storage: ${uploadError.message}`
+      );
+    }
 
     const attendedFile = {
       bucket_name: bucketName,
@@ -43,7 +47,7 @@ export async function POST(req: NextRequest) {
       attended_id: String(attendedId),
       appointment_id: appointmentId,
       url,
-      specie_id: recordProgressSpecie,
+      specie_id: String(documentSpecie),
       path: filePath,
       registered_by: await currentUser.id
     };
@@ -53,11 +57,22 @@ export async function POST(req: NextRequest) {
       .insert(attendedFile)
       .select();
 
-    if (!storageError && !fileInfoError) {
+    if (fileInfoError) {
+      throw new Error(
+        `Erro ao fazer atualização de arquivos armazenados: ${fileInfoError.message}`
+      );
+    }
+
+    const { error: appointmentUpdateError } = await supabase
+      .from('tb_appointments')
+      .update({ is_signed: true })
+      .eq('id', String(appointmentId))
+      .select();
+
+    if (!appointmentUpdateError) {
       return Response.json('Upload realizado com sucesso!', { status: 200 });
     } else {
-      // const { message, status } = errorMessages.pdfUploadFailed;
-      return Response.json(storageError?.message, { status: 400 });
+      return Response.json(appointmentUpdateError?.message, { status: 400 });
     }
   } catch (error) {
     return Response.json(`Upload error: ${error}`, { status: 400 });

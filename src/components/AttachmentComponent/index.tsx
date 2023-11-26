@@ -16,8 +16,12 @@ interface FormValues extends FieldValues {
   specie: string;
 }
 
-interface AttachmentProps {
+interface AttachmentComponentProps {
   attendedId: string;
+  title: string;
+  listFilesUrl: string;
+  uploadFileUrl: string;
+  deleteFileUrl?: string;
 }
 
 const override: CSSProperties = {
@@ -26,7 +30,12 @@ const override: CSSProperties = {
   borderColor: 'red'
 };
 
-export function Attachment({ attendedId }: AttachmentProps) {
+export function AttachmentComponent({
+  title,
+  listFilesUrl,
+  uploadFileUrl,
+  deleteFileUrl
+}: AttachmentComponentProps) {
   const validation = yup.object({
     specie: yup.string().required('É necessário informar a espécie do anexo.')
   });
@@ -59,9 +68,7 @@ export function Attachment({ attendedId }: AttachmentProps) {
 
   useEffect(() => {
     async function getFileList() {
-      const resFileList = await fetch(
-        `/api/get_attended_attachments?attendedId=${attendedId}`
-      );
+      const resFileList = await fetch(`${listFilesUrl}`);
       const data = await resFileList.json();
 
       setFileList(data);
@@ -83,13 +90,10 @@ export function Attachment({ attendedId }: AttachmentProps) {
     formData.append('documentSpecie', documentSpecie);
 
     try {
-      const uploadRes = await fetch(
-        `/api/upload_attachment?attendedId=${attendedId}`,
-        {
-          method: 'POST',
-          body: formData
-        }
-      );
+      const uploadRes = await fetch(`${uploadFileUrl}`, {
+        method: 'POST',
+        body: formData
+      });
 
       const pdfData = await uploadRes.json();
       uploadRes.status === 200 ? toast.success(pdfData) : toast.error(pdfData);
@@ -104,12 +108,9 @@ export function Attachment({ attendedId }: AttachmentProps) {
     if (specie === 'Evolução') return;
     setDeletingPath(filepath);
     try {
-      const deleteRes = await fetch(
-        `/api/delete_attachment?filepath=${filepath}`,
-        {
-          method: 'DELETE'
-        }
-      );
+      const deleteRes = await fetch(`${deleteFileUrl}?filepath=${filepath}`, {
+        method: 'DELETE'
+      });
 
       const response = await deleteRes.json();
 
@@ -126,7 +127,7 @@ export function Attachment({ attendedId }: AttachmentProps) {
 
   return (
     <main className={styles.container}>
-      <p>Anexos</p>
+      <p>{title}</p>
       <form>
         <div>
           <MyCustomDropdown

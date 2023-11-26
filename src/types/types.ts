@@ -230,6 +230,7 @@ export type Appointment = {
   travels: [] | null;
   referralDestinations: [] | null;
   referralTypes: [] | null;
+  isSigned: boolean;
 };
 
 export type AttendedIdentification = {

@@ -6,14 +6,16 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 export async function GET(req: NextRequest) {
   const supabase = createRouteHandlerClient({ cookies });
   const { searchParams } = new URL(req.url);
-  const cpf = searchParams.get('cpf');
   const appointmentId = searchParams.get('appointmentId');
 
   try {
-    const { error } = await supabase.storage
-      .from('records')
-      .download(`${cpf}/record-${appointmentId}.pdf`);
-
+    const { error } = await supabase
+      .from('tb_attended_files')
+      .select()
+      .match({
+        appointment_id: appointmentId,
+        specie_id: String(process.env.NEXT_PUBLIC_RECORD_PROGRESS_SPECIE_ID)
+      });
     if (!error) {
       return Response.json(true, { status: 200 });
     } else {

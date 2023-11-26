@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BsChevronDown } from 'react-icons/bs';
+import { GrStatusGood } from 'react-icons/gr';
+import { MdErrorOutline } from 'react-icons/md';
 
 import styles from './styles.module.scss';
 
@@ -61,6 +63,12 @@ export function RecordAppointmentCard({
               openDropdownId === e.id ? styles.visible : ''
             }`}
           >
+            {e.isSigned ? (
+              <GrStatusGood className={styles.successIcon} />
+            ) : (
+              <MdErrorOutline className={styles.errorIcon} />
+            )}
+
             <div className={styles.columns}>
               <div className={styles.contentColumn}>
                 <span>{`Realizado em: ${e.date}`}</span>

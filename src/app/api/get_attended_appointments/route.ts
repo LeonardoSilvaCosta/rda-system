@@ -43,6 +43,7 @@ type Appointment = {
   travels: [] | null;
   referral_destinations: [] | null;
   referral_types: [] | null;
+  is_signed: boolean;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -93,7 +94,8 @@ export async function GET(req: NextRequest) {
         referralDestinations: e.referral_destinations
           ? e.referral_destinations
           : [],
-        referralTypes: e.referral_types ? e.referral_types : []
+        referralTypes: e.referral_types ? e.referral_types : [],
+        isSigned: e.is_signed
       };
     });
 

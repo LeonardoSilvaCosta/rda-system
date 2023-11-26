@@ -2,7 +2,7 @@ import { CSSProperties, useState } from 'react';
 import toast from 'react-hot-toast';
 import PulseLoader from 'react-spinners/PulseLoader';
 
-import { Attachment } from '../AttachmentComponent';
+import { AttachmentComponent } from '../AttachmentComponent';
 import { PdfProfile } from '../Pdfs/PdfProfile';
 import styles from './styles.module.scss';
 
@@ -126,7 +126,13 @@ export function Profile({ attended }: ProfileProps) {
             />
           )}
         </div>
-        <Attachment attendedId={attended.id} />
+        <AttachmentComponent
+          attendedId={attended.id}
+          title="Anexos"
+          listFilesUrl={`/api/get_attended_attachments?attendedId=${attended.id}`}
+          uploadFileUrl={`/api/upload_attachment?attendedId=${attended.id}`}
+          deleteFileUrl={`/api/delete_file`}
+        />
         <div className={styles.downloadButtonBox}>
           <button onClick={() => downloadFullRecord(attended.id)}>
             {isDownloading ? (

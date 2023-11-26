@@ -10,7 +10,7 @@ import { LoadingComponent } from '@/components/Loading/loading';
 import { Profile } from '@/components/Profile';
 import { RecordHeader } from '@/components/RecordHeader';
 import { Sidebar } from '@/components/Sidebar';
-import { Appointment, Attended } from '@/types/types';
+import { Attended } from '@/types/types';
 
 export default function Record() {
   const searchParams = useSearchParams();
@@ -48,7 +48,6 @@ export default function Record() {
     },
     dependents: []
   });
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [currentScreen, setCurrentScreen] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -71,19 +70,6 @@ export default function Record() {
   }, [cpf]);
 
   const handleClick = async () => {
-    if (appointments.length == 0) {
-      try {
-        const appointmentsRes = await fetch(
-          `/api/get_attended_appointments?cpf=${cpf}`
-        );
-        const appointmentData = await appointmentsRes.json();
-
-        setAppointments(appointmentData);
-        setIsLoading(false);
-      } catch (error) {
-        console.error('Erro na solicitação:', error);
-      }
-    }
     switch (currentScreen) {
       case 1:
         setCurrentScreen(0);
@@ -116,7 +102,6 @@ export default function Record() {
             ) : (
               <AppointmentsSummary
                 attended={attended}
-                appointments={appointments}
                 currentScreen={currentScreen}
                 setCurrentScreen={setCurrentScreen}
               />
