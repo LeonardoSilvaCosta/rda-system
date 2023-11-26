@@ -113,7 +113,7 @@ export function AppointmentDetails({
       <AttachmentComponent
         attendedId={attended.id}
         title={'Documentos assinados'}
-        listFilesUrl={`/api/get_attended_record_progress_files?attendedId=${attended.id}`}
+        listFilesUrl={`/api/get_attended_record_progress_files?attendedId=${attended.id}&appointmentId=${appointment.id}`}
         uploadFileUrl={`/api/upload_record_progress?attendedId=${attended.id}&appointmentId=${appointment.id}`}
         deleteFileUrl={`/api/delete_file`}
         getDocumentSpeciesUrl={`/api/get_document_species_for_record_progress?isSigned=${appointment.isSigned}`}

@@ -38,13 +38,15 @@ export async function GET(req: NextRequest) {
   const supabase = createRouteHandlerClient({ cookies });
   const { searchParams } = new URL(req.url);
   const attendedId = searchParams.get('attendedId');
+  const appointmentId = searchParams.get('appointmentId');
 
   try {
     if (attendedId) {
       const { data: attendedFiles, error } = await supabase.rpc(
         'get_attended_record_progress_files',
         {
-          attended_id_input: attendedId
+          attended_id_input: attendedId,
+          appointment_id_input: appointmentId
         }
       );
       if (error) console.error(error);
