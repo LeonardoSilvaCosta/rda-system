@@ -8,6 +8,7 @@ import { LoadingComponent } from '@/components/Loading/loading';
 import { MyCustomDropdown } from '@/components/MyCustomDropdown';
 import { MyCustomMultiSelectDropdown } from '@/components/MyCustomMultiselectDropdown';
 import { MyDatePicker } from '@/components/MyDatePicker';
+import { MyTimePicker } from '@/components/MyTimePicker';
 import { RadioGroup } from '@/components/RadioGroup';
 import { useRegisterAppointmentContext } from '@/context/registerAppointmentContext';
 import { GenericPerson, Option } from '@/types/types';
@@ -117,13 +118,11 @@ export function FirstAppointmentForm() {
             errors={errors}
             control={control}
           />
-          <Input
+          <MyTimePicker
             title="Horário*"
             name="time"
-            type="time"
-            hint="10:00"
             errors={errors}
-            register={register}
+            control={control}
           />
           <MyCustomMultiSelectDropdown
             title="Oficiais*"
