@@ -66,6 +66,10 @@
 
     gap: 1rem;
 
+    div:first-child {
+      width: 100%;
+    }
+
     div:nth-child(2) {
       label {
         border-radius: 8px;

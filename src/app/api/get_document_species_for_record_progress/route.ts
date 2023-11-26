@@ -10,13 +10,19 @@ export async function GET(req: NextRequest) {
   const supabase = createRouteHandlerClient<Database>({ cookies });
   const { searchParams } = new URL(req.url);
   const q = searchParams.get('q');
+  const isSigned = searchParams.get('isSigned');
+
+  const documentSpecie =
+    isSigned === 'false' ? 'Evolução' : 'Termo de anulação';
+
+  console.log(isSigned);
 
   try {
     if (q) {
       const { data: document_species } = await supabase
         .from('tb_document_species')
         .select('id, name')
-        .in('name', ['Evolução', 'Termo de anulação'])
+        .eq('name', documentSpecie)
         .ilike('name', `%${q}%`)
         .limit(10);
       return Response.json(document_species);
@@ -24,7 +30,7 @@ export async function GET(req: NextRequest) {
       const { data: document_species } = await supabase
         .from('tb_document_species')
         .select('id, name')
-        .in('name', ['Evolução', 'Termo de anulação'])
+        .eq('name', documentSpecie)
         .limit(10);
       return Response.json(document_species);
     }
