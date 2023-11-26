@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { AttachmentComponent } from '../AttachmentComponent';
 import { PdfRecordData } from '../Pdfs/PdfRecordData';
 import styles from './styles.module.scss';
@@ -16,8 +14,6 @@ export function AppointmentDetails({
   attended,
   appointment
 }: AppointmentDetailsProps) {
-  const [isUploading, setIsUploading] = useState(false);
-
   if (!appointment) return;
 
   const {
