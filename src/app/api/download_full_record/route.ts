@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
     );
 
   try {
-    const recordProgressPath = `${attendedId}/progress-records`;
+    const recordProgressPath = `${attendedId}/record-progress`;
     const attachmentsPath = `${attendedId}/attachments`;
 
     const { data: recordsProgressList, error: recordProgressListError } =

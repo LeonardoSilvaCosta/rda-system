@@ -32,7 +32,9 @@ export async function POST(req: NextRequest) {
     const url = `${process.env.NEXT_PUBLIC_STORAGE_BASE_URL}/${bucketName}/${filePath}`;
     const { error: uploadError } = await supabase.storage
       .from(bucketName)
-      .upload(`${filePath}`, file);
+      .upload(`${filePath}`, file, {
+        contentType: 'application/pdf'
+      });
 
     if (uploadError) {
       throw new Error(
@@ -65,7 +67,10 @@ export async function POST(req: NextRequest) {
 
     const { error: appointmentUpdateError } = await supabase
       .from('tb_appointments')
-      .update({ is_signed: true })
+      .update({
+        is_signed:
+          documentSpecie === process.env.NEXT_PUBLIC_RECORD_PROGRESS_SPECIE_ID
+      })
       .eq('id', String(appointmentId))
       .select();
 

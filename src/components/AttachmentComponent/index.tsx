@@ -150,6 +150,7 @@ export function AttachmentComponent({
             {isUploading ? 'Enviando arquivo...' : 'Anexar novo arquivo'}
           </label>
           <input
+            accept="image/*, application/pdf"
             disabled={specieIsEmpty}
             onChange={(e) => uploadFile(e)}
             type={'file'}
