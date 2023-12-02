@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
 
     let fullFile = [profileUint8Array, ...recordProgress];
 
-    if (attachments.length > 1) {
+    if (attachments.length > 0) {
       const attachmentsCover = await PDFDocument.create();
       const text = 'ANEXOS';
       const fontSize = 50;

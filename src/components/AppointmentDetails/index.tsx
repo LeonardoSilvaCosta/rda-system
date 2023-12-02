@@ -98,6 +98,13 @@ export function AppointmentDetails({
           <span>{`${recordProgress}`}</span>
         </div>
         <footer className={styles.footer}>
+          <a
+            href="https://assinador.iti.br/assinatura/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Assinar documento com o gov.br
+          </a>
           <button>
             <PDFDownloadLink
               document={

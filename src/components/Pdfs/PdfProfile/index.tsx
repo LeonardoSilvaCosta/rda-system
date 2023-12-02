@@ -42,14 +42,12 @@ export function PdfProfile({
 }: PdfProfileDataProps) {
   const styles = StyleSheet.create({
     container: {
-      // maxWidth: 1180,
-      // width: '100%',
       marginRight: '2cm',
       marginLeft: '1.5cm',
       display: 'flex',
       flexDirection: 'column',
       fontSize: 14,
-      padding: 20
+      padding: 16
     },
     profileHeader: {
       display: 'flex',
@@ -57,7 +55,7 @@ export function PdfProfile({
       justifyContent: 'flex-start',
       alignItems: 'center',
       paddingBottom: 16,
-      gap: 16
+      gap: 8
     },
     column: {
       width: '50vw',
