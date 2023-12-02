@@ -73,6 +73,8 @@ export function AttachmentComponent({
       const resFileList = await fetch(`${listFilesUrl}`);
       const data = await resFileList.json();
 
+      console.log(data);
+
       setFileList(data);
     }
 

@@ -30,20 +30,22 @@ export function PdfProfile({
     cpf,
     maritalStatus,
     gender,
-    rg,
-    nickname,
-    rank,
-    cadre,
-    workStatus,
-    opm,
+    rg = '',
+    nickname = '',
+    rank = '',
+    cadre = '',
+    workStatus = '',
+    opm = '',
     address,
     phones
   }
 }: PdfProfileDataProps) {
   const styles = StyleSheet.create({
     container: {
-      maxWidth: 1180,
-      width: '100%',
+      // maxWidth: 1180,
+      // width: '100%',
+      marginRight: '2cm',
+      marginLeft: '1.5cm',
       display: 'flex',
       flexDirection: 'column',
       fontSize: 14,
@@ -63,14 +65,16 @@ export function PdfProfile({
     }
   });
 
+  const validatedComplement = address.complement ? address.complement : '';
+
   const defaultProfileImage =
-    'https://jfzcpicztjnxtltzxbkc.supabase.co/storage/v1/object/public/assets/default-user.svg';
+    'https://jfzcpicztjnxtltzxbkc.supabase.co/storage/v1/object/public/assets/default-user.png';
 
   return (
     <Document>
       <Page>
+        <PdfHeader />
         <View style={styles.container}>
-          <PdfHeader />
           <View style={styles.profileHeader}>
             <Image
               style={{
@@ -100,7 +104,7 @@ export function PdfProfile({
             <Text style={{ paddingBottom: 8 }}>Endereço</Text>
             <Text>{`CEP: ${address.zipCode}`}</Text>
             <Text>{`Logradouro: ${address.number}`}</Text>
-            <Text>{`Complemento: ${address.complement}`}</Text>
+            <Text>{`Complemento: ${validatedComplement}`}</Text>
             <Text>{`Número: ${address.number}`}</Text>
             <Text>{`Bairro: ${address.neighborhood}`}</Text>
             <Text>{`Cidade/Estado: Cidade/Estado`}</Text>
