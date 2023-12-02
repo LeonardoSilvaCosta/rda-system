@@ -19,7 +19,7 @@ interface PdfProfileDataProps {
 
 Font.register({
   family: 'Roboto',
-  src: 'https://fonts.googleapis.com/css2?family=Roboto&display=swap'
+  src: '../fonts/Roboto-Regular.ttf'
 });
 
 export function PdfProfile({
@@ -41,13 +41,15 @@ export function PdfProfile({
   }
 }: PdfProfileDataProps) {
   const styles = StyleSheet.create({
+    wrapper: {
+      marginLeft: '2cm',
+      marginRight: '1.5cm',
+      paddingBottom: '1.76cm'
+    },
     container: {
-      marginRight: '2cm',
-      marginLeft: '1.5cm',
       display: 'flex',
       flexDirection: 'column',
-      fontSize: 14,
-      padding: 16
+      fontSize: 12
     },
     profileHeader: {
       display: 'flex',
@@ -70,8 +72,8 @@ export function PdfProfile({
 
   return (
     <Document>
-      <Page>
-        <PdfHeader />
+      <Page style={styles.wrapper} wrap={true} size="A4">
+        <PdfHeader isFixed={true} />
         <View style={styles.container}>
           <View style={styles.profileHeader}>
             <Image

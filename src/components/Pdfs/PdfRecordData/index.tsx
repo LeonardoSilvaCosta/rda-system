@@ -17,7 +17,16 @@ interface PdfRecordDataProps {
 
 Font.register({
   family: 'Roboto',
-  src: 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap'
+  fonts: [
+    {
+      src: 'https://cdn.jsdelivr.net/npm/roboto-font@0.1.0/fonts/Roboto/roboto-regular-webfont.ttf',
+      fontWeight: 'medium'
+    },
+    {
+      src: 'https://cdn.jsdelivr.net/npm/roboto-font@0.1.0/fonts/Roboto/roboto-bold-webfont.ttf',
+      fontWeight: 'bold'
+    }
+  ]
 });
 
 export function PdfRecordData({
@@ -45,11 +54,21 @@ export function PdfRecordData({
   }
 }: PdfRecordDataProps) {
   const styles = StyleSheet.create({
+    wrapper: {
+      fontFamily: 'Roboto',
+      fontWeight: 'medium',
+      marginLeft: '2cm',
+      marginRight: '1.5cm',
+      paddingBottom: '1.76cm'
+    },
     container: {
+      maxWidth: 500,
       display: 'flex',
       flexDirection: 'column',
-      fontSize: 12,
-      padding: 20
+      fontSize: 12
+    },
+    label: {
+      fontWeight: 'bold'
     },
     appointmentWrapper: {
       display: 'flex',
@@ -62,28 +81,17 @@ export function PdfRecordData({
       width: '50vw'
     },
     recordProgressBox: {
-      width: '100%',
-      position: 'relative',
-      border: 1,
-      borderColor: '#a6a6a6',
-      margin: '0 auto 30 auto',
-      padding: '16 8 2 8',
       textAlign: 'justify'
     },
     recordProgressLabel: {
-      position: 'absolute',
-      padding: 0,
-      top: -7,
-      left: 10,
-      backgroundColor: '#fff',
-      fontWeight: 'bold'
+      fontWeight: 'bold',
+      marginBottom: 8
     },
     signature: {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      padding: 16,
-      margin: '0 auto 10 auto'
+      margin: '50 auto 0 auto'
     }
   });
 
@@ -95,14 +103,16 @@ export function PdfRecordData({
 
   return (
     <Document>
-      <Page wrap={true} size="A4">
+      <Page style={styles.wrapper} wrap={true} size="A4">
+        <PdfHeader isFixed={true} />
         <View style={styles.container}>
-          <PdfHeader />
           <Text style={{ paddingBottom: 16 }}>{`Identificação do atendido: ${
             rg ? `${rank} ${cadre} ${rg} ${nickname}` : `${fullname} - ${cpf}`
           }`}</Text>
           <View>
-            <Text style={{ paddingBottom: 16 }}>Dados do atendimento</Text>
+            <Text style={{ paddingBottom: 16, fontWeight: 'bold' }}>
+              Dados do atendimento
+            </Text>
             <View style={styles.appointmentWrapper}>
               <View style={styles.column}>
                 <Text>{`Data e hora: ${date}`}</Text>
