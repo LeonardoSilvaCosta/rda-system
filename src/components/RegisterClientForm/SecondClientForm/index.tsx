@@ -160,7 +160,7 @@ export function SecondClientForm({ control, register }: SecondClientFormProps) {
             getValues={getValues}
             errors={errors}
             control={control}
-            routeToSearch={'/api/cities'}
+            routeToSearch={`/api/cities_from_uf?ufId=${selectedState}&`}
           />
           <div className={styles.buttonsBox}>
             <Button type="button" name="Voltar" onClick={goToPreviousStep} />

@@ -253,7 +253,7 @@ export const RegisterClientContextProvider = ({
       try {
         const { error } = await supabase.rpc('create_new_attended', {
           fullname_input: data.fullName.toUpperCase(),
-          nickname_input: data.nickName.toUpperCase(),
+          nickname_input: data.nickName ? data.nickName.toUpperCase() : null,
           rg_input: data.rg,
           rank_id_input: data.rank,
           cadre_id_input: data.cadre,
@@ -293,13 +293,8 @@ export const RegisterClientContextProvider = ({
         toast.error(
           `Houve algum problema no cadastro de seu formulário, tente novamente.`
         );
-        console.log(
-          `Problema no cadastro de seu formulário. Erro ${JSON.stringify(
-            error,
-            null,
-            2
-          )}.`
-        );
+        console.log(`Problema no cadastro de seu formulário.`);
+        throw error;
       } finally {
         reset();
         setCurrentStep(0);

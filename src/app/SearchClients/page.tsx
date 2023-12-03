@@ -97,7 +97,7 @@ export default function SearchClients() {
             ) : (
               <div className={styles.noContent}>
                 <BiUserX className={styles.emptyPaperIcon} />
-                <p>{`Nenhum atendido encontrado para esta busca.`}</p>
+                <p>{`Nenhum atendido encontrado.`}</p>
               </div>
             )}
           </div>

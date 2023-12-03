@@ -67,6 +67,9 @@ export function PdfRecordData({
       flexDirection: 'column',
       fontSize: 12
     },
+    identification: {
+      marginBottom: 16
+    },
     title: {
       fontWeight: 'bold',
       marginBottom: 16
@@ -107,11 +110,10 @@ export function PdfRecordData({
       <Page style={styles.wrapper} wrap={true} size="A4">
         <PdfHeader isFixed={true} />
         <View style={styles.container}>
-          <Text>
+          <Text style={styles.identification}>
             {`Identificação do(a) atendido(a): ${
               rg ? `${rank} ${cadre} ${rg} ${nickname}` : `${fullname} - ${cpf}`
-            }
-            `}
+            }`}
           </Text>
           <View>
             <Text style={styles.title}>Dados do atendimento</Text>
@@ -131,13 +133,13 @@ export function PdfRecordData({
                   .map((e) => e.fullname)
                   .join(', ')}`}</Text>
                 <Text>{`Serviço: ${service} `}</Text>
-              </View>
-              <View style={styles.column}>
                 <Text>{`Avaliação psicológica: ${
                   psychologicalAssessment
                     ? psychologicalAssessment
                     : 'Não se aplica'
                 }`}</Text>
+              </View>
+              <View style={styles.column}>
                 <Text>{`Avaliação social: ${
                   socialAssessment ? socialAssessment : 'Não se aplica'
                 }`}</Text>

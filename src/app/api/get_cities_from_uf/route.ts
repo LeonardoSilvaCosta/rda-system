@@ -20,9 +20,7 @@ export async function GET(req: NextRequest) {
     state_id
     `
       )
-      .eq('state_id', ufId)
-      .limit(10);
-
+      .eq('state_id', ufId);
     return Response.json(data);
   } catch (error) {
     return Response.json(`select data error: ${error}`, { status: 400 });

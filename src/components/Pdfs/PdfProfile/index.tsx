@@ -45,6 +45,7 @@ export function PdfProfile({
     cadre = '',
     workStatus = '',
     opm = '',
+    isCivilVolunteer,
     address,
     phones
   }
@@ -82,6 +83,7 @@ export function PdfProfile({
   });
 
   const validatedComplement = address.complement ? address.complement : '';
+  const isMiliry = rg ? true : false;
 
   const defaultProfileImage =
     'https://jfzcpicztjnxtltzxbkc.supabase.co/storage/v1/object/public/assets/default-user.png';
@@ -109,12 +111,16 @@ export function PdfProfile({
             <Text>{`CPF: ${cpf}`}</Text>
             <Text>{`Estado civil: ${maritalStatus}`}</Text>
             <Text>{`Sexo: ${gender}`}</Text>
-            <Text>{`RG: ${rg}`}</Text>
-            <Text>{`Nome de guerra: ${nickname}`}</Text>
-            <Text>{`Posto/graduação: ${rank}`}</Text>
-            <Text>{`Quadro: ${cadre}`}</Text>
-            <Text>{`Condição funcional: ${workStatus}`}</Text>
-            <Text>{`OPM: ${opm}`}</Text>
+            {isMiliry && (
+              <>
+                <Text>{`RG: ${rg}`}</Text>
+                <Text>{`Nome de guerra: ${nickname}`}</Text>
+                <Text>{`Posto/graduação: ${rank}`}</Text>
+                <Text>{`Condição funcional: ${workStatus}`}</Text>
+                <Text>{`OPM: ${opm}`}</Text>
+                <Text>{`Quadro: ${cadre}`}</Text>
+              </>
+            )}
           </View>
           <View style={styles.column}>
             <Text style={styles.title}>Endereço</Text>
