@@ -19,11 +19,11 @@ Font.register({
   family: 'Roboto',
   fonts: [
     {
-      src: 'https://cdn.jsdelivr.net/npm/roboto-font@0.1.0/fonts/Roboto/roboto-regular-webfont.ttf',
+      src: 'https://jfzcpicztjnxtltzxbkc.supabase.co/storage/v1/object/public/assets/fonts/Roboto-Regular.ttf',
       fontWeight: 'medium'
     },
     {
-      src: 'https://cdn.jsdelivr.net/npm/roboto-font@0.1.0/fonts/Roboto/roboto-bold-webfont.ttf',
+      src: 'https://jfzcpicztjnxtltzxbkc.supabase.co/storage/v1/object/public/assets/fonts/Roboto-Bold.ttf',
       fontWeight: 'bold'
     }
   ]
@@ -67,8 +67,9 @@ export function PdfRecordData({
       flexDirection: 'column',
       fontSize: 12
     },
-    label: {
-      fontWeight: 'bold'
+    title: {
+      fontWeight: 'bold',
+      marginBottom: 16
     },
     appointmentWrapper: {
       display: 'flex',
@@ -106,13 +107,14 @@ export function PdfRecordData({
       <Page style={styles.wrapper} wrap={true} size="A4">
         <PdfHeader isFixed={true} />
         <View style={styles.container}>
-          <Text style={{ paddingBottom: 16 }}>{`Identificação do atendido: ${
-            rg ? `${rank} ${cadre} ${rg} ${nickname}` : `${fullname} - ${cpf}`
-          }`}</Text>
+          <Text>
+            {`Identificação do(a) atendido(a): ${
+              rg ? `${rank} ${cadre} ${rg} ${nickname}` : `${fullname} - ${cpf}`
+            }
+            `}
+          </Text>
           <View>
-            <Text style={{ paddingBottom: 16, fontWeight: 'bold' }}>
-              Dados do atendimento
-            </Text>
+            <Text style={styles.title}>Dados do atendimento</Text>
             <View style={styles.appointmentWrapper}>
               <View style={styles.column}>
                 <Text>{`Data e hora: ${date}`}</Text>
@@ -129,13 +131,13 @@ export function PdfRecordData({
                   .map((e) => e.fullname)
                   .join(', ')}`}</Text>
                 <Text>{`Serviço: ${service} `}</Text>
+              </View>
+              <View style={styles.column}>
                 <Text>{`Avaliação psicológica: ${
                   psychologicalAssessment
                     ? psychologicalAssessment
                     : 'Não se aplica'
                 }`}</Text>
-              </View>
-              <View style={styles.column}>
                 <Text>{`Avaliação social: ${
                   socialAssessment ? socialAssessment : 'Não se aplica'
                 }`}</Text>

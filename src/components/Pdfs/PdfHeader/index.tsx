@@ -1,11 +1,6 @@
 import React from 'react';
 
-import { Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
-
-Font.register({
-  family: 'Roboto',
-  src: 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap'
-});
+import { Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 
 interface PdfHeaderProps {
   isFixed: boolean;
@@ -39,6 +34,9 @@ export function PdfHeader({ isFixed }: PdfHeaderProps) {
       justifyContent: 'center',
       textAlign: 'center',
       width: '17cm'
+    },
+    boldTitle: {
+      fontWeight: 'bold'
     }
   });
   return (
@@ -52,9 +50,12 @@ export function PdfHeader({ isFixed }: PdfHeaderProps) {
         <Text>SECRETARIA DE ESTADO DE SEGURANÇA PÚBLICA E DEFESA SOCIAL</Text>
         <Text>POLÍCIA MILITAR DO PARÁ</Text>
         <Text>DEPARTAMENTO GERAL DE PESSOAL</Text>
-        <Text> CENTRO INTEGRADO DE ATENÇÃO PSICOSSOCIAL - CIAP</Text>
+        <Text style={styles.boldTitle}>
+          {' '}
+          CENTRO INTEGRADO DE ATENÇÃO PSICOSSOCIAL - CIAP
+        </Text>
         <Text>
-          _________________________________________________________________________________________
+          ______________________________________________________________________________________________________________
         </Text>
       </View>
       <Image

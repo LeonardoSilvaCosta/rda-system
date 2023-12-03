@@ -19,7 +19,16 @@ interface PdfProfileDataProps {
 
 Font.register({
   family: 'Roboto',
-  src: '../fonts/Roboto-Regular.ttf'
+  fonts: [
+    {
+      src: 'https://jfzcpicztjnxtltzxbkc.supabase.co/storage/v1/object/public/assets/fonts/Roboto-Regular.ttf',
+      fontWeight: 'medium'
+    },
+    {
+      src: 'https://jfzcpicztjnxtltzxbkc.supabase.co/storage/v1/object/public/assets/fonts/Roboto-Bold.ttf',
+      fontWeight: 'bold'
+    }
+  ]
 });
 
 export function PdfProfile({
@@ -42,11 +51,14 @@ export function PdfProfile({
 }: PdfProfileDataProps) {
   const styles = StyleSheet.create({
     wrapper: {
+      fontFamily: 'Roboto',
+      fontWeight: 'medium',
       marginLeft: '2cm',
       marginRight: '1.5cm',
       paddingBottom: '1.76cm'
     },
     container: {
+      maxWidth: 500,
       display: 'flex',
       flexDirection: 'column',
       fontSize: 12
@@ -58,6 +70,10 @@ export function PdfProfile({
       alignItems: 'center',
       paddingBottom: 16,
       gap: 8
+    },
+    title: {
+      fontWeight: 'bold',
+      paddingBottom: 8
     },
     column: {
       width: '50vw',
@@ -87,7 +103,7 @@ export function PdfProfile({
             <Text>{`${fullname}`}</Text>
           </View>
           <View style={styles.column}>
-            <Text style={{ paddingBottom: 8 }}>Dados gerais</Text>
+            <Text style={styles.title}>Dados gerais</Text>
             <Text>{`Data de nascimento: ${formatDate(birthDate)}`}</Text>
             <Text>{`Idade: ${calculateAge(new Date(birthDate))}`}</Text>
             <Text>{`CPF: ${cpf}`}</Text>
@@ -101,7 +117,7 @@ export function PdfProfile({
             <Text>{`OPM: ${opm}`}</Text>
           </View>
           <View style={styles.column}>
-            <Text style={{ paddingBottom: 8 }}>Endereço</Text>
+            <Text style={styles.title}>Endereço</Text>
             <Text>{`CEP: ${address.zipCode}`}</Text>
             <Text>{`Logradouro: ${address.number}`}</Text>
             <Text>{`Complemento: ${validatedComplement}`}</Text>
@@ -110,7 +126,7 @@ export function PdfProfile({
             <Text>{`Cidade/Estado: Cidade/Estado`}</Text>
           </View>
           <View style={styles.column}>
-            <Text style={{ paddingBottom: 8 }}>Contatos</Text>
+            <Text style={styles.title}>Contatos</Text>
             {phones.map((e) => {
               const content = e.bond
                 ? `${e.phone} - ${e.ownerIdentification} (${e.bond})`
