@@ -246,7 +246,7 @@ export const RegisterClientContextProvider = ({
         return {
           phone: e.phone.replace(/[^\d]/g, ''),
           owner_identification: e.ownerIdentification,
-          bond: null
+          bond: e.bond
         };
       });
 
