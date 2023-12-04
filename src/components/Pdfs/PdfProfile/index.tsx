@@ -45,7 +45,6 @@ export function PdfProfile({
     cadre = '',
     workStatus = '',
     opm = '',
-    isCivilVolunteer,
     address,
     phones
   }
