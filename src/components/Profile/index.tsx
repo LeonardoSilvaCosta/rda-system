@@ -4,6 +4,7 @@ import PulseLoader from 'react-spinners/PulseLoader';
 
 import { AttachmentComponent } from '../AttachmentComponent';
 import { PdfProfile } from '../Pdfs/PdfProfile';
+import { UpdateProfileGeneralDataForm } from '../UpdateProfileGeneralDataForm';
 import styles from './styles.module.scss';
 
 import { RecordProfileCard } from '@/components/RecordProfileCard';
@@ -22,6 +23,7 @@ const override: CSSProperties = {
 
 export function Profile({ attended }: ProfileProps) {
   const [isDownloading, setIsDownloading] = useState(false);
+  const [updateScreen, setUpdateScreen] = useState(false);
   const attendedKeyValues = convertAttendedToKeyValues(attended);
   const generalData = attendedKeyValues.generalData
     ? Object.entries(attendedKeyValues.generalData).map(
@@ -85,23 +87,36 @@ export function Profile({ attended }: ProfileProps) {
     <>
       <main className={styles.container}>
         <div className={styles.cards}>
-          <RecordProfileCard
-            title={'Dados gerais'}
-            keyValues={generalData}
-            numberToSlice={6}
-            maxItems={12}
-          />
+          {updateScreen ? (
+            <UpdateProfileGeneralDataForm
+              title={'Dados gerais'}
+              attended={attended}
+              numberToSlice={6}
+              maxItems={12}
+              setUpdateScreen={setUpdateScreen}
+            />
+          ) : (
+            <RecordProfileCard
+              title={'Dados gerais'}
+              keyValues={generalData}
+              numberToSlice={6}
+              maxItems={12}
+              setUpdateScreen={setUpdateScreen}
+            />
+          )}
           <RecordProfileCard
             title={'Endereço'}
             keyValues={addressData}
             numberToSlice={3}
             maxItems={6}
+            setUpdateScreen={setUpdateScreen}
           />
           <RecordProfileCard
             title={'Contatos'}
             keyValues={attendedKeyValues.contactsData}
             numberToSlice={3}
             maxItems={6}
+            setUpdateScreen={setUpdateScreen}
           />
           {attended.rg && (
             <RecordProfileCard
@@ -112,6 +127,7 @@ export function Profile({ attended }: ProfileProps) {
               }
               numberToSlice={3}
               maxItems={6}
+              setUpdateScreen={setUpdateScreen}
             />
           )}
           {attended.policyHolder.rg && (
@@ -123,6 +139,7 @@ export function Profile({ attended }: ProfileProps) {
               }
               numberToSlice={3}
               maxItems={6}
+              setUpdateScreen={setUpdateScreen}
             />
           )}
         </div>

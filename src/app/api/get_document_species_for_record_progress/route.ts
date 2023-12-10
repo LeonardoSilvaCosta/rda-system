@@ -15,8 +15,6 @@ export async function GET(req: NextRequest) {
   const documentSpecie =
     isSigned === 'false' ? 'Evolução' : 'Termo de anulação';
 
-  console.log(isSigned);
-
   try {
     if (q) {
       const { data: document_species } = await supabase

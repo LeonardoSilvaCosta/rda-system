@@ -283,3 +283,13 @@ export type FileData = {
   bucketName: string;
   createdAt: string;
 };
+
+export type UpdateClientFormValues = {
+  nickName: string;
+  rank: string;
+  cadre: string;
+  gender: string;
+  maritalStatus: string;
+  opm: string;
+  workStatus: string;
+};

@@ -67,7 +67,7 @@ export default function Record() {
     }
 
     requests();
-  }, [cpf]);
+  }, [cpf, attended]);
 
   const handleClick = async () => {
     switch (currentScreen) {

@@ -1,7 +1,9 @@
 import { useRouter } from 'next/navigation';
+import { Dispatch, SetStateAction } from 'react';
 
 import styles from './styles.module.scss';
 
+import { useRegisterClientContext } from '@/context/registerClientContext';
 import { Dependent, KeyValue, PolicyHolder } from '@/types/types';
 
 interface ProfileCardProps {
@@ -11,6 +13,7 @@ interface ProfileCardProps {
   dependents?: Dependent[] | null;
   numberToSlice: number;
   maxItems: number;
+  setUpdateScreen?: Dispatch<SetStateAction<boolean>>;
 }
 
 export function RecordProfileCard({
@@ -19,9 +22,11 @@ export function RecordProfileCard({
   policyHolder,
   dependents,
   numberToSlice,
-  maxItems
+  maxItems,
+  setUpdateScreen
 }: ProfileCardProps) {
   const router = useRouter();
+  const { errors, register } = useRegisterClientContext();
   const handleClick = (cpf: string | undefined | null) => {
     router.push(`/Record?cpf=${cpf}`);
   };
@@ -106,6 +111,15 @@ export function RecordProfileCard({
     <main className={styles.container}>
       <header>
         <span>{title}</span>
+        {!isLinkTitle(title) && (
+          <button
+            onClick={() =>
+              setUpdateScreen ? setUpdateScreen(true) : undefined
+            }
+          >
+            Atualizar
+          </button>
+        )}
       </header>
       <div
         className={`${styles.columns} ${isLinkTitle(title) ? styles.link : ''}`}

@@ -1,0 +1,35 @@
+.inputContainer {
+  width: 100%;
+  position: relative;
+
+  margin: 0 auto;
+
+  @media(max-width: 1192px) {
+    width: calc(100% - 40px);
+  }
+
+  label {
+    padding-bottom: 0.75rem;
+    height: 100%;
+  }
+
+  input {
+    height: 2.5rem;
+
+    border: none;
+    border-bottom: 1px solid var(--gray-300);
+
+    padding: 0 12px;
+    background: var(--white);
+    outline: none;
+
+    &:focus {
+      border-bottom: 0.5px solid var(--blue-500);
+    }
+
+    &:disabled {
+      color: var(--gray-300);
+      cursor: not-allowed;
+    }
+  }
+}

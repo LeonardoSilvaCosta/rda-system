@@ -1,4 +1,6 @@
 import { calculateAge } from './calculateAge';
+import { formatCepToShow } from './formatCep';
+import { formatCPFToShow } from './formatCpf';
 import { formatDate } from './formatDateTime';
 
 import { Attended } from '@/types/types';
@@ -20,7 +22,7 @@ export const convertAttendedToKeyValues = (attended: Attended) => {
         key: 'Idade',
         value: calculateAge(new Date(attended.birthDate))
       },
-      cpf: { key: 'CPF', value: attended.cpf },
+      cpf: { key: 'CPF', value: formatCPFToShow(attended.cpf) },
       maritalStatus: attended.maritalStatus
         ? { key: 'Estado civil', value: attended.maritalStatus }
         : emptyValue,
@@ -52,7 +54,7 @@ export const convertAttendedToKeyValues = (attended: Attended) => {
       opm: attended.opm ? { key: 'OPM', value: attended.opm } : emptyValue
     },
     addressData: {
-      zipCode: { key: 'CEP', value: attended.address.zipCode },
+      zipCode: { key: 'CEP', value: formatCepToShow(attended.address.zipCode) },
       street: { key: 'Logradouro', value: attended.address.street },
       complement: attended.address.complement
         ? {
