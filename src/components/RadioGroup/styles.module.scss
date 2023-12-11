@@ -17,4 +17,17 @@
     font-weight: 600;
   }
 
+  &.updateType {
+    flex-direction: row;
+    align-items: center;
+
+    label:first-child {
+      font-weight: 500;
+
+      &:after {
+        content: ':';
+      }
+    }
+  }
+
 }

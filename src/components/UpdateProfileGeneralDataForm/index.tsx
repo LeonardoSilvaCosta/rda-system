@@ -3,17 +3,12 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
+import { RadioGroup } from '../RadioGroup';
 import { UpdateCustomDropdown } from '../UpdateCustomDropdown';
 import { UpdateInput } from '../UpdateInput';
 import styles from './styles.module.scss';
 
-import {
-  Attended,
-  ClientFormValues,
-  GenericPerson,
-  Option,
-  UpdateClientFormValues
-} from '@/types/types';
+import { Attended, Option, UpdateClientFormValues } from '@/types/types';
 import { calculateAge } from '@/utils/calculateAge';
 import { formatCPFToShow } from '@/utils/formatCpf';
 import { formatDate } from '@/utils/formatDateTime';
@@ -50,6 +45,8 @@ export function UpdateProfileGeneralDataForm({
     // resolver: yupResolver(validationSchema),
   });
 
+  const isMilitary = attended.rg;
+
   const supabase = createClientComponentClient();
   const router = useRouter();
 
@@ -68,6 +65,17 @@ export function UpdateProfileGeneralDataForm({
   const selectedOpm = opms.find((e) => e.name === attended.opm);
   const selectedWorkStats = workStatus.find(
     (e) => e.name === attended.workStatus
+  );
+
+  const civilVolunteerOptions = [
+    { id: 'Sim', name: 'Sim' },
+    { id: 'Não', name: 'Não' }
+  ];
+
+  const isCivilVolunteer = attended.isCivilVolunteer ? 'Sim' : 'Não';
+
+  const selectedCivilVolunteerOption = civilVolunteerOptions.find(
+    (e) => e.id === isCivilVolunteer
   );
 
   const formDataRequest = async () => {
@@ -163,6 +171,8 @@ export function UpdateProfileGeneralDataForm({
   const onSubmit: SubmitHandler<UpdateClientFormValues> = async (data) => {
     console.log(data);
     // const { data: logedUserData } = await supabase.auth.getUser();
+    const isCivilVolunteerToSend =
+      data.isCivilVolunteer === 'Sim' ? true : false;
 
     try {
       const { error } = await supabase
@@ -173,7 +183,8 @@ export function UpdateProfileGeneralDataForm({
           marital_status_id: data.maritalStatus,
           nickname: data.nickName,
           work_status_id: data.workStatus,
-          opm_id: data.opm
+          opm_id: data.opm,
+          is_civil_volunteer: isCivilVolunteerToSend
         })
         .eq('id', attended.id);
 
@@ -206,7 +217,7 @@ export function UpdateProfileGeneralDataForm({
         <span>{title}</span>
         <div className={styles.buttonBox}>
           <button type="submit">Salvar</button>
-          <button onClick={() => setUpdateScreen(false)}>Cancelar</button>
+          <button onClick={() => setUpdateScreen(false)}>Voltar</button>
         </div>
       </header>
       <div className={`${styles.columns} ${title ? styles.link : ''}`}>
@@ -246,7 +257,6 @@ export function UpdateProfileGeneralDataForm({
             control={control}
             routeToSearch={'/api/get_marital_status'}
             selectedValue={selectedMaritalStatus}
-            setValue={setValue}
           />
           <UpdateInput
             title="Sexo:"
@@ -256,7 +266,15 @@ export function UpdateProfileGeneralDataForm({
             register={register}
             disabled={true}
             selectedValue={attended.gender}
-            setValue={setValue}
+          />
+          <UpdateInput
+            title="RG:"
+            name="rg"
+            type="text"
+            errors={errors}
+            register={register}
+            disabled={true}
+            selectedValue={attended.rg}
           />
         </div>
         <div className={styles.secondColumn}>
@@ -267,7 +285,6 @@ export function UpdateProfileGeneralDataForm({
             errors={errors}
             register={register}
             selectedValue={String(attended.nickname)}
-            setValue={setValue}
           />
           <UpdateCustomDropdown
             title="Posto/graduação:"
@@ -277,7 +294,6 @@ export function UpdateProfileGeneralDataForm({
             control={control}
             routeToSearch={'/api/get_ranks'}
             selectedValue={selectedRank}
-            setValue={setValue}
           />
           <UpdateCustomDropdown
             title="Quadro:"
@@ -306,8 +322,18 @@ export function UpdateProfileGeneralDataForm({
             control={control}
             routeToSearch={'/api/get_opms'}
             selectedValue={selectedOpm}
-            setValue={setValue}
           />
+          {!isMilitary && (
+            <RadioGroup
+              className={'updateType'}
+              title="É voluntário civil"
+              name="isCivilVolunteer"
+              options={civilVolunteerOptions}
+              errors={errors}
+              register={register}
+              selectedOption={selectedCivilVolunteerOption?.name}
+            />
+          )}
         </div>
       </div>
     </form>

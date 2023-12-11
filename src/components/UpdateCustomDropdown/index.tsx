@@ -12,8 +12,7 @@ import {
   FieldError,
   FieldErrors,
   FieldPath,
-  FieldValues,
-  UseFormSetValue
+  FieldValues
 } from 'react-hook-form';
 import { BsChevronDown } from 'react-icons/bs';
 
@@ -34,7 +33,6 @@ interface UpdateCustomDropdownProps<T extends FieldValues> {
   routeToSearch: string;
   selectedValue: Option;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setValue: UseFormSetValue<any>;
 }
 
 export function UpdateCustomDropdown<T extends FieldValues>({
@@ -45,8 +43,7 @@ export function UpdateCustomDropdown<T extends FieldValues>({
   control,
   setSelectedState,
   routeToSearch,
-  selectedValue,
-  setValue
+  selectedValue
 }: UpdateCustomDropdownProps<T>) {
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>('');

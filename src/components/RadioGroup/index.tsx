@@ -17,6 +17,8 @@ interface RadioGroupProps<T extends FieldValues> {
   options: Option[] | null;
   errors: FieldErrors<T>;
   register: UseFormRegister<T>;
+  selectedOption?: string;
+  className?: string;
 }
 
 export function RadioGroup<T extends FieldValues>({
@@ -24,7 +26,9 @@ export function RadioGroup<T extends FieldValues>({
   name,
   options,
   errors,
-  register
+  register,
+  selectedOption,
+  className
 }: RadioGroupProps<T>) {
   const errorKey = name as string;
 
@@ -34,15 +38,17 @@ export function RadioGroup<T extends FieldValues>({
   const topLevelField = isNested ? nestedFields[0] : name;
 
   return (
-    <div className={styles.radioGroup}>
+    <div className={`${styles.radioGroup} ${className && styles[className]}`}>
       <label>{title}</label>
       {options?.map((e) => (
         <RadioButton
+          className={className}
           key={e.id}
           id={e.id}
           label={e.name}
           name={name}
           register={register}
+          selectedOption={selectedOption}
         />
       ))}
       {errors[errorKey] && (

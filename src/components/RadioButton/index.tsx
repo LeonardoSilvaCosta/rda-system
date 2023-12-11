@@ -8,22 +8,31 @@ interface RadioButtonProps<T extends FieldValues> {
   label: string;
   name: Path<T>;
   register: UseFormRegister<T>;
+  selectedOption?: string;
+  className?: string;
 }
 
 export function RadioButton<T extends FieldValues>({
   id,
   label,
   name,
-  register
+  register,
+  selectedOption,
+  className
 }: RadioButtonProps<T>) {
   return (
-    <div className={styles.radioButtonContainer}>
+    <div
+      className={`${styles.radioButtonContainer} ${
+        className && styles[className]
+      }`}
+    >
       <input
         id={id}
         value={id}
         className={`${styles.input}`}
         type="radio"
         {...register(name)}
+        defaultChecked={selectedOption === id}
       />
       <label htmlFor={id} className={styles.label}>
         {label}

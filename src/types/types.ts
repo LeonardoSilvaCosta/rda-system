@@ -292,4 +292,5 @@ export type UpdateClientFormValues = {
   maritalStatus: string;
   opm: string;
   workStatus: string;
+  isCivilVolunteer: string;
 };
