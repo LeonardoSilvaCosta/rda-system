@@ -284,7 +284,7 @@ export type FileData = {
   createdAt: string;
 };
 
-export type UpdateClientFormValues = {
+export type UpdateClientGeneralDataFormValues = {
   nickName: string;
   rank: string;
   cadre: string;

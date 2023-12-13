@@ -4,7 +4,8 @@ import PulseLoader from 'react-spinners/PulseLoader';
 
 import { AttachmentComponent } from '../AttachmentComponent';
 import { PdfProfile } from '../Pdfs/PdfProfile';
-import { UpdateProfileGeneralDataForm } from '../UpdateProfileGeneralDataForm';
+import { UpdateAttendedAddressDataForm } from '../UpdateAttendedAddressDataForm';
+import { UpdateAttendedProfileGeneralDataForm } from '../UpdateAttendedProfileGeneralDataForm';
 import styles from './styles.module.scss';
 
 import { RecordProfileCard } from '@/components/RecordProfileCard';
@@ -88,11 +89,9 @@ export function Profile({ attended }: ProfileProps) {
       <main className={styles.container}>
         <div className={styles.cards}>
           {updateScreen ? (
-            <UpdateProfileGeneralDataForm
+            <UpdateAttendedProfileGeneralDataForm
               title={'Dados gerais'}
               attended={attended}
-              numberToSlice={6}
-              maxItems={12}
               setUpdateScreen={setUpdateScreen}
             />
           ) : (
@@ -104,13 +103,21 @@ export function Profile({ attended }: ProfileProps) {
               setUpdateScreen={setUpdateScreen}
             />
           )}
-          <RecordProfileCard
-            title={'Endereço'}
-            keyValues={addressData}
-            numberToSlice={3}
-            maxItems={6}
-            setUpdateScreen={setUpdateScreen}
-          />
+          {updateScreen ? (
+            <UpdateAttendedAddressDataForm
+              title={'Endereço'}
+              attended={attended}
+              setUpdateScreen={setUpdateScreen}
+            />
+          ) : (
+            <RecordProfileCard
+              title={'Endereço'}
+              keyValues={addressData}
+              numberToSlice={3}
+              maxItems={6}
+              setUpdateScreen={setUpdateScreen}
+            />
+          )}
           <RecordProfileCard
             title={'Contatos'}
             keyValues={attendedKeyValues.contactsData}

@@ -1,0 +1,52 @@
+.container {
+  width: 100%;
+  background-color: var(--white);
+  border-radius: 16px;
+  padding: 1.25rem 1.875rem 2rem 1.875rem;
+
+  display: flex;
+  flex-direction: column;
+
+  header {
+    display: flex;
+    justify-content: space-between;
+
+    .buttonBox {
+      display: flex;
+      gap: 0.5rem;
+      button {
+        border-radius: 8px;
+        background-color: var(--blue-300);
+        color: var(--white);
+        border: none;
+        padding: 0.5rem 0.6rem;
+  
+        &:hover {
+          background-color: rgba(118, 121, 213, 0.9);
+        }
+      }
+    }
+
+  }
+
+
+  header span {
+    color: var(--gray-700);
+    font-weight: bold;
+  }
+
+  .columns {
+    display: flex;
+    justify-content: space-between;
+
+    .firstColumn, .secondColumn {
+      width: 100%;
+    }
+
+    @media(max-width: 599px) {
+      flex-direction: column;
+
+    }
+  }
+  
+}

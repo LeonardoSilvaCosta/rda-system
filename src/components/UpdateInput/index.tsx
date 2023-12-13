@@ -51,18 +51,16 @@ export function UpdateInput<T extends FieldValues>({
         })}
       />
       {errors[errorKey] && (
-        <span className="error-message">
-          {String(errors[errorKey]?.message)}
-        </span>
+        <p className="error-message">{String(errors[errorKey]?.message)}</p>
       )}
       {isNested && nestedFields.length === 2 && errors[topLevelField] && (
-        <span className="error-message">
+        <p className="error-message">
           {
             (errors[topLevelField] as Record<string, FieldError>)[
               nestedFields[1]
             ]?.message
           }
-        </span>
+        </p>
       )}
     </div>
   );

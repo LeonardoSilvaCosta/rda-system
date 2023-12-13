@@ -8,41 +8,42 @@ import { UpdateCustomDropdown } from '../UpdateCustomDropdown';
 import { UpdateInput } from '../UpdateInput';
 import styles from './styles.module.scss';
 
-import { Attended, Option, UpdateClientFormValues } from '@/types/types';
+import {
+  Attended,
+  Option,
+  UpdateClientGeneralDataFormValues
+} from '@/types/types';
 import { calculateAge } from '@/utils/calculateAge';
 import { formatCPFToShow } from '@/utils/formatCpf';
 import { formatDate } from '@/utils/formatDateTime';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import * as yup from 'yup';
 
-interface UpdateProfileGeneralDataFormProps {
+interface UpdateAttendedProfileGeneralDataFormProps {
   title: string;
   attended: Attended;
-  numberToSlice: number;
-  maxItems: number;
   setUpdateScreen: Dispatch<SetStateAction<boolean>>;
 }
 
-export function UpdateProfileGeneralDataForm({
+export function UpdateAttendedProfileGeneralDataForm({
   title,
   attended,
-  numberToSlice,
-  maxItems,
   setUpdateScreen
-}: UpdateProfileGeneralDataFormProps) {
+}: UpdateAttendedProfileGeneralDataFormProps) {
+  const validation = yup.object({
+    nickName: yup.string().required("O campo 'Nome de guerra' é obrigatório.")
+  });
   const {
-    clearErrors,
     control,
     formState: { errors },
-    getValues,
     handleSubmit,
     register,
     reset,
-    setValue,
-    watch
+    setValue
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } = useForm<UpdateClientFormValues | any>({
-    // resolver: yupResolver(validationSchema),
+  } = useForm<UpdateClientGeneralDataFormValues | any>({
+    resolver: yupResolver(validation)
   });
 
   const isMilitary = attended.rg;
@@ -50,7 +51,6 @@ export function UpdateProfileGeneralDataForm({
   const supabase = createClientComponentClient();
   const router = useRouter();
 
-  const [isLoading, setIsLoading] = useState(true);
   const [ranks, setRanks] = useState<Option[]>([]);
   const [cadres, setCadres] = useState<Option[]>([]);
   const [maritalStatus, setMaritalStatus] = useState<Option[]>([]);
@@ -142,8 +142,6 @@ export function UpdateProfileGeneralDataForm({
               };
             })
         );
-
-        setIsLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -151,22 +149,6 @@ export function UpdateProfileGeneralDataForm({
 
     getLists();
   }, []);
-
-  // const selectFormValidation = (index: number) => {
-  //   switch (index) {
-  //     case 0:
-  //       setValidationSchema(firstClientFormValidations[currentFormType]);
-  //       break;
-  //     case 1:
-  //       setValidationSchema(addressFormValidation);
-  //       break;
-  //     case 2:
-  //       setValidationSchema(contactFormValidation);
-  //       break;
-  //     default:
-  //       return null;
-  //   }
-  // };
 
   const onSubmit: SubmitHandler<UpdateClientFormValues> = async (data) => {
     console.log(data);
@@ -207,7 +189,6 @@ export function UpdateProfileGeneralDataForm({
       throw error;
     } finally {
       reset();
-      // selectFormValidation(0);
     }
   };
 
