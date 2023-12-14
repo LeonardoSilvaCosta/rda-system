@@ -41,15 +41,17 @@ export function UpdateCustomDropdown<T extends FieldValues>({
   options,
   errors,
   control,
-  setSelectedState,
   routeToSearch,
+  setSelectedState,
   selectedValue
 }: UpdateCustomDropdownProps<T>) {
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
-  const [selectedItemId, setSelectedItemId] = useState<string | null>('');
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(
+    selectedValue ? selectedValue.id : ''
+  );
 
   const [filteredData, setFilteredData] = useState<Option[]>(options);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(selectedValue ? selectedValue.name : '');
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -65,11 +67,11 @@ export function UpdateCustomDropdown<T extends FieldValues>({
   };
 
   useEffect(() => {
-    if (selectedValue) {
+    if (selectedValue && fieldName !== 'stateAcronym') {
       setSelectedItemId(selectedValue.id);
       setQuery(selectedValue.name);
     }
-  }, [selectedValue]);
+  }, [fieldName, selectedValue]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

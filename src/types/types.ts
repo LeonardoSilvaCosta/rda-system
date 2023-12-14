@@ -183,6 +183,10 @@ export type Attended = {
     street: string;
     complement: string | null;
     neighborhood: string;
+    city_id: string;
+    city: string;
+    state_id: string;
+    stateAcronym: string;
   };
   phones: {
     phone: string;

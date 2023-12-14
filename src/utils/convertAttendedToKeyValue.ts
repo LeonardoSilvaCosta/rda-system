@@ -71,8 +71,8 @@ export const convertAttendedToKeyValues = (attended: Attended) => {
         value: attended.address.neighborhood
       },
       city_state: {
-        key: 'Cidade/Estado',
-        value: 'Belém/PA'
+        key: 'Cidade-UF',
+        value: `${attended.address.city}-${attended.address.stateAcronym}`
       }
     },
     contactsData: attended.phones

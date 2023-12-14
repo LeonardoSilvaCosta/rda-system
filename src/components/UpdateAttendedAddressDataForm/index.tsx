@@ -31,28 +31,57 @@ export function UpdateAttendedAddressDataForm({
     reset
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } = useForm<Address | any>({
-    resolver: yupResolver(addressFormValidation)
+    // resolver: yupResolver(addressFormValidation)
   });
 
   const supabase = createClientComponentClient();
   const router = useRouter();
 
   const [states, setStates] = useState<Option[]>([]);
+  const [selectedState, setSelectedState] = useState('');
   const [cities, setCities] = useState<Option[]>([]);
+
+  const selectCities = async (ufId: string) => {
+    try {
+      const response = await fetch(`/api/get_cities_from_uf?ufId=${ufId}`);
+      if (!response.ok) {
+        throw new Error(`Falha ao buscar cidades: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      setCities(data);
+    } catch (error) {
+      console.error('Error fetching cities:', error);
+      // Handle error (e.g., setCities([]) or show an error message)
+    }
+  };
 
   useEffect(() => {
     const getLists = async () => {
       try {
         const resStates = await fetch('/api/get_ufs');
+        if (!resStates.ok) {
+          throw new Error(`Falha ao buscar estados: ${resStates.statusText}`);
+        }
+
         const states = await resStates.json();
         setStates(states);
       } catch (error) {
-        console.log(error);
+        console.error('Erro ao buscar estados:', error);
       }
     };
 
     getLists();
   }, []);
+
+  useEffect(() => {
+    selectCities(attended.address.state_id);
+
+    if (selectedState) {
+      selectCities(selectedState);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedState, attended.address.state_id]);
 
   const onSubmit: SubmitHandler<Address> = async (data) => {
     console.log(data);
@@ -66,8 +95,7 @@ export function UpdateAttendedAddressDataForm({
           neighborhood: data.neighborhood,
           number: data.number,
           complement: data.complement,
-          state_acronym: data.stateAcronym,
-          city: data.city
+          city_id: data.city
         })
         .eq('attended_id', attended.id);
 
@@ -106,7 +134,7 @@ export function UpdateAttendedAddressDataForm({
         <div className={styles.firstColumn}>
           <UpdateInput
             title="CEP:"
-            name="cep"
+            name="zipCode"
             type="text"
             errors={errors}
             register={register}
@@ -153,7 +181,11 @@ export function UpdateAttendedAddressDataForm({
             errors={errors}
             control={control}
             routeToSearch={'/api/get_ufs'}
-            selectedValue={[]}
+            selectedValue={{
+              id: attended.address.state_id,
+              name: attended.address.stateAcronym
+            }}
+            setSelectedState={setSelectedState}
           />
           <UpdateCustomDropdown
             title="Cidade:"
@@ -161,8 +193,11 @@ export function UpdateAttendedAddressDataForm({
             options={cities}
             errors={errors}
             control={control}
-            routeToSearch={`/api/get_cities_from_uf?ufId='falta-colocar'&`}
-            selectedValue={[]}
+            routeToSearch={`/api/get_cities_from_uf?ufId=${selectedState}&`}
+            selectedValue={{
+              id: attended.address.city_id,
+              name: attended.address.city
+            }}
           />
         </div>
       </div>

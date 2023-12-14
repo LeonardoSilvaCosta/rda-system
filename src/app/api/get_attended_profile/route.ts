@@ -27,6 +27,10 @@ type Attended = {
     street: string;
     complement: string | null;
     neighborhood: string;
+    city_id: string;
+    city: string;
+    state_id: string;
+    stateAcronym: string;
   };
   phones: {
     phone: string;
@@ -87,7 +91,11 @@ export async function GET(req: NextRequest) {
         number: attended.address.number,
         street: attended.address.street,
         complement: attended.address.complement,
-        neighborhood: attended.address.neighborhood
+        neighborhood: attended.address.neighborhood,
+        city_id: attended.address.city_id,
+        city: attended.address.city,
+        state_id: attended.address.state_id,
+        stateAcronym: attended.address.stateAcronym
       },
       phones: attended.phones.map((e) => {
         return {
