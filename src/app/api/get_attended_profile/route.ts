@@ -35,6 +35,7 @@ type Attended = {
   phones: {
     phone: string;
     owner_identification: string;
+    bond_id: string | null;
     bond: string | null;
   }[];
   policy_holder: {
@@ -101,6 +102,7 @@ export async function GET(req: NextRequest) {
         return {
           phone: e.phone,
           ownerIdentification: e.owner_identification,
+          bond_id: e.bond_id,
           bond: e.bond
         };
       }),

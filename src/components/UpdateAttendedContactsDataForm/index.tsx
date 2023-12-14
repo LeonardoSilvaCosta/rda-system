@@ -1,19 +1,13 @@
 import { useRouter } from 'next/navigation';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { FieldPath, Path, SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
-import { RadioGroup } from '../RadioGroup';
 import { UpdateCustomDropdown } from '../UpdateCustomDropdown';
 import { UpdateInput } from '../UpdateInput';
 import styles from './styles.module.scss';
 
-import {
-  Attended,
-  Contact,
-  Option,
-  UpdateClientGeneralDataFormValues
-} from '@/types/types';
+import { Attended, Contact, Option } from '@/types/types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import * as yup from 'yup';
@@ -23,6 +17,10 @@ interface UpdateAttendedContactsDataFormProps {
   attended: Attended;
   setUpdateScreen: Dispatch<SetStateAction<boolean>>;
 }
+
+type FormData = {
+  contacts: Contact[];
+};
 
 export function UpdateAttendedContactsDataForm({
   title,
@@ -37,10 +35,9 @@ export function UpdateAttendedContactsDataForm({
     formState: { errors },
     handleSubmit,
     register,
-    reset,
-    setValue
+    reset
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } = useForm<UpdateClientGeneralDataFormValues | any>({
+  } = useForm<FormData | any>({
     // resolver: yupResolver(validation)
   });
 
@@ -68,30 +65,38 @@ export function UpdateAttendedContactsDataForm({
     getLists();
   }, []);
 
-  const onSubmit: SubmitHandler<Contact> = async (data) => {
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
     console.log(data);
     // const { data: logedUserData } = await supabase.auth.getUser();
 
-    try {
-      const { error } = await supabase
-        .from('tb_phones')
-        .update({
-          phone: data.phone,
-          owner_identification: data.ownerIdentification,
-          bond: data.bond
-        })
-        .eq('id', attended.id);
+    const phones = data.contacts.map((e: Contact) => {
+      return {
+        phone: e.phone,
+        owner_identification: e.ownerIdentification,
+        bond: e.bond
+      };
+    });
 
-      if (!error) {
+    try {
+      const errors = [];
+      for (let i = 0; i < phones.length; i++) {
+        const { error } = await supabase
+          .from('tb_phones')
+          .update(phones[i])
+          .match({ attended_id: attended.id, phone: attended.phones[i].phone });
+
+        error && errors.push(error);
+      }
+      if (errors.length === 0) {
         toast.success('Você atualizou os contatos do atendido com sucesso.');
         router.refresh();
       } else {
         toast.error(
           `Erro ao atualizar os contatos do atendido! Tente novamente mais tarde.`
         );
-        console.log(
-          `Erro ao atualizar os dados do atendido. ${error.message}.`
-        );
+        errors.forEach((e) => {
+          console.log(`Erro ao atualizar os dados do atendido. ${e.message}.`);
+        });
       }
     } catch (error) {
       toast.error(
@@ -114,40 +119,87 @@ export function UpdateAttendedContactsDataForm({
         </div>
       </header>
       <div className={`${styles.columns} ${title ? styles.link : ''}`}>
-        {attended.phones.map((phone) => (
-          <React.Fragment key={phone.phone}>
-            <div className={styles.firstColumn}>
-              <UpdateInput
-                title="Telefone:"
-                name="phone"
-                type="text"
-                errors={errors}
-                register={register}
-                selectedValue={phone.phone}
-              />
-              <UpdateInput
-                title="Dono do contato:"
-                name="ownerIdentification"
-                type="text"
-                errors={errors}
-                register={register}
-                selectedValue={phone.ownerIdentification}
-              />
-              <UpdateCustomDropdown
-                title="Vínculo:"
-                fieldName="bond"
-                options={bonds}
-                errors={errors}
-                control={control}
-                routeToSearch={'/api/get_familiar_bonds'}
-                selectedValue={{
-                  id: '',
-                  name: ''
-                }}
-              />
-            </div>
-          </React.Fragment>
-        ))}
+        <div className={styles.firstColumn}>
+          {attended.phones.slice(0, 3).map((item, index) => {
+            const phone = `contacts.${index}.phone` as Path<Contact>;
+            const ownerIdentification =
+              `contacts.${index}.ownerIdentification` as Path<Contact>;
+            const bond = `contacts.${index}.bond` as FieldPath<Contact>;
+
+            return (
+              <React.Fragment key={item.phone}>
+                <UpdateInput
+                  title="Telefone:"
+                  name={phone}
+                  type="text"
+                  errors={errors}
+                  register={register}
+                  selectedValue={item.phone}
+                />
+                <UpdateInput
+                  title="Dono do contato:"
+                  name={ownerIdentification}
+                  type="text"
+                  errors={errors}
+                  register={register}
+                  selectedValue={item.ownerIdentification}
+                />
+                <UpdateCustomDropdown
+                  title="Vínculo:"
+                  fieldName={bond}
+                  options={bonds}
+                  errors={errors}
+                  control={control}
+                  routeToSearch={'/api/get_familiar_bonds'}
+                  selectedValue={bonds.find((e) => e.name === item.bond)}
+                />
+              </React.Fragment>
+            );
+          })}
+        </div>
+        {attended.phones.length > 3 && (
+          <div className={styles.secondColumn}>
+            {attended.phones.slice(3).map((item, index) => {
+              const phone = `contacts.${index}.phone` as Path<Contact>;
+              const ownerIdentification =
+                `contacts.${index}.ownerIdentification` as Path<Contact>;
+              const bond = `contacts.${index}.bond` as FieldPath<Contact>;
+
+              return (
+                <React.Fragment key={item.phone}>
+                  <UpdateInput
+                    title="Telefone:"
+                    name={phone}
+                    type="text"
+                    errors={errors}
+                    register={register}
+                    selectedValue={item.phone}
+                  />
+                  <UpdateInput
+                    title="Dono do contato:"
+                    name={ownerIdentification}
+                    type="text"
+                    errors={errors}
+                    register={register}
+                    selectedValue={item.ownerIdentification}
+                  />
+                  <UpdateCustomDropdown
+                    title="Vínculo:"
+                    fieldName={bond}
+                    options={bonds}
+                    errors={errors}
+                    control={control}
+                    routeToSearch={'/api/get_familiar_bonds'}
+                    selectedValue={{
+                      id: item.bond_id,
+                      name: item.bond
+                    }}
+                  />
+                </React.Fragment>
+              );
+            })}
+          </div>
+        )}
       </div>
     </form>
   );

@@ -19,7 +19,11 @@ export async function GET(req: NextRequest) {
         .limit(10);
       return Response.json(familiarBonds);
     } else {
-      return Response.json([]);
+      const { data: familiarBonds } = await supabase
+        .from('tb_familiar_bonds')
+        .select('id, name')
+        .limit(10);
+      return Response.json(familiarBonds);
     }
   } catch (error) {
     return Response.json(`select data error: ${error}`, { status: 400 });

@@ -191,6 +191,7 @@ export type Attended = {
   phones: {
     phone: string;
     ownerIdentification: string;
+    bond_id: string | null;
     bond: string | null;
   }[];
   policyHolder: PolicyHolder;

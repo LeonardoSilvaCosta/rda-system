@@ -83,10 +83,6 @@ export function UpdateAttendedAddressDataForm({
   }, []);
 
   useEffect(() => {
-    console.log(errors);
-  }, [errors]);
-
-  useEffect(() => {
     selectCities(attended.address.state_id);
 
     if (selectedState) {
