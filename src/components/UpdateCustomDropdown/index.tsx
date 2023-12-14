@@ -67,7 +67,7 @@ export function UpdateCustomDropdown<T extends FieldValues>({
   };
 
   useEffect(() => {
-    if (selectedValue && fieldName !== 'stateAcronym') {
+    if (selectedValue && fieldName !== 'stateAcronym' && fieldName !== 'city') {
       setSelectedItemId(selectedValue.id);
       setQuery(selectedValue.name);
     }

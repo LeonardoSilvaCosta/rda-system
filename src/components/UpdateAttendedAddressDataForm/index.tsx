@@ -11,6 +11,7 @@ import { Address, Attended, Option } from '@/types/types';
 import { addressFormValidation } from '@/validation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import * as yup from 'yup';
 
 interface UpdateAttendedAddressDataFormProps {
   title: string;
@@ -23,6 +24,13 @@ export function UpdateAttendedAddressDataForm({
   attended,
   setUpdateScreen
 }: UpdateAttendedAddressDataFormProps) {
+  const validation = yup.object({
+    zipCode: yup.string().required("O campo 'CEP' é obrigatório"),
+    street: yup.string().required("O campo 'Logradouro' é obrigatório"),
+    neighborhood: yup.string().required("O campo 'Bairro' é obrigatório"),
+    number: yup.string().required("O campo 'Número' é obrigatório."),
+    complement: yup.string().nullable()
+  });
   const {
     control,
     formState: { errors },
@@ -31,7 +39,7 @@ export function UpdateAttendedAddressDataForm({
     reset
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } = useForm<Address | any>({
-    // resolver: yupResolver(addressFormValidation)
+    resolver: yupResolver(validation)
   });
 
   const supabase = createClientComponentClient();
@@ -73,6 +81,10 @@ export function UpdateAttendedAddressDataForm({
 
     getLists();
   }, []);
+
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
 
   useEffect(() => {
     selectCities(attended.address.state_id);
