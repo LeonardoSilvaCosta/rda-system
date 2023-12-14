@@ -41,12 +41,17 @@
 
     .firstColumn, .secondColumn {
       width: 100%;
+
+      @media(max-width: 599px) {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
     }
 
     @media(max-width: 599px) {
       flex-direction: column;
-
+      margin-top: 0.5rem;
     }
   }
-  
 }

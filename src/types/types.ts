@@ -299,3 +299,9 @@ export type UpdateClientGeneralDataFormValues = {
   workStatus: string;
   isCivilVolunteer: string;
 };
+
+export type CurrentScreen =
+  | 'profile'
+  | 'update Dados gerais'
+  | 'update Endereço'
+  | 'update Contatos';

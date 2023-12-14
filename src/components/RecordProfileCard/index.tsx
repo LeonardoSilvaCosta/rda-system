@@ -4,7 +4,12 @@ import { Dispatch, SetStateAction } from 'react';
 import styles from './styles.module.scss';
 
 import { useRegisterClientContext } from '@/context/registerClientContext';
-import { Dependent, KeyValue, PolicyHolder } from '@/types/types';
+import {
+  CurrentScreen,
+  Dependent,
+  KeyValue,
+  PolicyHolder
+} from '@/types/types';
 
 interface ProfileCardProps {
   title: string;
@@ -13,7 +18,7 @@ interface ProfileCardProps {
   dependents?: Dependent[] | null;
   numberToSlice: number;
   maxItems: number;
-  setUpdateScreen?: Dispatch<SetStateAction<boolean>>;
+  setCurrentScreen: Dispatch<SetStateAction<CurrentScreen>>;
 }
 
 export function RecordProfileCard({
@@ -23,7 +28,7 @@ export function RecordProfileCard({
   dependents,
   numberToSlice,
   maxItems,
-  setUpdateScreen
+  setCurrentScreen
 }: ProfileCardProps) {
   const router = useRouter();
   const { errors, register } = useRegisterClientContext();
@@ -114,7 +119,9 @@ export function RecordProfileCard({
         {!isLinkTitle(title) && (
           <button
             onClick={() =>
-              setUpdateScreen ? setUpdateScreen(true) : undefined
+              setCurrentScreen
+                ? setCurrentScreen(`update ${title}` as CurrentScreen)
+                : undefined
             }
           >
             Atualizar

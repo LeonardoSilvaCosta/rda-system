@@ -7,7 +7,7 @@ import { UpdateCustomDropdown } from '../UpdateCustomDropdown';
 import { UpdateInput } from '../UpdateInput';
 import styles from './styles.module.scss';
 
-import { Address, Attended, Option } from '@/types/types';
+import { Address, Attended, CurrentScreen, Option } from '@/types/types';
 import { addressFormValidation } from '@/validation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
@@ -16,13 +16,13 @@ import * as yup from 'yup';
 interface UpdateAttendedAddressDataFormProps {
   title: string;
   attended: Attended;
-  setUpdateScreen: Dispatch<SetStateAction<boolean>>;
+  setCurrentScreen: Dispatch<SetStateAction<CurrentScreen>>;
 }
 
 export function UpdateAttendedAddressDataForm({
   title,
   attended,
-  setUpdateScreen
+  setCurrentScreen
 }: UpdateAttendedAddressDataFormProps) {
   const validation = yup.object({
     zipCode: yup.string().required("O campo 'CEP' é obrigatório"),
@@ -135,7 +135,7 @@ export function UpdateAttendedAddressDataForm({
         <span>{title}</span>
         <div className={styles.buttonBox}>
           <button type="submit">Salvar</button>
-          <button onClick={() => setUpdateScreen(false)}>Voltar</button>
+          <button onClick={() => setCurrentScreen('profile')}>Voltar</button>
         </div>
       </header>
       <div className={`${styles.columns} ${title ? styles.link : ''}`}>

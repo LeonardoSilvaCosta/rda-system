@@ -10,7 +10,7 @@ import { UpdateAttendedProfileGeneralDataForm } from '../UpdateAttendedProfileGe
 import styles from './styles.module.scss';
 
 import { RecordProfileCard } from '@/components/RecordProfileCard';
-import { Attended } from '@/types/types';
+import { Attended, CurrentScreen } from '@/types/types';
 import { convertAttendedToKeyValues } from '@/utils/convertAttendedToKeyValue';
 import { pdf } from '@react-pdf/renderer';
 
@@ -25,7 +25,7 @@ const override: CSSProperties = {
 
 export function Profile({ attended }: ProfileProps) {
   const [isDownloading, setIsDownloading] = useState(false);
-  const [updateScreen, setUpdateScreen] = useState(false);
+  const [currentScreen, setCurrentScreen] = useState<CurrentScreen>('profile');
   const attendedKeyValues = convertAttendedToKeyValues(attended);
   const generalData = attendedKeyValues.generalData
     ? Object.entries(attendedKeyValues.generalData).map(
@@ -89,11 +89,11 @@ export function Profile({ attended }: ProfileProps) {
     <>
       <main className={styles.container}>
         <div className={styles.cards}>
-          {updateScreen ? (
+          {currentScreen === 'update Dados gerais' ? (
             <UpdateAttendedProfileGeneralDataForm
               title={'Dados gerais'}
               attended={attended}
-              setUpdateScreen={setUpdateScreen}
+              setCurrentScreen={setCurrentScreen}
             />
           ) : (
             <RecordProfileCard
@@ -101,14 +101,14 @@ export function Profile({ attended }: ProfileProps) {
               keyValues={generalData}
               numberToSlice={6}
               maxItems={12}
-              setUpdateScreen={setUpdateScreen}
+              setCurrentScreen={setCurrentScreen}
             />
           )}
-          {updateScreen ? (
+          {currentScreen === 'update Endereço'! ? (
             <UpdateAttendedAddressDataForm
               title={'Endereço'}
               attended={attended}
-              setUpdateScreen={setUpdateScreen}
+              setCurrentScreen={setCurrentScreen}
             />
           ) : (
             <RecordProfileCard
@@ -116,14 +116,14 @@ export function Profile({ attended }: ProfileProps) {
               keyValues={addressData}
               numberToSlice={3}
               maxItems={6}
-              setUpdateScreen={setUpdateScreen}
+              setCurrentScreen={setCurrentScreen}
             />
           )}
-          {updateScreen ? (
+          {currentScreen === 'update Contatos' ? (
             <UpdateAttendedContactsDataForm
               title={'Contatos'}
               attended={attended}
-              setUpdateScreen={setUpdateScreen}
+              setCurrentScreen={setCurrentScreen}
             />
           ) : (
             <RecordProfileCard
@@ -131,7 +131,7 @@ export function Profile({ attended }: ProfileProps) {
               keyValues={attendedKeyValues.contactsData}
               numberToSlice={3}
               maxItems={6}
-              setUpdateScreen={setUpdateScreen}
+              setCurrentScreen={setCurrentScreen}
             />
           )}
           {attended.rg && (
@@ -143,7 +143,7 @@ export function Profile({ attended }: ProfileProps) {
               }
               numberToSlice={3}
               maxItems={6}
-              setUpdateScreen={setUpdateScreen}
+              setCurrentScreen={setCurrentScreen}
             />
           )}
           {attended.policyHolder.rg && (
@@ -155,7 +155,7 @@ export function Profile({ attended }: ProfileProps) {
               }
               numberToSlice={3}
               maxItems={6}
-              setUpdateScreen={setUpdateScreen}
+              setCurrentScreen={setCurrentScreen}
             />
           )}
         </div>

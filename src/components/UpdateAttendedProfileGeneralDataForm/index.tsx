@@ -10,6 +10,7 @@ import styles from './styles.module.scss';
 
 import {
   Attended,
+  CurrentScreen,
   Option,
   UpdateClientGeneralDataFormValues
 } from '@/types/types';
@@ -23,13 +24,13 @@ import * as yup from 'yup';
 interface UpdateAttendedProfileGeneralDataFormProps {
   title: string;
   attended: Attended;
-  setUpdateScreen: Dispatch<SetStateAction<boolean>>;
+  setCurrentScreen: Dispatch<SetStateAction<CurrentScreen>>;
 }
 
 export function UpdateAttendedProfileGeneralDataForm({
   title,
   attended,
-  setUpdateScreen
+  setCurrentScreen
 }: UpdateAttendedProfileGeneralDataFormProps) {
   const validation = yup.object({
     nickName: yup.string().required("O campo 'Nome de guerra' é obrigatório.")
@@ -150,7 +151,9 @@ export function UpdateAttendedProfileGeneralDataForm({
     getLists();
   }, []);
 
-  const onSubmit: SubmitHandler<UpdateClientFormValues> = async (data) => {
+  const onSubmit: SubmitHandler<UpdateClientGeneralDataFormValues> = async (
+    data
+  ) => {
     console.log(data);
     // const { data: logedUserData } = await supabase.auth.getUser();
     const isCivilVolunteerToSend =
@@ -198,7 +201,7 @@ export function UpdateAttendedProfileGeneralDataForm({
         <span>{title}</span>
         <div className={styles.buttonBox}>
           <button type="submit">Salvar</button>
-          <button onClick={() => setUpdateScreen(false)}>Voltar</button>
+          <button onClick={() => setCurrentScreen('profile')}>Voltar</button>
         </div>
       </header>
       <div className={`${styles.columns} ${title ? styles.link : ''}`}>

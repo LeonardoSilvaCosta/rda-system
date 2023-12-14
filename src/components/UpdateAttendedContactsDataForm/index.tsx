@@ -7,7 +7,7 @@ import { UpdateCustomDropdown } from '../UpdateCustomDropdown';
 import { UpdateInput } from '../UpdateInput';
 import styles from './styles.module.scss';
 
-import { Attended, Contact, Option } from '@/types/types';
+import { Attended, Contact, CurrentScreen, Option } from '@/types/types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import * as yup from 'yup';
@@ -15,7 +15,7 @@ import * as yup from 'yup';
 interface UpdateAttendedContactsDataFormProps {
   title: string;
   attended: Attended;
-  setUpdateScreen: Dispatch<SetStateAction<boolean>>;
+  setCurrentScreen: Dispatch<SetStateAction<CurrentScreen>>;
 }
 
 type FormData = {
@@ -25,7 +25,7 @@ type FormData = {
 export function UpdateAttendedContactsDataForm({
   title,
   attended,
-  setUpdateScreen
+  setCurrentScreen
 }: UpdateAttendedContactsDataFormProps) {
   const validation = yup.object({
     nickName: yup.string().required("O campo 'Nome de guerra' é obrigatório.")
@@ -115,7 +115,7 @@ export function UpdateAttendedContactsDataForm({
         <span>{title}</span>
         <div className={styles.buttonBox}>
           <button type="submit">Salvar</button>
-          <button onClick={() => setUpdateScreen(false)}>Voltar</button>
+          <button onClick={() => setCurrentScreen('profile')}>Voltar</button>
         </div>
       </header>
       <div className={`${styles.columns} ${title ? styles.link : ''}`}>
