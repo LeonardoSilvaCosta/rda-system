@@ -36,7 +36,11 @@ export default function Record() {
       number: '',
       street: '',
       complement: '',
-      neighborhood: ''
+      neighborhood: '',
+      city: '',
+      city_id: '',
+      state_id: '',
+      stateAcronym: ''
     },
     phones: [],
     policyHolder: {
