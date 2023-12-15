@@ -3,7 +3,6 @@ import { Dispatch, SetStateAction } from 'react';
 
 import styles from './styles.module.scss';
 
-import { useRegisterClientContext } from '@/context/registerClientContext';
 import {
   CurrentScreen,
   Dependent,
