@@ -41,9 +41,7 @@ export function UpdateAttendedProfileGeneralDataForm({
     formState: { errors },
     handleSubmit,
     register,
-    reset,
-    setValue
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    reset // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } = useForm<UpdateClientGeneralDataFormValues | any>({
     resolver: yupResolver(validation)
   });
