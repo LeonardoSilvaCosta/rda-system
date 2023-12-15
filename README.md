@@ -43,6 +43,10 @@
 - [x] Implementar download de prontuário completo em pdf
 - [x] Implementar anexos para cada atendimento
 - [x] Formatar página de atendimento em pdf
+- [x] Implementar atualização de perfil de atendido
+- [ ] Implementar roles
+- [ ] Adiciona paginação na listagem de atendidos
+- [ ] Adiciona paginação na listagem de atendimentos
 - [ ] Criar capa para prontuário
 - [ ] Reduzir número de itens exibidos em cada dropdown para 5 ou 10 itens
 - [ ] Implementar gestão de dados de atendido (atualizar e deletar) usuários
@@ -50,13 +54,10 @@
 - [ ] Implementar atualização de perfil de usuário
 - [ ] Implementar gestão de usuários (listagem, delete e update via admin)
 - [ ] Recuperar as listas na ordenação desejada
-- [ ] Implementar roles
 - [ ] Implementar backup diário automático do banco de dados
 - [ ] Implementar política de autorização adequada para os usuários com base nas roles
 - [ ] Desenhar nova Dashboard
 - [ ] Melhorar UI nos loadings de avatar
-- [ ] Adiciona paginação na listagem de atendidos
-- [ ] Adiciona paginação na listagem de atendimentos
 - [ ] Implementar função de assinatura digital
 - [ ] Popular banco de dados com dados oficiais
 - [ ] Observar se pode haver alguma confusão do usuário com a seleção do customDropdown, pois ele mantém o item selecionado, mesmo o usuário apagando o seu nome da barra de busca. Não é um erro, mas pode confundir o usuário. Segue para teste.

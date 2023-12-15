@@ -31,7 +31,6 @@ export function RecordProfileCard({
   setCurrentScreen
 }: ProfileCardProps) {
   const router = useRouter();
-  const { errors, register } = useRegisterClientContext();
   const handleClick = (cpf: string | undefined | null) => {
     router.push(`/Record?cpf=${cpf}`);
   };

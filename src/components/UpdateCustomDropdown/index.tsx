@@ -31,7 +31,7 @@ interface UpdateCustomDropdownProps<T extends FieldValues> {
   selectedState?: string;
   setSelectedState?: Dispatch<SetStateAction<string>>;
   routeToSearch: string;
-  selectedValue: Option;
+  selectedValue: Option | undefined;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }
 
@@ -46,9 +46,6 @@ export function UpdateCustomDropdown<T extends FieldValues>({
   selectedValue
 }: UpdateCustomDropdownProps<T>) {
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
-  const [selectedItemId, setSelectedItemId] = useState<string | null>(
-    selectedValue ? selectedValue.id : ''
-  );
 
   const [filteredData, setFilteredData] = useState<Option[]>(options);
   const [query, setQuery] = useState(selectedValue ? selectedValue.name : '');
@@ -183,7 +180,6 @@ export function UpdateCustomDropdown<T extends FieldValues>({
                           className={styles.option}
                           onClick={() => {
                             setSelectedState && setSelectedState(item.id);
-                            setSelectedItemId(item.id);
                             setIsDropDownVisible(false);
                             field.onChange(item.id);
                             setQuery(item.name);

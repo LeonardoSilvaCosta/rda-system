@@ -19,7 +19,7 @@ interface UpdateInputProps<T extends FieldValues>
   errors: FieldErrors<T>;
   register: UseFormRegister<T>;
   isSubmitted?: boolean;
-  selectedValue: string;
+  selectedValue: string | null;
 }
 
 export function UpdateInput<T extends FieldValues>({
@@ -39,12 +39,14 @@ export function UpdateInput<T extends FieldValues>({
   const nestedFields = isNested ? name.split('.') : [];
   const topLevelField = isNested ? nestedFields[0] : name;
 
+  console.log(nestedFields.length);
+
   return (
     <div className={styles.inputContainer}>
       <label htmlFor={name}>{title}</label>
       <input
         type={type}
-        defaultValue={selectedValue}
+        defaultValue={selectedValue ? selectedValue : ''}
         {...register(name, {
           disabled: disabled,
           onBlur: onBlur

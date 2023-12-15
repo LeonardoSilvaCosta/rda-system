@@ -8,7 +8,6 @@ import { UpdateInput } from '../UpdateInput';
 import styles from './styles.module.scss';
 
 import { Address, Attended, CurrentScreen, Option } from '@/types/types';
-import { addressFormValidation } from '@/validation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import * as yup from 'yup';

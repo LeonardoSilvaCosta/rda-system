@@ -8,9 +8,9 @@ import { UpdateInput } from '../UpdateInput';
 import styles from './styles.module.scss';
 
 import { Attended, Contact, CurrentScreen, Option } from '@/types/types';
+import { contactFormValidation } from '@/validation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import * as yup from 'yup';
 
 interface UpdateAttendedContactsDataFormProps {
   title: string;
@@ -27,9 +27,6 @@ export function UpdateAttendedContactsDataForm({
   attended,
   setCurrentScreen
 }: UpdateAttendedContactsDataFormProps) {
-  const validation = yup.object({
-    nickName: yup.string().required("O campo 'Nome de guerra' é obrigatório.")
-  });
   const {
     control,
     formState: { errors },
@@ -38,12 +35,16 @@ export function UpdateAttendedContactsDataForm({
     reset
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } = useForm<FormData | any>({
-    // resolver: yupResolver(validation)
+    resolver: yupResolver(contactFormValidation)
   });
 
   const supabase = createClientComponentClient();
   const router = useRouter();
   const [bonds, setBonds] = useState<Option[]>([]);
+
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
 
   useEffect(() => {
     const getLists = async () => {
@@ -191,8 +192,8 @@ export function UpdateAttendedContactsDataForm({
                     control={control}
                     routeToSearch={'/api/get_familiar_bonds'}
                     selectedValue={{
-                      id: item.bond_id,
-                      name: item.bond
+                      id: item.bond_id ? item.bond_id : '',
+                      name: item.bond ? item.bond : ''
                     }}
                   />
                 </React.Fragment>
