@@ -12,6 +12,7 @@ import {
   Attended,
   CurrentScreen,
   Option,
+  PopulateFormData,
   UpdateClientGeneralDataFormValues
 } from '@/types/types';
 import { calculateAge } from '@/utils/calculateAge';
@@ -93,7 +94,7 @@ export function UpdateAttendedProfileGeneralDataForm({
 
         setMaritalStatus(
           response
-            .filter((e) => e.source === 'Marital status')
+            .filter((e: PopulateFormData) => e.source === 'Marital status')
             .map((maritalStatus: Option) => {
               return {
                 id: maritalStatus.id,
@@ -104,7 +105,7 @@ export function UpdateAttendedProfileGeneralDataForm({
 
         setRanks(
           response
-            .filter((e) => e.source === 'Rank')
+            .filter((e: PopulateFormData) => e.source === 'Rank')
             .map((rank: Option) => {
               return {
                 id: rank.id,
@@ -115,7 +116,7 @@ export function UpdateAttendedProfileGeneralDataForm({
 
         setCadres(
           response
-            .filter((e) => e.source === 'Cadre')
+            .filter((e: PopulateFormData) => e.source === 'Cadre')
             .map((cadre: Option) => {
               return {
                 id: cadre.id,
@@ -125,7 +126,7 @@ export function UpdateAttendedProfileGeneralDataForm({
         );
         setOpms(
           response
-            .filter((e) => e.source === 'OPM')
+            .filter((e: PopulateFormData) => e.source === 'OPM')
             .map((opm: Option) => {
               return {
                 id: opm.id,
@@ -135,7 +136,7 @@ export function UpdateAttendedProfileGeneralDataForm({
         );
         setWorkStatus(
           response
-            .filter((e) => e.source === 'Work status')
+            .filter((e: PopulateFormData) => e.source === 'Work status')
             .map((workStatus: Option) => {
               return {
                 id: workStatus.id,
@@ -296,7 +297,6 @@ export function UpdateAttendedProfileGeneralDataForm({
             control={control}
             routeToSearch={'/api/get_works_status'}
             selectedValue={selectedWorkStats}
-            setValue={setValue}
           />
           <UpdateCustomDropdown
             title="OPM:"
