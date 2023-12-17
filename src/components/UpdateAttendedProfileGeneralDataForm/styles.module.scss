@@ -39,6 +39,10 @@
     display: flex;
     justify-content: space-between;
 
+    @media(max-width: 599px) {
+      gap: 1rem;
+    }
+
     .firstColumn, .secondColumn {
       width: 100%;
 

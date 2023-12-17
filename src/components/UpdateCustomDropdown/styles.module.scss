@@ -12,13 +12,19 @@
     width: calc(100% - 40px);
   }
 
+  @media(max-width: 599px) {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2.5rem;
+  }
+
   label {
     padding-top: 0.75rem;
   }
 
   .selectMenu {
     div {
-      width: 100%;
+      width: calc(100% + 20px);
       height: 3.2rem;
 
       .selectInput {
