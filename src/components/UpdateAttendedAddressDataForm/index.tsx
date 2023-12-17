@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 
 import { UpdateCustomDropdown } from '../UpdateCustomDropdown';
 import { UpdateInput } from '../UpdateInput';
+import { UpdateMaskedInput } from '../UpdateMaskedInput';
 import styles from './styles.module.scss';
 
 import { Address, Attended, CurrentScreen, Option } from '@/types/types';
@@ -91,13 +92,11 @@ export function UpdateAttendedAddressDataForm({
   }, [selectedState, attended.address.state_id]);
 
   const onSubmit: SubmitHandler<Address> = async (data) => {
-    console.log(data);
-
     try {
       const { error } = await supabase
         .from('tb_addresses')
         .update({
-          zip_code: data.zipCode,
+          zip_code: data.zipCode.replace(/[^\d]/g, ''),
           street: data.street,
           neighborhood: data.neighborhood,
           number: data.number,
@@ -139,13 +138,14 @@ export function UpdateAttendedAddressDataForm({
       </header>
       <div className={`${styles.columns} ${title ? styles.link : ''}`}>
         <div className={styles.firstColumn}>
-          <UpdateInput
+          <UpdateMaskedInput
             title="CEP:"
-            name="zipCode"
+            name={'zipCode'}
             type="text"
             errors={errors}
             register={register}
             selectedValue={attended.address.zipCode}
+            mask={'99999-999'}
           />
           <UpdateInput
             title="Logradouro:"

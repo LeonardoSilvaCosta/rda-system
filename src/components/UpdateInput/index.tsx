@@ -39,8 +39,6 @@ export function UpdateInput<T extends FieldValues>({
   const nestedFields = isNested ? name.split('.') : [];
   const topLevelField = isNested ? nestedFields[0] : name;
 
-  console.log(nestedFields.length);
-
   return (
     <div className={styles.inputContainer}>
       <label htmlFor={name}>{title}</label>

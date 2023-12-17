@@ -153,7 +153,6 @@ export function UpdateAttendedProfileGeneralDataForm({
   const onSubmit: SubmitHandler<UpdateClientGeneralDataFormValues> = async (
     data
   ) => {
-    console.log(data);
     // const { data: logedUserData } = await supabase.auth.getUser();
     const isCivilVolunteerToSend =
       data.isCivilVolunteer === 'Sim' ? true : false;

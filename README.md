@@ -44,6 +44,9 @@
 - [x] Implementar anexos para cada atendimento
 - [x] Formatar página de atendimento em pdf
 - [x] Implementar atualização de perfil de atendido
+- [x] Colocar máscara no campo de cpf e cep nos formulários de atualização de endereço e contatos
+- [ ] Apresentar erros de validação no formulário de atualização de contatos
+- [ ] Melhorar apresentação dos inputs do estilo dropdown nos formulários de atualização no mobile
 - [ ] Implementar roles
 - [ ] Adiciona paginação na listagem de atendidos
 - [ ] Adiciona paginação na listagem de atendimentos

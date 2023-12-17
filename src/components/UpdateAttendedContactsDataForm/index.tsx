@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 
 import { UpdateCustomDropdown } from '../UpdateCustomDropdown';
 import { UpdateInput } from '../UpdateInput';
+import { UpdateMaskedInput } from '../UpdateMaskedInput';
 import styles from './styles.module.scss';
 
 import { Attended, Contact, CurrentScreen, Option } from '@/types/types';
@@ -67,12 +68,11 @@ export function UpdateAttendedContactsDataForm({
   }, []);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    console.log(data);
     // const { data: logedUserData } = await supabase.auth.getUser();
 
     const phones = data.contacts.map((e: Contact) => {
       return {
-        phone: e.phone,
+        phone: e.phone.replace(/[^\d]/g, ''),
         owner_identification: e.ownerIdentification,
         bond: e.bond
       };
@@ -129,14 +129,18 @@ export function UpdateAttendedContactsDataForm({
 
             return (
               <React.Fragment key={item.phone}>
-                <UpdateInput
+                <UpdateMaskedInput
                   title="Telefone:"
                   name={phone}
                   type="text"
                   errors={errors}
                   register={register}
                   selectedValue={item.phone}
+                  mask={'(99) 99999-9999'}
                 />
+                <span className="error-message">
+                  {errors.contacts && errors.contacts[index]?.phone?.message}
+                </span>
                 <UpdateInput
                   title="Dono do contato:"
                   name={ownerIdentification}
@@ -145,6 +149,10 @@ export function UpdateAttendedContactsDataForm({
                   register={register}
                   selectedValue={item.ownerIdentification}
                 />
+                <span className="error-message">
+                  {errors.contacts &&
+                    errors.contacts[index]?.ownerIdentification?.message}
+                </span>
                 <UpdateCustomDropdown
                   title="Vínculo:"
                   fieldName={bond}
@@ -168,13 +176,14 @@ export function UpdateAttendedContactsDataForm({
 
               return (
                 <React.Fragment key={item.phone}>
-                  <UpdateInput
+                  <UpdateMaskedInput
                     title="Telefone:"
                     name={phone}
                     type="text"
                     errors={errors}
                     register={register}
                     selectedValue={item.phone}
+                    mask={'(99) 99999-9999'}
                   />
                   <UpdateInput
                     title="Dono do contato:"
