@@ -1,6 +1,12 @@
 import { useRouter } from 'next/navigation';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { FieldPath, Path, SubmitHandler, useForm } from 'react-hook-form';
+import {
+  FieldError,
+  FieldPath,
+  Path,
+  SubmitHandler,
+  useForm
+} from 'react-hook-form';
 import toast from 'react-hot-toast';
 
 import { UpdateCustomDropdown } from '../UpdateCustomDropdown';
@@ -21,6 +27,15 @@ interface UpdateAttendedContactsDataFormProps {
 
 type FormData = {
   contacts: Contact[];
+};
+
+type CustomFieldError = FieldError & {
+  phone: {
+    message: string;
+  };
+  ownerIdentification?: {
+    message: string;
+  };
 };
 
 export function UpdateAttendedContactsDataForm({
@@ -139,7 +154,9 @@ export function UpdateAttendedContactsDataForm({
                   mask={'(99) 99999-9999'}
                 />
                 <span className="error-message">
-                  {errors.contacts && errors.contacts[index]?.phone?.message}
+                  {errors.contacts &&
+                    (errors.contacts as Record<string, CustomFieldError>)[index]
+                      ?.phone?.message}
                 </span>
                 <UpdateInput
                   title="Dono do contato:"
@@ -151,7 +168,8 @@ export function UpdateAttendedContactsDataForm({
                 />
                 <span className="error-message">
                   {errors.contacts &&
-                    errors.contacts[index]?.ownerIdentification?.message}
+                    (errors.contacts as Record<string, CustomFieldError>)[index]
+                      ?.ownerIdentification?.message}
                 </span>
                 <UpdateCustomDropdown
                   title="Vínculo:"
