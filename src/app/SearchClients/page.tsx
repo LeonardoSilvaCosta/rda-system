@@ -7,6 +7,7 @@ import styles from './styles.module.scss';
 import { ClientCard } from '@/components/ClientCard';
 import { Header } from '@/components/Header';
 import { LoadingComponent } from '@/components/Loading/loading';
+import { PaginationComponent } from '@/components/PaginationComponent';
 import { SearchBar } from '@/components/SearchBar';
 import { Sidebar } from '@/components/Sidebar';
 import { GenericPerson } from '@/types/types';
@@ -30,7 +31,9 @@ export default function SearchClients() {
 
   useEffect(() => {
     async function getAttedends() {
-      const data = await fetch('/api/get_attendeds');
+      const data = await fetch(
+        `/api/get_attendeds?initialOffset=${0}&finalOffset=${9}`
+      );
       const attendeds = await data.json();
       setAttendeds(attendeds);
 
@@ -102,6 +105,7 @@ export default function SearchClients() {
             )}
           </div>
         )}
+        <PaginationComponent />
       </div>
     </main>
   );

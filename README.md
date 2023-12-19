@@ -45,11 +45,11 @@
 - [x] Formatar página de atendimento em pdf
 - [x] Implementar atualização de perfil de atendido
 - [x] Colocar máscara no campo de cpf e cep nos formulários de atualização de endereço e contatos
-- [ ] Apresentar erros de validação no formulário de atualização de contatos
-- [ ] Melhorar apresentação dos inputs do estilo dropdown nos formulários de atualização no mobile
-- [ ] Implementar roles
+- [x] Apresentar erros de validação no formulário de atualização de contatos
+- [x] Melhorar apresentação dos inputs do estilo dropdown nos formulários de atualização no mobile
 - [ ] Adiciona paginação na listagem de atendidos
 - [ ] Adiciona paginação na listagem de atendimentos
+- [ ] Implementar roles
 - [ ] Criar capa para prontuário
 - [ ] Reduzir número de itens exibidos em cada dropdown para 5 ou 10 itens
 - [ ] Implementar gestão de dados de atendido (atualizar e deletar) usuários
@@ -64,3 +64,12 @@
 - [ ] Implementar função de assinatura digital
 - [ ] Popular banco de dados com dados oficiais
 - [ ] Observar se pode haver alguma confusão do usuário com a seleção do customDropdown, pois ele mantém o item selecionado, mesmo o usuário apagando o seu nome da barra de busca. Não é um erro, mas pode confundir o usuário. Segue para teste.
+
+Correções
+- [ ] Corrigir seleção de cidade em formulário de cadastro de cliente e de usuário. Problema: Quando 
+aplica seleção de cidade com filtro, por algum motivo, a primeira seleção não dá certo, somente a próxima.
+
+
+Implementações com menor prioridade
+- [] Implementar pesquisa de dados de endereção automaticamente com base no CEP no formulário de atualização 
+de endereço

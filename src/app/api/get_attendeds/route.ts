@@ -10,6 +10,10 @@ export async function GET(req: NextRequest) {
   const supabase = createRouteHandlerClient({ cookies });
   const { searchParams } = new URL(req.url);
   const q = searchParams.get('q');
+  const initialOffset = searchParams.get('initialOffset');
+  const finalOffset = searchParams.get('finalOffset');
+
+  console.log(q, initialOffset, finalOffset);
 
   try {
     if (q) {
@@ -38,7 +42,7 @@ export async function GET(req: NextRequest) {
       tb_cadres ( name )
       `
         )
-        .limit(10);
+        .range(Number(initialOffset), Number(finalOffset));
 
       let formattedData = null;
 
