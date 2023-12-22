@@ -11,6 +11,8 @@ import { PaginationComponent } from '@/components/PaginationComponent';
 import { SearchBar } from '@/components/SearchBar';
 import { Sidebar } from '@/components/Sidebar';
 import { GenericPerson } from '@/types/types';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+
 export default function SearchClients() {
   const [isLoading, setIsLoading] = useState(true);
   const [attendeds, setAttendeds] = useState<GenericPerson[]>([
@@ -26,14 +28,26 @@ export default function SearchClients() {
     }
   ]);
   const [filteredData, setFilteredData] = useState<GenericPerson[]>(attendeds);
+  const [page, setPage] = useState(1);
+  const [totalCountOfRegisters, setTotalCountOfRegisters] = useState(0);
 
   const [query, setQuery] = useState('');
 
   useEffect(() => {
+    async function getCount() {
+      const supabase = createClientComponentClient();
+      const { count } = await supabase
+        .from('tb_attendeds')
+        .select('*', { count: 'exact', head: true });
+      setTotalCountOfRegisters(Number(count));
+    }
+
+    getCount();
+  }, []);
+
+  useEffect(() => {
     async function getAttedends() {
-      const data = await fetch(
-        `/api/get_attendeds?initialOffset=${0}&finalOffset=${9}`
-      );
+      const data = await fetch(`/api/get_attendeds?page=${page}`);
       const attendeds = await data.json();
       setAttendeds(attendeds);
 
@@ -41,7 +55,7 @@ export default function SearchClients() {
     }
 
     getAttedends();
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     setFilteredData(attendeds);
@@ -103,9 +117,13 @@ export default function SearchClients() {
                 <p>{`Nenhum atendido encontrado.`}</p>
               </div>
             )}
+            <PaginationComponent
+              totalCountOfRegisters={totalCountOfRegisters}
+              currentPage={page}
+              onPageChange={setPage}
+            />
           </div>
         )}
-        <PaginationComponent />
       </div>
     </main>
   );

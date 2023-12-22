@@ -10,10 +10,11 @@ export async function GET(req: NextRequest) {
   const supabase = createRouteHandlerClient({ cookies });
   const { searchParams } = new URL(req.url);
   const q = searchParams.get('q');
-  const initialOffset = searchParams.get('initialOffset');
-  const finalOffset = searchParams.get('finalOffset');
+  const page = Number(searchParams.get('page'));
 
-  console.log(q, initialOffset, finalOffset);
+  const ITEMS_PER_PAGE = 10;
+  const initialOffset = page * ITEMS_PER_PAGE - ITEMS_PER_PAGE;
+  const finalOffset = initialOffset + (ITEMS_PER_PAGE - 1);
 
   try {
     if (q) {
