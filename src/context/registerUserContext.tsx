@@ -250,6 +250,8 @@ export const RegisterUserContextProvider = ({
         };
       });
 
+      const defaultRole = 'b69349ee-9dbf-4b65-8be4-cc222912545d';
+
       try {
         const signedUpRes = await fetch('/api/create_supabase_user', {
           method: 'POST',
@@ -301,7 +303,8 @@ export const RegisterUserContextProvider = ({
           street_input: data.address.street,
           neighborhood_input: data.address.neighborhood,
           city_id_input: data.address.city,
-          phones_input: phones
+          phones_input: phones,
+          role_id_input: defaultRole
         });
 
         if (!error) {

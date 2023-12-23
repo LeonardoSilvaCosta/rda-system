@@ -116,7 +116,7 @@ export function MyCustomDropdown<T extends FieldValues>({
 
     const lastCharacter = routeToSearch.slice(-1);
 
-    const queryCharacter = lastCharacter === '&' ? '' : '?';
+    const queryCharacter = lastCharacter === '&' ? '&' : '?';
 
     if (q !== '') {
       const res = await fetch(`${routeToSearch}${queryCharacter}q=${qToLower}`);
