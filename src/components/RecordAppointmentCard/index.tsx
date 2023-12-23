@@ -86,25 +86,6 @@ export function RecordAppointmentCard({
               </div>
             </div>
             <div className={`${styles.buttonsWrapper}`}>
-              <div
-                onClick={() => {
-                  if (openDropdownId === e.id) {
-                    closeDropdown();
-                  } else {
-                    setOpenDropdownId(e.id);
-                  }
-                }}
-                className={`${styles.chevronButton} ${
-                  openDropdownId === e.id ? styles.visible : ''
-                }`}
-              >
-                <span>Evolução</span>
-                <BsChevronDown
-                  className={`${styles.chevronDown} ${
-                    openDropdownId === e.id ? styles.visible : ''
-                  }`}
-                />
-              </div>
               <button onClick={() => handleClick(e.id)}>Saber mais</button>
             </div>
           </div>

@@ -73,3 +73,5 @@ aplica seleção de cidade com filtro, por algum motivo, a primeira seleção n�
 Implementações com menor prioridade
 - [] Implementar pesquisa de dados de endereção automaticamente com base no CEP no formulário de atualização 
 de endereço
+
+- [ ] Revisar lógica para manter campos de formulário mantendo valores previamente selecionados.

@@ -34,6 +34,8 @@ export function AppointmentsSummary({
     setCurrentScreen(2);
   };
 
+  const isSearchPage = currentScreen > 0 && currentScreen === 1;
+
   useEffect(() => {
     async function getCount() {
       const supabase = createClientComponentClient();
@@ -96,7 +98,7 @@ export function AppointmentsSummary({
         <LoadingComponent />
       ) : (
         <main className={styles.container}>
-          {currentScreen > 0 && currentScreen === 1 ? (
+          {isSearchPage ? (
             <div>
               <div className={styles.searchBox}>
                 <input
@@ -131,11 +133,13 @@ export function AppointmentsSummary({
               appointment={appointments.find((e) => e.id === cardSelectedId)}
             />
           )}
-          <PaginationComponent
-            totalCountOfRegisters={totalCountOfRegisters}
-            currentPage={page}
-            onPageChange={setPage}
-          />
+          {isSearchPage && (
+            <PaginationComponent
+              totalCountOfRegisters={totalCountOfRegisters}
+              currentPage={page}
+              onPageChange={setPage}
+            />
+          )}
         </main>
       )}
     </>

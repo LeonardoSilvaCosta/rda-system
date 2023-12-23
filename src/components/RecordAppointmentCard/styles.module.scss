@@ -60,12 +60,6 @@
       outline: 0.5px solid var(--blue-500);
     }
 
-    .chevronDown {
-
-      &.visible {
-        transform: rotate(180deg);
-      }
-    }
 
     @media(max-width: 599px) {
       flex-direction: column;
@@ -82,24 +76,11 @@
     .buttonsWrapper {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-end;
       gap: 0.2rem;
 
       @media(max-width: 599px) {
         flex-direction: column;
-      }
-
-      .chevronButton {
-        cursor: pointer;
-
-        min-height: 28px;
-        display: flex;
-        align-items: center;
-        gap: 0.2rem;
-
-        @media(max-width: 599px) {
-          align-self: flex-start;
-        }
       }
     }
 
