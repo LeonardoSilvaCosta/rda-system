@@ -52,6 +52,7 @@ export function AppointmentsSummary({
 
   useEffect(() => {
     const getAppointments = async () => {
+      setIsLoading(true);
       try {
         const appointmentsRes = await fetch(
           `/api/get_attended_appointments?cpf=${attended.cpf}&page=${page}`
@@ -63,11 +64,13 @@ export function AppointmentsSummary({
         setIsLoading(false);
       } catch (error) {
         console.error('Erro na solicitação:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     getAppointments();
-  }, [appointments, attended.cpf, page]);
+  }, [attended.cpf, page]);
 
   const handleChangeInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const q = e.target.value;
@@ -129,7 +132,6 @@ export function AppointmentsSummary({
             />
           )}
           <PaginationComponent
-            registersPerPage={1}
             totalCountOfRegisters={totalCountOfRegisters}
             currentPage={page}
             onPageChange={setPage}
