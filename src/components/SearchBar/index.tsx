@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { BsSearch } from 'react-icons/bs';
 
 import styles from './styles.module.scss';
@@ -31,32 +31,6 @@ export function SearchBar({
   const handleFocus = () => {
     setIsFocused(true);
   };
-
-  const blurSearchBar = () => {
-    setIsFocused(false);
-    setSearch('');
-  };
-
-  // useEffect(() => {
-  //   const handleClickOutside = (event: MouseEvent) => {
-  //     if (
-  //       searchBarRef.current &&
-  //       !searchBarRef.current.contains(event.target as Node)
-  //     ) {
-  //       blurSearchBar();
-  //     }
-  //   };
-
-  //   if (searchBarRef) {
-  //     document.addEventListener('mousedown', handleClickOutside);
-  //   } else {
-  //     document.removeEventListener('mousedown', handleClickOutside);
-  //   }
-
-  //   return () => {
-  //     document.removeEventListener('mousedown', handleClickOutside);
-  //   };
-  // }, [isFocused]);
 
   return (
     <div
