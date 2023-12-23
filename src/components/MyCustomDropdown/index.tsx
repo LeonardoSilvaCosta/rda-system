@@ -91,7 +91,7 @@ export function MyCustomDropdown<T extends FieldValues>({
   useEffect(() => {
     setQuery(buttonDefaultValue());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getValues(fieldName)]);
+  }, []);
 
   const buttonDefaultValue = () => {
     if (selectedItemId) {
