@@ -10,7 +10,7 @@ import { ClientCardType } from '@/types/types';
 interface SearchBarProps {
   list: string[] | ClientCardType[];
   search: string;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
+  setSearch?: React.Dispatch<React.SetStateAction<string>>;
   variation?: 'home';
   handleChangeInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -18,7 +18,6 @@ interface SearchBarProps {
 export function SearchBar({
   variation,
   search,
-  setSearch,
   handleChangeInput
 }: SearchBarProps) {
   const [isFocused, setIsFocused] = useState(false);
