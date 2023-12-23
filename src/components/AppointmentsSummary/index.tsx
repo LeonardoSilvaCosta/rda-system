@@ -4,10 +4,12 @@ import { ImFileEmpty } from 'react-icons/im';
 
 import { AppointmentDetails } from '../AppointmentDetails';
 import { LoadingComponent } from '../Loading/loading';
+import { PaginationComponent } from '../PaginationComponent';
 import styles from './styles.module.scss';
 
 import { RecordAppointmentCard } from '@/components/RecordAppointmentCard';
 import { Appointment, Attended } from '@/types/types';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 interface AppointmentsSummaryProps {
   attended: Attended;
@@ -24,6 +26,8 @@ export function AppointmentsSummary({
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [filteredData, setFilteredData] = useState<Appointment[]>(appointments);
   const [query, setQuery] = useState('');
+  const [page, setPage] = useState(1);
+  const [totalCountOfRegisters, setTotalCountOfRegisters] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const handleClick = (selectedCardId: string) => {
     setCardSelectedId(selectedCardId);
@@ -31,10 +35,26 @@ export function AppointmentsSummary({
   };
 
   useEffect(() => {
+    async function getCount() {
+      const supabase = createClientComponentClient();
+
+      const { data: count } = await supabase.rpc(
+        'get_attended_appointments_count',
+        {
+          cpf_input: attended.cpf
+        }
+      );
+      setTotalCountOfRegisters(Number(count));
+    }
+
+    getCount();
+  }, [attended.cpf]);
+
+  useEffect(() => {
     const getAppointments = async () => {
       try {
         const appointmentsRes = await fetch(
-          `/api/get_attended_appointments?cpf=${attended.cpf}`
+          `/api/get_attended_appointments?cpf=${attended.cpf}&page=${page}`
         );
         const appointmentData = await appointmentsRes.json();
 
@@ -47,7 +67,7 @@ export function AppointmentsSummary({
     };
 
     getAppointments();
-  }, [appointments, attended.cpf]);
+  }, [appointments, attended.cpf, page]);
 
   const handleChangeInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const q = e.target.value;
@@ -74,7 +94,7 @@ export function AppointmentsSummary({
       ) : (
         <main className={styles.container}>
           {currentScreen > 0 && currentScreen === 1 ? (
-            <>
+            <div>
               <div className={styles.searchBox}>
                 <input
                   type="text"
@@ -101,13 +121,19 @@ export function AppointmentsSummary({
                   </p>
                 </div>
               )}
-            </>
+            </div>
           ) : (
             <AppointmentDetails
               attended={attended}
               appointment={appointments.find((e) => e.id === cardSelectedId)}
             />
           )}
+          <PaginationComponent
+            registersPerPage={1}
+            totalCountOfRegisters={totalCountOfRegisters}
+            currentPage={page}
+            onPageChange={setPage}
+          />
         </main>
       )}
     </>

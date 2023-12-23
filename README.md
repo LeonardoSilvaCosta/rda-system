@@ -47,8 +47,8 @@
 - [x] Colocar máscara no campo de cpf e cep nos formulários de atualização de endereço e contatos
 - [x] Apresentar erros de validação no formulário de atualização de contatos
 - [x] Melhorar apresentação dos inputs do estilo dropdown nos formulários de atualização no mobile
-- [ ] Adiciona paginação na listagem de atendidos
-- [ ] Adiciona paginação na listagem de atendimentos
+- [x] Adiciona paginação na listagem de atendidos //depois verificar como fazer paginação acompanhar a busca
+- [ ] Adiciona paginação na listagem de atendimentos //depois verificar como fazer paginação acompanhar a busca
 - [ ] Implementar roles
 - [ ] Criar capa para prontuário
 - [ ] Reduzir número de itens exibidos em cada dropdown para 5 ou 10 itens

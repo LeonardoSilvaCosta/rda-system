@@ -87,36 +87,38 @@ export default function SearchClients() {
           <LoadingComponent />
         ) : (
           <div className={styles.container}>
-            <div className={styles.searchBox}>
-              <SearchBar
-                list={attendeds}
-                search={query}
-                setSearch={setQuery}
-                handleChangeInput={handleChangeInput}
-              />
+            <div>
+              <div className={styles.searchBox}>
+                <SearchBar
+                  list={attendeds}
+                  search={query}
+                  setSearch={setQuery}
+                  handleChangeInput={handleChangeInput}
+                />
+              </div>
+              {filteredData.length > 0 ? (
+                <div className={styles.cards}>
+                  {filteredData.map((e) => (
+                    <React.Fragment key={e.id}>
+                      <ClientCard
+                        avatar={'/default-user.svg'}
+                        fullname={e.fullname}
+                        rank={e.rank}
+                        cadre={e.cadre}
+                        rg={e.rg}
+                        nickname={e.nickname}
+                        cpf={e.cpf}
+                      />
+                    </React.Fragment>
+                  ))}
+                </div>
+              ) : (
+                <div className={styles.noContent}>
+                  <BiUserX className={styles.emptyPaperIcon} />
+                  <p>{`Nenhum atendido encontrado.`}</p>
+                </div>
+              )}
             </div>
-            {filteredData.length > 0 ? (
-              <div className={styles.cards}>
-                {filteredData.map((e) => (
-                  <React.Fragment key={e.id}>
-                    <ClientCard
-                      avatar={'/default-user.svg'}
-                      fullname={e.fullname}
-                      rank={e.rank}
-                      cadre={e.cadre}
-                      rg={e.rg}
-                      nickname={e.nickname}
-                      cpf={e.cpf}
-                    />
-                  </React.Fragment>
-                ))}
-              </div>
-            ) : (
-              <div className={styles.noContent}>
-                <BiUserX className={styles.emptyPaperIcon} />
-                <p>{`Nenhum atendido encontrado.`}</p>
-              </div>
-            )}
             <PaginationComponent
               totalCountOfRegisters={totalCountOfRegisters}
               currentPage={page}

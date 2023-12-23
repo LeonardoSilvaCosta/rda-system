@@ -52,6 +52,11 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const cpf = searchParams.get('cpf');
   const q = searchParams.get('q');
+  const page = Number(searchParams.get('page'));
+
+  const ITEMS_PER_PAGE = 1;
+  const initialOffset = page * ITEMS_PER_PAGE - ITEMS_PER_PAGE;
+  const finalOffset = initialOffset + (ITEMS_PER_PAGE - 1);
 
   if (!cpf) return;
 
@@ -122,7 +127,7 @@ export async function GET(req: NextRequest) {
           cpf_input: cpf
         })
         .returns<Appointment[]>()
-        .limit(10);
+        .range(Number(initialOffset), Number(finalOffset));
 
       if (!attendedAppointments) return;
       const formattedData = await prepareDataToSend(attendedAppointments);
