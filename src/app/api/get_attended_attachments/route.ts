@@ -60,7 +60,7 @@ export async function GET(req: NextRequest) {
             fullname: e.attended_data.fullname,
             rank: e.attended_data.rank,
             cadre: e.attended_data.cadre,
-            rg: e.attended_data.rank,
+            rg: e.attended_data.rg,
             nickname: e.attended_data.nickname,
             cpf: e.attended_data.cpf
           },
@@ -68,7 +68,7 @@ export async function GET(req: NextRequest) {
             id: e.user_data.id,
             rank: e.user_data.rank,
             cadre: e.user_data.cadre,
-            rg: e.user_data.rank,
+            rg: e.user_data.rg,
             nickname: e.user_data.nickname,
             cpf: e.user_data.cpf
           },

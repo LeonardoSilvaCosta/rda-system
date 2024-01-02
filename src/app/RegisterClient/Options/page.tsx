@@ -10,16 +10,18 @@ import { DashboardButton } from '@/components/DashboardButton';
 import { Header } from '@/components/Header';
 import { LoadingComponent } from '@/components/Loading/loading';
 import { Sidebar } from '@/components/Sidebar';
+import { useGlobalContext } from '@/context/globalContext';
 
 export default function Options() {
   const [isLoading, setIsLoading] = useState(true);
+  const { showNav, setShowNav } = useGlobalContext();
 
   useEffect(() => {
     setIsLoading(false);
   }, []);
 
   return (
-    <main className={styles.wrapper}>
+    <main className={`${styles.wrapper} ${showNav ? styles.noScroll : ''}`}>
       <Sidebar />
       <div className={styles.main}>
         <Header title={isLoading ? 'Carregando...' : ''} />
@@ -27,6 +29,10 @@ export default function Options() {
           <LoadingComponent />
         ) : (
           <div className={styles.container}>
+            <div
+              className={`${styles.overlay} ${showNav ? styles.active : ''}`}
+              onClick={() => setShowNav(!showNav)}
+            ></div>
             <h2>Tipo de atendido a ser cadastrado</h2>
             <div className={styles.dashboardButtonContainer}>
               <DashboardButton icon={GiPoliceOfficerHead} name={'Militar'} />

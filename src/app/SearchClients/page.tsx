@@ -10,6 +10,7 @@ import { LoadingComponent } from '@/components/Loading/loading';
 import { PaginationComponent } from '@/components/PaginationComponent';
 import { SearchBar } from '@/components/SearchBar';
 import { Sidebar } from '@/components/Sidebar';
+import { useGlobalContext } from '@/context/globalContext';
 import { GenericPerson } from '@/types/types';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
@@ -30,6 +31,7 @@ export default function SearchClients() {
   const [filteredData, setFilteredData] = useState<GenericPerson[]>(attendeds);
   const [page, setPage] = useState(1);
   const [totalCountOfRegisters, setTotalCountOfRegisters] = useState(0);
+  const { showNav, setShowNav } = useGlobalContext();
 
   const [query, setQuery] = useState('');
 
@@ -79,7 +81,7 @@ export default function SearchClients() {
     }
   };
   return (
-    <main className={styles.wrapper}>
+    <main className={`${styles.wrapper} ${showNav ? styles.noScroll : ''}`}>
       <Sidebar />
       <div className={styles.main}>
         <Header title={isLoading ? 'Carregando...' : ''} />
@@ -87,6 +89,10 @@ export default function SearchClients() {
           <LoadingComponent />
         ) : (
           <div className={styles.container}>
+            <div
+              className={`${styles.overlay} ${showNav ? styles.active : ''}`}
+              onClick={() => setShowNav(!showNav)}
+            ></div>
             <div>
               <div className={styles.searchBox}>
                 <SearchBar
