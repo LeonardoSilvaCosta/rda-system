@@ -29,6 +29,7 @@ export function FirstAppointmentForm() {
   const [accesses, setAccesses] = useState<Option[]>([]);
   const [facilities, setFacilities] = useState<Option[]>([]);
   const [modalities, setModalities] = useState<Option[]>([]);
+  const [programs, setPrograms] = useState<Option[]>([]);
   const hasProtocolOptions = [
     { id: 'Sim', name: 'Sim' },
     { id: 'Não', name: 'Não' }
@@ -93,6 +94,17 @@ export function FirstAppointmentForm() {
               return {
                 id: modality.id,
                 name: modality.name
+              };
+            })
+        );
+
+        setPrograms(
+          response
+            .filter((e) => e.source === 'Program')
+            .map((program) => {
+              return {
+                id: program.id,
+                name: program.name
               };
             })
         );
@@ -166,6 +178,15 @@ export function FirstAppointmentForm() {
             options={modalities}
             errors={errors}
             register={register}
+          />
+          <MyCustomDropdown
+            title="Programa*"
+            fieldName="program"
+            options={programs}
+            getValues={getValues}
+            errors={errors}
+            control={control}
+            routeToSearch={'api/programs'}
           />
           <RadioGroup
             title="Tem protocolo PAE*?"

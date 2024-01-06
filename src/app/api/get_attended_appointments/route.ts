@@ -12,15 +12,18 @@ type Appointment = {
   time: string;
   protocol: string | null;
   has_leave_of_absence: boolean;
+  hospitalization: boolean;
   record_progress: string;
   access: string;
   facility: string;
   modality: string;
+  program: string;
   service: string;
   psychological_assessment: string | null;
   social_assessment: string | null;
   general_demand: string;
   procedure: string;
+  employment_status: string | null;
   specialists: {
     rank: string | null;
     cadre: string | null;
@@ -68,10 +71,12 @@ export async function GET(req: NextRequest) {
         time: e.time ? formatHour(e.time) : '',
         protocol: e.protocol ? e.protocol : '',
         hasLeaveOfAbsence: e.has_leave_of_absence,
+        hospitalization: e.hospitalization,
         recordProgress: e.record_progress,
         access: e.access ? e.access : '',
         facility: e.facility ? e.facility : '',
         modality: e.modality ? e.modality : '',
+        program: e.program ? e.program : '',
         service: e.service ? e.service : '',
         psychologicalAssessment: e.psychological_assessment
           ? e.psychological_assessment
@@ -79,6 +84,7 @@ export async function GET(req: NextRequest) {
         socialAssessment: e.social_assessment ? e.social_assessment : '',
         generalDemand: e.general_demand ? e.general_demand : '',
         procedure: e.procedure ? e.procedure : '',
+        employmentStatus: e.employment_status ? e.employment_status : '',
         specialists: e.specialists
           ? e.specialists.map((e) => {
               return {

@@ -27,7 +27,6 @@ export async function sendMail(userMail: string, content: string) {
       <p>Olá,</p>
       <p>Você acabou de ser cadastro(a) no sistema do CIAP como usuário Beta!. 
       Sua contribuição será de grande valia para que o lançamento de nosso sistema seja de forma mais estável possível. 
-      A previsão de lançamento é em JAN de 2024 e você está tendo a oportunidade de testar o sistema em primeira mão para identificar e relatar possíveis falhas e melhorias.</p>
       <p>Contamos com você!</p>
       <br>
       <p>Você pode se autenticar com os dados abaixo:</p>

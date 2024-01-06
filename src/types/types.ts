@@ -75,6 +75,7 @@ export type AppointmentFormValues = {
   access: string;
   facility: string;
   modality: string;
+  program: string;
   hasProtocol: string;
   protocol: string | null;
   service: string;
@@ -83,11 +84,13 @@ export type AppointmentFormValues = {
   generalDemand: string;
   specificDemands: string[];
   procedure: string;
+  employmentStatus: string | null;
   hasFirstOptionWithoutSecondOption: boolean;
   referrals: Referral[];
   documents: string[];
   travels: string[];
   hasLeaveOfAbsence: string;
+  hospitalization: string;
   recordProgress: string;
 };
 
@@ -219,15 +222,18 @@ export type Appointment = {
   time: string;
   protocol: string | null;
   hasLeaveOfAbsence: boolean;
+  hospitalization: boolean;
   recordProgress: string;
   access: string;
   facility: string;
   modality: string;
+  program: string;
   service: string;
   psychologicalAssessment: string | null;
   socialAssessment: string | null;
-  generalDemand: string;
+  generalDemand: string | null;
   procedure: string;
+  employmentStatus: string;
   specialists: ProfessionalIdentification[];
   attendeds: AttendedIdentification[];
   specificDemands: [] | null;

@@ -100,6 +100,7 @@ export const RegisterAppointmentContextProvider = ({
       access: '',
       facility: '',
       modality: '',
+      program: '',
       hasProtocol: '',
       protocolo: null,
       service: '',
@@ -108,11 +109,13 @@ export const RegisterAppointmentContextProvider = ({
       generalDemand: '',
       specificDemands: [],
       procedure: '',
+      employmentStatus: null,
       hasFirstOptionWithoutSecondOption: false,
       referrals: [],
       documents: [],
       travels: [],
       hasLeaveOfAbsence: '',
+      hospitalization: '',
       recordProgress: ''
     }
   });
@@ -197,8 +200,10 @@ export const RegisterAppointmentContextProvider = ({
           .eq('email', userEmail)
           .single();
 
-        const hasLeaveOfAbsence =
-          data.hasLeaveOfAbsence === 'Sim' ? true : false;
+        const hasLeaveOfAbsence = data.hasLeaveOfAbsence === 'S' ? true : false;
+
+        const hospitalization = data.hospitalization === '1' ? true : false;
+
         const date = new Date(data.date);
 
         const year = date.getFullYear();
@@ -235,11 +240,14 @@ export const RegisterAppointmentContextProvider = ({
           attendeds_id_input: data.attendeds,
           date_input: formattedDate,
           documents_id_input: data.documents,
+          employment_status_id_input: data.employmentStatus,
           facility_id_input: data.facility,
           general_demand_id_input: data.generalDemand,
           has_leave_of_absence_input: hasLeaveOfAbsence,
+          hospitalization_input: hospitalization,
           modality_id_input: data.modality,
           procedure_id_input: data.procedure,
+          program_id_input: data.program,
           protocol_input: formattedProtocol,
           psychological_assessment_id_input: data.psychologicalAssessment,
           record_progress_input: data.recordProgress,

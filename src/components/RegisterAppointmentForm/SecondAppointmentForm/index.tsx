@@ -73,6 +73,14 @@ export function SecondAppointmentForm() {
         name: procedure.name
       };
     });
+  const employmentStatus = appointmentFormData
+    .filter((e) => e.source === 'Employment status')
+    .map((employmentStatus) => {
+      return {
+        id: employmentStatus.id,
+        name: employmentStatus.name
+      };
+    });
   const referralDestinations = appointmentFormData
     .filter((e) => e.source === 'Referral destination')
     .map((referralDestination) => {
@@ -105,13 +113,20 @@ export function SecondAppointmentForm() {
         name: travel.name
       };
     });
-  const leaveOfAbsenceOptions = [
-    { id: 'Sim', name: 'Sim' },
-    { id: 'Não', name: 'Não' }
+
+  const hasLeaveOfAbsenceOptions = [
+    { id: 'S', name: 'Sim' },
+    { id: 'N', name: 'Não' }
+  ];
+
+  const hospitalization = [
+    { id: '1', name: 'Sim' },
+    { id: '2', name: 'Não' }
   ];
 
   const psychologicalId = '8f911cb1-9a72-4765-bf84-1c273eab0139';
   const socialId = '736eb33d-b012-46e2-9443-29858b965337';
+  const saeId = '2451d79f-f67e-4b7f-b8b2-2fefdb841c84';
   const watchTypeOfService = watch('service');
 
   String(watchTypeOfService) !== psychologicalId &&
@@ -167,6 +182,19 @@ export function SecondAppointmentForm() {
               control={control}
               getValues={getValues}
               routeToSearch={'/api/get_social_assessments'}
+            />
+          ) : (
+            <></>
+          )}
+          {String(watchTypeOfService) === saeId ? (
+            <MyCustomDropdown
+              title="Condição laboral*"
+              fieldName="employmentStatus"
+              options={employmentStatus}
+              errors={errors}
+              control={control}
+              getValues={getValues}
+              routeToSearch={'/api/get_employment_status'}
             />
           ) : (
             <></>
@@ -231,11 +259,22 @@ export function SecondAppointmentForm() {
           />
           <RadioGroup
             title="Houve afastamento?*"
-            options={leaveOfAbsenceOptions}
+            options={hasLeaveOfAbsenceOptions}
             name="hasLeaveOfAbsence"
             errors={errors}
             register={register}
           />
+          {String(watchTypeOfService) === saeId ? (
+            <RadioGroup
+              title="Houve internação?*"
+              options={hospitalization}
+              name="hospitalization"
+              errors={errors}
+              register={register}
+            />
+          ) : (
+            <></>
+          )}
           <TextArea
             title="Evolução*"
             name="recordProgress"

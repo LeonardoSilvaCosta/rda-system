@@ -20,15 +20,18 @@ export function AppointmentDetails({
     date,
     protocol,
     hasLeaveOfAbsence,
+    hospitalization,
     recordProgress,
     access,
     facility,
     modality,
+    program,
     service,
     psychologicalAssessment,
     socialAssessment,
     generalDemand,
     procedure,
+    employmentStatus,
     specialists,
     attendeds,
     specificDemands,
@@ -53,12 +56,16 @@ export function AppointmentDetails({
             <span>{`Acesso: ${access}`}</span>
             <span>{`Local: ${facility}`}</span>
             <span>{`Modalidade: ${modality}`}</span>
+            <span>{`Programa: ${program ? program : 'Não se aplica'}`}</span>
             <span>{`Oficial(is): ${specialists
               .map((e) => `${e.rank} ${e.cadre} ${e.rg} ${e.nickname}`)
               .join(', ')}`}</span>
             <span>{`Atendido(s): ${attendeds
               .map((e) => e.fullname)
               .join(', ')}`}</span>
+            <span>{`Condição laboral: ${
+              employmentStatus ? employmentStatus : 'Não se aplica'
+            }`}</span>
             <span>{`Serviço: ${service}`}</span>
             <span>{`Avaliação psicológica: ${
               psychologicalAssessment
@@ -90,6 +97,9 @@ export function AppointmentDetails({
             }`}</span>
             <span>{`Houve afastamento? ${
               hasLeaveOfAbsence ? 'Sim' : 'Não'
+            }`}</span>
+            <span>{`Houve Internação? ${
+              hospitalization ? 'Sim' : 'Não'
             }`}</span>
           </div>
         </div>
