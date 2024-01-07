@@ -30,11 +30,16 @@ export function FirstAppointmentForm() {
   const [facilities, setFacilities] = useState<Option[]>([]);
   const [modalities, setModalities] = useState<Option[]>([]);
   const [programs, setPrograms] = useState<Option[]>([]);
+  const hasProgramOptions = [
+    { id: '1', name: 'Sim' },
+    { id: '2', name: 'Não' }
+  ];
   const hasProtocolOptions = [
     { id: 'Sim', name: 'Sim' },
     { id: 'Não', name: 'Não' }
   ];
   const watchHasProtocol = watch('hasProtocol');
+  const watchHasProgram = watch('hasProgram');
 
   useEffect(() => {
     const getLists = async () => {
@@ -179,15 +184,26 @@ export function FirstAppointmentForm() {
             errors={errors}
             register={register}
           />
-          <MyCustomDropdown
-            title="Programa*"
-            fieldName="program"
-            options={programs}
-            getValues={getValues}
+          <RadioGroup
+            title="Esse serviço está vinculado a algum programa?"
+            name="hasProgram"
+            options={hasProgramOptions}
             errors={errors}
-            control={control}
-            routeToSearch={'api/programs'}
+            register={register}
           />
+          {String(watchHasProgram) === '1' ? (
+            <MyCustomDropdown
+              title="Programa*"
+              fieldName="program"
+              options={programs}
+              getValues={getValues}
+              errors={errors}
+              control={control}
+              routeToSearch={'api/programs'}
+            />
+          ) : (
+            <></>
+          )}
           <RadioGroup
             title="Tem protocolo PAE*?"
             name="hasProtocol"

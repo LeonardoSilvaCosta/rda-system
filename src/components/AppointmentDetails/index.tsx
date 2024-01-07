@@ -35,7 +35,7 @@ export function AppointmentDetails({
     specialists,
     attendeds,
     specificDemands,
-    documents,
+    producedDocuments,
     travels,
     referralDestinations,
     referralTypes
@@ -85,7 +85,9 @@ export function AppointmentDetails({
             }`}</span>
             <span>{`Procedimento: ${procedure}`}</span>
             <span>{`Documentos: ${
-              documents?.length !== 0 ? documents?.join(', ') : 'Sem registro'
+              producedDocuments?.length !== 0
+                ? producedDocuments?.join(', ')
+                : 'Sem registro'
             }`}</span>
             <span>{`Deslocamentos: ${
               travels?.length !== 0 ? travels?.join(', ') : 'Sem registro'

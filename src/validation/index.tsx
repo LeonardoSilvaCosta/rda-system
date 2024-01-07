@@ -81,6 +81,8 @@ const psychologicalId = '8f911cb1-9a72-4765-bf84-1c273eab0139';
 const socialId = '736eb33d-b012-46e2-9443-29858b965337';
 const saeId = '2451d79f-f67e-4b7f-b8b2-2fefdb841c84';
 
+const hasProgramTrue = '1';
+
 export const firstAppointmentStepValidation = yup.object({
   date: yup.date().required("O campo 'Data' é obrigatório."),
   time: yup.string().required("O campo 'Horário' é obrigatório."),
@@ -101,14 +103,26 @@ export const firstAppointmentStepValidation = yup.object({
     .string()
     .required("O campo 'Local' do atendimento' é obrigatório"),
   modality: yup.string().required("O campo 'Modalidade' é obrigatório"),
-  program: yup.string().required("O campo 'Programa' é obrigatório"),
+  hasProgram: yup
+    .string()
+    .required(
+      "O campo 'Esse serviço está vinculado a algum programa?' é obrigatório."
+    ),
+  program: yup
+    .string()
+    .when('hasProgram', {
+      is: '1',
+      then: () => yup.string().required("O campo 'Programa' é obrigatório."),
+      otherwise: () => yup.string().nullable()
+    })
+    .default(null),
   hasProtocol: yup
     .string()
     .required("O campo 'Tem protocolo PAE?' é obrigatório."),
   protocol: yup
     .string()
     .when('hasProtocol', {
-      is: 'Sim',
+      is: hasProgramTrue,
       then: () => yup.string().required("O campo 'Protocolo' é obrgatório."),
       otherwise: () => yup.string().nullable()
     })
@@ -156,7 +170,7 @@ export const secondAppointmentStepValidation = yup.object({
   generalDemand: yup.string().required("O campo 'Demanda Geral' é obrigatório"),
   specificDemands: yup.array(yup.string()).default([]),
   procedure: yup.string().required("O campo 'Procedimento' é obrigatório"),
-  documents: yup.array(yup.string()).default([]),
+  producedDocuments: yup.array(yup.string()).default([]),
   travels: yup.array().of(yup.string()).default([]),
   hasFirstOptionWithoutSecondOption: yup
     .boolean()

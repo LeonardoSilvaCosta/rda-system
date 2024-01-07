@@ -70,6 +70,8 @@ export async function GET(req: NextRequest) {
       .limit(1)
       .single();
 
+    console.log(attended);
+
     if (!attended) return;
     const formattedData = {
       id: attended.id,

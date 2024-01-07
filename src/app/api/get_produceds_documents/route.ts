@@ -14,10 +14,11 @@ export async function GET(req: NextRequest) {
   try {
     if (q) {
       const { data: documents } = await supabase
-        .from('tb_documents')
+        .from('tb_produced_documents')
         .select()
         .ilike('name', `%${q}%`)
         .limit(10);
+      console.log(documents);
       return Response.json(documents);
     } else {
       return Response.json([]);

@@ -42,7 +42,7 @@ type Appointment = {
     fullname: string;
   }[];
   specific_demands: [] | null;
-  documents: [] | null;
+  produced_documents: [] | null;
   travels: [] | null;
   referral_destinations: [] | null;
   referral_types: [] | null;
@@ -100,7 +100,7 @@ export async function GET(req: NextRequest) {
           : [],
         attendeds: e.attendeds ? e.attendeds : [],
         specificDemands: e.specific_demands ? e.specific_demands : [],
-        documents: e.documents ? e.documents : [],
+        producedDocuments: e.produced_documents ? e.produced_documents : [],
         travels: e.travels ? e.travels : [],
         referralDestinations: e.referral_destinations
           ? e.referral_destinations

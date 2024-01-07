@@ -94,7 +94,7 @@ export function UpdateAttendedAddressDataForm({
   const onSubmit: SubmitHandler<Address> = async (data) => {
     try {
       const { error } = await supabase
-        .from('tb_addresses')
+        .from('tb_attended_addresses')
         .update({
           zip_code: data.zipCode.replace(/[^\d]/g, ''),
           street: data.street,

@@ -75,6 +75,7 @@ export type AppointmentFormValues = {
   access: string;
   facility: string;
   modality: string;
+  hasProgram: string;
   program: string;
   hasProtocol: string;
   protocol: string | null;
@@ -87,7 +88,7 @@ export type AppointmentFormValues = {
   employmentStatus: string | null;
   hasFirstOptionWithoutSecondOption: boolean;
   referrals: Referral[];
-  documents: string[];
+  producedDocuments: string[];
   travels: string[];
   hasLeaveOfAbsence: string;
   hospitalization: string;

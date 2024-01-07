@@ -228,12 +228,12 @@ export function SecondAppointmentForm() {
           />
           <MyCustomMultiSelectDropdown
             title="Documentos produzidos"
-            fieldName="documents"
+            fieldName="producedDocuments"
             getValues={getValues}
             options={documents}
             errors={errors}
             control={control}
-            routeToSearch={'/api/get_documents'}
+            routeToSearch={'/api/get_produced_documents'}
           />
           <MyCustomMultiSelectDropdown
             title="Deslocamentos"

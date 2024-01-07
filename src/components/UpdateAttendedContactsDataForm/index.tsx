@@ -97,7 +97,7 @@ export function UpdateAttendedContactsDataForm({
       const errors = [];
       for (let i = 0; i < phones.length; i++) {
         const { error } = await supabase
-          .from('tb_phones')
+          .from('tb_attended_phones')
           .update(phones[i])
           .match({ attended_id: attended.id, phone: attended.phones[i].phone });
 
