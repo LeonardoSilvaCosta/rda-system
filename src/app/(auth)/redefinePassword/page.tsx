@@ -44,7 +44,7 @@ export default function RedefinePassword() {
         returnToDashboard();
       } else {
         // toast.error(error.message);
-        toast.error(JSON.stringify(error.cause, null, 2));
+        toast.error(JSON.stringify(error, null, 2));
         // toast.error('A nova senha deve ser diferente da anterior.');
       }
     } catch (error) {
