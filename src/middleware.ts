@@ -20,7 +20,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/', req.url));
   }
 
-  const allowedPaths = ['/login', '/forgotPassword', '/redefinePassword/*'];
+  const allowedPaths = ['/login', '/forgotPassword', '/redefinePassword'];
   const isAllowed = allowedPaths.some((allowedPath) =>
     pathname.startsWith(allowedPath)
   );
