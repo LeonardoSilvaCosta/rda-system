@@ -33,7 +33,8 @@ export default function ForgotPassword() {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
-        redirectTo: process.env.NEXT_PUBLIC_REDEFINE_PASSWORD_URL
+        redirectTo:
+          'https://sistema-de-prontuarios-ciap.vercel.app/redefinePassword'
       });
 
       if (!error) {
