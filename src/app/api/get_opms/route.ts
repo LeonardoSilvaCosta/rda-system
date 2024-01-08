@@ -14,10 +14,17 @@ export async function GET(req: NextRequest) {
     if (q) {
       const { data: opms } = await supabase
         .from('tb_opms')
-        .select('id, name')
-        .ilike('name', `%${q}%`)
+        .select('id, acronym')
+        .ilike('acronym', `%${q}%`)
         .limit(10);
-      return Response.json(opms);
+
+      const formattedDate = opms?.map((e) => {
+        return {
+          id: e.id,
+          name: e.acronym
+        };
+      });
+      return Response.json(formattedDate);
     } else {
       return Response.json([]);
     }
