@@ -6,9 +6,9 @@ import toast from 'react-hot-toast';
 import styles from './styles.module.scss';
 
 import { Button } from '@/components/Button';
-import { supabase } from '@/config/supabaseAdmin';
 import { useGlobalContext } from '@/context/globalContext';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import * as yup from 'yup';
 
 interface FormValues extends FieldValues {
@@ -16,6 +16,7 @@ interface FormValues extends FieldValues {
 }
 
 export default function RedefinePassword() {
+  const supabase = createClientComponentClient();
   const { returnToDashboard } = useGlobalContext();
 
   const validationSchema = yup.object({
@@ -42,7 +43,8 @@ export default function RedefinePassword() {
         toast.success('Sua senha foi redefinida com sucesso.');
         returnToDashboard();
       } else {
-        toast.error(error.message);
+        // toast.error(error.message);
+        toast.error(JSON.stringify(error.cause, null, 2));
         // toast.error('A nova senha deve ser diferente da anterior.');
       }
     } catch (error) {
