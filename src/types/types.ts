@@ -238,7 +238,7 @@ export type Appointment = {
   specialists: ProfessionalIdentification[];
   attendeds: AttendedIdentification[];
   specificDemands: [] | null;
-  documents: [] | null;
+  producedDocuments: [] | null;
   travels: [] | null;
   referralDestinations: [] | null;
   referralTypes: [] | null;
