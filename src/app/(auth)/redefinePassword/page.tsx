@@ -16,6 +16,7 @@ interface FormValues extends FieldValues {
 }
 
 export default function RedefinePassword() {
+  const supabase = createClientComponentClient();
   const { returnToDashboard } = useGlobalContext();
 
   const validationSchema = yup.object({
@@ -33,8 +34,6 @@ export default function RedefinePassword() {
   } = useForm<FormValues>({ resolver: yupResolver(validationSchema) });
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    const supabase = createClientComponentClient();
-
     try {
       const { error } = await supabase.auth.updateUser({
         password: data.password
@@ -44,9 +43,7 @@ export default function RedefinePassword() {
         toast.success('Sua senha foi redefinida com sucesso.');
         returnToDashboard();
       } else {
-        // toast.error(error.message);
-        toast.error(JSON.stringify(error, null, 2));
-        // toast.error('A nova senha deve ser diferente da anterior.');
+        toast.error(error.message);
       }
     } catch (error) {
       toast.error(
