@@ -18,10 +18,10 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-export async function sendMail(userMail: string, content: string) {
+export async function sendMail(userEmail: string, content: string) {
   const mailOptions = {
     from: emailCiap,
-    to: userMail,
+    to: userEmail,
     subject: 'Seja bem-vindo(a) à nova fase do CIAP!',
     html: `
       <p>Olá,</p>
@@ -30,7 +30,7 @@ export async function sendMail(userMail: string, content: string) {
       <p>Contamos com você!</p>
       <br>
       <p>Você pode se autenticar com os dados abaixo:</p>
-      <p>Login: ${userMail}</p>
+      <p>Login: ${userEmail}</p>
       <p>Senha: ${content}</p>
       <br>
       <p>Você pode acessar o sistema nesse link: https://sistema-de-prontuarios-ciap.vercel.app/login</p>

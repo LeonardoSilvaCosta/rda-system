@@ -43,7 +43,8 @@ export default function RedefinePassword() {
         toast.success('Sua senha foi redefinida com sucesso.');
         returnToDashboard();
       } else {
-        toast.error('A nova senha deve ser diferente da anterior.');
+        toast.error(error.message);
+        // toast.error('A nova senha deve ser diferente da anterior.');
       }
     } catch (error) {
       toast.error(
