@@ -10,6 +10,8 @@ export async function middleware(req: NextRequest) {
 
   await supabase.auth.getSession();
 
+  const pathname = req.nextUrl.pathname;
+
   const {
     data: { user }
   } = await supabase.auth.getUser();
@@ -18,7 +20,13 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/', req.url));
   }
 
-  if (!user && req.nextUrl.pathname !== '/login') {
+  const allowedPaths = ['/login', '/forgotPassword', '/redefinePassword'];
+  const isAllowed =
+    pathname !== allowedPaths[0] &&
+    pathname !== allowedPaths[1] &&
+    pathname !== allowedPaths[2];
+
+  if (!user && isAllowed) {
     return NextResponse.redirect(new URL('/login', req.url));
   }
 
@@ -29,6 +37,7 @@ export const config = {
   matcher: [
     '/',
     '/login',
+    '/forgotPassword',
     '/RegisterClient/:path*',
     '/RegisterAppointment/:path*'
   ]
