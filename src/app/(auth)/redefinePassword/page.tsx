@@ -6,9 +6,9 @@ import toast from 'react-hot-toast';
 import styles from './styles.module.scss';
 
 import { Button } from '@/components/Button';
+import { supabase } from '@/config/supabaseAdmin';
 import { useGlobalContext } from '@/context/globalContext';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import * as yup from 'yup';
 
 interface FormValues extends FieldValues {
@@ -16,7 +16,6 @@ interface FormValues extends FieldValues {
 }
 
 export default function RedefinePassword() {
-  const supabase = createClientComponentClient();
   const { returnToDashboard } = useGlobalContext();
 
   const validationSchema = yup.object({
