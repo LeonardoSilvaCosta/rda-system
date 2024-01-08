@@ -21,12 +21,11 @@ export async function middleware(req: NextRequest) {
   }
 
   const allowedPaths = ['/login', '/forgotPassword', '/redefinePassword'];
-  const isAllowed =
-    pathname !== allowedPaths[0] &&
-    pathname !== allowedPaths[1] &&
-    pathname !== allowedPaths[2];
+  const isAllowed = allowedPaths.some((allowedPath) =>
+    pathname.startsWith(allowedPath)
+  );
 
-  if (!user && isAllowed) {
+  if (!user && !isAllowed) {
     return NextResponse.redirect(new URL('/login', req.url));
   }
 
@@ -38,7 +37,7 @@ export const config = {
     '/',
     '/login',
     '/forgotPassword',
-    '/redefinePassword',
+    '/redefinePassword/:path*',
     '/RegisterClient/:path*',
     '/RegisterAppointment/:path*'
   ]
