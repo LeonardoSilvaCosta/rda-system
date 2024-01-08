@@ -38,6 +38,7 @@ export const config = {
     '/',
     '/login',
     '/forgotPassword',
+    '/redefinePassword',
     '/RegisterClient/:path*',
     '/RegisterAppointment/:path*'
   ]
