@@ -16,7 +16,6 @@ interface FormValues extends FieldValues {
 }
 
 export default function RedefinePassword() {
-  const supabase = createClientComponentClient();
   const { returnToDashboard } = useGlobalContext();
 
   const validationSchema = yup.object({
@@ -34,6 +33,8 @@ export default function RedefinePassword() {
   } = useForm<FormValues>({ resolver: yupResolver(validationSchema) });
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    const supabase = createClientComponentClient();
+
     try {
       const { error } = await supabase.auth.updateUser({
         password: data.password
