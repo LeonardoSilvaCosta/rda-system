@@ -47,7 +47,7 @@ export function PdfRecordData({
     specialists,
     attendeds,
     specificDemands,
-    documents,
+    producedDocuments,
     travels,
     referralDestinations,
     referralTypes
@@ -151,7 +151,9 @@ export function PdfRecordData({
                 }`}</Text>
                 <Text>{`Procedimento: ${procedure} `}</Text>
                 <Text>{`Documentos: ${
-                  documents?.length !== 0 ? documents : 'Sem registro'
+                  producedDocuments?.length !== 0
+                    ? producedDocuments
+                    : 'Sem registro'
                 }`}</Text>
                 <Text>{`Deslocamentos: ${
                   travels?.length !== 0 ? travels : 'Sem registro'
