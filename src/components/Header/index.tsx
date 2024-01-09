@@ -101,27 +101,25 @@ export function Header({ title = '' }: HeaderProps) {
             <></>
           ) : (
             <>
-              {currentUser.rank && (
-                <>
-                  <Image
-                    src={
-                      currentUser.avatar
-                        ? currentUser.avatar
-                        : '/default-user.svg'
-                    }
-                    alt="profile-photo"
-                    width={40}
-                    height={40}
-                  />
-                  <span>{`${currentUser.rank} ${currentUser.cadre} ${currentUser.nickname}`}</span>
-                  <BsChevronDown
-                    className={styles.dropdownIcon}
-                    onClick={() => {
-                      setShowDropDownMenu(!showDropDownMenu);
-                    }}
-                  />
-                </>
+              <Image
+                src={
+                  currentUser.avatar ? currentUser.avatar : '/default-user.svg'
+                }
+                alt="profile-photo"
+                width={40}
+                height={40}
+              />
+              {currentUser.rank ? (
+                <span>{`${currentUser.rank} ${currentUser.cadre} ${currentUser.nickname}`}</span>
+              ) : (
+                <span>{`${currentUser.cadre} ${currentUser.fullname}`}</span>
               )}
+              <BsChevronDown
+                className={styles.dropdownIcon}
+                onClick={() => {
+                  setShowDropDownMenu(!showDropDownMenu);
+                }}
+              />
             </>
           )}
           {showDropDownMenu ? (

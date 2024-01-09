@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
         .rpc('get_specialists_by_query', {
           q_input: q
         })
-        .limit(10);
+        .limit(20);
       if (!error) {
         return Response.json(specialists, { status: 200 });
       } else {
@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
       `
         )
         .eq('cadre_id', QCOPMId)
-        .limit(10);
+        .limit(20);
 
       let formattedData = null;
 
